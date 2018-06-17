@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2015
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadGen.MVC", "LeadGen.MVC\LeadGen.MVC.csproj", "{93D0F02E-ED85-47EC-9B6F-767ADAE7A43F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadGen.Code", "LeadGen.Code\LeadGen.Code.csproj", "{4191DA92-7DAB-4E4D-AD01-F53D36857CBD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadGen.Debug", "LeadGen.Debug\LeadGen.Debug.csproj", "{DE25EDEB-0E3F-438B-9ABD-5B11C0BE3444}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{93D0F02E-ED85-47EC-9B6F-767ADAE7A43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93D0F02E-ED85-47EC-9B6F-767ADAE7A43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93D0F02E-ED85-47EC-9B6F-767ADAE7A43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93D0F02E-ED85-47EC-9B6F-767ADAE7A43F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4191DA92-7DAB-4E4D-AD01-F53D36857CBD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4191DA92-7DAB-4E4D-AD01-F53D36857CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4191DA92-7DAB-4E4D-AD01-F53D36857CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU

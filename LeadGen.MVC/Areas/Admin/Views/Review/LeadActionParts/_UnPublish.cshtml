@@ -1,4 +1,0 @@
-﻿@model LeadGen.Code.Lead.Review
-<div>
-    @Ajax.ActionLink("UnPublish", "Manage", new { leadID = Model.leadID, doAction = "UnPublish" }, new AjaxOptions { HttpMethod = "Post", LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "ActionForLeadID-" + @Model.leadID, InsertionMode = InsertionMode.Replace })
-</div>

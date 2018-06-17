@@ -65,10 +65,6 @@
       <Project>{4191da92-7dab-4e4d-ad01-f53d36857cbd}</Project>
       <Name>LeadGen.Code</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LeadGen.MVC\LeadGen.MVC.csproj">
-      <Project>{93d0f02e-ed85-47ec-9b6f-767adae7a43f}</Project>
-      <Name>LeadGen.MVC</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

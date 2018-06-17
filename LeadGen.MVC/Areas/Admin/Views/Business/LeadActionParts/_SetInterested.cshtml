@@ -1,4 +1,0 @@
-﻿@model LeadGen.Code.Lead.LeadItem
-<div>
-    @Ajax.ActionLink("Set Interested", "ManageOrder", new { leadID = Model.ID, doAction = "SetInterested" }, new AjaxOptions { HttpMethod = "Post", LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.Replace })
-</div>

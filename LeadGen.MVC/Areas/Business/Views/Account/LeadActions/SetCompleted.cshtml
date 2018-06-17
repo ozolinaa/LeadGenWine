@@ -1,4 +1,0 @@
-﻿@model LeadGen.Code.Lead.LeadItem
-<div>
-    @Ajax.ActionLink("Set Completed", "ManageOrder", new { leadID = Model.ID, doAction = "SetCompleted" }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith })
-</div>

@@ -1,7 +1,0 @@
-﻿@model LeadGen.Code.Lead.LeadItem
-<div id="ActionForLeadID-@Model.ID">
-    @Ajax.ActionLink("Un-Publish", "Manage", new { leadID = Model.ID, doAction = "TryUnPublish" },
-    new AjaxOptions { HttpMethod = "Post", LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith },
-    new { @class = "btn btn-danger" }
-    )
-</div>
