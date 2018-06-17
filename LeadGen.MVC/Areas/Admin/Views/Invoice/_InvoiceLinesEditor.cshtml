@@ -1,0 +1,48 @@
+﻿@model LeadGen.Code.Business.Inovice.Invoice
+<table class="table table-bordered" id="invoiceLines">
+    <thead>
+        <tr>
+            <td>
+                Line Number
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                UnitPrice
+            </td>
+            <td>
+                Quantity
+            </td>
+            <td>
+                LinePrice
+            </td>
+            <td>
+                Tax
+            </td>
+            <td>
+                Line Total Price
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.EditorFor(x => x.lines, new { invoiceID = Model.ID })
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                @{
+                    string warningMessage = "Any unsaved shanges in lines will be lost, please save invoice first. Are You Sure?";
+                    object routeValues = new { invoiceID = Model.ID };
+                    AjaxOptions ajaxOptions = new AjaxOptions { Confirm = warningMessage, LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "invoiceLines", InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
+                    object htmlAttributes = new { @class = "btn btn-info" };
+                    @Ajax.ActionLink("Add line", "LineAdd", routeValues, ajaxOptions, htmlAttributes)
+                }
+            </td>
+            <td colspan="5"></td>
+            <td>
+                Total = @Html.DisplayFor(x => x.totalSum)
+            </td>
+        </tr>
+    </tfoot>
+</table>

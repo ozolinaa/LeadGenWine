@@ -1,0 +1,28 @@
+﻿@model System.String
+@{
+    ViewBag.Title = "Cancel";
+}
+<div class="container">
+    <center>
+        <h2>Удаление заявки</h2>
+
+        <p>
+            После нажатия на кнопку "Удалить", на указанный email будет отправлено письмо для подтверждения удаления заявки.
+            Перейдите по ссылке в письме, чтобы удалить заявки связанные с Вашим e-mail.
+        </p>
+
+        @using (Html.BeginForm("Cancel", "Order", FormMethod.Post))
+        {
+
+            <div class="form-group">
+                @Html.LabelFor(x=>x, "Ваш E-Mail")
+                @Html.TextBox("email", Model, new { @class = "form-control"})
+                @Html.ValidationMessage("email")
+            </div>
+            <button type="submit" class="btn btn-danger">Удалить</button>
+
+        }
+    </center>
+</div>
+
+

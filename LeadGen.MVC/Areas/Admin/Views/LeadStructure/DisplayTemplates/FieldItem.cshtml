@@ -1,0 +1,43 @@
+﻿@model LeadGen.Code.Lead.FieldItem
+
+<tr>
+    <td>
+        <div>@Html.LabelFor(x => x.fieldType): @Html.DisplayFor(x => x.fieldType)</div>
+        <div>@Html.LabelFor(x => x.name): @Html.DisplayFor(x => x.name)</div>
+        <div>@Html.LabelFor(x => x.label): @Html.DisplayFor(x => x.label)</div>
+    </td>
+    <td>
+        <div>@Html.LabelFor(x => x.isActive): @Html.DisplayFor(x => x.isActive)</div>
+        <div>@Html.LabelFor(x => x.isRequired): @Html.DisplayFor(x => x.isRequired)</div>
+        <div>@Html.LabelFor(x => x.isContact): @Html.DisplayFor(x => x.isContact)</div>
+    </td>
+    <td>
+        @if (String.IsNullOrEmpty(Model.placeholder) == false)
+        {
+            <div>@Html.LabelFor(x => x.placeholder): @Html.DisplayFor(x => x.placeholder)</div>
+        }
+        @if (Model.taxonomyID != null)
+        {
+            <div>@Html.LabelFor(x => x.taxonomyID): @Html.DisplayFor(x => x.taxonomyID)</div>
+        }
+        @if (Model.termParentID != null)
+        {
+            <div>@Html.LabelFor(x => x.termParentID): @Html.DisplayFor(x => x.termParentID)</div>
+        }
+        @if (String.IsNullOrEmpty(Model.regularExpression) == false)
+        {
+            <div>@Html.LabelFor(x => x.regularExpression): @Html.DisplayFor(x => x.regularExpression)</div>
+        }
+        @if (Model.minValue != null)
+        {
+            <div>@Html.LabelFor(x => x.minValue): @Html.DisplayFor(x => x.minValue)</div>
+        }
+        @if (Model.maxValue != null)
+        {
+            <div>@Html.LabelFor(x => x.maxValue): @Html.DisplayFor(x => x.maxValue)</div>
+        }
+    </td>
+    <td>
+        @Ajax.ActionLink("Edit", "FieldEdit", new { id = Model.ID }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "PopUp", HttpMethod = "GET" }, new { @class = "btn btn-warning pull-right" })
+    </td>
+</tr>

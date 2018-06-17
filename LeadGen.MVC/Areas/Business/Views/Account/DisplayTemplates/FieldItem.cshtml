@@ -1,0 +1,8 @@
+﻿@model LeadGen.Code.Lead.FieldItem
+@if (string.IsNullOrEmpty(@Model.stringValue) == false)
+{
+    <div class="lead_field lead_field_@Model.code">
+        <span class="grey">@Model.label:</span> @Model.stringValue
+    </div>
+}
+

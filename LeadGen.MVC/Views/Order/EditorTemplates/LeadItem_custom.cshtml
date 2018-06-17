@@ -1,0 +1,277 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+
+@{
+    string formID = "LeadForm";
+    int groupIndex = 0;
+    int fieldIndex = 0;
+
+    Dictionary<string, string> shapeDescriptions = new Dictionary<string, string>()
+    {
+        {"classic", "Вертикальная стела прямоугольной формы или трапецией. Есть десятки вариантов типовых заготовок (готовые памятники) двух-трех стандартных размеров. Верхняя часть зачастую выполняется со скосом, волной, «плечиками» и т.п." },
+        {"vertik-figure", "Вертикальная стела более сложной формы, чем классическая; возможно, обыгранная барельефами, горельефами и вставками, например, крест, сердце, факел, венок итп. Существуют сотни типовых образцов." },
+        {"horisont-classic", "Вертикальная стела более сложной формы, чем классическая; возможно, обыгранная барельефами, горельефами и вставками, например, крест, сердце, факел, венок итп. Существуют сотни типовых образцов."},
+        {"2-figure", "Две стелы, объединенные единой композицией. Художественным средством может быть единый общий элемент (барельеф, аксессуар...) Парный памятник часто устанавливают, когда в одной могиле упокоились муж и жена."},
+        {"kerst", "Это памятник, где стела выполнена в форме креста. Бывают каменные (гранитные, мраморные) кресты или металлические кованые. Православные, католические и иных конфессий и народов."},
+        {"vip-complex", "Мемориальный VIP-комплекс.  В производстве используются, как правило, несколько материалов и разнообразные аксессуары. Это дорогой памятник. Всегда индивидуальное проектирование и дизайн."},
+        {"bust", "Скульптура или бюст, воссозданный по фото покойного - это сложное и дорогое решение, которое в состоянии исполнить не каждая мастерская. Эксклюзивная скульптура может стать основой мемориального VIP-комплекса."},
+        {"kamen", "Камень в виде скола или глыбы - оригинальное решение, которое символизирует вечность и, в то же время, простоту. Гармонирует с горизонтальной надмогильной плитой."}
+    };
+    Dictionary<string, string> accessoriesDescriptions = new Dictionary<string, string>()
+    {
+        {"klumba", "Самое популярное и экономичное решение - это клумба-цветник перед стелой памятника. Часто включается в цену стандартного (готового) памятника. Самый практичный камень для цветника - это гранит."},
+        {"plita", "Монолитная или составная надгробная плита - это оригинальная альтернатива цветнику. Почти не требует ухода. Может быть с лункой для дерева или цветов. Может дополнять, а может заменять собой вертикальный памятник." },
+        {"fotokeramika", "Фотокерамический портрет или фото на эмали, таблички, врезки и вставки камня, закаленного стекла, металла и иные элементы, которые крепятся к стеле (обелиску) памятника." },
+        {"gravirovka-foto", "Гравировка на поверхности стелы. Методы: ручная (глубоко выбитые надписи), пескоструйная (векторные, штриховые рисунки), лазерная (фотопортреты и любой компьютерный дизайн)." },
+        {"ograda-2", "Ограждение могилы - распространенная традиция в России. До подписания договора с мастерской уточните у администрации кладбища, нет ли запретов и на установку оград и каковы ограничения, в частности, максимальная высота ограды." },
+        {"plitka", "Укладка тротуарной плитки или обсыпка каменной крошкой (гранитной, мраморной) - это эстетичное и практичное решение. Пространство вокруг могилы не зарастает сорняками, а это особенно важно, если могила посещается редко." },
+        {"lavochka", "Если усопших посещают часто, а место возле памятника позволяет установить лавочку или столик, то это будет удобным решением для каждого, кто пришел навестить могилу." },
+        {"qr", "QR-код на памятнике позволяет мгновенно открыть страницу памяти об усопшем при наведении на него камеры смартфона." }
+    };
+
+}
+
+@using (Ajax.BeginForm("Index", null, null,
+    new AjaxOptions {
+        UpdateTargetId = formID,
+        LoadingElementId = "LoadingWindowSplash",
+        InsertionMode = InsertionMode.ReplaceWith,
+        OnComplete = "initializeLeadForm"
+    },
+    new { @class = "form-horizontal", id = formID }))
+{
+    //Need to render field groups (this editor will render only hidder fields for groups)
+    @Html.EditorFor(x => x.fieldGroups)
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1 class="title">Заказать надгробный памятник через тендер среди мастерских</h1>
+                <div class="under_h1">
+                    <p>Заполните заявку на изготовление памятника! Гранитные мастерские направят Вам свои предложения и цены на эту модель. Сравните и выберите лучшее!</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="wanna">
+        <div class="container">
+
+            <h3 class="title">Выберите форму памятника (можно несколько)</h3>
+            <div class="type list">
+                @{
+                    groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "shape");
+                    for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
+                    {
+                        var term = @Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
+                        string imageSrc = string.Format("/Content/themes/izgpam/order/shape/{0}.jpg", term.termURL);
+                        string description = "";
+                        shapeDescriptions.TryGetValue(term.termURL, out description);
+                        <div class="item" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@description">
+                            <label>
+                                @Html.CheckBoxFor(x => x.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i].isChecked)
+                                <img src="@imageSrc" alt="@term.name" title="@description" />
+                                <span class="text">@term.name</span>
+                            </label>
+                        </div>
+                    }
+                    //Need to render EditorFor the field because as it renders some required hidden fields
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { input = "none" })
+                }
+            </div>
+
+            <h3 class="title">Отметьте интересующие материалы/цвет (можно несколько)</h3>
+            <div class="list color">
+                @{
+                    //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "material");
+                    for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
+                    {
+                        var term = @Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
+                        string imageSrc = string.Format("/Content/themes/izgpam/order/material/{0}.jpg", term.termURL);
+                        <div class="item">
+                            <label>
+                                <span class="pic">
+                                    <img src="@imageSrc" alt="@term.name" title="@term.name" />
+                                </span>
+                                <span class="text">
+                                    @Html.CheckBoxFor(x => x.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i].isChecked)
+                                    <span>@term.name</span>
+                                </span>
+                            </label>
+                        </div>
+                    }
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { input = "none" })
+                }
+            </div>
+
+            <h3 class="title">Добавьте нужные аксессуары оформления надгробия</h3>
+            <div class="decor list">
+                @{
+                    //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "accessories");
+                    for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
+                    {
+                        var term = @Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
+                        string imageSrc = string.Format("/Content/themes/izgpam/order/accessories/{0}.jpg", term.termURL);
+                        string description = "";
+                        accessoriesDescriptions.TryGetValue(term.termURL, out description);
+                        <div class="item" data-toggle="popover" data-placement="top" data-trigger="hover" data-content="@description">
+                            <label>
+                                <img src="@imageSrc" alt="@term.name" class="img-q" title="@term.name" />
+                                <span class="text">
+                                    @Html.CheckBoxFor(x => x.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i].isChecked)
+                                    <span>@term.name</span>
+                                </span>
+                            </label>
+                        </div>
+                    }
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { input = "none" })
+                }
+            </div>
+
+            <h3 class="title">Кому памятник (чьи имена будут на стеле) *</h3>
+            @{
+                groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
+                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "pamName");
+                Model.fieldGroups[groupIndex].fields[fieldIndex].fieldType = LeadGen.Code.Lead.FieldType.Textarea;
+                @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new {label = "", customWrapperClass = "" })
+            }
+
+            <h3 class="title">Пожелания к памятнику и оформлению могилы</h3>
+            @{
+                //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
+                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "comments");
+                Model.fieldGroups[groupIndex].fields[fieldIndex].fieldType = LeadGen.Code.Lead.FieldType.Textarea;
+                @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new {label = "", customWrapperClass = "" })
+            }
+
+        </div>
+    </div>
+
+    <h2 class="title">Условия заказа и установки</h2>
+    <div class="container rules">
+
+        <div class="row">
+            <div class="col-md-4 col-sm-6">
+                @{
+                    groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "price");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { label = "Ориентируюсь на цену *", placeholder = "" })
+                }
+            </div>
+            <div class="col-md-6 col-sm-6">
+                @{
+                    //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "businessType");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { label = ""})
+                }
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                @{
+                    groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "city");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { label = "Город *", placeholder = "" })
+                }
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>К какому сроку завершить *</label>
+                    @{
+                        groupIndex = Model.fieldGroups.FindIndex(x => x.code == "dates");
+                        fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "executeDate");
+
+                        Dictionary<string, string> dateValues = new Dictionary<string, string>();
+                        DateTime tmpDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-1);
+                        string executeDateSelectedValue = Model.fieldGroups[groupIndex].fields[fieldIndex].fieldDatetime.ToString();
+                        for (int i = 0; i < 12; i++)
+                        {
+                            tmpDate = tmpDate.AddMonths(1);
+                            dateValues.Add(tmpDate.ToShortDateString(), string.Format("{0} {1}", tmpDate.ToString("MMMM"), tmpDate.Year));
+                            if (i == 2 && string.IsNullOrEmpty(executeDateSelectedValue))
+                            {
+                                executeDateSelectedValue = tmpDate.ToString();
+                            }
+                        }
+
+                        SelectList dateSelectList = new SelectList(dateValues, "Key", "Value", executeDateSelectedValue);
+                        MvcHtmlString executeDateFieldName = Html.DisplayNameFor(x => x.fieldGroups[groupIndex].fields[fieldIndex]);
+                        @Html.DropDownListFor(x => x.fieldGroups[groupIndex].fields[fieldIndex].fieldDatetime, dateSelectList, new { data_val = "false" })
+                        @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { input = "none" })
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                @{
+                    groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "cemetery");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new {label = "Название кладбища, района, места захоронения" })
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "installationRequired");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { label = "Установка памятника обязательна"})
+                }
+            </div>
+        </div>
+
+
+    </div>
+
+    <h2 class="title">Контакты</h2>
+    <div class="container rules">
+
+        <div class="row">
+            <div class="col-md-4">
+                @{
+                    groupIndex = Model.fieldGroups.FindIndex(x => x.code == "contacts");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "name");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { label = "Как к Вам обратиться *" })
+                }
+            </div>
+            <div class="col-md-4">
+                @{
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.email, "E-mail")
+                        @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.ru" })
+                        @Html.ValidationMessageFor(x => x.email)
+                    </div>
+                }
+            </div>
+            <div class="col-md-4">
+                @{
+                    //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "contacts");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "phone");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "phoneIsAvailableForBusiness");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @{
+                    //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "contacts");
+                    fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "contactComment");
+                    @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="send">
+        <input type="submit" name="butt_one" value="Отправить заявку в мастерские" class="input-button" />
+    </div>
+}
+
+    <script>
+        if (typeof (initializeLeadForm) == "function") {
+            //initializeLeadForm();
+        }
+    </script>

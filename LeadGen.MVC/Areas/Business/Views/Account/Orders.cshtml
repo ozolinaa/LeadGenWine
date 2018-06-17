@@ -1,0 +1,152 @@
+﻿@model PagedList.IPagedList<LeadGen.Code.Lead.LeadItem>
+@using PagedList.Mvc;
+@using LeadGen.Code.Lead
+
+@{
+    ViewBag.Title = "Заявки";
+    BusinessDetails.Status status = ViewBag.status;
+    long? leadID = ViewBag.leadID;
+    DateTime? publishedFrom = ViewBag.publishedFrom;
+    DateTime? publishedTo = ViewBag.publishedTo;
+    string query = ViewBag.query;
+    string isActive;
+}
+
+<style>
+    .leadActions {
+        text-align:center;
+        min-width:245px;
+    }
+
+    .leadActions .contacts {
+        text-align:left;
+    }
+
+    .leadActions .action {
+        margin-bottom:10px;
+    }
+
+    .leadActions .action.set_interested, .action.set_not_interested {
+        text-align:right;
+    }
+
+
+    td.field-group-Terms {
+        width:275px;
+    }
+
+    .lead_field {
+        margin-bottom:5px;
+    }
+
+    .lead_field span.grey, .leadActions span.grey {
+        color:gray;
+    }
+</style>
+
+<h2>Заявки</h2>
+<hr />
+
+
+<div class="row search-orders" style="margin-top:10px;">
+    @using (Html.BeginForm("Orders", "Account", FormMethod.Get, null))
+    {
+        @Html.Hidden("status", status)
+        @Html.Hidden("searchInit", true);
+        <div class="col-sm-1 form-group">
+            @Html.Label("leadID", "Заявка")
+            @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "№" })
+        </div>
+        <div class="col-sm-3  form-group">
+            @Html.Label("publishedFrom", "Поступившие с")
+            @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString()})
+        </div>
+        <div class="col-sm-3  form-group">
+            @Html.Label("publishedTo", "Поступившие до")
+            @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString()})
+        </div>
+        <div class="col-sm-4  form-group">
+            @Html.Label("query", "Текст")
+            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "ФИО, Email..." })
+        </div>
+        <div class="col-sm-1  form-group">
+            @Html.Label("", "submit", new { style = "visibility: hidden;" })
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </div>
+    }
+</div>
+
+<ul class="nav nav-tabs nav-orders" style="margin-top:10px;">
+    @{ isActive = (status == BusinessDetails.Status.NewForBusiness || status == BusinessDetails.Status.NotInterested) ? "active" : "";}
+    <li role='presentation' class='@isActive'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Orders", new {
+       status = BusinessDetails.Status.NewForBusiness,
+       leadID = leadID,
+       publishedFrom = publishedFrom.ToString(),
+       publishedTo = publishedTo.ToString(),
+       query = query
+   })
+    </li>
+    @{ isActive = (status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "";}
+    <li role='presentation' class='@isActive'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Orders", new { status = BusinessDetails.Status.ContactReceived,
+       leadID = leadID,
+       publishedFrom = publishedFrom.ToString(),
+       publishedTo = publishedTo.ToString(),
+       query = query
+   })
+    </li>
+    @{ isActive = (status == BusinessDetails.Status.Completed) ? "active" : "";}
+    <li role='presentation' class='@isActive'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Orders", new { status = BusinessDetails.Status.Completed,
+       leadID = leadID,
+       publishedFrom = publishedFrom.ToString(),
+       publishedTo = publishedTo.ToString(),
+       query = query
+   })
+    </li>
+    @{ isActive = (status == BusinessDetails.Status.All) ? "active" : "";}
+    <li role='presentation' class='@isActive pull-right'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Orders", new { status = BusinessDetails.Status.All,
+       leadID = leadID,
+       publishedFrom = publishedFrom.ToString(),
+       publishedTo = publishedTo.ToString(),
+       query = query
+   })
+    </li>
+</ul>
+
+
+@switch (status)
+{
+    case BusinessDetails.Status.NewForBusiness:
+        Html.RenderPartial("LeadLists/_NewForBusiness", Model);
+        break;
+    case BusinessDetails.Status.NotInterested:
+        Html.RenderPartial("LeadLists/_NewForBusiness", Model);
+        break;
+    case BusinessDetails.Status.Completed:
+        Html.RenderPartial("LeadLists/_Completed", Model);
+        break;
+    case BusinessDetails.Status.All:
+        Html.RenderPartial("LeadLists/_All", Model);
+        break;
+    default:
+        Html.RenderPartial("LeadLists/_ContactReceived", Model);
+        break;
+}
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Orders", "Account", new
+    {
+        page,
+        status = status,
+        leadID = leadID,
+        publishedFrom = publishedFrom.ToString(),
+        publishedTo = publishedTo.ToString(),
+        query = query
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)
+
+

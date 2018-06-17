@@ -1,0 +1,13 @@
+﻿body {
+    padding-top:50px;
+}
+.panel.taxonomyEditor .terms {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+#post-edit-page input, 
+#post-edit-page select, 
+#post-edit-page textarea {
+    max-width:none;
+}

@@ -1,0 +1,107 @@
+﻿@model LeadGen.Code.Business.Inovice.Invoice
+<div id="invoiceDisplayTemplate">
+    <h1>
+        Invoice ID #@Model.ID
+@if (Model.publishedDateTime == null)
+{
+    @Html.ActionLink("Edit", "Edit", new { invoiceID = Model.ID }, new { @class = "btn btn-warning" })
+}
+    </h1>
+
+    <h2>Invoice Legal #@Model.legalNumber | Year @Model.legalYear | Month @Model.legalMonth</h2>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                @Html.LabelFor(x => x.createdDateTime)
+                @Html.DisplayFor(x => x.createdDateTime)
+            </div>
+            <div>
+                @Html.LabelFor(x => x.publishedDateTime)
+                @if (Model.publishedDateTime == null)
+                {
+                    string warningMessage = "Are You Sure?";
+                    object routeValues = new { invoiceID = Model.ID };
+                    AjaxOptions ajaxOptions = new AjaxOptions { LoadingElementId = "LoadingWindowSplash", Confirm = warningMessage, UpdateTargetId = "invoiceDisplayTemplate", InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
+                    object htmlAttributes = new { @class = "btn btn-warning" };
+                    @Ajax.ActionLink("Publish", "Publish", routeValues, ajaxOptions, htmlAttributes)
+                }
+                else
+                {
+                    @Html.DisplayFor(x => x.publishedDateTime)
+                }
+            </div>
+            <div>
+                @Html.LabelFor(x => x.paidDateTime)
+                @if (Model.publishedDateTime != null && Model.paidDateTime == null)
+                {
+                    string warningMessage = "Are You Sure?";
+                    object routeValues = new { invoiceID = Model.ID };
+                    AjaxOptions ajaxOptions = new AjaxOptions { LoadingElementId = "LoadingWindowSplash", Confirm = warningMessage, UpdateTargetId = "invoiceDisplayTemplate", InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
+                    object htmlAttributes = new { @class = "btn btn-warning" };
+                    @Ajax.ActionLink("Set Paid", "SetPaid", routeValues, ajaxOptions, htmlAttributes)
+                }
+                else
+                {
+                    @Html.DisplayFor(x => x.paidDateTime)
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h1>LeagGen Billing Details</h1>
+            @Html.DisplayFor(x => x.legalBilling)
+        </div>
+        <div class="col-md-6">
+            <h1>
+                @Html.ActionLink("Business #" + @Model.businessID, "Details", "Business", new { ID = Model.businessID }, null)
+                Billing Details
+            </h1>
+            @Html.DisplayFor(x => x.buisnessBilling)
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <td>
+                    Line Number
+                </td>
+                <td>
+                    Description
+                </td>
+                <td>
+                    UnitPrice
+                </td>
+                <td>
+                    Quantity
+                </td>
+                <td>
+                    LinePrice
+                </td>
+                <td>
+                    Tax
+                </td>
+                <td>
+                    Line Total Price
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @Html.DisplayFor(x => x.lines)
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6"></td>
+                <td>
+                    Total = @Html.DisplayFor(x => x.totalSum)
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

@@ -1,0 +1,68 @@
+﻿@model LeadGen.Code.Login
+
+@{
+    ViewBag.Title = "profile";
+}
+
+<h2>profile</h2>
+
+<div>
+    <h4>Login</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(x => x.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.registrationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.registrationDate)
+        </dd>
+
+        <br /><br /><br />
+
+        <dt>
+            @Html.DisplayNameFor(x => x.business.ID )
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.business.ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.business.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.business.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(x => x.business.registrationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(x => x.business.registrationDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

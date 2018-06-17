@@ -1,0 +1,20 @@
+﻿@model LeadGen.Code.CMS.Post
+@using LeadGen.Code.CMS
+@using LeadGen.Code.Taxonomy
+<div class="row">
+    <div class="col-sm-4">
+        @{
+            if (Model.thumbnailAttachmentID != null)
+            {
+                <img src="@Model.thumbnailUrl" />
+            }
+        }
+    </div>
+    <div class="col-sm-8">
+        <h2>@Html.ActionLink(Model.title, "Index", new { urlPath = String.Format("{0}/", Model.Url) })</h2>
+        @Html.Raw(Model.contentPreview)
+    </div>
+</div>
+<div class="meta">
+@Html.DisplayFor(x => x.taxonomies)
+</div>

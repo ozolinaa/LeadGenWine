@@ -1,0 +1,26 @@
+﻿@model Post
+@using LeadGen.Code.CMS
+@section SEO{@Html.DisplayFor(x => x.SEO)}
+@{
+    CMSContext cmsContext = ViewBag.CMSContext;
+}
+
+<article>
+    <h1>@Model.title</h1>
+    @Html.Raw(Model.contentIntro)
+    @Html.Raw(Model.contentPreview)
+    @Html.Raw(Model.contentMain)
+    @Html.Raw(Model.contentEnding)
+</article>
+
+@{ Html.RenderPartial("_UnderArticleContent");}
+
+@if (cmsContext.widgetsLayoutSidebarRight != null && cmsContext.widgetsLayoutSidebarRight.Any())
+{
+    @section Sidebar{
+        @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)
+        {
+            Html.RenderPartial("Widgets/_WidgetLayout", widget);
+        }
+    }
+}

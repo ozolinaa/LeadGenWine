@@ -1,0 +1,26 @@
+﻿@model LeadGen.Code.Login
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="container">
+
+    <div class="tab-content">
+
+        <div id="section-login" class="tab-pane active">
+            @{Html.RenderPartial("FormLogin", Model);}
+            <div>
+                @Html.ActionLink("Business registration", "Registration", "Registration", new { Area = "Business" }, new { })
+                |
+                <a data-toggle="tab" href="#section-forgot-password" aria-expanded="false">Forgot password?</a>
+            </div>
+        </div>
+
+        <div id="section-forgot-password" class="tab-pane">
+            @{Html.RenderPartial("FormForgotPassword", Model);}
+            <a data-toggle="tab" href="#section-login" aria-expanded="false">Login</a>
+        </div>
+
+    </div>
+</div>

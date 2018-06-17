@@ -1,0 +1,11 @@
+﻿@model LeadGen.Code.Lead.Review
+<div>
+    @if (Model.publishedDateTime == null)
+    {
+        @Html.Partial("LeadActionParts/_Publish", Model)
+    }
+    else
+    {
+        @Html.Partial("LeadActionParts/_UnPublish", Model)
+    }
+</div>

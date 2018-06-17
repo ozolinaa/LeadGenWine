@@ -1,0 +1,56 @@
+﻿@model PagedList.IPagedList<Term>
+@using PagedList.Mvc;
+@using LeadGen.Code.CMS
+@using LeadGen.Code.Taxonomy
+@using LeadGen.Code.CMS
+
+@{
+    PostTypeTaxonomy postTypeTax = ViewBag.postTypeTax;
+    ViewBag.Title = "Terms";
+}
+
+<h2>
+    PostType: @postTypeTax.postType.name Tax: @postTypeTax.taxonomy.name Terms
+</h2>
+
+@Html.ActionLink("Стартовая страница", "PostTypeTaxStartPostEdit", new { typeID = postTypeTax.postType.ID}, new {@class = "btn btn-primary"})
+
+
+<div class="col-xs-12">
+    <table class="table table-striped table-edit" style="font-size: 14px">
+        <thead>
+            <tr style="font-weight: 800">
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int levelPadding = 20;
+                int itemPadding;
+                foreach (Term term in Model)
+                {
+                    itemPadding = (term.level ?? 0 - 1) * levelPadding;
+
+                    <tr>
+                        <td>
+                            <span style="padding-left:@{@levelPadding}px">
+                                @Html.ActionLink(@term.nameDashed, "TermPostEdit", new { forTypeID = postTypeTax.postType.forPostTypeID, forTermID = term.ID })
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+@Html.PagedListPager(Model,
+    page => Url.Action("PostTypeTaxTermList", new
+    {
+        page,
+        postTypeID = postTypeTax.forPostTypeID,
+        taxonomyID = postTypeTax.taxonomy.ID
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)
+
+</div> 

@@ -1,0 +1,23 @@
+﻿@model IEnumerable<LeadGen.Code.CMS.Post>
+    <div class="row ThumbnailGrid">
+        @foreach (LeadGen.Code.CMS.Post post in Model)
+        {
+            <div class="item col-xs-4">
+                @{
+                    if (post.thumbnailAttachmentID != null)
+                    {
+                        <a href='@Url.Action("Index", "CMS", new { area = "", urlPath = String.Format("{0}/", post.Url) })'>
+                            <img src="@post.thumbnailUrl" class="img-responsive img-thumbnail" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a href='@Url.Action("Index", "CMS", new { area = "", urlPath = String.Format("{0}/", post.Url) })'>
+                            <img src="~/Content/themes/izgpam/empty_thumbnail.png" class="img-responsive img-thumbnail" />
+                        </a>
+                    }
+                }
+                <div>@Html.ActionLink(post.title, "Index", new { urlPath = String.Format("{0}/", post.Url) })</div>
+            </div>
+         }
+    </div>

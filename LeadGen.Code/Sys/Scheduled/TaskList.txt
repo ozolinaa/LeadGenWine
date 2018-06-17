@@ -1,0 +1,8 @@
+﻿--Hourly
+http://leadgen.local/system/ProcessTasks?accessToken=12345&tasks=QueueMailMessagesForBusinessesAboutNewLeadsHourly,SendQueuedMail
+
+--Daily
+http://leadgen.local/system/ProcessTasks?accessToken=12345&tasks=QueueMailMessagesForBusinessesAboutNewLeadsDaily,SendQueuedMail
+
+--Monthly
+http://leadgen.local/system/ProcessTasks?accessToken=12345&tasks=QueueMailMessagesForLeadsAboutReviewRequest,SendQueuedMail

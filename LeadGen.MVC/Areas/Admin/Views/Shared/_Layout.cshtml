@@ -1,0 +1,186 @@
+﻿@using LeadGen.Code.CMS;
+<!DOCTYPE html>
+<html lang="@System.Globalization.CultureInfo.CurrentCulture">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-multilevel-dropdown.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    <link href="~/Content/jquery.tagit.css" rel="stylesheet" />
+    <link href="~/Content/LeadGen-admin.css" rel="stylesheet" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("LeadGen", "Index", "CMS", new { area = "", urlPath = "" }, new { @class = "navbar-brand" })
+
+
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">CMS<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @{
+                                List<PostType> postTypeList = ViewBag.postTypeList;
+                                foreach (PostType postType in postTypeList.Where(x => x.forTaxonomyID == null))
+                                {
+                                    string className = ViewBag.activePostTypeID == postType.ID ? "active" : "";
+                                    <li class="@className">
+                                        <a class="trigger right-caret">@postType.name</a>
+                                        <ul class="dropdown-menu sub-menu">
+                                            <li>@Html.ActionLink("Posts", "PostList", "CMS", new { typeID = postType.ID }, null)</li>
+                                            @if (postType.taxonomyList != null && postType.taxonomyList.Count > 0)
+                                            {
+                                                <li>
+                                                    <a class="trigger right-caret">Taxonomies</a>
+                                                    <ul class="dropdown-menu sub-menu">
+                                                        @foreach (LeadGen.Code.Taxonomy.Taxonomy tax in postType.taxonomyList.Select(x => x.taxonomy))
+                                                        {
+                                                            <li>@Html.ActionLink(tax.name, "PostTypeTaxTermList", "CMS", new { postTypeID = postType.ID, taxonomyID = tax.ID }, null)</li>
+                                                        }
+                                                    </ul>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+                            }
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Manage Post Types", "Index", "CMS")</li>
+                            <li>@Html.ActionLink("Cache", "cache", "CMS")</li>
+
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Taxonomies<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            @foreach (LeadGen.Code.Taxonomy.Taxonomy taxonomy in ViewBag.taxonomyList)
+                            {
+                                string className = ViewBag.activeTaxonomyID == taxonomy.ID ? "active" : "";
+                                <li class="@className">@Html.ActionLink(taxonomy.name, "Terms", "Taxonomy", new { taxonomyID = taxonomy.ID }, null)</li>
+                            }
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Manage Taxonomies", "Index", "Taxonomy")</li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Leads<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("View Leads", "List", "Lead")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Manage Structure", "Index", "LeadStructure")</li>
+                            <li>@Html.ActionLink("Lead Settings", "Index", "LeadSettings")</li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reviews<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("View Reviews", "List", "Review")</li>
+                        </ul>
+                    </li>
+
+                    <li>@Html.ActionLink("Businesses", "Index", "Business")</li>
+
+
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Invoices<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("List", "List", "Invoice")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Ready for Invoice", "BusinessLeadsCompletedBeforeCurrentMonth", "Invoice")</li>
+                        </ul>
+                    </li>
+
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Profile<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Settings", "Index", "Settings")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Logout", "Logout", "Login", new { area = "" }, null)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <div class="container-fluid body-content">
+        @RenderBody()
+
+        <div id="LoadingWindowSplash">
+            <img id="LoadingWindowSplashImage" src="~/Content/images/spinner-icon.gif" />
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    
+    <script src="~/Scripts/LeadGen.js"></script>
+    <script src="~/Scripts/LeadGen-admin.js"></script>
+
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script>
+        //bootstrap-multilevel-dropdown-menu http://stackoverflow.com/questions/9758587/twitter-bootstrap-multilevel-dropdown-menu
+        $(function () {
+            $(".dropdown-menu > li > a.trigger").on("click", function (e) {
+                var current = $(this).next();
+                var grandparent = $(this).parent().parent();
+                if ($(this).hasClass('left-caret') || $(this).hasClass('right-caret'))
+                    $(this).toggleClass('right-caret left-caret');
+                grandparent.find('.left-caret').not(this).toggleClass('right-caret left-caret');
+                grandparent.find(".sub-menu:visible").not(current).hide();
+                current.toggle();
+                e.stopPropagation();
+            });
+            $(".dropdown-menu > li > a:not(.trigger)").on("click", function () {
+                var root = $(this).closest('.dropdown');
+                root.find('.left-caret').toggleClass('right-caret left-caret');
+                root.find('.sub-menu:visible').hide();
+            });
+        });
+    </script>
+
+</body>
+
+</html>

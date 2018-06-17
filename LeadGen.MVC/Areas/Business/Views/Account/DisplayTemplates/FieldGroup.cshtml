@@ -1,0 +1,43 @@
+﻿@model LeadGen.Code.Lead.FieldGroup
+@{ 
+    LeadGen.Code.Lead.LeadItem lead = ViewBag.lead as LeadGen.Code.Lead.LeadItem;
+    bool isFirstColumn = Model.code == "dates";
+}
+@if (Model.fields.Where(x=>x.code != "phoneIsAvailableForBusiness").Where(x => x.isContact == false).Any())
+{
+    <td class="field-group-@Model.code">
+        @if (isFirstColumn)
+        {
+            <div class="lead_field lead_field_id">
+                <span class="grey">Заявка #:</span> @lead.ID
+            </div>
+            <div class="lead_field lead_field_createdDateTime">
+                <span class="grey">Заявка от:</span> @lead.adminDetails.createdDateTime.Value.ToShortDateString()
+            </div>
+        }
+        
+        @for (int i = 0; i < Model.fields.Count; i++)
+        {
+            if (Model.fields[i].isContact == false)
+            {
+                @Html.DisplayFor(x => x.fields[i])
+            }
+        }
+
+        @if (isFirstColumn)
+        {
+            if (lead.businessDetails.businessContactReceivedDateTime != null && lead.businessDetails.businessCompletedDateTime == null)
+            {
+                if (lead.businessDetails.businessImportantDateTime == null)
+                {
+                    @Html.Partial("LeadActionParts/_SetImportant", lead)
+                }
+                else
+                {
+                    @Html.Partial("LeadActionParts/_SetNotImportant", lead)
+                }
+            }
+        }
+
+    </td>
+}

@@ -1,0 +1,144 @@
+﻿@using LeadGen.Code.Taxonomy
+@using LeadGen.Code.CMS
+<!DOCTYPE html>
+<html lang="ru-RU">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+@RenderSection("SEO", required: false)
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/lightbox.css" rel="stylesheet" />
+    <link href="~/Scripts/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+</head>
+<body>
+    @{ 
+        string link1URL = Url.Action("Index", "CMS", new { urlPath = "about", area = "" });
+        string link1Text = "Link1";
+        string link2URL = Url.Action("Index", "CMS", new { urlPath = "kladbisha", area = "" });
+        string link2Text = "Link2";
+        string link3URL = Url.Action("Index", "CMS", new { urlPath = "na-mogilu", area = "" });
+        string link3Text = "Link3";
+        string link4URL = Url.Action("Index", "CMS", new { urlPath = "znamenitostyam", area = "" });
+        string link4Text = "Link4";
+
+        CMSContext cmsContext = ViewBag.cmsContext;
+        if (cmsContext?.regionCity?.termURL != null)
+        {
+            link1URL = Url.Action("Index", new { urlPath = String.Format("gorod/{0}", cmsContext.regionCity.termURL), area = "" });
+            link2URL = Url.Action("Index", new { urlPath = String.Format("kladbisha/{0}", cmsContext.regionCity.termURL), area = "" });
+
+            if (cmsContext.regionCity.words != null && cmsContext.regionCity.words.Keys.Contains("region"))
+            {
+                link1Text = link1Text + " " + cmsContext.regionCity.words["region"].genitiveSingular;
+                link2Text = link2Text + " " + cmsContext.regionCity.words["region"].genitiveSingular;
+            }
+        }
+    }
+
+    <nav class="navbar navbar-default navbar-leadgen" role="navigation">
+        <div class="container container-IzgPam">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+
+
+                <div class="navbar-brand">
+                    <a title="LeadGen" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
+                        <img alt="LeadGen" title="LeadGen" class="logo_big" src="/Content/images/logo_big.png" />
+                        <img alt="LeadGen" title="LeadGen" class="logo_small"src="/Content/images/logo_small.png" />
+                    </a>
+                </div>
+
+                <div class="btn-header-order">
+                    @Html.ActionLink("New Lead", "Index", "Order", new { area=""}, new { @class = "teaser-btn" })
+                </div>
+
+                @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default login-big pull-right", rel = "nofollow" })
+
+            </div>
+
+
+            <div class="navbar-collapse collapse">
+
+                <ul class="nav nav-pills nav-justified">
+                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
+                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
+                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
+                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
+
+                    @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default login-small" })
+
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    @if (ViewContext.RouteData.Values["controller"].ToString() == "CMS")
+    {
+        <div class="container body-content container-IzgPam">
+            <div class="row">
+                @if (IsSectionDefined("Sidebar"))
+                {
+                    <div class="col-lg-9 col-sm-9 col-xs-12">
+                        @RenderBody()
+                    </div>
+                    <div class="col-lg-3 col-sm-3 col-xs-12">
+                        @RenderSection("Sidebar", false)
+                    </div>
+                }
+                else
+                {
+                    <div class="col-xs-12">
+                        @RenderBody()
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        @RenderBody()
+    }
+
+    <div id="LoadingWindowSplash">
+        <img id="LoadingWindowSplashImage" src="~/Content/images/spinner-icon.gif" />
+    </div>
+
+    <hr />
+
+    <footer class="container">
+        <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
+    </footer>
+
+    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/lightbox-2.6.min.js"></script>
+    <script src="~/Scripts/mediaelement/mediaelement-and-player.min.js"></script>
+    <script src="~/Scripts/mediaelement/lang/me-i18n-locale-ru.js"></script>
+    <script>
+        mejs.i18n.locale.language = 'us'; // Setting US language
+        $('audio').mediaelementplayer({
+            success: function(player, node) {
+                $(player).closest('.mejs__container').attr('lang', mejs.i18n.getLanguage());
+                $('html').attr('lang', mejs.i18n.getLanguage());
+            }
+        });
+    </script>
+    <script src="~/Scripts/LeadGen.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

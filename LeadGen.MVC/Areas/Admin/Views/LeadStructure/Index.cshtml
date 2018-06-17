@@ -1,0 +1,97 @@
+﻿@model List<LeadGen.Code.Lead.FieldGroup>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="PopUp"></div>
+
+<h2>
+    Lead Structure
+    @Ajax.ActionLink("Add Group", "GroupCreate", null, new AjaxOptions() { InsertionMode = InsertionMode.Replace, LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "PopUp", HttpMethod = "GET" }, new { @class = "btn btn-primary pull-right" })
+</h2>
+
+@Html.DisplayFor(x => x)
+
+@section Scripts
+{
+<script>
+
+    $("#PopUp").on('change', '#FieldEditPopUp :input[name="fieldType"]', function () { FieldTypeChangeHandler($(this)) });
+
+    function FieldTypeChangeHandler($fieldType)
+    {
+        var fieldTypeName = $fieldType.find(":selected").text();
+        var $fieldEditPopUp = $('#FieldEditPopUp');
+        
+        var taxonomyIDFormGroup = $fieldEditPopUp.find(':input[name="taxonomyID"]');
+        var termParentIDFormGroup = $fieldEditPopUp.find(':input[name="termParentID"]');
+        var placeholderFormGroup = $fieldEditPopUp.find(':input[name="placeholder"]');
+        var regularExpressionFormGroup = $fieldEditPopUp.find(':input[name="regularExpression"]');
+        var minValueFormGroup = $fieldEditPopUp.find(':input[name="minValue"]');
+        var maxValueFormGroup = $fieldEditPopUp.find(':input[name="maxValue"]');
+
+        if (fieldTypeName == 'Dropdown' || fieldTypeName == 'Checkbox' || fieldTypeName == 'Radio') {
+            taxonomyIDFormGroup.prop('disabled', false);
+            taxonomyIDFormGroup.closest('.form-group').show();
+
+            termParentIDFormGroup.prop('disabled', false);
+            termParentIDFormGroup.closest('.form-group').show();
+        } else {
+            taxonomyIDFormGroup.prop('disabled', true);
+            taxonomyIDFormGroup.closest('.form-group').hide();
+
+            termParentIDFormGroup.prop('disabled', true);
+            termParentIDFormGroup.closest('.form-group').hide();
+        }
+
+        if (fieldTypeName == 'Number') {
+            minValueFormGroup.prop('disabled', false);
+            minValueFormGroup.closest('.form-group').show();
+
+            maxValueFormGroup.prop('disabled', false);
+            maxValueFormGroup.closest('.form-group').show();
+        } else {
+            minValueFormGroup.prop('disabled', true);
+            minValueFormGroup.closest('.form-group').hide();
+
+            maxValueFormGroup.prop('disabled', true);
+            maxValueFormGroup.closest('.form-group').hide();
+        }
+
+        if (fieldTypeName == 'Textbox' || fieldTypeName == 'Dropdown' || fieldTypeName == 'Number' || fieldTypeName == 'Datetime') {
+            placeholderFormGroup.prop('disabled', false);
+            placeholderFormGroup.closest('.form-group').show();
+        } else {
+            placeholderFormGroup.prop('disabled', true);
+            placeholderFormGroup.closest('.form-group').hide();
+        }
+
+        if (fieldTypeName == 'Textbox') {
+            regularExpressionFormGroup.prop('disabled', false);
+            regularExpressionFormGroup.closest('.form-group').show();
+        } else {
+            regularExpressionFormGroup.prop('disabled', true);
+            regularExpressionFormGroup.closest('.form-group').hide();
+        }
+    }
+    
+
+    function PopupFormAjaxHandler(data, status, xhr) {
+
+        //Romove modal-backdrop after previously shown modal panel
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+
+        if (data.status == "success") {
+            //Reload the page to display new data
+            location.reload();
+        }
+        else {
+            //Reload wrapper with new html
+            $("#PopUp").html(data)
+        }
+
+    }
+</script>
+}

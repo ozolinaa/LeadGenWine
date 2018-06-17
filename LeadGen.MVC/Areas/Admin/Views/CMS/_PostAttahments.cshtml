@@ -1,0 +1,88 @@
+﻿@model LeadGen.Code.CMS.Post
+@if (Model.attachmentList != null && Model.attachmentList.Count > 0)
+{
+    <style>
+        .attachaments .item {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            position: relative;
+            min-width: 80px;
+        }
+
+            .attachaments .item img {
+                max-width: 100px;
+                max-height: 100px;
+                display: block;
+            }
+
+        .attachaments .attachmentURL {
+            font-size: 10px;
+        }
+
+
+        .attachaments .attachment-delete{
+            display: none;
+            right: 0;
+            position: absolute;
+        }
+        .attachaments .attachment-edit {
+            display: none;
+            left: 0;
+            position: absolute;
+        }
+
+        .attachaments .item:hover .attachment-delete,
+        .attachaments .item:hover .attachment-edit {
+            display: block;
+        }
+    </style>
+
+    <div class="form-group col-xs-12">
+        <label style="display:block">Attachments</label>
+        @for (int i = 0; i < Model.attachmentList.Count; i++)
+        {
+            <div class="item" data-attachmentID="@Model.attachmentList[i].attachmentID" data-subjectID="@Model.ID" data-unlinkURL="@Url.Action("AttachmentUnlink")">
+                @Ajax.ActionLink("Edit", "ShowPostAttachmentEditor", new { postID = Model.ID, attachmnetID = Model.attachmentList[i].attachmentID }, new AjaxOptions() { LoadingElementId = "LoadingWindowSplash", InsertionMode = InsertionMode.Replace, UpdateTargetId = "PopUp", HttpMethod = "GET" }, new { @class = "attachment-edit btn btn-info btn-xs" })
+                <span class="attachment-delete btn btn-danger btn-xs">Delete</span>
+                @if (Model.attachmentList[i].attachmentType == LeadGen.Code.CMS.Attachment.Type.Image)
+                {
+                    <img src="@Model.attachmentList[i].GetImageURLBySizeCode("Thumbnail")" />
+                    @Html.RadioButtonFor(x => x.thumbnailAttachmentID, Model.attachmentList[i].attachmentID)
+                }
+                else
+                {
+                    <a class="attachmentURL" href="@Model.attachmentList[i].attachmentURL" target="_blank">@Model.attachmentList[i].attachmentURL</a>
+                }
+            </div>
+        }
+    </div>
+
+    <script type="text/javascript">
+        (function () {
+            var allRadios = document.getElementsByName('thumbnailAttachmentID');
+            var booRadio;
+            var x = 0;
+            for (x = 0; x < allRadios.length; x++) {
+
+                allRadios[x].onclick = function () {
+                    if (booRadio == this) {
+                        this.checked = false;
+                        booRadio = null;
+                    } else {
+                        booRadio = this;
+                    }
+                };
+            }
+        })();
+
+        //function HandleAttachmentRadioClick() {
+
+        //}
+
+        //HandleAttachmentRadioClick();
+
+    </script>
+}
+

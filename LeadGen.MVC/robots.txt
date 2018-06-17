@@ -1,0 +1,4 @@
+﻿User-agent: *
+Disallow: /
+Host: LeadGen.local
+Sitemap: http://LeadGen.local/sitemap_index.xml

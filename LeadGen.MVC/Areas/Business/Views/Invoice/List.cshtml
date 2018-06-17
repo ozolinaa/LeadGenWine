@@ -1,0 +1,94 @@
+﻿@model PagedList.IPagedList<LeadGen.Code.Business.Inovice.Invoice>
+@using PagedList.Mvc;
+@using LeadGen.Code.Lead
+
+@{
+    ViewBag.Title = "Invoice";
+
+    bool isPaid = ViewBag.isPaid;
+    int? legalYear = ViewBag.legalYear;
+    int? legalNumber = ViewBag.legalNumber;
+    string isTabActive = "";
+}
+
+<h2>Счета</h2>
+<hr />
+
+<ul class="nav nav-tabs" style="margin-top:10px;">
+    @{ isTabActive = (isPaid == true ? "active" : "");}
+    <li role='presentation' class='@isTabActive'>
+        @Html.ActionLink("Оплаченные", "List", new { isPaid = true })
+    </li>
+    @{ isTabActive = (isPaid == false ? "active" : "");}
+    <li role='presentation' class='@isTabActive'>
+        @Html.ActionLink("Ожидают оплаты", "List", new { isPaid = false })
+    </li>
+</ul>
+
+<div class="row" style="margin-top:10px;">
+    @using (Html.BeginForm("List", null, FormMethod.Get, null))
+    {
+        <div class="col-sm-3 form-group">
+            @Html.Label("legalNumber", "Номер счёта")
+            @Html.TextBox("legalNumber", legalNumber, new { @class = "form-control", placeholder = "№" })
+        </div>
+        <div class="col-sm-3 form-group">
+            @Html.Label("legalYear", "Год высталвнеия")
+            @Html.TextBox("legalYear", legalYear, new { @class = "form-control", placeholder = "Год" })
+        </div>
+        <div class="col-sm-3  form-group">
+            @Html.Label("", "submitsubmitsubmitsubmitsubmit", new { style = "visibility: hidden;" })
+            <button type="submit" class="btn btn-primary">Поиск</button>
+        </div>
+    }
+</div>
+
+<table class="table">
+    <tr>
+        <th>№ счета</th>
+        <th>Сумма счета</th>
+        <th>Дата выставления счета</th>
+        <th>Услуги за период (перевод заявки в состоявшиеся)</th>
+        <th>Номера заявок подлежащих к оплате</th>
+        <th>Статус оплаты</th>
+    </tr>
+    @foreach (var invoice in Model)
+    {
+        DateTime legalDate = new DateTime(invoice.legalYear, invoice.legalMonth, 1);
+        <tr>
+            <td>@Html.ActionLink(invoice.legalNumber.ToString(), "Details", new { legalNumber = invoice.legalNumber, legalYear = invoice.legalYear }, new { @class = "btn btn-link"})</td>
+            <td>@invoice.totalSum.ToString("F")</td>
+            <td>@invoice.publishedDateTime.Value.ToLocalTime().ToShortDateString()</td>
+            <td>@legalDate.ToString("MMMM") @invoice.legalYear</td>
+            <td>
+                @foreach (var lead in invoice.leadCompleatedData)
+                {
+                    @Html.ActionLink(lead.leadID.ToString(), "List", "Account", new { leadID = lead.leadID }, null)
+                    <span>(@lead.leadFee.ToString("F"))</span>
+                }
+            </td>
+            <td>
+                @if (invoice.paidDateTime == null)
+                {
+                    <span style="color:darkred;">Не оплачен</span>
+                }
+                else
+                {
+                    <span style="color:forestgreen;">Оплачен @invoice.paidDateTime.Value.ToLocalTime().ToShortDateString()</span>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+
+@Html.PagedListPager(Model,
+    page => Url.Action("List", null, new
+    {
+        page,
+        isPaid = isPaid,
+        legalYear = legalYear,
+        legalNumber = legalNumber
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

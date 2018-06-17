@@ -1,0 +1,28 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+<div id="ActionForLeadID-@Model.ID">
+    <div>
+        @Ajax.ActionLink("Publish", "Manage", new { leadID = Model.ID, doAction = "TryPublish" },
+        new AjaxOptions { Confirm = "Вы уверены?", HttpMethod = "POST", LoadingElementId = "LoadingWindowSplash", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith },
+        new { @class = "btn btn-success" }
+        )
+    </div>
+    
+    @if (Model.adminDetails.adminCanceledPublishDateTime != null)
+    {
+        <div>Canceled by admin on @Model.adminDetails.adminCanceledPublishDateTime.ToString()</div>
+    }
+    @if (Model.adminDetails.userCanceledDateTime != null)
+    {
+        <div>Canceled by user on @Model.adminDetails.userCanceledDateTime.ToString()</div>
+    }
+
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { leadID = Model.ID }, new { @class = "btn btn-info" })
+    </div>
+    <div>
+        @Ajax.ActionLink("Duplicate", "Duplicate", new { leadID = Model.ID },
+            new AjaxOptions { Confirm = "Вы уверены?", LoadingElementId = "LoadingWindowSplash", HttpMethod = "POST", OnSuccess = "LeadGen.ui.window.redirectToUrlFromResponse" },
+            new { @class = "btn btn-warning" }
+        )
+    </div>
+</div>

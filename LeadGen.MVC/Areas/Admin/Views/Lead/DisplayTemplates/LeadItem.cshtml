@@ -1,0 +1,40 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+<tr>
+    <td>
+        <div>
+            #@Model.ID
+            @Model.email
+            @(String.Format("{0} - {1}", Model.adminDetails.createdDateTime.Value.ToShortDateString(), Model.adminDetails.createdDateTime.Value.ToShortTimeString()))
+        </div>
+    </td>
+    @Html.DisplayFor(x => x.fieldGroups)
+    <td>
+        @Html.Partial("LeadActions/_" + Model.adminDetails.status.ToString(), Model)
+    </td>
+</tr>
+<tr>
+    <td colspan="100%" style="border-top:none">
+        <div>
+            Contacts recieved: 
+            @foreach (var details in Model.adminDetails.businessesActivity.Where(x => x.businessContactReceivedDateTime != null))
+            {
+                @Html.ActionLink(details.businessID.ToString(), "Details", "Business", new { ID = details.businessID }, new { style = "margin-right:10px;" })
+            }
+        </div>
+        <div>
+            Important:
+            @foreach (var details in Model.adminDetails.businessesActivity.Where(x => x.businessImportantDateTime != null))
+            {
+                @Html.ActionLink(details.businessID.ToString(), "Details", "Business", new { ID = details.businessID }, new { style = "margin-right:10px;" })
+            }
+        </div>
+        <div>
+            Completed:
+            @foreach (var details in Model.adminDetails.businessesActivity.Where(x => x.businessCompletedDateTime != null))
+            {
+                @Html.ActionLink(details.businessID.ToString(), "Details", "Business", new { ID = details.businessID }, new { style = "margin-right:10px;" })
+            }
+        </div>
+
+    </td>
+</tr>

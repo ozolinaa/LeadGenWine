@@ -1,0 +1,24 @@
+﻿@model KeyValuePair<Business, List<LeadItem>>
+@using LeadGen.Code.Business;
+@using LeadGen.Code.Lead;
+
+@{
+    //string tokenKey = ViewData["tokenKey"].ToString();
+    string hostName = HttpContext.Current.Request.RequestContext.HttpContext.Request.Url.Host;
+    Business business = Model.Key;
+    List<LeadItem> leads = Model.Value;
+    string systemName = hostName.ToUpper();
+}
+
+<h2>New order(s) availeble</h2>
+
+<p>Hello, @business.name! New leads are availeble at @Html.ActionLink(systemName, "index", "CMS", null, hostName, null, new { area = "" }, null)</p>
+
+<ul>
+    @foreach (LeadItem lead in leads)
+    {
+        <li>
+            Lead #@lead.ID published at @lead.adminDetails.publishedDateTime.Value.ToShortDateString()
+        </li>
+    }
+</ul>

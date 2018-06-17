@@ -1,0 +1,70 @@
+﻿@model PagedList.IPagedList<LeadGen.Code.Lead.Review>
+@using PagedList.Mvc;
+@using LeadGen.Code.Lead;
+
+@{
+    ViewBag.Title = "OrderList";
+    Review.Status[] displayStatuses = new Review.Status[] {
+        Review.Status.New,
+        Review.Status.Published
+    };
+
+    Review.Status currentStatus = ViewBag.status;
+    long? leadID = ViewBag.leadID;
+    long? businessID = ViewBag.businessID;
+
+    DateTime? createdFrom = ViewBag.createdFrom;
+    DateTime? createdTo = ViewBag.createdTo;
+}
+
+<h2>OrderList</h2>
+
+<ul class="nav nav-tabs">
+    @foreach (Review.Status status in displayStatuses)
+    {
+        MvcHtmlString tabLink = Html.ActionLink(Review.statusDictionary[status], "List", new { status = status });
+        MvcHtmlString tab = new MvcHtmlString(String.Format("<li role='presentation' class='{0}'>{1}</li>", (status == currentStatus) ? "active" : "", tabLink));
+        @tab
+    }
+</ul>
+
+<div class="row" style="margin-top:10px;">
+    @using (Html.BeginForm("List", "Review", FormMethod.Get, null))
+    {
+        @Html.Hidden("status", currentStatus)
+        <div class="col-sm-1 form-group">
+            @Html.Label("leadID", "Заявка")
+            @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "№" })
+        </div>
+        <div class="col-sm-1 form-group">
+            @Html.Label("businessID", "Business")
+            @Html.TextBox("businessID", businessID, new { @class = "form-control", placeholder = "№" })
+        </div>
+        <div class="col-sm-4 form-group">
+            @Html.Label("createdFrom", "Создан с")
+            @Html.TextBox("createdFrom", createdFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
+        </div>
+        <div class="col-sm-3 form-group">
+            @Html.Label("createdTo", "Создан до")
+            @Html.TextBox("createdTo", createdTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
+        </div>
+        <div class="col-sm-1 form-group">
+            @Html.Label(" ", "submit", new { style = "visibility: hidden;" })
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    }
+</div>
+
+<table class="table">
+    @Html.DisplayFor(x => x, (object)ViewBag.businesses)
+</table>
+
+@Html.PagedListPager(Model, 
+    page => Url.Action("List", new { page, status = currentStatus,
+        leadID = leadID,
+        businessID = businessID,
+        createdFrom = createdFrom,
+        createdTo = createdTo
+    }), 
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

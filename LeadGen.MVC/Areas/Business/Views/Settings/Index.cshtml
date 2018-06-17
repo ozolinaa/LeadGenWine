@@ -1,0 +1,85 @@
+﻿@model LeadGen.Code.Login
+
+@{
+    ViewBag.Title = "Настройки";
+}
+
+<h2>Настройки</h2>
+<hr />
+
+<ul class="nav nav-tabs" style="margin-top:20px;">
+    <li class="active"><a data-toggle="tab" href="#section-LoginBusinessMain" aria-expanded="true"><i class="fa fa-list-alt"></i> О компании</a></li>
+    <li><a data-toggle="tab" href="#section-contact" aria-expanded="false"><i class="fa fa-phone"></i> Контакты</a></li>
+    <li><a data-toggle="tab" href="#section-locations" aria-expanded="false"><i class="fa fa-map-marker"></i> Офисы</a></li>
+    <li><a data-toggle="tab" href="#section-permissions" aria-expanded="false"><i class="fa fa-tag"></i> Регионы</a></li>
+    <li><a data-toggle="tab" href="#section-notification" aria-expanded="false"><i class="fa fa-envelope-o"></i> Уведомления</a></li>
+    <li><a data-toggle="tab" href="#section-billing" aria-expanded="false"><i class="fa fa-money"></i> Реквизиты компании</a></li>
+    <li><a data-toggle="tab" href="#section-password" aria-expanded="false"><i class="fa fa-asterisk"></i> Пароль</a></li>
+</ul>
+
+
+<div class="tab-content col-xs-12" style="margin-top:20px;">
+
+    <div id="section-LoginBusinessMain" class="tab-pane fade active in">
+        @Html.EditorFor(x => x, "LoginBusinessMain")
+    </div>
+
+    <div id="section-contact" class="tab-pane fade">
+        @Html.EditorFor(x => x.business.contact)
+    </div>
+
+    <div id="section-notification" class="tab-pane fade">
+        @Html.EditorFor(x => x.business.notification)
+    </div>
+
+    <div id="section-locations" class="tab-pane fade">
+        @Html.EditorFor(x => x, "Locations")
+    </div>
+
+    <div id="section-permissions" class="tab-pane fade">
+        @Html.EditorFor(x => x, "Regions")
+    </div>
+
+    <div id="section-billing" class="tab-pane fade">
+        @Html.EditorFor(x => x.business.billing)
+    </div>
+
+    <div id="section-password" class="tab-pane fade">
+        @Html.EditorFor(x => x, "LoginPassword")
+    </div>
+
+</div>
+
+
+
+@section Scripts
+{
+    <script>
+        $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" });
+        BusinessRegionsRequestCheckboxClickEvent();
+
+        //After page was loaded, map element is hidden, so google map was not initialized correctly
+        //Trigger map resize, and center
+        $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function (e) {
+            var locationsSelector = '#section-locations';
+            if (e.target.hash == locationsSelector) {
+                LeadGen.ui.googleMapsActions.refreshMapsInSelector(locationsSelector);
+            }
+        });
+    </script>
+
+    <script>
+        
+        //Show BusinessLocationCreate Modal and refresh the map
+        $('#BusinessLocationCreateOpener').click(function () {
+            var modalSelector = '#BusinessLocationCreateModal';
+            $(modalSelector).modal('show').on('shown.bs.modal', function (e) {
+                LeadGen.ui.googleMapsActions.refreshMapsInSelector(modalSelector);
+            })
+        });
+
+        //$('#myModal').show();
+
+    </script>
+
+}

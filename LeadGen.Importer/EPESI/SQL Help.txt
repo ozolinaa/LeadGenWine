@@ -1,0 +1,25 @@
+﻿DELETE hd 
+FROM company_edit_history_data hd
+INNER JOIN company_edit_history eh ON eh.id = hd.edit_id
+INNER JOIN company_data_1 cd ON cd.id = eh.company_id
+WHERE cd.active = 0;
+
+DELETE eh 
+FROM company_edit_history eh 
+INNER JOIN company_data_1 cd ON cd.id = eh.company_id
+WHERE cd.active = 0;
+
+DELETE cf 
+FROM company_favorite cf 
+INNER JOIN company_data_1 cd ON cd.id = cf.company_id
+WHERE cd.active = 0;
+
+DELETE cr 
+FROM company_recent cr 
+INNER JOIN company_data_1 cd ON cd.id = cr.company_id
+WHERE cd.active = 0;
+
+
+DELETE cd 
+FROM company_data_1 cd 
+WHERE cd.active = 0

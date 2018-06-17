@@ -1,0 +1,30 @@
+﻿@model LeadGen.Code.CMS.Post
+@using LeadGen.Code.Lead
+@using LeadGen.Code.CMS
+@using LeadGen.Code.Business
+@{ 
+    Business business = (Business)ViewBag.business;
+    Dictionary<Review.Measure, string> measureNames = ViewBag.measureNames as Dictionary<Review.Measure, string>;
+}
+<div class="row business-item">
+    <div class="col-xs-4">
+        @if (Model.thumbnailAttachmentID != null)
+        {
+            <img src="@Model.thumbnailUrl" class="img-responsive img-thumbnail" />
+        }
+        @if (business?.rating?.Count() > 0)
+        {
+            <span class="ratings-header grey">Отзывы клиентов</span>
+            <div class="ratings">
+                @{Html.RenderPartial("DisplayTemplates/Rating", business.rating);}
+            </div>
+        }
+    </div>
+    <div class="col-xs-8">
+        <h2 class="title">@Model.title</h2>
+        <div class="content-preview">
+            @Html.Raw(Model.contentPreview)
+        </div>
+        @Html.ActionLink("Подробнее о гранитной мастерской…", "Index", new { urlPath = String.Format("{0}/", Model.Url) })
+    </div>
+</div>

@@ -1,0 +1,59 @@
+﻿@model LeadGen.Code.Map.Location
+@using System.Configuration;
+@{
+    string googleMapsAPIKey = ConfigurationManager.AppSettings["GoogleMapsAPIKey"];
+    //string mapID = Html.IdForModel().ToString();
+    string mapID = Guid.NewGuid().ToString().Replace('-', '_');
+}
+
+<div id="map_@mapID" class="lg-map"></div>
+
+<script>
+    (function () {
+        var LeadGen = window.LeadGen || (window.LeadGen = {});
+        var settings = LeadGen.settings || (LeadGen.settings = {});
+        settings.googleMapsAPIKey = "@googleMapsAPIKey";
+        var googleMaps = LeadGen.googleMaps || (LeadGen.googleMaps = {});
+        var googleMap = {
+            id: "map_@mapID"
+        };
+        googleMaps[googleMap.id] = googleMap;
+
+        googleMap.instance = null;
+        googleMap.init = function() {
+            var center = {lat: @Model.lat, lng: @Model.lng};
+            var map = new google.maps.Map(document.getElementById(googleMap.id), {
+                zoom: @Model.zoom,
+                center: center,
+                scrollwheel: false,
+            });
+            map.initialCenter = center;
+            //Make the map availeble from global scope
+            googleMap.instance = map;
+
+            google.maps.event.addListener(map, 'click', function(event){
+                this.setOptions({scrollwheel:true});
+            });
+
+            
+
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29),
+                draggable:false,
+                visible:true,
+                position:{lat: @Model.lat, lng: @Model.lng}
+            });
+
+            var infowindow = new google.maps.InfoWindow();
+            infowindow.setContent('<div><strong>@Model.name</strong><br>@Model.address');
+            infowindow.open(map, marker);
+        };
+
+        if(window.google != null && window.google.maps != null) {
+            googleMap.init();
+        }
+
+    })();
+
+</script>

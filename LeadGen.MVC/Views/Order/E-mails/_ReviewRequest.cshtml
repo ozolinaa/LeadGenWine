@@ -1,0 +1,10 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+
+@{
+    string hostName = HttpContext.Current.Request.RequestContext.HttpContext.Request.Url.Host;
+    string token = ViewData["token"].ToString();
+}
+
+<h2>Пожалйста оцените работу мастерской</h2>
+
+<p>Пожалйста перейдите по @Html.ActionLink("этой ссылке", "Review", "Order", null, hostName, null, new { area = "", id = Model.ID, token = token }, null) и оставьте отзыв</p>

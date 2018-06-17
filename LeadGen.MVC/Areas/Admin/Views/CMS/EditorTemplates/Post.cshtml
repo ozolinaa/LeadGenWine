@@ -1,0 +1,144 @@
+﻿@model LeadGen.Code.CMS.Post
+@using LeadGen.Code.CMS;
+
+
+@Html.ValidationSummary()
+
+
+<div class="row">
+    <div class="col-md-9">
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.title)
+            @Html.TextBoxFor(x => x.title, new { @class = "form-control", placeholder = "Post Title", style = "max-width:none;" })
+            @Html.ValidationMessageFor(x => x.title)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.postURL)
+            <div class="input-group">
+                <div class="input-group-addon">@String.Format("{0}/{1}{2}", ViewBag.siteURL, String.IsNullOrEmpty(Model.postType.url) ? "" : Model.postType.url + "/", Model.postURLParentPath)</div>
+                @Html.TextBoxFor(x => x.postURL, new { @class = "form-control", placeholder = "Post URL", style = "max-width:none;" })
+            </div>
+            @Html.ValidationMessageFor(x => x.postURL)
+        </div>
+
+        @if (Model.postType.hasContentIntro)
+        {
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    @Html.LabelFor(x => x.contentIntro)
+                    @Html.TextAreaFor(x => x.contentIntro, 20, 0, new { @class = "tinymce", style = "height:100px;" })
+                </div>
+            </div>
+        }
+
+        <div id="attachaments" class="row attachaments">
+            @{Html.RenderPartial("_PostAttahments", Model);}
+        </div>
+
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.content)
+                <button type="button" class="btn btn-default" onclick="$('#AttachmentsUploadPopUp').modal('show')" style="float:right;">Upload Attachments</button>
+                @Html.TextAreaFor(x => x.content, 20, 0, new { @class = "tinymce", style = "height:500px;" })
+            </div>
+        </div>
+
+        @if (Model.postType.hasContentEnding)
+        {
+            <div class="row">
+                <div class="form-group col-xs-12">
+                    @Html.LabelFor(x => x.contentEnding)
+                    @Html.TextAreaFor(x => x.contentEnding, 20, 0, new { @class = "tinymce", style = "height:100px;" })
+                </div>
+            </div>
+        }
+
+        @if (Model.fields != null && Model.fields.Count > 0)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">Post Custom Fields</div>
+                <div class="panel-body">
+                    @Html.EditorFor(x => x.fields)
+                </div>
+            </div>
+        }
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Search Engine Optimization</div>
+            <div class="panel-body">
+                @Html.EditorFor(x => x.SEO)
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Post Status</div>
+            <div class="panel-body">
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.authorID)
+                    @Html.TextBoxFor(x => x.authorID, new { @class = "form-control" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.postStatus.ID)
+                    @Html.DropDownListFor(x => x.postStatus.ID, new SelectList((List<Post.Status>)ViewBag.statusList, "ID", "Name"), new { @class = "form-control" })
+                </div>
+
+                @if (Model.datePublished != null)
+                {
+                    <div class='form-group'>
+                        @Html.LabelFor(x => x.datePublished)
+                        @Html.TextBoxFor(x => x.datePublished, new { @class = "form-control datetimepicker" })
+                    </div>
+                }
+
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">Save</button>
+
+                @if (Model.postStatus.ID == 50)
+                {
+                    @Html.ActionLink("Open Post", "Index", "CMS", new { area = "", urlPath = Model.Url }, new { @class = "btn btn-default pull-right", target = "_blank" })
+                }
+                else
+                {
+                    @Html.ActionLink("Preview Post", "Index", "CMS", new { area = "", urlPath = Model.Url, preview = true }, new { @class = "btn btn-default pull-right", target = "_blank" })
+                }
+
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Order</div>
+            <div class="panel-body">
+                @Html.TextBoxFor(x => x.order, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.order)
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Parent</div>
+            <div class="panel-body">
+                <div class="ui-widget">
+                    <input type="text" value="@ViewBag.postParentUrl" id="postParentUrl" class="form-control">
+                </div>
+                @Html.HiddenFor(x => x.postParentID, new { id = "postParentID" })
+                @Html.ValidationMessageFor(x => x.postParentID)
+            </div>
+        </div>
+
+        @for (int i = 0; i < Model.taxonomies.Count(); i++)
+        {
+            @Html.EditorFor(x => x.taxonomies[i].taxonomy)
+        }
+
+    </div>
+</div>
+
+

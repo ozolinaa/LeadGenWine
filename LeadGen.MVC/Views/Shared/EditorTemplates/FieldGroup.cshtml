@@ -1,0 +1,8 @@
+﻿@model LeadGen.Code.Lead.FieldGroup
+<div id="fieldGroup-@Model.ID" data-groupID="@Model.ID" data-groupCode="@Model.code" class="lead_field_group_@Model.code">
+    <h3>@Model.title</h3>
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.code)
+    @Html.HiddenFor(x => x.title)
+    @Html.EditorFor(x => x.fields)
+</div>

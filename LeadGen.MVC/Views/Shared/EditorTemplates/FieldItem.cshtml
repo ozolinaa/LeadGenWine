@@ -1,0 +1,140 @@
+﻿@model LeadGen.Code.Lead.FieldItem
+@{
+    string fieldName = Html.NameForModel().ToString();
+    int lastFieldPrefixChar = fieldName.LastIndexOf('[');
+    string fieldIndex = fieldName.Substring(lastFieldPrefixChar + 1).TrimEnd(']');
+    string fieldPrefix = fieldName.Substring(0, lastFieldPrefixChar);
+}
+<input type="hidden" name="@{@fieldPrefix;}.index" value="@fieldIndex" />
+@Html.HiddenFor(x => x.ID)
+@Html.HiddenFor(x => x.code)
+@Html.HiddenFor(x => x.groupID)
+@Html.HiddenFor(x => x.fieldType)
+@Html.HiddenFor(x => x.name)
+@Html.HiddenFor(x => x.label)
+@Html.HiddenFor(x => x.placeholder)
+@Html.HiddenFor(x => x.taxonomyID)
+@Html.HiddenFor(x => x.termParentID)
+
+@{
+    if (ViewData.ContainsKey("label"))
+    {
+        Model.label = ViewData["label"].ToString();
+    }
+
+    if (ViewData.ContainsKey("placeholder"))
+    {
+        Model.placeholder = ViewData["placeholder"].ToString().Trim();
+        if (String.IsNullOrEmpty(Model.placeholder))
+        {
+            Model.placeholder = null;
+        }
+    }
+
+    string wrapperClass = "form-group";
+    if (ViewData.ContainsKey("customWrapperClass"))
+    {
+        wrapperClass = ViewData["customWrapperClass"].ToString().Trim();
+    }
+
+    string input = "";
+    if (ViewData.ContainsKey("input"))
+    {
+        input = ViewData["input"].ToString().Trim();
+    }
+}
+
+@*Render terms hidden fields if fieldType is NOT Checkbox OR input is "none"*@ 
+@if ((Model.fieldType != LeadGen.Code.Lead.FieldType.Checkbox || input.ToLower() == "none" ) && Model.fieldTerms != null)
+{
+    for (int i = 0; i < Model.fieldTerms.Count(); i++)
+    {
+        @Html.HiddenFor(x => x.fieldTerms[i].ID)
+        @Html.HiddenFor(x => x.fieldTerms[i].name)
+        @Html.HiddenFor(x => x.fieldTerms[i].termURL)
+        @Html.HiddenFor(x => x.fieldTerms[i].isChecked)
+    }
+}
+
+@if (input.ToLower() != "none")
+{
+<div class="lead_field_@Model.code @wrapperClass">
+
+    @{ string labelClass = "";}
+    @switch (Model.fieldType)
+            {
+                case LeadGen.Code.Lead.FieldType.Textbox:
+            @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
+            break;
+        case LeadGen.Code.Lead.FieldType.Boolean:
+            @Html.LabelFor(x => x.fieldBool, Model.label, new { @class = labelClass })
+            break;
+        case LeadGen.Code.Lead.FieldType.Datetime:
+            @Html.LabelFor(x => x.fieldDatetime, Model.label, new { @class = labelClass })
+            break;
+        case LeadGen.Code.Lead.FieldType.Number:
+            @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
+            break;
+        default:
+            @Html.Label(Model.label, new { @class = labelClass })
+            break;
+    }
+
+
+        @switch (Model.fieldType)
+        {
+            case LeadGen.Code.Lead.FieldType.Textbox:
+                @Html.TextBoxFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
+                @Html.ValidationMessageFor(x => x.fieldText)
+                break;
+            case LeadGen.Code.Lead.FieldType.Textarea:
+                @Html.TextAreaFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
+                @Html.ValidationMessageFor(x => x.fieldText)
+                break;
+            case LeadGen.Code.Lead.FieldType.Boolean:
+                @Html.CheckBoxFor(x => x.fieldBool)
+                @Html.ValidationMessageFor(x => x.fieldBool)
+                break;
+            case LeadGen.Code.Lead.FieldType.Datetime:
+                @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker" })
+                @Html.ValidationMessageFor(x => x.fieldDatetime)
+                break;
+            case LeadGen.Code.Lead.FieldType.Number:
+                @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder })
+                @Html.ValidationMessageFor(x => x.fieldNumber)
+                break;
+            case LeadGen.Code.Lead.FieldType.Dropdown:
+                @Html.DropDownListFor(x => x.termIDSelected, new SelectList(Model.fieldTerms, "ID", "nameDashed", Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected)), Model.placeholder, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.termIDSelected)
+                break;
+            case LeadGen.Code.Lead.FieldType.Checkbox:
+                if (Model.fieldTerms != null)
+                {
+                    for (int i = 0; i < Model.fieldTerms.Count(); i++)
+                    {
+                        <div>
+                            @Html.LabelFor(x => x.fieldTerms[i].isChecked, Model.fieldTerms[i].name)
+                            @Html.CheckBoxFor(x => x.fieldTerms[i].isChecked)
+                            @Html.HiddenFor(x => x.fieldTerms[i].ID)
+                            @Html.HiddenFor(x => x.fieldTerms[i].name)
+                            @Html.HiddenFor(x => x.fieldTerms[i].termURL)
+                        </div>
+                    }
+                }
+                @Html.ValidationMessageFor(x => x.fieldTerms)
+                break;
+            case LeadGen.Code.Lead.FieldType.Radio:
+                foreach (var term in Model.fieldTerms)
+                {
+                    <label style="margin-right:10px;">
+                        @term.name
+                        @Html.RadioButtonFor(x => x.termIDSelected, term.ID, (Model.termIDSelected != null && Model.termIDSelected == term.ID ? new { @checked = "checked" } : null))
+                    </label>
+                }
+                @Html.ValidationMessageFor(x => x.termIDSelected)
+                break;
+            default:
+                break;
+        }
+</div>
+}

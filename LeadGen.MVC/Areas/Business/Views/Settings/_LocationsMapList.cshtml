@@ -1,0 +1,39 @@
+﻿@model List<BusinessLocation>
+@using LeadGen.Code.Business
+@if (Model != null && Model.Any())
+{
+    <h3>Business Locations</h3>
+}
+@foreach (BusinessLocation location in Model)
+{
+    <div class="row">
+        <div class="col-md-8">
+            @Html.Partial("DisplayTemplates/Location", location)
+        </div>
+        <div class="col-md-4">
+            <h3>
+                @location.name
+                @if (location.isAprovedByAdmin)
+                {
+                    <span class="label label-success">Approved</span>
+                }
+                else
+                {
+                    <span class="label label-warning">Pending Approval</span>
+                }
+                
+            </h3>
+            <p>@location.address</p>
+            @Ajax.ActionLink(
+           "Edit Location", "BusinessLocationEdit", new { locationId = location.locationID },
+           new AjaxOptions() {
+               HttpMethod = "GET",
+               InsertionMode = InsertionMode.Replace,
+               UpdateTargetId = "BusinessLocationEditModalWrapper"
+           }, new { @class="btn btn-default" }
+       )
+        </div>
+    </div>
+    
+    <hr />
+}

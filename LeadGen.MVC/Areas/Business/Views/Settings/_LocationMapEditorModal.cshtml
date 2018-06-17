@@ -1,0 +1,54 @@
+﻿@model BusinessLocation
+@using LeadGen.Code.Business
+<!-- Map Add New Modal -->
+<style>
+    #BusinessLocationEditModal .location-meta-fiels {
+        display: none;
+    }
+</style>
+<div id="BusinessLocationEditModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        @using (Ajax.BeginForm("BusinessLocationEdit", null, null, new AjaxOptions { UpdateTargetId = "BusinessLocationListWrapper", InsertionMode = InsertionMode.Replace, OnSuccess = "businessLocationEditModalHandler" }, new { @class = "form-horizontal", id = "BusinessLocationEditForm" }))
+        {
+        <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Location</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(x => x.locationID)
+                    @Html.Partial("EditorTemplates/Location", Model)
+                </div>
+                <div class="modal-footer">
+
+                    @Ajax.ActionLink(
+                    "Delete Location", "BusinessLocationDelete", new { locationId = Model.locationID },
+                    new AjaxOptions() {
+                        HttpMethod = "Delete",
+                        InsertionMode = InsertionMode.Replace,
+                        UpdateTargetId = "BusinessLocationListWrapper",
+                        OnSuccess = "businessLocationEditModalHandler"
+                    }, new { @class="btn btn-danger pull-left"})
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    var BusinessLocationEditModalSelector = '#BusinessLocationEditModal';
+    //Immediately Show Modal
+    $(BusinessLocationEditModalSelector).modal('show').on('shown.bs.modal', function (e) {
+        LeadGen.ui.googleMapsActions.refreshMapsInSelector(BusinessLocationEditModalSelector);
+    });
+
+    var businessLocationEditModalHandler = function () {
+        $(BusinessLocationEditModalSelector).modal('hide');
+        LeadGen.ui.showNotificationLabel();
+    }
+</script>

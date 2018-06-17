@@ -1,0 +1,84 @@
+﻿@model PagedList.IPagedList<LeadGen.Code.Business.Business>
+@using PagedList.Mvc;
+@using LeadGen.Code.Lead;
+
+@{
+    ViewBag.Title = "List";
+    DateTime? registeredFrom = ViewBag.registeredFrom;
+    DateTime? registeredTo = ViewBag.registeredTo;
+    string query = ViewBag.query;
+    long? businessID = ViewBag.businessID;
+
+
+}
+
+<h2>List</h2>
+
+<div class="row" style="margin-top:10px;">
+    @using (Html.BeginForm("List", null, FormMethod.Get, null))
+    {
+        <div class="col-sm-1 form-group">
+            @Html.Label("businessID", "ID")
+            @Html.TextBox("businessID", businessID, new { @class = "form-control", placeholder = "№" })
+        </div>
+        <div class="col-sm-3  form-group">
+            @Html.Label("registeredFrom", "Зарегисрирован с")
+            @Html.TextBox("registeredFrom", registeredFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
+        </div>
+        <div class="col-sm-3  form-group">
+            @Html.Label("registeredTo", "Зарегисрирован по")
+            @Html.TextBox("registeredTo", registeredTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
+        </div>
+        <div class="col-sm-4  form-group">
+            @Html.Label("query", "Текст")
+            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "Текст..." })
+        </div>
+        <div class="col-sm-1  form-group">
+            @Html.Label("", "submit", new { style = "visibility: hidden;" })
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    }
+</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Business Name
+        </th>
+        <th>
+            Web Site
+        </th>
+        <th>
+            Registration Date
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(String.Format("ID: {0} | Name: {1}", item.ID, item.name), "Details", new {id = item.ID})
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.webSite)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.registrationDate)
+        </td>
+    </tr>
+}
+
+</table>
+
+@Html.PagedListPager(Model,
+    page => Url.Action("List", new
+    {
+        page,
+        businessID = businessID,
+        query = query,
+        registeredFrom = registeredFrom,
+        registeredTo = registeredTo
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)
+

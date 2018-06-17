@@ -1,0 +1,74 @@
+﻿@model LeadGen.Code.Lead.Review
+<link href="~/Content/bootstrap-star-rating/css/star-rating.min.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Review";
+}
+
+<div class="container">
+    <h2>Оценка работы гранитной мастерской</h2>
+    <p>Уважаемый клиент! Ваша оценка - это ценный вклад в рейтинг и репутацию выбранного Вами производителя.</p>
+    <hr />
+    @using (Html.BeginForm("review", "order", new { token = ViewBag.token }, FormMethod.Post, null))
+    {
+        @Html.HiddenFor(x => x.leadID)
+        @Html.EditorFor(x => x)
+        <div class="form-group row">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Оставить отзыв" class="btn btn-success btn-lg" />
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/Content/bootstrap-star-rating/js/star-rating.min.js"></script>
+    <script src="~/Content/bootstrap-star-rating/js/locales/ru.js"></script>
+    <script>
+        $('.rating-input').rating({
+            min: 0,
+            max: 5,
+            step: 1,
+            size: 'md',
+            language: 'ru',
+            //showClear: false
+        });
+    </script>
+
+    <script>
+        $("input[name='businessID']").click(function () {
+            $("input[name='otherBusiness']").prop('checked', false);
+            $("input[name='notCompleted']").prop('checked', false);
+            initializeReviewForm();
+        });
+        $("input[name='otherBusiness']").click(function () {
+            $("input[name='businessID']").prop('checked', false);
+            $("input[name='notCompleted']").prop('checked', false);
+            initializeReviewForm();
+        });
+        $("input[name='notCompleted']").click(function () {
+            $("input[name='otherBusiness']").prop('checked', false);
+            $("input[name='businessID']").prop('checked', false);
+            initializeReviewForm();
+        });
+
+        function initializeReviewForm() {
+            if ($("input[name='otherBusiness']").is(':checked')) {
+                $(".otherBusinessLabel").hide();
+                $(".otherBusinessInput").show();
+            } else {
+                $(".otherBusinessInput").hide();
+                $(".otherBusinessLabel").show();
+            }
+
+
+            if ($("input[name='businessID']").is(':checked') || $("input[name='otherBusiness']").is(':checked')) {
+                $(".reviewDetails").show(); 
+            } else {
+                $(".reviewDetails").hide();
+            }
+        }
+
+        initializeReviewForm();
+    </script>
+    
+}

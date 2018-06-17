@@ -1,0 +1,29 @@
+﻿@model LeadGen.Code.Business.BusinessLocation
+@using LeadGen.Code.Business
+@{ 
+    string locationDetailsElementId = "locationDetailsForMapId_" + Model.locationID;
+}
+<div id="@locationDetailsElementId">
+    <h3>
+        @Model.name
+        @if (Model.isAprovedByAdmin)
+        {
+            <span class="label label-success">Approved</span>
+        }
+        else
+        {
+            <span class="label label-warning">Pending Approval</span>
+        }
+    </h3>
+    <p>@Model.address</p>
+
+    @Ajax.ActionLink(
+           Model.isAprovedByAdmin? "Cancel Approval" : "Approve", "BusinessLocationApproval", new { businessID = Model.businessID, locationID = Model.locationID, approve = !Model.isAprovedByAdmin },
+           new AjaxOptions()
+           {
+               HttpMethod = "Post",
+               InsertionMode = InsertionMode.ReplaceWith,
+               UpdateTargetId = locationDetailsElementId
+           }, new { @class = "btn " + (Model.isAprovedByAdmin ? "btn-danger" : "btn-success") }
+       )
+</div>
