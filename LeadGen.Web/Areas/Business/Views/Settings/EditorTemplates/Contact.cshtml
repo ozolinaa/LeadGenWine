@@ -1,0 +1,52 @@
+﻿@model LeadGen.Code.Business.Contact
+
+@{string formID = "UpdateLoginBusinessContactForm";}
+@using (Ajax.BeginForm("LoginBusinessContactUpdate", null, null, new AjaxOptions { UpdateTargetId = formID, InsertionMode = InsertionMode.ReplaceWith }, new { @class = "form-horizontal", id = formID }))
+{
+    <div class="well well-sm">
+        Контакты представителя, ответственного за сотрудничество
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.name, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.phone, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(x => x.phone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.skype, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(x => x.skype, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.skype, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(x => x.email, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(x => x.email, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </div>
+
+    if (ViewBag.status == true)
+    {
+        <script>LeadGen.ui.showNotificationLabel();</script>
+    }
+}

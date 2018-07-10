@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
+
 using System.Net.Mail;
 using LeadGen.Code.Helpers;
 using System.Configuration;
 using LeadGen.Code.Sys;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace LeadGen.Code
 {
@@ -40,13 +41,13 @@ namespace LeadGen.Code
         {
             [DataType(DataType.Password)]
             [Required]
-            [Display(Name = "Новый пароль")]
+            [Display(Name = "New Password")]
             public string password { get; set; }
 
             
             [DataType(DataType.Password)]
             [Required]
-            [Display(Name = "Подтверждение нового пароля")]
+            [Display(Name = "New Password Confirmation")]
             public string passwordConfirmation { get; set; }
         }
 
@@ -99,7 +100,7 @@ namespace LeadGen.Code
 
             using (SqlCommand cmd = new SqlCommand("dbo.[User.Login.Authenticate]", con))
             {
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 string passwordHash = GeneratePasswordHash(password);
 
@@ -120,7 +121,7 @@ namespace LeadGen.Code
 
             using (SqlCommand cmd = new SqlCommand("dbo.[User.Login.SelectOne]", con))
             {
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@loginID", (object)loginID ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@email", String.IsNullOrEmpty(email) ? (object)DBNull.Value : email);
@@ -146,7 +147,7 @@ namespace LeadGen.Code
             email = email.ToLower();
 
             SqlCommand cmd = new SqlCommand("[dbo].[User.Login.Create]", con);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@roleID", (int)role);
             cmd.Parameters.AddWithValue("@email", email);
@@ -174,8 +175,10 @@ namespace LeadGen.Code
 
         public static void EmailConfirm(SqlConnection con, long loginID)
         {
-            SqlCommand cmd = new SqlCommand("[dbo].[User.Login.EmailConfirm]", con);
-            cmd.CommandType = CommandType.StoredProcedure;
+            SqlCommand cmd = new SqlCommand("[dbo].[User.Login.EmailConfirm]", con)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
 
             cmd.Parameters.AddWithValue("@loginID", loginID);
 
@@ -189,7 +192,7 @@ namespace LeadGen.Code
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[User.Login.PasswordHashUpdate]", con))
             {
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandType = CommandType.StoredProcedure;
 
                 string passwordHash = GeneratePasswordHash(newPassword);
 
@@ -211,22 +214,23 @@ namespace LeadGen.Code
 
         public bool PasswordRecoverySendEmail(SqlConnection con)
         {
-            string mailSubject = "Восстановление пароля";
-            string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
+            throw new NotImplementedException();
+            //string mailSubject = "Восстановление пароля";
+            //string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
 
-            Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary() { { "tokenKey", token.key } };
+            //Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
+            //ViewDataDictionary viewDataDictionary = new ViewDataDictionary( { "tokenKey", token.key } };
 
 
-            QueueMailMessage message = new QueueMailMessage(email);
-            message.Subject = mailSubject;
-            message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
-            using (SmtpClient smtp = new SmtpClient())
-            {
-                message.Send(smtp);
-            }
+            //QueueMailMessage message = new QueueMailMessage(email);
+            //message.Subject = mailSubject;
+            //message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
+            //using (SmtpClient smtp = new SmtpClient())
+            //{
+            //    message.Send(smtp);
+            //}
 
-            return true;
+            //return true;
         }
     }
 }

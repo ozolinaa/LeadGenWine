@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 using static LeadGen.Code.Business.NotificationSettings;
 
 namespace LeadGen.Code.Business.Notification

@@ -1,0 +1,41 @@
+﻿@model LeadGen.Code.CMS.SEOFields
+@using LeadGen.Code.CMS.Sitemap;
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.title)
+                @Html.TextBoxFor(x => x.title, new { @class = "form-control", placeholder = "SEO Title" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.metaKeywords)
+                @Html.TextAreaFor(x => x.metaKeywords, 2, 0, new { @class = "form-control", placeholder = "SEO Meta Keywords" })
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.changeFrequency, "Content Change Frequency")
+                @Html.DropDownListFor(x => x.changeFrequency, new SelectList(SitemapGenerator.changeFrequencyDictionary, "Key", "Value"), null, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.priority)
+                @Html.DropDownListFor(x => x.priority, new SelectList(SitemapGenerator.priorityArray), null, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="form-group col-xs-12">
+        @Html.LabelFor(x => x.metaDescription)
+        @Html.TextAreaFor(x => x.metaDescription, 5, 0, new { @class = "form-control", placeholder = "SEO Meta Description" })
+    </div>
+</div>

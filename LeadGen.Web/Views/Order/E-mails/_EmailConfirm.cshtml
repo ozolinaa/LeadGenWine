@@ -1,0 +1,10 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+
+@{
+    string hostName = HttpContext.Current.Request.RequestContext.HttpContext.Request.Url.Host;
+    string tokenKey = ViewData["tokenKey"].ToString();
+}
+
+<h2>Подтверждение email</h2>
+
+<p>Для подтверждения email перейдите по @Html.ActionLink("этой ссылке", "index", "Token", null, hostName, null, new { area = "", key = tokenKey }, null)</p>

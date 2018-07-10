@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Configuration;
 using System.Net;
 using System.Web;
-using System.Web.Helpers;
 using System.Device.Location;
+using LeadGen.Code.Helpers;
 
 namespace LeadGen.Code.Map
 {
@@ -15,7 +15,7 @@ namespace LeadGen.Code.Map
     {
         public static Location GetLocation(string address)
         {
-            string APIKey = ConfigurationManager.AppSettings["GoogleMapsAPIKey"];
+            string APIKey = SysHelper.AppSettings.GoogleMapsAPIKey;
 
             string url = string.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", HttpUtility.UrlEncode(address), APIKey);
             string json = String.Empty;

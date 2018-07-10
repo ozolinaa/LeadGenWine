@@ -1,0 +1,51 @@
+﻿@model PagedList.Core.IPagedList<Post>
+@using PagedList.Core.Mvc;
+@using LeadGen.Code.CMS;
+@{
+    CMSContext cmsContext = ViewBag.CMSContext;
+    @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
+}
+
+@*@Html.ActionLink("<= "+ cmsContext.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", cmsContext.postType.typeURL) })*@
+
+<h1>@cmsContext.post.title</h1>
+@Html.Raw(cmsContext.post.contentIntro)
+@Html.Raw(cmsContext.post.contentPreview)
+@Html.Raw(cmsContext.post.contentMain)
+@Html.Raw(cmsContext.post.contentEnding)
+
+
+@*@Html.DisplayFor(x => x)*@
+<div class="row ThumbnailGrid">
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        @Html.DisplayFor(x => x[i], "Post_Thumbnail_Grid")
+    }
+</div>
+
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index", new { urlPath = String.Format("{0}/page/{1}", cmsContext.urlPath, page)}),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)
+
+<nav>
+    @if (cmsContext.widgets != null)
+    {
+        Post teaserWidget = cmsContext.widgets.FirstOrDefault(x => x.postURL == "kak-zakazat-pamyatnik-i-ne-pereplatit");
+        if (teaserWidget != null)
+        {
+            Html.RenderPartial("Widgets/_TeaserWithBackground", teaserWidget);
+        }
+    }
+</nav>
+
+@if (cmsContext.widgetsLayoutSidebarRight != null && cmsContext.widgetsLayoutSidebarRight.Any())
+{
+    @section Sidebar{
+        @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)
+        {
+            Html.RenderPartial("Widgets/_WidgetLayout", widget);
+        }
+    }
+}

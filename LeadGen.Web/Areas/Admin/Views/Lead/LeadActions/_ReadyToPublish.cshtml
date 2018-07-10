@@ -1,0 +1,44 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+<div id="ActionForLeadID-@Model.ID">
+    <div>
+        @Html.ActionLink("Publish", "Manage", null, new { leadID = Model.ID, doAction = "TryPublish" },
+     new
+     {
+         @class = "btn btn-success",
+         data_ajax = "true",
+         data_ajax_method = "POST",
+         data_ajax_loading = "#LoadingWindowSplash",
+         data_ajax_success = "LeadGen.ui.showNotificationLabel",
+         data_ajax_mode = "replace-with",
+         data_ajax_update = "#ActionForLeadID-" + @Model.ID,
+         data_ajax_confirm = "Are you sure?"
+     })
+    </div>
+    
+    @if (Model.adminDetails.adminCanceledPublishDateTime != null)
+    {
+        <div>Canceled by admin on @Model.adminDetails.adminCanceledPublishDateTime.ToString()</div>
+    }
+    @if (Model.adminDetails.userCanceledDateTime != null)
+    {
+        <div>Canceled by user on @Model.adminDetails.userCanceledDateTime.ToString()</div>
+    }
+
+    <div>
+        @Html.ActionLink("Edit", "Edit", new { leadID = Model.ID }, new { @class = "btn btn-info" })
+    </div>
+    <div>
+        @Html.ActionLink("Duplicate", "Duplicate", null, new { leadID = Model.ID },
+new
+{
+  @class = "btn btn-warning",
+  data_ajax = "true",
+  data_ajax_method = "POST",
+  data_ajax_loading = "#LoadingWindowSplash",
+  data_ajax_success = "LeadGen.ui.window.redirectToUrlFromResponse",
+  data_ajax_mode = "replace-with",
+  data_ajax_update = "#ActionForLeadID-" + @Model.ID,
+  data_ajax_confirm = "Are you sure?"
+})
+    </div>
+</div>

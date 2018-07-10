@@ -1,0 +1,50 @@
+﻿@model LeadGen.Code.Taxonomy.Taxonomy
+    @*@{ 
+        string tagValueSeparator = "|||";
+    }*@
+<div class="panel panel-default taxonomyEditor">
+    <div class="panel-heading">@Model.name</div>
+    <div class="panel-body">
+        @Html.HiddenFor(x=>x.isTag)
+        @if (@Model.isTag)
+        {
+            <ul class="TagItEditor" data-taxonomyID="@Model.ID" data-tagCreateUrl="@Url.Action("CreateTag", "Taxonomy")" data-tagSourceUrl="@Url.Action("GetTaxonomyTerms", "Taxonomy")" data-termListHtmlName="@Html.NameFor(x => x.termList)" >
+                @foreach (var tag in Model.termList.Where(x => x.isChecked))
+                {
+                    <li>@Json.Encode(tag)</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <div class="terms-selected">
+            </div>
+            <input type="search" class="form-control" placeholder="search..." />
+            <div class="terms">
+@*
+    @Html.EditorFor(x => x.termList)
+    Instead of html helper above use the code below for performance reasons
+*@
+                @{ 
+                    int itemPadding = 0;
+                    string termFieldNamePrefix = Html.NameForModel() + ".termList";
+                    string termFieldIDPrefix = Html.IdForModel() + "_taxonomy_termList";
+                    //string stringFormat = "<input id='{1}[{0}]_isChecked' name='{2}_{0}_.isChecked' type='checkbox' value='true' {3}/>" +
+                    //    "<input name='{1}.isChecked' type='hidden' value='false' />";
+                }
+                @for (int i = 0; i < Model.termList.Count; i++)
+                {
+                    itemPadding = (Model.termList[i].level.Value - 1) * 15;
+                    <div style="@String.Format("padding-left:{0}px",@itemPadding)">
+
+                        @Html.Raw(String.Format("<input type='hidden' name='{0}.ID' value='{1}' />", termFieldNamePrefix + "[" + i + "]", Model.termList[i].ID))
+                        @Html.Raw(String.Format("<input id='{0}_isChecked' name='{1}.isChecked' type='checkbox' value='true' {2}/>", termFieldIDPrefix + "_" + i + "_", termFieldNamePrefix + "[" + i + "]", Model.termList[i].isChecked ? "checked='checked'" : ""))
+                        @Html.Raw(String.Format("<input name='{0}.isChecked' type='hidden' value='false' />", termFieldNamePrefix + "[" + i + "]"))
+
+                        @Html.LabelFor(x=>x.termList[i].isChecked, Model.termList[i].name)
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

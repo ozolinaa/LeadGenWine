@@ -1,0 +1,78 @@
+﻿@model LeadGen.Code.Business.Inovice.InvoiceLine
+
+@if (Model.isLeadLine)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.ID)
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.isLeadLine)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.description)
+            @Html.HiddenFor(x => x.description)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.unitPrice)
+            @Html.HiddenFor(x => x.unitPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.quantity)
+            @Html.HiddenFor(x => x.quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.linePrice)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.tax)
+            @Html.HiddenFor(x => x.tax)
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.lineTotalPrice)
+        </td>
+    </tr>
+}
+else
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(x => x.ID)
+            @Html.HiddenFor(x => x.ID)
+            @Html.HiddenFor(x => x.isLeadLine)
+
+            @{
+                string warningMessage = "Any unsaved shanges in lines will be lost, please save invoice first. Are You Sure?";
+                @Html.ActionLink("Delete", "LineRemove", null, new { invoiceID = ViewData["invoiceID"], lineID = Model.ID },
+     new
+     {
+         @class = "btn btn-danger",
+         data_ajax = "true",
+         data_ajax_method = "POST",
+         data_ajax_loading = "#LoadingWindowSplash",
+         data_ajax_mode = "replace-with",
+         data_ajax_update = "#invoiceLines",
+         data_ajax_confirm = warningMessage
+     })
+            }
+
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.description, new { @class = "form-control" })
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.unitPrice, new { @class = "form-control" })
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.quantity, new { @class = "form-control" })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.linePrice)
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.tax, new { @class = "form-control" })
+        </td>
+        <td>
+            @Html.DisplayFor(x => x.lineTotalPrice)
+        </td>
+    </tr>
+}

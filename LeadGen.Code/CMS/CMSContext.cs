@@ -1,4 +1,6 @@
-﻿using PagedList;
+﻿using Microsoft.AspNetCore.Mvc;
+using PagedList;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,7 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 using static LeadGen.Code.CMS.CMSManager;
 
 namespace LeadGen.Code.CMS

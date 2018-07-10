@@ -1,0 +1,11 @@
+﻿@model LeadGen.Code.Taxonomy.Term
+@{int itemPadding = (Model.level.Value - 1) * 15; }
+<div style="@String.Format("padding-left:{0}px",@itemPadding)">
+    @Html.CheckBoxFor(x => x.isChecked)
+    @Html.LabelFor(x => x.isChecked, Model.name)
+    @Html.HiddenFor(x => x.ID)
+    @Html.HiddenFor(x => x.level)
+    @Html.HiddenFor(x => x.name)
+    @Html.HiddenFor(x => x.parentID)
+    @Html.HiddenFor(x => x.termURL)
+</div>

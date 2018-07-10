@@ -2,7 +2,10 @@
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Sys;
 using LeadGen.Code.Taxonomy;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using PagedList;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +16,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 
 namespace LeadGen.Code.Lead
 {
@@ -204,14 +207,24 @@ namespace LeadGen.Code.Lead
                 cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@LeadIDTable", "[dbo].[Sys.Bigint.TableType]", leadItems.Select(x => x.ID)));
 
                 using (DataTable mixedLeadFieldGroupDataTable = DBHelper.ExecuteCommandToDataTable(cmd))
+                {
                     foreach (LeadItem leadItem in leadItems)
-                        using (DataTable leadFieldGroupDataTable = mixedLeadFieldGroupDataTable.Select(String.Format("LeadID = {0}", leadItem.ID)).CopyToDataTable())
+                    {
+                        using (DataTable leadFieldGroupDataTable = new DataTable())
                         {
-
+                            foreach (DataRow row in mixedLeadFieldGroupDataTable.Select(String.Format("LeadID = {0}", leadItem.ID)))
+                            {
+                                leadFieldGroupDataTable.ImportRow(row);
+                            }
                             if (leadItem.fieldGroups == null)
+                            {
                                 leadItem.fieldGroups = new List<FieldGroup>();
+                            }
                             FieldGroup.InitializeFieldGroups(leadFieldGroupDataTable, leadItem.fieldGroups);
                         }
+                    }
+                }
+
             }
         }
 
@@ -328,8 +341,7 @@ namespace LeadGen.Code.Lead
             string viewPath = "~/Views/Order/E-mails/_EmailConfirm.cshtml";
 
             Token token = new Token(con, Token.Action.LeadEmailConfirmation.ToString(), ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary() { { "tokenKey", token.key} };
-
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.key } };
 
             QueueMailMessage message = new QueueMailMessage(email);
             message.Subject = mailSubject;

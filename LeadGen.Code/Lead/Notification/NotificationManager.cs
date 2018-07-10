@@ -1,5 +1,6 @@
 ﻿using LeadGen.Code.Helpers;
 using LeadGen.Code.Sys;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 
 namespace LeadGen.Code.Lead.Notification
 {
@@ -55,7 +56,7 @@ namespace LeadGen.Code.Lead.Notification
             foreach (LeadItem item in leads)
             {
                 Token token = new Token(con, Token.Action.LeadReviewCreate.ToString(), item.ID.ToString());
-                ViewDataDictionary viewDataDictionary = new ViewDataDictionary() { { "tokenKey", token.key } };
+                ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.key } };
 
                 QueueMailMessage message = new QueueMailMessage(item.email);
                 message.Subject = mailSubject;

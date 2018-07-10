@@ -7,10 +7,12 @@ using System.Data.SqlClient;
 using System.Data;
 using LeadGen.Code.Helpers;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
+
 using LeadGen.Code.CMS.Sitemap;
 using PagedList;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
 
 namespace LeadGen.Code.CMS
 {
@@ -82,16 +84,14 @@ namespace LeadGen.Code.CMS
         [Required()]
         public string title { get; set; }
 
-        [AllowHtml]
         public string contentIntro { get; set; }
 
-        [AllowHtml]
         [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string content { get; set; }
         public string contentPreview { get; set; }
         public string contentMain { get; set; }
 
-        [AllowHtml]
+
         public string contentEnding { get; set; }
 
         public SEOFields SEO { get; set; }
@@ -591,7 +591,14 @@ namespace LeadGen.Code.CMS
 
                 foreach (DataRow attachmentRow in dt.DefaultView.ToTable(true, "AttachmentID", "AuthorID", "DateCreated", "AttachmentTypeID", "AttachmentTypeName", "MIME", "URL", "Name", "Description").Rows)
                 {
-                    attachmentList.Add(new Attachment(attachmentRow, dt.Select(String.Format("AttachmentID = {0}", attachmentRow["AttachmentID"])).CopyToDataTable()));
+                    using (DataTable attachmentData = new DataTable())
+                    {
+                        foreach (DataRow row in dt.Select(String.Format("AttachmentID = {0}", attachmentRow["AttachmentID"])))
+                        {
+                            attachmentData.ImportRow(row);
+                        }
+                        attachmentList.Add(new Attachment(attachmentRow, attachmentData));
+                    }
                 }
             }
         }

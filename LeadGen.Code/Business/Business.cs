@@ -10,8 +10,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using System.Web.Mvc;
-using PagedList;
+using Microsoft.AspNetCore.Mvc;
+using PagedList.Core;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace LeadGen.Code.Business
 {
@@ -190,7 +191,7 @@ namespace LeadGen.Code.Business
 
             QueueMailMessage message = new QueueMailMessage(login.email);
             message.Subject = mailSubject;
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary() { { "tokenKey", tokenEmailConfirmation.key } };
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", tokenEmailConfirmation.key } };
             message.Body = ViewHelper.RenderPartialToString(viewPath, login, viewDataDictionary);
             using (SmtpClient smtp = new SmtpClient())
             {

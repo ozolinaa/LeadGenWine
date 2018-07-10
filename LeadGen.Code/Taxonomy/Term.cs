@@ -9,11 +9,12 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
+
 
 namespace LeadGen.Code.Taxonomy
 {
-    public class Term : ICloneable
+    public class Term
     {
         public long ID { get; set; }
 

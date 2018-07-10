@@ -11,7 +11,7 @@ namespace LeadGen.Code.Map
     {
         public GoogleMap() : base()
         {
-            APIKey = ConfigurationManager.AppSettings["GoogleMapsAPIKey"];
+            APIKey = Helpers.SysHelper.AppSettings.GoogleMapsAPIKey;
 
         }
     }

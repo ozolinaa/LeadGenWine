@@ -1,221 +1,28 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4191DA92-7DAB-4E4D-AD01-F53D36857CBD}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LeadGen.Code</RootNamespace>
-    <AssemblyName>LeadGen.Code</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.2.0.4\lib\net45\Microsoft.Azure.KeyVault.Core.dll</HintPath>
-      <Private>True</Private>
+    <PackageReference Include="CaptchaGen.NetCore" Version="1.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.1.1" />
+    <PackageReference Include="Microsoft.SqlServer.Types" Version="14.0.314.76" />
+    <PackageReference Include="NickBuhro.Translit" Version="1.1.3" />
+    <PackageReference Include="PagedList.Core.Mvc" Version="1.1.0" />
+    <PackageReference Include="System.Data.Common" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.5.1" />
+    <PackageReference Include="System.Device.Location.Portable" Version="1.0.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNetCore.Mvc.Razor">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.mvc.razor\2.0.3\lib\netstandard2.0\Microsoft.AspNetCore.Mvc.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Edm.5.8.2\lib\net40\Microsoft.Data.Edm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.OData.5.8.2\lib\net40\Microsoft.Data.OData.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Data.Services.Client.5.8.2\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.SqlServer.Types.10.50.1600.1\lib\Net20\Microsoft.SqlServer.Types.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=8.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\WindowsAzure.Storage.8.1.1\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NickBuhro.Translit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NickBuhro.Translit.1.0.0\lib\net45\NickBuhro.Translit.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Device" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Spatial, Version=5.8.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Spatial.5.8.2\lib\net40\System.Spatial.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-    <Reference Include="X.Text, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\X.Text.1.2.0.0\lib\net40-client\X.Text.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.AspNetCore.StaticFiles">
+      <HintPath>C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.staticfiles\2.0.2\lib\netstandard2.0\Microsoft.AspNetCore.StaticFiles.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Address.cs" />
-    <Compile Include="Business\Business.cs" />
-    <Compile Include="Business\Billing.cs" />
-    <Compile Include="Business\BusinessLocation.cs" />
-    <Compile Include="Business\Contact.cs" />
-    <Compile Include="Business\Inovice\InvoiceLine.cs" />
-    <Compile Include="Business\Inovice\LeadItemCompleatedData.cs" />
-    <Compile Include="Business\LeadManager.cs" />
-    <Compile Include="Business\LeadPermission.cs" />
-    <Compile Include="Business\LeadSummary.cs" />
-    <Compile Include="Business\Notification.cs" />
-    <Compile Include="Business\Notification\NotificationManager.cs" />
-    <Compile Include="CMS\Attachment.cs" />
-    <Compile Include="CMS\CMSContext.cs" />
-    <Compile Include="CMS\ImageSize.cs" />
-    <Compile Include="CMS\PostField.cs" />
-    <Compile Include="CMS\PostType.cs" />
-    <Compile Include="CMS\PostTypeAttachmnetTaxonomy.cs" />
-    <Compile Include="CMS\PostTypeTaxonomy.cs" />
-    <Compile Include="CMS\SEOFields.cs" />
-    <Compile Include="CMS\CMSManager.cs" />
-    <Compile Include="CMS\Post.cs" />
-    <Compile Include="CMS\Sitemap\ISitemapGenerator.cs" />
-    <Compile Include="CMS\Sitemap\ISitemapItem.cs" />
-    <Compile Include="CMS\Sitemap\SitemapGenerator.cs" />
-    <Compile Include="CMS\Sitemap\SitemapItem.cs" />
-    <Compile Include="CMS\Term.cs" />
-    <Compile Include="Helpers\AzureStorageClient.cs" />
-    <Compile Include="Helpers\DecimalExtensions.cs" />
-    <Compile Include="Helpers\RusMoneyToString.cs" />
-    <Compile Include="Helpers\SysHelper.cs" />
-    <Compile Include="Business\InvoiceManager.cs" />
-    <Compile Include="Business\Inovice\Invoice.cs" />
-    <Compile Include="Business\Inovice\InvoiceManager.cs" />
-    <Compile Include="Lead\LeadConfiguration.cs" />
-    <Compile Include="Lead\Notification\NotificationManager.cs" />
-    <Compile Include="Lead\Review.cs" />
-    <Compile Include="Lead\ReviewMeasure.cs" />
-    <Compile Include="Map\GoogleMapsClientWrapper.cs" />
-    <Compile Include="Sys\LeadGenBaseController.cs" />
-    <Compile Include="Sys\QueueMailMessage.cs" />
-    <Compile Include="Lead\AdminDetails.cs" />
-    <Compile Include="Lead\BusinessDetails.cs" />
-    <Compile Include="Lead\FieldGroup.cs" />
-    <Compile Include="Lead\FieldItem.cs" />
-    <Compile Include="Lead\LeadItem.cs" />
-    <Compile Include="Map\GoogleMap.cs" />
-    <Compile Include="Map\Location.cs" />
-    <Compile Include="Map\Map.cs" />
-    <Compile Include="Sys\Scheduled\QueueMailMessagesForBusinessesAboutNewLeadsHourly.cs" />
-    <Compile Include="Sys\Scheduled\QueueMailMessagesForBusinessesAboutNewLeadsDaily.cs" />
-    <Compile Include="Sys\Scheduled\QueueMailMessagesForLeadsAboutReviewRequest.cs" />
-    <Compile Include="Sys\Scheduled\ScheduledTask.cs" />
-    <Compile Include="Sys\Scheduled\SendQueuedMail.cs" />
-    <Compile Include="Sys\Scheduled\ScheduledTaskManager.cs" />
-    <Compile Include="Sys\Word.cs" />
-    <Compile Include="Taxonomy\Taxonomy.cs" />
-    <Compile Include="Taxonomy\Term.cs" />
-    <Compile Include="Helpers\DBHelper.cs" />
-    <Compile Include="Helpers\ViewHelper.cs" />
-    <Compile Include="Login.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="Session.cs" />
-    <Compile Include="Sys\Option.cs" />
-    <Compile Include="Token.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\PagedList.css" />
-    <Content Include="SQL\LeadGenDB.sql" />
-    <Content Include="SQL\LeadGenDB_seed.sql" />
-    <Content Include="Sys\Scheduled\TaskList.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +31,28 @@ namespace LeadGen.Code.Helpers
                     .Replace(Environment.NewLine + Environment.NewLine, "</p><p>")
                     .Replace(Environment.NewLine, "<br />")
                     .Replace("</p><p>", "</p>" + Environment.NewLine + "<p>") + "</p>";
+        }
+
+        public static string GetFileContentType(string fileName)
+        {
+            new FileExtensionContentTypeProvider().TryGetContentType(fileName, out string contentType);
+            return contentType ?? "application/octet-stream";
+        }
+
+
+        private static IServiceProvider _provider;
+        public static void InitServiceProvider(IServiceProvider provider)
+        {
+            _provider = provider;
+        }
+        public static IServiceProvider GetServiceProvider { get { return _provider; } }
+
+        public static IAppSettings AppSettings
+        {
+            get
+            {
+                return GetServiceProvider.GetRequiredService<IAppSettings>();
+            }
         }
     }
 }

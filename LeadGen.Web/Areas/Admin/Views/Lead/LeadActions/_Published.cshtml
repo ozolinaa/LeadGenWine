@@ -1,0 +1,14 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+<div id="ActionForLeadID-@Model.ID">
+    @Html.ActionLink("Un-Publish", "Manage", null, new { leadID = Model.ID, doAction = "TryUnPublish" },
+     new
+     {
+         @class = "btn btn-danger",
+         data_ajax = "true",
+         data_ajax_method = "POST",
+         data_ajax_loading = "#LoadingWindowSplash",
+         data_ajax_success = "LeadGen.ui.showNotificationLabel",
+         data_ajax_mode = "replace-with",
+         data_ajax_update = "#ActionForLeadID-" + @Model.ID
+     })
+</div>

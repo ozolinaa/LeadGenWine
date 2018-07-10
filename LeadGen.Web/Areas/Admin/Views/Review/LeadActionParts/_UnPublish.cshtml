@@ -1,0 +1,11 @@
+﻿@model LeadGen.Code.Lead.Review
+<div>
+    @Html.ActionLink("UnPublish", "Manage", null, new { leadID = Model.leadID, doAction = "UnPublish" }, new
+{
+    data_ajax = "true",
+    data_ajax_method = "POST",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace",
+    data_ajax_update = "#ActionForLeadID-" + @Model.leadID
+})
+</div>

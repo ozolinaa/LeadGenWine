@@ -1,0 +1,16 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+@using LeadGen.Code.Lead
+@{
+    List<FieldItem> contactFields = new List<FieldItem>();
+    contactFields.Add(new FieldItem() { isContact = true, label = "E-mail", fieldText = Model.email, fieldType = FieldType.Textbox });
+    foreach (FieldGroup fieldGroup in Model.fieldGroups)
+    {
+        contactFields.AddRange(fieldGroup.fields.Where(x => x.isContact));
+    }
+}
+<div id="ActionForLeadID-@Model.ID">
+    @foreach (FieldItem field in contactFields)
+    {
+        @Html.Partial("DisplayTemplates/FieldItem", field)
+    }
+</div>

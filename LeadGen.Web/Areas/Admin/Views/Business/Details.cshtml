@@ -1,0 +1,76 @@
+﻿@model LeadGen.Code.Business.Business
+@using LeadGen.Code.CMS
+@{
+    ViewBag.Title = "Details";
+    Post businessPost = ViewBag.businessPost;
+}
+
+<h2>Business #@Model.ID: <strong>@Model.name</strong></h2>
+
+<div style="margin:20px 0;">
+    @Html.ActionLink("Leads", "Leads", new { ID = Model.ID }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Permissions", "Permissions", new { ID = Model.ID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Locations", "Locations", new { ID = Model.ID }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Reviews", "List", "Review", new { businessID = Model.ID }, new { @class = "btn btn-default" })
+
+    @if (businessPost != null)
+    {
+        @Html.ActionLink("CMS Post", "PostEdit", "CMS", new { area = "Admin", ID = businessPost.ID }, new { @class = "btn btn-default" })
+    }
+    @Html.ActionLink("Invoices", "List", "Invoice", new { businessID = Model.ID }, new { @class = "btn btn-default" })
+
+
+    <div class="pull-right" style="display:flex;">
+        @using (Html.BeginForm("GenerateForBusiness", "Invoice", new { businessID = Model.ID }, FormMethod.Post, null))
+        {
+            <input type="submit" value="Generate Invoice" class="btn btn-warning" />
+        }
+        @using (Html.BeginForm("Impersonate", null, new { businessID = Model.ID }, FormMethod.Post, null))
+        {
+            <input type="submit" value="Impersonate" class="btn btn-warning" style="margin-left:20px;" />
+        }
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Main</div>
+            <div class="panel-body">
+                <div>Company: <strong>@Model.name</strong></div>
+                <div>webSite: <strong><a href="@Model.webSite" target="_blank">@Model.webSite</a></strong></div>
+                <div>Notification: <strong>@Model.notification.frequency.ToString()</strong></div>
+                <div>Notification emails: <strong>@String.Join(", ", Model.notification.emailList.Select(x=>x.address))</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Contacts</div>
+            <div class="panel-body">
+                <div>Email: <strong>@Model.contact.email</strong></div>
+                <div>Name: <strong>@Model.contact.name</strong></div>
+                <div>Phone: <strong>@Model.contact.phone</strong></div>
+                <div>Skype: <strong>@Model.contact.skype</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Billing</div>
+            <div class="panel-body">
+                <div>Country: <strong>@Model.country.name</strong></div>
+                <div>Name: <strong>@Model.billing.name</strong></div>
+                <div>INN (code1): <strong>@Model.billing.code1</strong></div>
+                <div>KPP (code2): <strong>@Model.billing.code2</strong></div>
+                <div>Address: <strong>@Model.billing.address</strong></div>
+            </div>
+        </div>
+    </div>
+</div>

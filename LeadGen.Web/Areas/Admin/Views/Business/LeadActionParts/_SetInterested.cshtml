@@ -1,0 +1,13 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+<div>
+    @Html.ActionLink("Set Interested", "ManageOrder", null, new { leadID = Model.ID, doAction = "SetInterested" },
+         new
+         {
+             data_ajax = "true",
+             data_ajax_method = "POST",
+             data_ajax_loading = "#LoadingWindowSplash",
+             data_ajax_success = "LeadGen.ui.showNotificationLabel",
+             data_ajax_mode = "replace",
+             data_ajax_update = "#ActionForLeadID-" + @Model.ID
+         })
+</div>

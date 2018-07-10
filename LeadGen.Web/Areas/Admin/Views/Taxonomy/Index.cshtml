@@ -1,0 +1,54 @@
+﻿@model IEnumerable<LeadGen.Code.Taxonomy.Taxonomy>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="PopUp"></div>
+
+<h2>
+    Taxonomies
+    @Html.ActionLink("Create Taxonomy", "TaxonomyEdit", null, null, new
+{
+    @class = "btn btn-primary pull-right",
+    data_ajax = "true",
+    data_ajax_method = "GET",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace",
+    data_ajax_update = "#PopUp"
+})
+</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.code)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink(item.name, "TaxonomyEdit", null, new { taxonomyID = item.ID }, new
+    {
+        data_ajax = "true",
+        data_ajax_method = "GET",
+        data_ajax_loading = "#LoadingWindowSplash",
+        data_ajax_mode = "replace",
+        data_ajax_update = "#PopUp"
+    })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.code)
+        </td>
+        <td>
+            @Html.ActionLink("Terms", "Terms", new { taxonomyID=item.ID }, new {style= "font-weight: bold;" })
+        </td>
+    </tr>
+}
+
+</table>

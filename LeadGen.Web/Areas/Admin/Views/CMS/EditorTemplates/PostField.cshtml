@@ -1,0 +1,40 @@
+﻿@model LeadGen.Code.CMS.PostField
+@using LeadGen.Code.CMS;
+<div class="row">
+    <div class="form-group col-xs-12">
+        @Html.HiddenFor(x => x.ID) 
+        @Html.HiddenFor(x => x.labelText) 
+        @Html.HiddenFor(x => x.type) 
+
+        @Html.Label(Model.labelText) 
+
+        @switch (Model.type)
+        {
+            case PostField.FieldType.Text:
+                @Html.TextBoxFor(x => x.fieldText, new { @class = "form-control"})
+                @Html.ValidationMessageFor(x => x.fieldText)
+                break;
+            case PostField.FieldType.Datetime:
+                @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker"})
+                @Html.ValidationMessageFor(x => x.fieldDatetime)
+                break;
+            case PostField.FieldType.Bool:
+                @Html.CheckBoxFor(x => x.fieldBool)
+                @Html.ValidationMessageFor(x => x.fieldBool)
+                break;
+            case PostField.FieldType.Number:
+                @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.fieldNumber)
+                break;
+            case PostField.FieldType.Location:
+                if (Model.location == null)
+                {
+                    Model.location = new LeadGen.Code.Map.Location();
+                }
+                @Html.EditorFor(x => x.location)
+                @Html.ValidationMessageFor(x => x.location)
+                break;
+        }
+
+    </div>
+</div>

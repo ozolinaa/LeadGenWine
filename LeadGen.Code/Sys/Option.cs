@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 
 namespace LeadGen.Code.Sys
 {
@@ -14,7 +14,6 @@ namespace LeadGen.Code.Sys
     {
         public string key { get; set; }
 
-        [AllowHtml]
         public string value { get; set; }
 
         public Option() {}

@@ -66,7 +66,7 @@ namespace LeadGen.Code.Lead
         };
 
         public BusinessDetails() {
-            systemFeePercent = Convert.ToDecimal(ConfigurationManager.AppSettings["DefaultSystemFeePercent"]);
+            systemFeePercent = Convert.ToDecimal(Helpers.SysHelper.AppSettings.DefaultSystemFeePercent);
         }
         public BusinessDetails(DataRow row) : this()
         {

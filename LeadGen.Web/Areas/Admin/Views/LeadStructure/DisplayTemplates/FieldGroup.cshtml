@@ -1,0 +1,33 @@
+﻿@model LeadGen.Code.Lead.FieldGroup
+
+<h3>Field Group #@Model.ID @Model.title</h3>
+<table class="table table-hover">
+    <tr>
+        <th>
+            Main
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Details
+        </th>
+        <th>
+            @Html.ActionLink("Add Field", "FieldCreate", null, new { groupID = Model.ID }, new {
+@class = "btn btn-primary pull-right",
+data_ajax = "true",
+data_ajax_method = "GET",
+data_ajax_loading = "#LoadingWindowSplash",
+data_ajax_mode = "replace",
+data_ajax_update = "#ActionForLeadID-" + @Model.ID
+})
+        </th>
+    </tr>
+    @if (Model.fields.Any())
+    {
+        for (int i = 0; i < Model.fields.Count(); i++)
+        {
+            @Html.DisplayFor(x=>x.fields[i])
+        }
+    }
+</table>

@@ -1,0 +1,55 @@
+﻿@model LeadGen.Code.Business.Inovice.Invoice
+<table class="table table-bordered" id="invoiceLines">
+    <thead>
+        <tr>
+            <td>
+                Line Number
+            </td>
+            <td>
+                Description
+            </td>
+            <td>
+                UnitPrice
+            </td>
+            <td>
+                Quantity
+            </td>
+            <td>
+                LinePrice
+            </td>
+            <td>
+                Tax
+            </td>
+            <td>
+                Line Total Price
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.EditorFor(x => x.lines, new { invoiceID = Model.ID })
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>
+                @{
+                    string warningMessage = "Any unsaved shanges in lines will be lost, please save invoice first. Are You Sure?";
+                    @Html.ActionLink("Add line", "LineAdd", null, new { invoiceID = Model.ID },
+     new
+     {
+         @class = "btn btn-info",
+         data_ajax = "true",
+         data_ajax_method = "POST",
+         data_ajax_loading = "#LoadingWindowSplash",
+         data_ajax_mode = "replace-with",
+         data_ajax_update = "#invoiceLines",
+         data_ajax_confirm = warningMessage
+     })
+                }
+            </td>
+            <td colspan="5"></td>
+            <td>
+                Total = @Html.DisplayFor(x => x.totalSum)
+            </td>
+        </tr>
+    </tfoot>
+</table>

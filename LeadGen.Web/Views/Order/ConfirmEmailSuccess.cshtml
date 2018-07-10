@@ -1,0 +1,19 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+
+@{
+    ViewBag.Title = "ConfirmEmailSuccess";
+    string orderLink = Url.RouteUrl("LeadPublic", new { area = "", id = Model.ID }, Request.Url.Scheme);
+}
+
+<div class="container">
+    <center>
+        <h2>Ваша заявка успешно подтверждена!</h2>
+
+        <p>
+            Для удобства общения с мастерскими предлагаем Вам ссылку на страницу Вашей заявки <br/><br />
+            <a href="@orderLink" target="_blank" style="font-size: 18px;">@orderLink</a> <br /><br />
+            В ближайшее время с Вами свяжутся компании производители памятников
+        </p>
+
+    </center>
+</div>

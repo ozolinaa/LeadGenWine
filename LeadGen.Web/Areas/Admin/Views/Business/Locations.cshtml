@@ -1,0 +1,26 @@
+﻿@model LeadGen.Code.Business.Business
+@using LeadGen.Code.Business
+
+@{
+    ViewBag.Title = "Business Locations";
+}
+
+<h2>@Html.ActionLink("Business #" + @Model.ID, "Details", new { ID = Model.ID }): <strong>@Model.name</strong></h2>
+<h3>Business Locations</h3>
+
+<hr />
+
+@foreach (BusinessLocation location in Model.locations)
+{
+    <div class="row">
+        <div class="col-md-8">
+            @Html.Partial("DisplayTemplates/Location", location)
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_LocationDetails", location)
+        </div>
+    </div>
+
+    <hr />
+}
+

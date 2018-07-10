@@ -1,6 +1,7 @@
 ﻿using LeadGen.Code.Helpers;
 using LeadGen.Code.Sys;
 using PagedList;
+using PagedList.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,7 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Mvc;
+
 
 namespace LeadGen.Code.Lead
 {
@@ -37,7 +38,6 @@ namespace LeadGen.Code.Lead
         public DateTime? publishedDateTime { get; set; }
         public string authorName { get; set; }
 
-        [AllowHtml]
         public string reviewText { get; set; }
         public Dictionary<Measure, Int16> measureScores { get; set; }
         public List<Business.Business> businessOptions { get; set; }

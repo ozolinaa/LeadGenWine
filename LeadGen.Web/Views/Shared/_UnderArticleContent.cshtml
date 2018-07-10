@@ -1,0 +1,10 @@
+﻿<div class="row under-article-content">
+    <div class="col-md-4 col-md-offset-4">
+        <center>
+            @Html.ActionLink("Сравнить цены мастерских", "Index", "Order", new { area = "" }, new { @class = "teaser-btn" })
+        </center>
+    </div>
+    <div class="col-md-4">
+        @{ Html.RenderPartial("_SocialButtons");}
+    </div>
+</div>

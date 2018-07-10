@@ -13,7 +13,6 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Hosting;
 
 namespace LeadGen.Code.CMS
 {
@@ -67,7 +66,14 @@ namespace LeadGen.Code.CMS
                 foreach (DataRow attachmentRow in dt.DefaultView.ToTable(true, "AttachmentID", "AuthorID", "DateCreated", "AttachmentTypeID", "AttachmentTypeName", "MIME", "URL", "Name", "Description").Rows)
                 {
                     InitializeFromDBRow(attachmentRow);
-                    InitializeMetaData(dt.Select(String.Format("AttachmentID = {0}", attachmentRow["AttachmentID"])).CopyToDataTable());
+                    using (DataTable attachmentData = new DataTable())
+                    {
+                        foreach (DataRow row in dt.Select(String.Format("AttachmentID = {0}", attachmentRow["AttachmentID"])))
+                        {
+                            attachmentData.ImportRow(row);
+                        }
+                        InitializeMetaData(attachmentData);
+                    }
                 }
             }
         }
@@ -106,7 +112,7 @@ namespace LeadGen.Code.CMS
         private static Type GetFileTypeByName(string fileName)
         {
             //Determine File Type by the mimeType
-            string mimeType = MimeMapping.GetMimeMapping(fileName).ToLower().Split('/').First();
+            string mimeType = SysHelper.GetFileContentType(Path.GetFileName(fileName)).ToLower().Split('/').First();
             switch (mimeType)
             {
                 case "image":
@@ -153,7 +159,7 @@ namespace LeadGen.Code.CMS
 
                 cmd.Parameters.AddWithValue("@AuthorID", authorID);
                 cmd.Parameters.AddWithValue("@AttachmentTypeID", (int)fileType);
-                cmd.Parameters.AddWithValue("@MIME", MimeMapping.GetMimeMapping(fileName));
+                cmd.Parameters.AddWithValue("@MIME", SysHelper.GetFileContentType(Path.GetFileName(fileName)));
                 cmd.Parameters.AddWithValue("@FileHash", GetMD5HashFromInputStream(fileStream));
                 cmd.Parameters.AddWithValue("@FileSizeBytes", fileStream.Length);
 
@@ -178,7 +184,8 @@ namespace LeadGen.Code.CMS
             {
                 //Set File URL 
                 string clearedFileName = CMSManager.ClearURL(Path.GetFileNameWithoutExtension(fileName)) + Path.GetExtension(fileName);
-                string attachmentHostName = ConfigurationManager.AppSettings["AzureStorageHostName"].Trim('/');
+
+                string attachmentHostName = SysHelper.AppSettings.AzureStorageHostName.Trim('/');
                 string fileURL = string.Format("{0}/{1}/{2}/{3}/{4}", attachmentHostName, "cms", year.ToString().PadLeft(4, '0'), month.ToString().PadLeft(2, '0'), clearedFileName).ToLower();
 
                 bool attachmentUrlSetSuccessfully = false;

@@ -1,0 +1,143 @@
+﻿@model LeadGen.Code.Lead.Review
+@using LeadGen.Code.Business
+@using LeadGen.Code.Lead
+
+
+@{
+    ViewBag.Title = "Review";
+}
+
+<h2>Review Thank you</h2>
+<hr />
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.Label("Business", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @for (int i = 0; i < Model.businessOptions.Count(); i++)
+                {
+                    <div class="radio">
+                        <label>
+                            @Html.RadioButtonFor(x => x.businessID, Model.businessOptions[i].ID)
+                            @Model.businessOptions[i].name (@Model.businessOptions[i].billing.name)
+                        </label>
+                    </div>
+                }
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(x => x.otherBusiness, true)
+                        <span class="otherBusinessLabel">Другая мастерская</span>
+                        <span class="otherBusinessInput">
+                            @Html.TextBoxFor(model => model.otherBusinessName, new { @class = "form-control", placeholder= "Название мастерской" })
+                            @Html.ValidationMessageFor(model => model.otherBusinessName, "", new { @class = "text-danger" })
+                        </span>
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(x => x.notCompleted, true)
+                        Ещё не исполнена
+                    </label>
+                </div>
+            </div>
+            @Html.ValidationMessage("business", new { @class = "text-danger" })
+        </div>
+
+        <div class="reviewDetails">
+
+            <div class="form-group measureScores">
+                @Html.LabelFor(model => model.measureScores, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @{
+                        int j = 0;
+                        MvcHtmlString measureScoresName = Html.NameFor(x => x.measureScores);
+                        foreach (KeyValuePair<Review.Measure, short> item in Model.measureScores)
+                        {
+                            <div>
+                                <label>@item.Key</label>
+                                <input type="hidden" name="@(string.Format("{0}[{1}].key", measureScoresName, j))" value="@item.Key" />
+                                <input type="number" class="form-control" name="@(string.Format("{0}[{1}].value", measureScoresName, j))" value="@item.Value" />
+                            </div>
+                            j++;
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.authorName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.authorName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.authorName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.reviewText, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextAreaFor(model => model.reviewText, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.reviewText, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.orderPricePart1, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.TextBoxFor(model => model.orderPricePart1, new { @class = "form-control" })*@
+                    <input type="number" class="form-control" name="@Html.NameFor(x => x.orderPricePart1)" value="@Model.orderPricePart1" />
+                    @Html.ValidationMessageFor(model => model.orderPricePart1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.orderPricePart2, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @*@Html.TextBoxFor(model => model.orderPricePart2, new { @class = "form-control" })*@
+                    <input type="number" class="form-control" name="@Html.NameFor(x => x.orderPricePart2)" value="@Model.orderPricePart2" />
+                    @Html.ValidationMessageFor(model => model.orderPricePart2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+@section Scripts {
+<script>
+        $("input[name='businessID']").click(function () {
+            $("input[name='otherBusiness']").prop('checked', false);
+            $("input[name='notCompleted']").prop('checked', false);
+            initializeReviewForm();
+        });
+        $("input[name='otherBusiness']").click(function () {
+            $("input[name='businessID']").prop('checked', false);
+            $("input[name='notCompleted']").prop('checked', false);
+            initializeReviewForm();
+        });
+        $("input[name='notCompleted']").click(function () {
+            $("input[name='otherBusiness']").prop('checked', false);
+            $("input[name='businessID']").prop('checked', false);
+            initializeReviewForm();
+        });
+
+        function initializeReviewForm() {
+            if ($("input[name='otherBusiness']").is(':checked')) {
+                $(".otherBusinessLabel").hide();
+                $(".otherBusinessInput").show();
+            } else {
+                $(".otherBusinessInput").hide();
+                $(".otherBusinessLabel").show();
+            }
+
+
+            if ($("input[name='businessID']").is(':checked') || $("input[name='otherBusiness']").is(':checked')) {
+                $(".reviewDetails").show();
+            } else {
+                $(".reviewDetails").hide();
+            }
+        }
+
+        initializeReviewForm();
+</script>
+    
+}

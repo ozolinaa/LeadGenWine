@@ -1,0 +1,74 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+    @using LeadGen.Code.CMS;
+@{
+    ViewBag.Title = "Index";
+}
+
+@section SEO{@{ 
+    SEOFields seo = new SEOFields(){
+        title = "Заказать надгробный памятник через тендер среди мастерских",
+        metaKeywords = "заказать памятник, купить памятник, на могилу, надгробие, продажа, недорого",
+        metaDescription = "Заполните заявку на изготовление памятника! Гранитные мастерские направят Вам свои предложения и цены на эту модель. Сравните и выберите лучшее!"
+    };
+    Html.RenderPartial("DisplayTemplates/SEOFields", seo);
+}
+}
+
+<link href="~/Content/css/select2.min.css" rel="stylesheet" />
+@*<link href="~/Content/jquery.formstyler.css" rel="stylesheet" />*@
+<link href="~/Content/select2-bootstrap.css" rel="stylesheet" />
+@*<link href="~/Content/Order.css" rel="stylesheet" />*@
+
+<style>
+    select option[disabled] {
+        display: none;
+    }
+
+    #countrySwitchWrapper span {
+        cursor:pointer;
+        text-decoration:underline;
+    }
+    #countrySwitchWrapper span:hover {
+        text-decoration:underline;
+    }
+    #countrySwitchWrapper span.active {
+        cursor:initial;
+        text-decoration:none;
+    }
+    #countrySwitchWrapper span.active:hover {
+        text-decoration:none;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            @Html.EditorFor(x => x)
+        </div>
+    </div>
+
+
+
+
+</div>
+
+@section Scripts
+{
+<script src="~/Scripts/select2.min.js"></script>
+
+    <script>
+        function initializeLeadForm()
+        {
+            if (window.mobileAndTabletcheck() == false) {
+                $('[data-toggle="popover"]').popover()
+            }
+
+            //Detect validation errors and focus on the input
+            LeadGen.ui.navigateToInputValidationError();
+        }
+        $(document).ready(function () {
+            initializeLeadForm();
+        });
+    </script>
+
+}

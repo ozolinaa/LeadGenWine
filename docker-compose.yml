@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  leadgen.web:
+    image: leadgenweb
+    build:
+      context: .
+      dockerfile: LeadGen.Web/Dockerfile

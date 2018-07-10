@@ -1,0 +1,35 @@
+﻿@model LeadGen.Code.Business.LeadPermittion
+@{
+    string targetID = String.Format("lead-permission-{0}", Model.ID);
+}
+<tr id="@targetID">
+    <td>@Model.ID</td>
+    <td>
+        @if (Model.approvedDateTime == null)
+    {
+        @Html.ActionLink("Approve", "PermissionManage", null, new { permittionID = Model.ID, businessID = ViewData["businessID"], doAction = "approve" }, new
+    {
+        data_ajax = "true",
+        data_ajax_method = "POST",
+        data_ajax_loading = "#LoadingWindowSplash",
+        data_ajax_mode = "replace-with",
+        data_ajax_update = "#" + targetID
+    })
+}
+else
+{
+    @Html.ActionLink("Cancel", "PermissionManage", null, new { permittionID = Model.ID, businessID = ViewData["businessID"], doAction = "approve-cancel" }, new
+{
+    data_ajax = "true",
+    data_ajax_method = "POST",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#" + targetID
+})
+
+}
+    </td>
+    <td>@if (Model.requestedDateTime != null) {@Model.requestedDateTime.Value.ToLongDateString() }</td>
+    <td>@if (Model.approvedDateTime != null){@Model.approvedDateTime.Value.ToLongDateString() }</td>
+    <td>@String.Join(" and ", Model.terms.Select(x=>x.name))</td>
+</tr>

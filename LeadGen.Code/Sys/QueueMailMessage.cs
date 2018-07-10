@@ -27,8 +27,8 @@ namespace LeadGen.Code.Sys
         {
             ID = Guid.NewGuid();
             createdDateTime = DateTime.UtcNow;
-            From = new MailAddress(ConfigurationManager.AppSettings["EmailDefaultFromAddress"], ConfigurationManager.AppSettings["EmailDefaultFromName"]);
-            ReplyToList.Add(new MailAddress(ConfigurationManager.AppSettings["EmailDefaultReplyToAddress"]));
+            From = new MailAddress(SysHelper.AppSettings.EmailDefaultFromAddress, SysHelper.AppSettings.EmailDefaultFromName);
+            ReplyToList.Add(new MailAddress(SysHelper.AppSettings.EmailDefaultReplyToAddress));
             IsBodyHtml = true;
         }
 
@@ -97,7 +97,7 @@ namespace LeadGen.Code.Sys
         {
             int sentMessagesCount = 0;
             int AmazonSESMailIntervalMilliseconds = 0;
-            Int32.TryParse(ConfigurationManager.AppSettings["AmazonSESMailIntervalMilliseconds"], out AmazonSESMailIntervalMilliseconds);
+            Int32.TryParse(SysHelper.AppSettings.AmazonSESMailIntervalMilliseconds, out AmazonSESMailIntervalMilliseconds);
 
 
             using (SmtpClient smtp = new SmtpClient())
