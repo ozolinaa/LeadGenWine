@@ -43,14 +43,7 @@
         </tbody>
     </table>
 
-@Html.PagedListPager(Model,
-    page => Url.Action("PostTypeTaxTermList", new
-    {
-        page,
-        postTypeID = postTypeTax.forPostTypeID,
-        taxonomyID = postTypeTax.taxonomy.ID
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+    <pager class="pager-container" asp-action="PostTypeTaxTermList" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+           asp-route-postTypeID="@postTypeTax.forPostTypeID" asp-route-taxonomyID="@postTypeTax.taxonomy.ID" />
 
 </div> 

@@ -187,7 +187,7 @@ namespace LeadGen.Code.CMS
             if (post.forTermID != null)
             {
                 pageType = PageType.TermPost;
-                postList = Post.SelectFromDB(con, typeID: post.postType.forPostTypeID, termID: post.forTermID, statusID:50, loadAttachmentList: true, loadFields:true, loadTaxonomySelectedList:true, excludeStartPage:true).ToPagedList(pageNumber, 10);
+                postList = Post.SelectFromDB(con, typeID: post.postType.forPostTypeID, termID: post.forTermID, statusID:50, loadAttachmentList: true, loadFields:true, loadTaxonomySelectedList:true, excludeStartPage:true).AsQueryable().ToPagedList(pageNumber, 10);
                 postTypeTaxonomy = PostTypeTaxonomy.SelectFromDB(con, ForPostTypeID: post.postType.forPostTypeID, ForTaxonomyID: postType.forTaxonomyID, EnabledOnly: true).First();
 
                 term = Taxonomy.Term.SelectFromDB(con, TermID: post.forTermID).First();

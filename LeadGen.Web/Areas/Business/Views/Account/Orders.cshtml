@@ -14,34 +14,34 @@
 
 <style>
     .leadActions {
-        text-align:center;
-        min-width:245px;
+        text-align: center;
+        min-width: 245px;
     }
 
-    .leadActions .contacts {
-        text-align:left;
-    }
+        .leadActions .contacts {
+            text-align: left;
+        }
 
-    .leadActions .action {
-        margin-bottom:10px;
-    }
+        .leadActions .action {
+            margin-bottom: 10px;
+        }
 
-    .leadActions .action.set_interested, .action.set_not_interested {
-        text-align:right;
-    }
+            .leadActions .action.set_interested, .action.set_not_interested {
+                text-align: right;
+            }
 
 
     td.field-group-Terms {
-        width:275px;
+        width: 275px;
     }
 
     .lead_field {
-        margin-bottom:5px;
+        margin-bottom: 5px;
     }
 
-    .lead_field span.grey, .leadActions span.grey {
-        color:gray;
-    }
+        .lead_field span.grey, .leadActions span.grey {
+            color: gray;
+        }
 </style>
 
 <h2>Заявки</h2>
@@ -59,11 +59,11 @@
         </div>
         <div class="col-sm-3  form-group">
             @Html.Label("publishedFrom", "Поступившие с")
-            @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString()})
+            @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
         </div>
         <div class="col-sm-3  form-group">
             @Html.Label("publishedTo", "Поступившие до")
-            @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString()})
+            @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
         </div>
         <div class="col-sm-4  form-group">
             @Html.Label("query", "Текст")
@@ -79,40 +79,47 @@
 <ul class="nav nav-tabs nav-orders" style="margin-top:10px;">
     @{ isActive = (status == BusinessDetails.Status.NewForBusiness || status == BusinessDetails.Status.NotInterested) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Orders", new {
-       status = BusinessDetails.Status.NewForBusiness,
-       leadID = leadID,
-       publishedFrom = publishedFrom.ToString(),
-       publishedTo = publishedTo.ToString(),
-       query = query
-   })
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Orders", new
+        {
+            status = BusinessDetails.Status.NewForBusiness,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
     </li>
     @{ isActive = (status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Orders", new { status = BusinessDetails.Status.ContactReceived,
-       leadID = leadID,
-       publishedFrom = publishedFrom.ToString(),
-       publishedTo = publishedTo.ToString(),
-       query = query
-   })
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Orders", new
+        {
+            status = BusinessDetails.Status.ContactReceived,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
     </li>
     @{ isActive = (status == BusinessDetails.Status.Completed) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Orders", new { status = BusinessDetails.Status.Completed,
-       leadID = leadID,
-       publishedFrom = publishedFrom.ToString(),
-       publishedTo = publishedTo.ToString(),
-       query = query
-   })
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Orders", new
+        {
+            status = BusinessDetails.Status.Completed,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
     </li>
     @{ isActive = (status == BusinessDetails.Status.All) ? "active" : "";}
     <li role='presentation' class='@isActive pull-right'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Orders", new { status = BusinessDetails.Status.All,
-       leadID = leadID,
-       publishedFrom = publishedFrom.ToString(),
-       publishedTo = publishedTo.ToString(),
-       query = query
-   })
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Orders", new
+        {
+            status = BusinessDetails.Status.All,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
     </li>
 </ul>
 
@@ -136,17 +143,8 @@
         break;
 }
 
-@Html.PagedListPager(Model,
-    page => Url.Action("Orders", "Account", new
-    {
-        page,
-        status = status,
-        leadID = leadID,
-        publishedFrom = publishedFrom.ToString(),
-        publishedTo = publishedTo.ToString(),
-        query = query
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+<pager class="pager-container" asp-action="Orders" asp-controller="Account" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-status="@status"  asp-route-leadID="@leadID"  asp-route-publishedFrom="@publishedFrom.ToString()"  asp-route-publishedTo="@publishedTo.ToString()" asp-route-query="@query" />
 )
 
 

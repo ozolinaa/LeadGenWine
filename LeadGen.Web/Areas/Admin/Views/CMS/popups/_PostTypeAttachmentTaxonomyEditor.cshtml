@@ -8,31 +8,35 @@
                 <h4 class="modal-title">Manage Post Type Taxonomies</h4>
             </div>
 
-            @using (Ajax.BeginForm("PostTypeAttachmentTaxonomyEdit", new AjaxOptions { OnSuccess = "PostTypeAttachmentTaxonomyHandler" }))
-            {
-                <div class="modal-body">
-                    <div class="row form-inline">
-                        @for (int i = 0; i < Model.Count; i++)
-                        {
-                            <div class="form-group col-sm-12">
-                                @Html.HiddenFor(x => x[i].postTypeID)
-                                @Html.HiddenFor(x => x[i].taxonomy.ID)
-                                @Html.HiddenFor(x => x[i].taxonomy.name)
-                                @Html.HiddenFor(x => x[i].taxonomy.code)
-                                @Html.CheckBoxFor(x => x[i].taxonomy.isChecked)
-                                @Html.LabelFor(x => x[i].taxonomy.isChecked, Model[i].taxonomy.name)
-                                @Html.ValidationMessageFor(x => x[i].taxonomy.isChecked)
-                            </div>
-                        }
-                    </div>
-                </div>
+            @using (Html.BeginForm("PostTypeAttachmentTaxonomyEdit", null, null, FormMethod.Post, true, new
+    {
+        data_ajax = "true",
+        data_ajax_success = "PostTypeAttachmentTaxonomyHandler",
+    }))
+{
+        <div class="modal-body">
+            <div class="row form-inline">
+                @for (int i = 0; i < Model.Count; i++)
+        {
+            <div class="form-group col-sm-12">
+                @Html.HiddenFor(x => x[i].postTypeID)
+                @Html.HiddenFor(x => x[i].taxonomy.ID)
+                @Html.HiddenFor(x => x[i].taxonomy.name)
+                @Html.HiddenFor(x => x[i].taxonomy.code)
+                @Html.CheckBoxFor(x => x[i].taxonomy.isChecked)
+                @Html.LabelFor(x => x[i].taxonomy.isChecked, Model[i].taxonomy.name)
+                @Html.ValidationMessageFor(x => x[i].taxonomy.isChecked)
+            </div>
+}
+            </div>
+        </div>
 
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
-                </div>
-            }
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
+        </div>
+}
 
 
         </div>

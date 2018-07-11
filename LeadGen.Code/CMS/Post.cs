@@ -535,7 +535,7 @@ namespace LeadGen.Code.CMS
                 }
             }
 
-            return PostList.ToPagedList(page, pageSize);
+            return PostList.AsQueryable().ToPagedList(page, pageSize);
 
         }
 
@@ -573,7 +573,7 @@ namespace LeadGen.Code.CMS
                 }
             }
 
-            return PostList.ToPagedList(page, pageSize);
+            return PostList.AsQueryable().ToPagedList(page, pageSize);
         }
 
 

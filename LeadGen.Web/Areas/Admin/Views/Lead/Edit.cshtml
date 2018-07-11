@@ -43,19 +43,28 @@
 <h2>Edit LeadID #@Model.ID</h2>
 
 <div class="row">
-        @{
-            string formID = "LeadForm";
-            using (Ajax.BeginForm("Edit", null, null, new AjaxOptions { UpdateTargetId = "leadData", InsertionMode = InsertionMode.Replace, OnComplete = "initializeLeadEditForm" }, new { @class = "form", id = formID }))
-            {
-                <div class="col-xs-12" id="leadData">
-                    @Html.EditorFor(x => x)
-                </div>
+    @{
+        string formID = "LeadForm";
+        @using (Html.BeginForm("Edit", null, null, FormMethod.Post, true, new
+        {
+            @class = "form",
+            id = formID,
+            data_ajax = "true",
+            data_ajax_loading = "#LoadingWindowSplash",
+            data_ajax_mode = "replace",
+            data_ajax_update = "#leadData",
+            data_ajax_complete = "initializeLeadEditForm"
+        }))
+        {
+            <div class="col-xs-12" id="leadData">
+                @Html.EditorFor(x => x)
+            </div>
 
-                <div class="col-xs-12">
-                    <input type="submit" class="btn btn-success" />
-                </div>
-            }
+            <div class="col-xs-12">
+                <input type="submit" class="btn btn-success" />
+            </div>
         }
+    }
 </div>
 
 

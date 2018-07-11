@@ -103,7 +103,7 @@ namespace LeadGen.Areas.Admin.Controllers
                 resultTerms = tax.termList;
             }
 
-            IPagedList<Term> terms = resultTerms.ToPagedList(page, 20);
+            IPagedList<Term> terms = resultTerms.AsQueryable().ToPagedList(page, 20);
 
             ViewBag.activeTaxonomyID = tax.ID; //For the layout menu
             ViewBag.taxUsedInPostTypes = taxUsedInPostTypes;

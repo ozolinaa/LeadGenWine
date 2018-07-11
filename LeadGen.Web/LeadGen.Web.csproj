@@ -62,4 +62,10 @@
     <ProjectReference Include="..\LeadGen.Code\LeadGen.Code.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Business\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -197,7 +197,7 @@
                         }
 
                         SelectList dateSelectList = new SelectList(dateValues, "Key", "Value", executeDateSelectedValue);
-                        MvcHtmlString executeDateFieldName = Html.DisplayNameFor(x => x.fieldGroups[groupIndex].fields[fieldIndex]);
+                        string executeDateFieldName = Html.DisplayNameFor(x => x.fieldGroups[groupIndex].fields[fieldIndex]);
                         @Html.DropDownListFor(x => x.fieldGroups[groupIndex].fields[fieldIndex].fieldDatetime, dateSelectList, new { data_val = "false" })
                         @Html.EditorFor(x => x.fieldGroups[groupIndex].fields[fieldIndex], new { input = "none" })
                     }

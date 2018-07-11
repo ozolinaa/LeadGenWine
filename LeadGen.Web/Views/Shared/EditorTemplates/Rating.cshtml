@@ -3,7 +3,7 @@
 @*~/Content/bootstrap-star-rating/examples/index.html*@
 @{
     int j = 0;
-    MvcHtmlString measureScoresName = Html.NameForModel();
+    string measureScoresName = Html.NameForModel();
     Dictionary<Review.Measure, string> measureNames = ViewData["measureNames"] as Dictionary<Review.Measure, string>;
     foreach (KeyValuePair<Review.Measure, short> item in Model)
     {

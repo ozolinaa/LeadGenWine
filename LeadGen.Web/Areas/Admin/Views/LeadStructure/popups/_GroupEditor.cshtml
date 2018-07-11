@@ -10,36 +10,40 @@
                 <h4 class="modal-title">Add or Update Lead Field Group</h4>
             </div>
 
-            @using (Ajax.BeginForm("GroupEdit", new AjaxOptions { OnSuccess = "PopupFormAjaxHandler" }))
-            {
+            @using (Html.BeginForm("GroupEdit", null, null, FormMethod.Post, true, new
+    {
+        data_ajax = "true",
+        data_ajax_success = "PopupFormAjaxHandler"
+    }))
+{
 
-                <div class="modal-body">
+        <div class="modal-body">
 
-                    @Html.ValidationSummary()
-                    @Html.HiddenFor(x=>x.ID)
+            @Html.ValidationSummary()
+            @Html.HiddenFor(x => x.ID)
 
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.code)
-                            @Html.TextBoxFor(x => x.code, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.code)
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.title)
-                            @Html.TextAreaFor(x => x.title, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.title)
-                        </div>
-                        
-                    </div>
-
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.code)
+                    @Html.TextBoxFor(x => x.code, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.code)
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.title)
+                    @Html.TextAreaFor(x => x.title, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.title)
                 </div>
 
+            </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
-                </div>
-            }
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
+        </div>
+}
 
 
         </div>

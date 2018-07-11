@@ -260,7 +260,7 @@ LeadGen.PostEdit.init = function () {
                     var termHtmlName = $(event.target).attr("data-termListHtmlName") + "[" + indexInList + "]";
 
                     var inputChecked = '<input type="hidden" name="' + termHtmlName + '.isChecked" value="true" />';
-                    var inputID = '<input type="hidden" name="' + termHtmlName + '.ID" value="' + item.ID + '" />';
+                    var inputID = '<input type="hidden" name="' + termHtmlName + '.ID" value="' + item.id + '" />';
                     var inputName = '<input type="hidden" name="' + termHtmlName + '.level" value="' + item.level + '" />';
                     var inputUrl = '<input type="hidden" name="' + termHtmlName + '.name" value="' + item.name + '" />';
                     var inputTermURL = '<input type="hidden" name="' + termHtmlName + '.termURL" value="' + item.termURL + '" />';
@@ -364,7 +364,7 @@ LeadGen.PostEdit.init = function () {
                 },
                 success: function (data) {
                     items = jQuery.map(data, function (post, i) {
-                        return { id: post.ID, value: post.postURLHierarchical };
+                        return { id: post.id, value: post.postURLHierarchical };
                     });
                     response(items);
                 }

@@ -5,15 +5,14 @@
 
 <h2>Cache</h2>
 
-@using (Html.BeginForm("clearCacheUrl", null, null, FormMethod.Post, true,
-new
-{
-   @class = "form-horizontal",
-   data_ajax = "true",
-   data_ajax_loading = "#LoadingWindowSplash",
-   data_ajax_success = "LeadGen.ui.showNotificationLabel",
-   data_ajax_complete = "LeadGen.PostEdit.init"
-}))
+@using (Html.BeginForm("clearCacheUrl", null, null, FormMethod.Post, true, new
+    {
+       @class = "form-horizontal",
+       data_ajax = "true",
+       data_ajax_loading = "#LoadingWindowSplash",
+       data_ajax_success = "LeadGen.ui.showNotificationLabel",
+       data_ajax_complete = "LeadGen.PostEdit.init"
+    }))
 {
     <div class="form-group">
         @Html.Label("URL to update cache", null, htmlAttributes: new { @class = "control-label col-md-2" })

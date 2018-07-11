@@ -81,14 +81,5 @@
     }
 </table>
 
-
-@Html.PagedListPager(Model,
-    page => Url.Action("List", null, new
-    {
-        page,
-        isPaid = isPaid,
-        legalYear = legalYear,
-        legalNumber = legalNumber
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-isPaid="@isPaid" asp-route-legalYear="@legalYear" asp-route-legalNumber="@legalNumber" />

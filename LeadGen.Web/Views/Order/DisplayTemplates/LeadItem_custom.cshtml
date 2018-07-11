@@ -4,13 +4,15 @@
     int groupIndex = 0;
     int fieldIndex = 0;
 }
-@using (Ajax.BeginForm("Confirm", null, null,
-    new AjaxOptions {
-        UpdateTargetId = formID,
-        InsertionMode = InsertionMode.ReplaceWith,
-        LoadingElementId = "LoadingWindowSplash"
-    },
-    new { @class = "form-horizontal", id = formID }))
+@using (Html.BeginForm("Confirm", null, null, FormMethod.Post, true, new
+{
+    @class = "form-horizontal",
+    id = formID,
+    data_ajax = "true",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#" + formID,
+}))
 {
     @Html.EditorFor(x => x.fieldGroups)
 
@@ -132,15 +134,15 @@
                         @{
                             groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "city");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
 
                             //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "cemetery");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
 
                             //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "installationRequired");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
                         }
 
                     </div>
@@ -148,15 +150,15 @@
                         @{
                             //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "businessType");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
 
                             //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "price");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
 
                             groupIndex = Model.fieldGroups.FindIndex(x => x.code == "dates");
                             fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "executeDate");
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
+                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
                         }
                     </div>
                 </div>
@@ -227,4 +229,4 @@
 
 
 
-                            }
+}

@@ -2,52 +2,60 @@
 @{string formID = "InvoiceUpdateForm";}
 
 <h1>
-    Invoice ID #@Model.ID 
+    Invoice ID #@Model.ID
     @Html.ActionLink("Show Invoice", "Show", new { invoiceID = Model.ID }, new { @class = "btn btn-success" })
     <input type="submit" value="Update" class="btn btn-primary" />
-    @using (Html.BeginForm("Delete", null, new { invoiceID = Model.ID }, FormMethod.Post, new { @class = "pull-right", onsubmit = "return confirm('It seems you have a name not added.\n\nAre Continue?')" }))
+
+    @using (Html.BeginForm("Delete", null, new { invoiceID = Model.ID }, FormMethod.Post, true, new { @class = "pull-right", onsubmit = "return confirm('It seems you have a name not added.\n\nAre Continue?')" }))
     {
         <input type="submit" value="Delete" class="btn btn-danger pull-right" />
     }
 </h1>
 
-@using (Ajax.BeginForm("Edit", "Invoice", new { invoiceID = Model.ID }, new AjaxOptions { UpdateTargetId = formID, InsertionMode = InsertionMode.ReplaceWith }, new { id = formID }))
+@using (Html.BeginForm("Edit", "Invoice", new { invoiceID = Model.ID }, FormMethod.Post, true, new
 {
-<h2>Invoice Legal #@Model.legalNumber | Year @Model.legalYear | Month @Model.legalMonth</h2>
+    id = formID,
+    data_ajax = "true",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#"+formID
+}))
+{
+    <h2>Invoice Legal #@Model.legalNumber | Year @Model.legalYear | Month @Model.legalMonth</h2>
 
 
-<div class="row">
-    <div class="col-md-6">
-        <div>
-            @Html.LabelFor(x => x.createdDateTime)
-            @Html.DisplayFor(x => x.createdDateTime)
+    <div class="row">
+        <div class="col-md-6">
+            <div>
+                @Html.LabelFor(x => x.createdDateTime)
+                @Html.DisplayFor(x => x.createdDateTime)
+            </div>
+            <div>
+                @Html.LabelFor(x => x.publishedDateTime)
+                @Html.DisplayFor(x => x.publishedDateTime)
+            </div>
+            <div>
+                @Html.LabelFor(x => x.paidDateTime)
+                @Html.DisplayFor(x => x.paidDateTime)
+            </div>
         </div>
-        <div>
-            @Html.LabelFor(x => x.publishedDateTime)
-            @Html.DisplayFor(x => x.publishedDateTime)
-        </div>
-        <div>
-            @Html.LabelFor(x => x.paidDateTime)
-            @Html.DisplayFor(x => x.paidDateTime)
+        <div class="col-md-6">
         </div>
     </div>
-    <div class="col-md-6">
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h1>LeagGen Billing Details</h1>
-        @Html.EditorFor(x => x.legalBilling)
+    <div class="row">
+        <div class="col-md-6">
+            <h1>LeagGen Billing Details</h1>
+            @Html.EditorFor(x => x.legalBilling)
+        </div>
+        <div class="col-md-6">
+            <h1>
+                @Html.ActionLink("Business #" + @Model.businessID, "Details", "Business", new { ID = Model.businessID }, null)
+                Billing Details
+            </h1>
+            @Html.EditorFor(x => x.buisnessBilling)
+        </div>
     </div>
-    <div class="col-md-6">
-        <h1>
-            @Html.ActionLink("Business #" + @Model.businessID, "Details", "Business", new { ID = Model.businessID }, null)
-            Billing Details
-        </h1>
-        @Html.EditorFor(x => x.buisnessBilling)
-    </div>
-</div>
 
 
     Html.RenderPartial("_InvoiceLinesEditor", Model);

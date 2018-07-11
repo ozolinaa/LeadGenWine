@@ -26,7 +26,7 @@ namespace LeadGen.Areas.Business.Controllers
             else
                 invoices = invoices.Where(x => x.paidDateTime == null).ToList();
 
-            IPagedList<Invoice> results = invoices.ToPagedList(page, 20);
+            IPagedList<Invoice> results = invoices.AsQueryable().ToPagedList(page, 20);
 
             foreach (Invoice invoice in results)
             {

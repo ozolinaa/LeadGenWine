@@ -192,6 +192,8 @@ namespace LeadGen.Areas.Admin.Controllers
                 ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
                 ViewBag.NofificationStatus = true;
+                if (postItem.postParentID != null)
+                    ViewBag.postParentUrl = Post.SelectFromDB(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
 
                 return PartialView("EditorTemplates/Post", postItem);
 
@@ -322,7 +324,7 @@ namespace LeadGen.Areas.Admin.Controllers
 
             ViewBag.postTypeTax = postTypeTax;
 
-            return View(postTypeTax.taxonomy.termList.ToPagedList(page, 20));
+            return View(postTypeTax.taxonomy.termList.AsQueryable().ToPagedList(page, 20));
         }
 
 

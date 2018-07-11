@@ -10,109 +10,114 @@
                 <h4 class="modal-title">Add or Update new field to Lead structure</h4>
             </div>
 
-            @using (Ajax.BeginForm("FieldEdit", new AjaxOptions { OnSuccess = "PopupFormAjaxHandler" }))
-            {
+            @using (Html.BeginForm("FieldEdit", null, null, FormMethod.Post, true, new
+    {
+        data_ajax = "true",
+        data_ajax_loading = "#LoadingWindowSplash",
+        data_ajax_success = "PopupFormAjaxHandler"
+    }))
+{
 
-                <div class="modal-body">
+        <div class="modal-body">
 
-                    @Html.ValidationSummary()
-                    @Html.HiddenFor(x=>x.ID)
+            @Html.ValidationSummary()
+            @Html.HiddenFor(x => x.ID)
 
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.isActive) 
-                            @Html.CheckBoxFor(x => x.isActive)
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.isActive)
+                    @Html.CheckBoxFor(x => x.isActive)
 
-                            <span style="margin-left:10px;">
-                                @Html.LabelFor(x => x.isContact)
-                                @Html.CheckBoxFor(x => x.isContact)
-                            </span>
+                    <span style="margin-left:10px;">
+                        @Html.LabelFor(x => x.isContact)
+                        @Html.CheckBoxFor(x => x.isContact)
+                    </span>
 
-                            <span style="margin-left:10px;">
-                                @Html.LabelFor(x => x.isRequired)
-                                @Html.CheckBoxFor(x => x.isRequired)
-                            </span>
+                    <span style="margin-left:10px;">
+                        @Html.LabelFor(x => x.isRequired)
+                        @Html.CheckBoxFor(x => x.isRequired)
+                    </span>
 
-                            @Html.DropDownListFor(x => x.fieldType, EnumHelper.GetSelectList(typeof(FieldType)), new { @class = "form-control"})
-                            @Html.ValidationMessageFor(x => x.fieldType)
-                        </div>
-
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.name)
-                            @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.name)
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.label)
-                            @Html.TextBoxFor(x => x.label, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.label)
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.code)
-                            @Html.TextBoxFor(x => x.code, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.code)
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.taxonomyID)
-                            @Html.TextBoxFor(x => x.taxonomyID, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.taxonomyID)
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.termParentID)
-                            @Html.TextBoxFor(x => x.termParentID, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.termParentID)
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.minValue)
-                            @Html.TextBoxFor(x => x.minValue, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.minValue)
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.maxValue)
-                            @Html.TextBoxFor(x => x.maxValue, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.maxValue)
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.placeholder)
-                            @Html.TextBoxFor(x => x.placeholder, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.placeholder)
-                        </div>
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.regularExpression)
-                            @Html.TextBoxFor(x => x.regularExpression, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.regularExpression)
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="form-group col-sm-12 col-md-6">
-                            @Html.LabelFor(x => x.groupID)
-                            @Html.TextBoxFor(x => x.groupID, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(x => x.groupID)
-                        </div>
-                    </div>
-
+                    @Html.DropDownListFor(x => x.fieldType, Html.GetEnumSelectList<FieldType>(), new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.fieldType)
                 </div>
 
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.name)
+                    @Html.TextBoxFor(x => x.name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.name)
                 </div>
-            }
+
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.label)
+                    @Html.TextBoxFor(x => x.label, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.label)
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.code)
+                    @Html.TextBoxFor(x => x.code, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.code)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.taxonomyID)
+                    @Html.TextBoxFor(x => x.taxonomyID, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.taxonomyID)
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.termParentID)
+                    @Html.TextBoxFor(x => x.termParentID, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.termParentID)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.minValue)
+                    @Html.TextBoxFor(x => x.minValue, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.minValue)
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.maxValue)
+                    @Html.TextBoxFor(x => x.maxValue, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.maxValue)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.placeholder)
+                    @Html.TextBoxFor(x => x.placeholder, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.placeholder)
+                </div>
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.regularExpression)
+                    @Html.TextBoxFor(x => x.regularExpression, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.regularExpression)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-12 col-md-6">
+                    @Html.LabelFor(x => x.groupID)
+                    @Html.TextBoxFor(x => x.groupID, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.groupID)
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" style="width:126px">Save</button>
+        </div>
+}
 
 
         </div>

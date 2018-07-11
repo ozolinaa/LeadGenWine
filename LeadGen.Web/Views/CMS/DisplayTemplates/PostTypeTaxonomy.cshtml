@@ -18,8 +18,8 @@
     foreach (Term term in Model.taxonomy.termList)
     {
         i++;
-        MvcHtmlString termLink = Html.ActionLink((string)ViewData["termPrefix"] + term.name, "Index", new { urlPath = String.Format("{0}/{1}/", Model.postType.url, term.termURL) });
-        termLink = new MvcHtmlString(String.Format("{0}{1}", termLink, (i < Model.taxonomy.termList.Count) ? ", " : ""));
+        IHtmlContent termLink = Html.ActionLink((string)ViewData["termPrefix"] + term.name, "Index", new { urlPath = String.Format("{0}/{1}/", Model.postType.url, term.termURL) });
+        termLink = new HtmlString(String.Format("{0}{1}", termLink, (i < Model.taxonomy.termList.Count) ? ", " : ""));
         @termLink
     }
 }

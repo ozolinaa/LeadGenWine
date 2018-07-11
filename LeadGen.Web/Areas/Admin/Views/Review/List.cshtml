@@ -5,9 +5,9 @@
 @{
     ViewBag.Title = "OrderList";
     Review.Status[] displayStatuses = new Review.Status[] {
-        Review.Status.New,
-        Review.Status.Published
-    };
+Review.Status.New,
+Review.Status.Published
+};
 
     Review.Status currentStatus = ViewBag.status;
     long? leadID = ViewBag.leadID;
@@ -22,9 +22,9 @@
 <ul class="nav nav-tabs">
     @foreach (Review.Status status in displayStatuses)
     {
-        MvcHtmlString tabLink = Html.ActionLink(Review.statusDictionary[status], "List", new { status = status });
-        MvcHtmlString tab = new MvcHtmlString(String.Format("<li role='presentation' class='{0}'>{1}</li>", (status == currentStatus) ? "active" : "", tabLink));
-        @tab
+        IHtmlContent tabLink = Html.ActionLink(Review.statusDictionary[status], "List", new { status = status });
+        string tabClassName = (status == currentStatus) ? "active" : "";
+        <li role='presentation' class='@tabClassName'>@tabLink</li>
     }
 </ul>
 
@@ -59,12 +59,6 @@
     @Html.DisplayFor(x => x, (object)ViewBag.businesses)
 </table>
 
-@Html.PagedListPager(Model, 
-    page => Url.Action("List", new { page, status = currentStatus,
-        leadID = leadID,
-        businessID = businessID,
-        createdFrom = createdFrom,
-        createdTo = createdTo
-    }), 
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-status="@currentStatus" asp-route-leadID="@leadID" asp-route-businessID="@businessID" asp-route-createdFrom="@createdFrom" asp-route-createdTo="@createdTo" />
+

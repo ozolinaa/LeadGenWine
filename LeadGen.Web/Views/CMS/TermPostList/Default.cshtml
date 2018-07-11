@@ -23,9 +23,10 @@
     }
 </div>
 
-
+<pager class="pager-container" asp-action="Index" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-urlPath="@String.Format("{0}/page/{1}", cmsContext.urlPath, 1)" />
 @Html.PagedListPager(Model,
-    page => Url.Action("Index", new { urlPath = String.Format("{0}/page/{1}", cmsContext.urlPath, page)}),
+    page => Url.Action("Index", new { urlPath =  }),
     new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
 )
 

@@ -3,12 +3,16 @@
 @{
     string formID = "LeadForm";
 }
-
-@using (Ajax.BeginForm("Index", null, null, new AjaxOptions { UpdateTargetId = formID,
-    InsertionMode = InsertionMode.ReplaceWith,
-    LoadingElementId = "LoadingWindowSplash",
-    OnComplete = "( function() { LeadGen.refreshUnobtrusiveValidation(" + formID + "); } )" }, 
-    new { @class = "form-horizontal", id = formID }))
+@using (Html.BeginForm("Index", null, null, FormMethod.Post, true, new
+{
+    @class = "form-horizontal",
+    id = formID,
+    data_ajax = "true",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#" + formID,
+    data_ajax_complete = "( function() { LeadGen.refreshUnobtrusiveValidation(" + formID + "); } )"
+}))
 {
     <h2>Please fill the form</h2>
     @Html.EditorFor(x => x.fieldGroups)

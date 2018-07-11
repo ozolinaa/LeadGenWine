@@ -28,9 +28,9 @@
 <ul class="nav nav-tabs nav-orders">
     @foreach (AdminDetails.Status status in displayStatuses)
     {
-        MvcHtmlString tabLink = Html.ActionLink(AdminDetails.statusDictionary[status], "List", new { status = status });
-        MvcHtmlString tab = new MvcHtmlString(String.Format("<li role='presentation' class='{0}'>{1}</li>", (status == currentStatus) ? "active" : "", tabLink));
-        @tab
+        IHtmlContent tabLink = Html.ActionLink(AdminDetails.statusDictionary[status], "List", new { status = status });
+        string tabClassName = (status == currentStatus) ? "active" : "";
+        <li role='presentation' class='@tabClassName'>@tabLink</li>
     }
 </ul>
 
@@ -65,12 +65,5 @@
     @Html.DisplayFor(x => x)
 </table>
 
-@Html.PagedListPager(Model, 
-    page => Url.Action("List", new { page, status = currentStatus,
-        leadID = leadID.ToString(),
-        publishedFrom = publishedFrom,
-        publishedTo = publishedTo,
-        query = query
-    }), 
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-status="@currentStatus" asp-route-leadID="@leadID.ToString()" asp-route-publishedFrom="@publishedFrom" asp-route-publishedTo="@publishedTo" asp-route-query="@query" />

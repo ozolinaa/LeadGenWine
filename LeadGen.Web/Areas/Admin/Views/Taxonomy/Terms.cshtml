@@ -65,30 +65,30 @@
                             </span>
                         <td>
                             @Html.ActionLink(@term.termURL, "TermEdit", null, new { taxonomyID = taxonomy.ID, termID = term.ID }, new
-                       {
-                           data_ajax = "true",
-                           data_ajax_method = "GET",
-                           data_ajax_loading = "#LoadingWindowSplash",
-                           data_ajax_mode = "replace",
-                           data_ajax_update = "#PopUp"
-                       })
+                            {
+                                data_ajax = "true",
+                                data_ajax_method = "GET",
+                                data_ajax_loading = "#LoadingWindowSplash",
+                                data_ajax_mode = "replace",
+                                data_ajax_update = "#PopUp"
+                            })
                         </td>
                         <td>
                             @foreach (PostType postType in taxUsedInPostTypes)
                             {
-                                @Html.ActionLink(String.Format("Edit {0}", postType.name), "TermPostEdit", "CMS", new { forTypeID = postType.ID, forTermID = term.ID }, new { @class = "btn btn-warning btn-sm", style = "margin-right:5px;"})
+                                @Html.ActionLink(String.Format("Edit {0}", postType.name), "TermPostEdit", "CMS", new { forTypeID = postType.ID, forTermID = term.ID }, new { @class = "btn btn-warning btn-sm", style = "margin-right:5px;" })
                             }
                         </td>
                         <td>
                             @Html.ActionLink("Delete", "TermDelete", null, new { taxonomyID = taxonomy.ID, termID = term.ID }, new
-                       {
-                           @class = "btn btn-danger btn-sm",
-                           data_ajax = "true",
-                           data_ajax_method = "GET",
-                           data_ajax_loading = "#LoadingWindowSplash",
-                           data_ajax_mode = "replace",
-                           data_ajax_update = "#PopUp"
-                       })
+                            {
+                                @class = "btn btn-danger btn-sm",
+                                data_ajax = "true",
+                                data_ajax_method = "GET",
+                                data_ajax_loading = "#LoadingWindowSplash",
+                                data_ajax_mode = "replace",
+                                data_ajax_update = "#PopUp"
+                            })
                         </td>
                     </tr>
                 }
@@ -97,14 +97,7 @@
         </tbody>
     </table>
 
-    @Html.PagedListPager(Model,
-    page => Url.Action("Terms", new
-    {
-        page,
-        query = query,
-        taxonomyID = taxonomy.ID
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+    <pager class="pager-container" asp-action="Terms" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+           asp-route-query="@query" asp-route-taxonomyID="@taxonomy.ID"  />
 
 </div> 

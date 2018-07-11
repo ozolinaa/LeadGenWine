@@ -34,14 +34,14 @@
 </ul>
 
 <div class="row" style="margin-top:10px;">
-    @using (Html.BeginForm("Leads", null, new { ID = business.ID },FormMethod.Get, null))
+    @using (Html.BeginForm("Leads", null, new { ID = business.ID }, FormMethod.Get, null))
     {
         @Html.Hidden("status", status)
         <div class="col-sm-1 form-group">
             @Html.Label("leadID", "Заявка")
             @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "№" })
         </div>
-        <div class="col-sm-3  form-group" >
+        <div class="col-sm-3  form-group">
             @Html.Label("publishedFrom", "Опубликовано с")
             @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
         </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="col-sm-4  form-group">
             @Html.Label("query", "Текст")
-            @Html.TextBox("query", query, new { @class = "form-control", placeholder="Текст..." })
+            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "Текст..." })
         </div>
         <div class="col-sm-1  form-group">
             @Html.Label("", "submit", new { style = "visibility: hidden;" })
@@ -78,15 +78,5 @@
         break;
 }
 
-@Html.PagedListPager(Model,
-    page => Url.Action("Leads", new
-    {
-        page,
-        status = status,
-        leadID = leadID,
-        publishedFrom = publishedFrom,
-        publishedTo = publishedTo,
-        query = query
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+<pager class="pager-container" asp-action="Leads" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-status="@status" asp-route-leadID="@leadID" asp-route-publishedFrom="@publishedFrom" asp-route-publishedTo="@publishedTo" asp-route-query="@query" />

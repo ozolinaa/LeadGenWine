@@ -1,6 +1,14 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 @{string formID = "LeadConfirationForm";}
-@using (Ajax.BeginForm("Confirm", null, null, new AjaxOptions { UpdateTargetId = formID, InsertionMode = InsertionMode.ReplaceWith}, new { @class = "form-horizontal", id = formID }))
+@using (Html.BeginForm("Confirm", null, null, FormMethod.Post, true, new
+{
+    @class = "form-horizontal",
+    id = formID,
+    data_ajax = "true",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#" + formID,
+}))
 {
     <h2>Please Confirm The Order</h2>
 
@@ -27,7 +35,7 @@
     <hr />
 
     <div class="form-group">
-        @Html.Hidden("GoBackToOrder", false, new {id = "GoBackToOrder" })
+        @Html.Hidden("GoBackToOrder", false, new { id = "GoBackToOrder" })
         <div class="col-xs-2"><button type="submit" class="btn btn-default" onclick="$('#GoBackToOrder').val('True')">Back</button></div>
         <div class="col-xs-10"><button type="submit" class="btn btn-primary">Confirm</button></div>
     </div>

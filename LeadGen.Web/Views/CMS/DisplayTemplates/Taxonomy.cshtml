@@ -11,10 +11,10 @@
     foreach (Term term in Model.termList)
     {
         i++;
-        //MvcHtmlString termLink = Html.ActionLink((string)ViewData["termPrefix"] + term.name, "Index", new { urlPath = String.Format("{0}/{1}/", Model.typeURL, term.termURL) });
-        MvcHtmlString termLink = new MvcHtmlString((string)ViewData["termPrefix"] + term.name);
+        //IHtmlContent termLink = Html.ActionLink((string)ViewData["termPrefix"] + term.name, "Index", new { urlPath = String.Format("{0}/{1}/", Model.typeURL, term.termURL) });
+        IHtmlContent termLink = new HtmlString((string)ViewData["termPrefix"] + term.name);
 
-        termLink = new MvcHtmlString(String.Format("{0}{1}", termLink, (i < Model.termList.Count) ? ", " : ""));
+        termLink = new HtmlString(String.Format("{0}{1}", termLink, (i < Model.termList.Count) ? ", " : ""));
         @termLink
     }
 }

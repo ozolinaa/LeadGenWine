@@ -2,7 +2,7 @@
 @using LeadGen.Code.Lead
 @*~/Content/bootstrap-star-rating/examples/index.html*@
 @{
-    MvcHtmlString measureScoresName = Html.NameForModel();
+    string measureScoresName = Html.NameForModel();
     Dictionary<Review.Measure, string> measureNames = ViewData["measureNames"] as Dictionary<Review.Measure, string>;
     int maxStars = 5;
     int maxRatingValue = 10;

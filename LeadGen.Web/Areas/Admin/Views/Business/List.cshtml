@@ -70,15 +70,6 @@
 
 </table>
 
-@Html.PagedListPager(Model,
-    page => Url.Action("List", new
-    {
-        page,
-        businessID = businessID,
-        query = query,
-        registeredFrom = registeredFrom,
-        registeredTo = registeredTo
-    }),
-    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
-)
+<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
+       asp-route-businessID="@businessID" asp-route-registeredFrom="@registeredFrom" asp-route-registeredTo="@registeredTo" asp-route-query="@query" />
 
