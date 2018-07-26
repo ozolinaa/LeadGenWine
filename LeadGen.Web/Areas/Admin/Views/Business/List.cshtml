@@ -1,6 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Business.Business>
-@using PagedList.Core.Mvc;
-@using LeadGen.Code.Lead;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Business.Business>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 
 @{
     ViewBag.Title = "List";
@@ -54,22 +54,31 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.ActionLink(String.Format("ID: {0} | Name: {1}", item.ID, item.name), "Details", new {id = item.ID})
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.webSite)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.registrationDate)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(String.Format("ID: {0} | Name: {1}", item.ID, item.name), "Details", new { id = item.ID })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.webSite)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.registrationDate)
+            </td>
+        </tr>
+    }
 
 </table>
 
-<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-businessID="@businessID" asp-route-registeredFrom="@registeredFrom" asp-route-registeredTo="@registeredTo" asp-route-query="@query" />
-
+@Html.PagedListPager(Model,
+    page => Url.Action("List", new
+    {
+        page,
+        businessID = businessID,
+        query = query,
+        registeredFrom = registeredFrom,
+        registeredTo = registeredTo
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

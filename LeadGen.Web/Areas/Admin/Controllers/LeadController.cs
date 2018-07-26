@@ -1,17 +1,15 @@
 ﻿using LeadGen.Code.Business.Notification;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
-using LeadGen.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
-using PagedList;
-using PagedList.Core;
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LeadGen.Web.Controllers;
 
-
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class LeadController : AdminBaseController
     {

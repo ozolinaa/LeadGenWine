@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Business.Inovice.Invoice>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Business.Inovice.Invoice>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @using LeadGen.Code.Lead
 
 @{
@@ -56,7 +57,7 @@
     {
         DateTime legalDate = new DateTime(invoice.legalYear, invoice.legalMonth, 1);
         <tr>
-            <td>@Html.ActionLink(invoice.legalNumber.ToString(), "Details", new { legalNumber = invoice.legalNumber, legalYear = invoice.legalYear }, new { @class = "btn btn-link"})</td>
+            <td>@Html.ActionLink(invoice.legalNumber.ToString(), "Details", new { legalNumber = invoice.legalNumber, legalYear = invoice.legalYear }, new { @class = "btn btn-link" })</td>
             <td>@invoice.totalSum.ToString("F")</td>
             <td>@invoice.publishedDateTime.Value.ToLocalTime().ToShortDateString()</td>
             <td>@legalDate.ToString("MMMM") @invoice.legalYear</td>
@@ -81,5 +82,13 @@
     }
 </table>
 
-<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-isPaid="@isPaid" asp-route-legalYear="@legalYear" asp-route-legalNumber="@legalNumber" />
+@Html.PagedListPager(Model,
+    page => Url.Action("List", null, new
+    {
+        page,
+        isPaid = isPaid,
+        legalYear = legalYear,
+        legalNumber = legalNumber
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

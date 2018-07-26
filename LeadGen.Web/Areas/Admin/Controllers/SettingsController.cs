@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class SettingsController : AdminBaseController
     {

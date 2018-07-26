@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Lead.LeadItem>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Lead.LeadItem>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @using LeadGen.Code.Lead
 @{
     ViewBag.Title = "Leads";
@@ -34,7 +35,7 @@
 </ul>
 
 <div class="row" style="margin-top:10px;">
-    @using (Html.BeginForm("Leads", null, new { ID = business.ID }, FormMethod.Get, null))
+    @using (Html.BeginForm("Leads", null, new { ID = business.ID }, FormMethod.Get, null, null))
     {
         @Html.Hidden("status", status)
         <div class="col-sm-1 form-group">
@@ -78,5 +79,15 @@
         break;
 }
 
-<pager class="pager-container" asp-action="Leads" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-status="@status" asp-route-leadID="@leadID" asp-route-publishedFrom="@publishedFrom" asp-route-publishedTo="@publishedTo" asp-route-query="@query" />
+@Html.PagedListPager(Model,
+    page => Url.Action("Leads", new
+    {
+        page,
+        status = status,
+        leadID = leadID,
+        publishedFrom = publishedFrom,
+        publishedTo = publishedTo,
+        query = query
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

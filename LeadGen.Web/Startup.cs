@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LeadGen.Code;
+using LeadGen.Code.Helpers;
+using LeadGen.Code.Settings;
+using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace LeadGen.Web
 {
@@ -32,8 +37,13 @@ namespace LeadGen.Web
             //https://stackoverflow.com/questions/41517359/pagedlist-core-mvc-pagedlistpager-html-extension-in-net-core-is-not-there
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
+            //https://ppolyzos.com/2016/09/09/asp-net-core-render-view-to-string/
+            services.AddScoped<IViewRenderService, ViewRenderService>();
 
-            Code.Helpers.SysHelper.InitServiceProvider(services.BuildServiceProvider());
+            //https://stackoverflow.com/questions/38571032/how-to-get-httpcontext-current-in-asp-net-core
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            SysHelper.InitServiceProvider(services.BuildServiceProvider());
 
 
         }

@@ -1,5 +1,5 @@
 ﻿using LeadGen.Code.Sys;
-using LeadGen.Controllers;
+using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace LeadGen.Web.Controllers
         internal string DBLGconString { get { return getDbConnectionString(); } }
 
         private static string getDbConnectionString() {
-            return Code.Helpers.SysHelper.AppSettings.SQLConnectionString;
+            return Code.Helpers.SysHelper.AppSettings.SQLConnection;
         }
 
 

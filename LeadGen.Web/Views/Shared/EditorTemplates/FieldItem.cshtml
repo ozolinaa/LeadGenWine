@@ -63,7 +63,7 @@
     @{ string labelClass = "";}
     @switch (Model.fieldType)
             {
-                case LeadGen.Code.Lead.FieldType.Textbox:
+        case LeadGen.Code.Lead.FieldType.Textbox:
             @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
             break;
         case LeadGen.Code.Lead.FieldType.Boolean:
@@ -76,7 +76,7 @@
             @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
             break;
         default:
-            @Html.Label(Model.label, new { @class = labelClass })
+            @Html.Label(null, Model.label, new { @class = labelClass })
             break;
     }
 

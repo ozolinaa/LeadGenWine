@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.CMS.Post>
-@using PagedList.Core.Mvc
+﻿@model X.PagedList.IPagedList<LeadGen.Code.CMS.Post>
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Common
 @using LeadGen.Code.CMS
 @using Microsoft.AspNetCore.Html
 @using LeadGen.Code.Taxonomy
@@ -68,5 +69,13 @@
 
 </table>
 
-    <pager class="pager-container" asp-action="PostList" asp-controller="CMS" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-           asp-route-typeID="@typeID" asp-route-statusID="@statusID" asp-route-query="@query" />
+@Html.PagedListPager(Model,
+    page => Url.Action("PostList", new
+    {
+        page,
+        typeID = typeID,
+        statusID = statusID,
+        query = query
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

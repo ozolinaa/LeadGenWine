@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Microsoft.AspNetCore.Routing;
+using System;
+using System.IO;
 
 namespace LeadGen.Code.Sys
 {
@@ -37,5 +40,6 @@ namespace LeadGen.Code.Sys
             ViewEngineResult viewResult = viewEngine.FindView(ControllerContext, viewName, isMain);
             return (viewResult.View != null);
         }
+
     }
 }

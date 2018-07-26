@@ -11,9 +11,9 @@ using System.Web;
 using LeadGen.Code.Business;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LeadGen.Areas.Business.Controllers
+namespace LeadGen.Web.Areas.Business.Controllers
 {
-    public class RegistrationController : LeadGen.Controllers.LoginController
+    public class RegistrationController : LeadGen.Web.Controllers.LoginController
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

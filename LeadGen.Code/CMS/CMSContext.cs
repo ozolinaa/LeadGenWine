@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PagedList;
-using PagedList.Core;
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Configuration;

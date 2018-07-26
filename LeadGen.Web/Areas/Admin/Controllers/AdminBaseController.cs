@@ -1,6 +1,6 @@
 ﻿using LeadGen.Code.CMS;
 using LeadGen.Code.Taxonomy;
-using LeadGen.Controllers;
+using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class AdminBaseController : LoginController

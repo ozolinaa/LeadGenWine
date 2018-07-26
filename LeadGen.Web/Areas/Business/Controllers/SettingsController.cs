@@ -9,7 +9,7 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 
-namespace LeadGen.Areas.Business.Controllers
+namespace LeadGen.Web.Areas.Business.Controllers
 {
     public class SettingsController : BusinessParentController
     {

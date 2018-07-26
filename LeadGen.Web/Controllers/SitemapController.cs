@@ -10,13 +10,13 @@ using LeadGen.Code.CMS;
 using LeadGen.Code.CMS.Sitemap;
 using System.Xml.Linq;
 using System.Xml;
-using PagedList;
+
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using PagedList.Core;
+using X.PagedList;
 
-namespace LeadGen.Controllers
+namespace LeadGen.Web.Controllers
 {
     public class SitemapController : DatabaseController
     {

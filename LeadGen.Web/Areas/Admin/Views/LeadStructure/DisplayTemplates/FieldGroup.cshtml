@@ -14,13 +14,13 @@
         </th>
         <th>
             @Html.ActionLink("Add Field", "FieldCreate", null, new { groupID = Model.ID }, new {
-@class = "btn btn-primary pull-right",
-data_ajax = "true",
-data_ajax_method = "GET",
-data_ajax_loading = "#LoadingWindowSplash",
-data_ajax_mode = "replace",
-data_ajax_update = "#ActionForLeadID-" + @Model.ID
-})
+           @class = "btn btn-primary pull-right",
+           data_ajax = "true",
+           data_ajax_method = "GET",
+           data_ajax_loading = "#LoadingWindowSplash",
+           data_ajax_mode = "replace",
+           data_ajax_update = "#PopUp"
+       })
         </th>
     </tr>
     @if (Model.fields.Any())

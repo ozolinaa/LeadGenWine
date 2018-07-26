@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.StaticFiles;
+﻿using LeadGen.Code.Settings;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,14 @@ namespace LeadGen.Code.Helpers
             get
             {
                 return GetServiceProvider.GetRequiredService<IAppSettings>();
+            }
+        }
+
+        public static IViewRenderService ViewRenderService
+        {
+            get
+            {
+                return GetServiceProvider.GetRequiredService<IViewRenderService>();
             }
         }
     }

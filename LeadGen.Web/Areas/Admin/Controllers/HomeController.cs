@@ -1,11 +1,11 @@
-﻿using LeadGen.Controllers;
+﻿using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class HomeController : AdminBaseController
     {

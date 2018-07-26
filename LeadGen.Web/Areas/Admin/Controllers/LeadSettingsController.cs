@@ -1,7 +1,7 @@
 ﻿using LeadGen.Code;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
-using LeadGen.Controllers;
+using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class LeadSettingsController : AdminBaseController
     {

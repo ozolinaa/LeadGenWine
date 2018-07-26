@@ -3,7 +3,6 @@ using LeadGen.Code.CMS;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
-using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace LeadGen.Controllers
+namespace LeadGen.Web.Controllers
 {
     public class OrderController : DatabaseController
     {
@@ -172,7 +171,7 @@ namespace LeadGen.Controllers
 
             message.Subject = "Подтверждение на удаление заявки";
             message.Body = ViewHelper.RenderPartialToString("~/Views/Order/E-mails/_CancelOrders.cshtml", email, viewDataDictionary);
-            using (SmtpClient smtp = new SmtpClient())
+            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
             {
                 message.Send(smtp);
             }

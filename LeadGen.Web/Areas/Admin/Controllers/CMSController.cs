@@ -1,4 +1,4 @@
-﻿using LeadGen.Controllers;
+﻿using LeadGen.Web.Controllers;
 using LeadGen.Code;
 using System;
 using System.Collections.Generic;
@@ -7,14 +7,13 @@ using System.Web;
 
 using LeadGen.Code.CMS;
 using LeadGen.Code.Taxonomy;
-using PagedList;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using PagedList.Core;
+using X.PagedList;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class CMSController : AdminBaseController
     {
@@ -116,12 +115,9 @@ namespace LeadGen.Areas.Admin.Controllers
             return View(postItem);
         }
 
-        private bool postEditModelUpdateFilter(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata) {
-            modelMetadata = modelMetadata;
-            return true;
-        }
 
         // Save Updated Post
+        private static readonly string[] postEditPropsToPreventChangeWhenUpdateModel = { "attachmentList", "forTermId", "taxonomies" };
         [HttpPost]
         public ActionResult PostEdit(Post postedPostItem)
         {
@@ -140,8 +136,7 @@ namespace LeadGen.Areas.Admin.Controllers
             postToUpdate.thumbnailAttachmentID = null;
 
             //Update postToUpdate from the httpContext but exclude some properties that should not be changed
-            Predicate<string> propertyFilter = propertyName => new string[] { "attachmentList", "forTermID", "taxonomies" }.Contains(propertyName);
-            TryUpdateModelAsync(postToUpdate,"", postEditModelUpdateFilter).Wait();
+            TryUpdateModelAsync(postToUpdate,"", x=> postEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
 
             //Remove taxonomies validation errors as tags urls and other properties are not availeble
             ModelState.Keys.Where(x => x.StartsWith("taxonomies[")).ToList().ForEach(x => ModelState[x].Errors.Clear());

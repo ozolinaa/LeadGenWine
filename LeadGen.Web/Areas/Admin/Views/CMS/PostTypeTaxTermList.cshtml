@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<Term>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<Term>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @using LeadGen.Code.CMS
 @using LeadGen.Code.Taxonomy
 @using LeadGen.Code.CMS
@@ -13,7 +14,7 @@
     PostType: @postTypeTax.postType.name Tax: @postTypeTax.taxonomy.name Terms
 </h2>
 
-@Html.ActionLink("Стартовая страница", "PostTypeTaxStartPostEdit", new { typeID = postTypeTax.postType.ID}, new {@class = "btn btn-primary"})
+@Html.ActionLink("Стартовая страница", "PostTypeTaxStartPostEdit", new { typeID = postTypeTax.postType.ID }, new { @class = "btn btn-primary" })
 
 
 <div class="col-xs-12">
@@ -43,7 +44,13 @@
         </tbody>
     </table>
 
-    <pager class="pager-container" asp-action="PostTypeTaxTermList" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-           asp-route-postTypeID="@postTypeTax.forPostTypeID" asp-route-taxonomyID="@postTypeTax.taxonomy.ID" />
-
+    @Html.PagedListPager(Model,
+            page => Url.Action("PostTypeTaxTermList", new
+            {
+                page,
+                postTypeID = postTypeTax.forPostTypeID,
+                taxonomyID = postTypeTax.taxonomy.ID
+            }),
+            new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+        )
 </div> 

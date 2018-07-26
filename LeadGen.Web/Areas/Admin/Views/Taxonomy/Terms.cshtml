@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Taxonomy.Term>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Taxonomy.Term>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @using LeadGen.Code.Taxonomy
 @using LeadGen.Code.CMS
 @{
@@ -7,7 +8,7 @@
 
     List<PostType> taxUsedInPostTypes = ViewBag.taxUsedInPostTypes;
     Taxonomy taxonomy = ViewBag.taxonomy;
-    string query = ViewBag.query; 
+    string query = ViewBag.query;
 
 }
 
@@ -97,7 +98,14 @@
         </tbody>
     </table>
 
-    <pager class="pager-container" asp-action="Terms" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-           asp-route-query="@query" asp-route-taxonomyID="@taxonomy.ID"  />
+    @Html.PagedListPager(Model,
+            page => Url.Action("Terms", new
+            {
+                page,
+                query = query,
+                taxonomyID = taxonomy.ID
+            }),
+            new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+        )
 
 </div> 

@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Lead.LeadItem>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Lead.LeadItem>
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Mvc.Common
 @using LeadGen.Code.Lead
 
 @{
@@ -143,8 +144,15 @@
         break;
 }
 
-<pager class="pager-container" asp-action="Orders" asp-controller="Account" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-status="@status"  asp-route-leadID="@leadID"  asp-route-publishedFrom="@publishedFrom.ToString()"  asp-route-publishedTo="@publishedTo.ToString()" asp-route-query="@query" />
+@Html.PagedListPager(Model,
+    page => Url.Action("Orders", "Account", new
+    {
+        page,
+        status = status,
+        leadID = leadID,
+        publishedFrom = publishedFrom.ToString(),
+        publishedTo = publishedTo.ToString(),
+        query = query
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
 )
-
-

@@ -27,8 +27,8 @@ namespace LeadGen.Code.Sys
         {
             ID = Guid.NewGuid();
             createdDateTime = DateTime.UtcNow;
-            From = new MailAddress(SysHelper.AppSettings.EmailDefaultFromAddress, SysHelper.AppSettings.EmailDefaultFromName);
-            ReplyToList.Add(new MailAddress(SysHelper.AppSettings.EmailDefaultReplyToAddress));
+            From = new MailAddress(SysHelper.AppSettings.EmailSettings.FromAddress, SysHelper.AppSettings.EmailSettings.FromName);
+            ReplyToList.Add(new MailAddress(SysHelper.AppSettings.EmailSettings.ReplyToAddress));
             IsBodyHtml = true;
         }
 
@@ -96,12 +96,9 @@ namespace LeadGen.Code.Sys
         public static int SendQueuedMessages(SqlConnection connection)
         {
             int sentMessagesCount = 0;
-            int AmazonSESMailIntervalMilliseconds = 0;
-            Int32.TryParse(SysHelper.AppSettings.AmazonSESMailIntervalMilliseconds, out AmazonSESMailIntervalMilliseconds);
-
-
-            using (SmtpClient smtp = new SmtpClient())
+            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
             {
+                int sendIntervalMilliseconds = SysHelper.AppSettings.EmailSettings.SmtpSettings.SendIntervalMilliseconds;
                 do
                 {
                     QueueMailMessage message = GetNextMessageFromTheQueue(connection);
@@ -110,20 +107,14 @@ namespace LeadGen.Code.Sys
 
                     //Our current Amazon SES maximum send rate is 14 messages per second
                     //So need to wait about 100 miliseconds between sending the next email
-                    if (AmazonSESMailIntervalMilliseconds > 0)
-                        System.Threading.Thread.Sleep(AmazonSESMailIntervalMilliseconds);
+                    if (sendIntervalMilliseconds > 0)
+                        System.Threading.Thread.Sleep(sendIntervalMilliseconds);
 
                     message.SendQueuedMessage(connection, smtp);
                     sentMessagesCount++;
                 }
                 while (true);
             }
-
-
-
-
-
-
             return sentMessagesCount;
         }
 

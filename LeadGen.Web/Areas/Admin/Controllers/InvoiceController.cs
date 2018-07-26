@@ -5,7 +5,7 @@ using LeadGen.Code.Business.Inovice;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class InvoiceController : AdminBaseController
     {

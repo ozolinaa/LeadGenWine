@@ -1,19 +1,20 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Lead.LeadItem>
-@using PagedList.Core.Mvc;
-@using LeadGen.Code.Lead;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Lead.LeadItem>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@using LeadGen.Code.Lead
 
 @{
     ViewBag.Title = "OrderList";
     AdminDetails.Status[] displayStatuses = new AdminDetails.Status[] {
-        AdminDetails.Status.ReadyToPublish,
-        AdminDetails.Status.NotConfirmed,
-        AdminDetails.Status.Canceled,
-        AdminDetails.Status.Published,
-        AdminDetails.Status.NotInWork,
-        AdminDetails.Status.InWork,
-        AdminDetails.Status.Important,
-        AdminDetails.Status.Completed
-    };
+AdminDetails.Status.ReadyToPublish,
+AdminDetails.Status.NotConfirmed,
+AdminDetails.Status.Canceled,
+AdminDetails.Status.Published,
+AdminDetails.Status.NotInWork,
+AdminDetails.Status.InWork,
+AdminDetails.Status.Important,
+AdminDetails.Status.Completed
+};
 
     AdminDetails.Status currentStatus = ViewBag.status;
     long? leadID = ViewBag.leadID;
@@ -65,5 +66,15 @@
     @Html.DisplayFor(x => x)
 </table>
 
-<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-status="@currentStatus" asp-route-leadID="@leadID.ToString()" asp-route-publishedFrom="@publishedFrom" asp-route-publishedTo="@publishedTo" asp-route-query="@query" />
+@Html.PagedListPager(Model,
+    page => Url.Action("List", new
+    {
+        page,
+        status = currentStatus,
+        leadID = leadID.ToString(),
+        publishedFrom = publishedFrom,
+        publishedTo = publishedTo,
+        query = query
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

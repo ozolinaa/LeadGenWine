@@ -5,10 +5,9 @@ using System.Web;
 
 using LeadGen.Code.Lead;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
-using PagedList.Core;
+using X.PagedList;
 
-namespace LeadGen.Areas.Admin.Controllers
+namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class ReviewController : AdminBaseController
     {

@@ -5,10 +5,10 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LeadGen.Areas.Business.Controllers
+namespace LeadGen.Web.Areas.Business.Controllers
 {
     [Area("Business")]
-    public class BusinessParentController : LeadGen.Controllers.LoginController
+    public class BusinessParentController : LeadGen.Web.Controllers.LoginController
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

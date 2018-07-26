@@ -1,6 +1,7 @@
-﻿@model PagedList.Core.IPagedList<LeadGen.Code.Lead.Review>
-@using PagedList.Core.Mvc;
-@using LeadGen.Code.Lead;
+﻿@model X.PagedList.IPagedList<LeadGen.Code.Lead.Review>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@using LeadGen.Code.Lead
 
 @{
     ViewBag.Title = "OrderList";
@@ -59,6 +60,15 @@ Review.Status.Published
     @Html.DisplayFor(x => x, (object)ViewBag.businesses)
 </table>
 
-<pager class="pager-container" asp-action="List" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-status="@currentStatus" asp-route-leadID="@leadID" asp-route-businessID="@businessID" asp-route-createdFrom="@createdFrom" asp-route-createdTo="@createdTo" />
-
+@Html.PagedListPager(Model,
+    page => Url.Action("List", new
+    {
+        page,
+        status = currentStatus,
+        leadID = leadID,
+        businessID = businessID,
+        createdFrom = createdFrom,
+        createdTo = createdTo
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+)

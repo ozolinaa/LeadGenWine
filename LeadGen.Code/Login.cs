@@ -216,7 +216,7 @@ namespace LeadGen.Code
         {
             throw new NotImplementedException();
             //string mailSubject = "Восстановление пароля";
-            //string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
+            //string viewPath = "Views/Login/E-mails/_PasswordRecovery";
 
             //Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
             //ViewDataDictionary viewDataDictionary = new ViewDataDictionary( { "tokenKey", token.key } };

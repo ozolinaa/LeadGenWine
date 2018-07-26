@@ -4,8 +4,7 @@ using LeadGen.Code.Sys;
 using LeadGen.Code.Taxonomy;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using PagedList;
-using PagedList.Core;
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -210,7 +209,7 @@ namespace LeadGen.Code.Lead
                 {
                     foreach (LeadItem leadItem in leadItems)
                     {
-                        using (DataTable leadFieldGroupDataTable = new DataTable())
+                        using (DataTable leadFieldGroupDataTable = mixedLeadFieldGroupDataTable.Clone())
                         {
                             foreach (DataRow row in mixedLeadFieldGroupDataTable.Select(String.Format("LeadID = {0}", leadItem.ID)))
                             {
@@ -340,13 +339,15 @@ namespace LeadGen.Code.Lead
             string mailSubject = "Подтверждение E-mail адреса";
             string viewPath = "~/Views/Order/E-mails/_EmailConfirm.cshtml";
 
+
+
             Token token = new Token(con, Token.Action.LeadEmailConfirmation.ToString(), ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.key } };
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
 
             QueueMailMessage message = new QueueMailMessage(email);
             message.Subject = mailSubject;
             message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
-            using (SmtpClient smtp = new SmtpClient())
+            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
             {
                 message.Send(smtp);
             }

@@ -1,7 +1,6 @@
 ﻿using LeadGen.Code.Helpers;
 using LeadGen.Code.Sys;
-using PagedList;
-using PagedList.Core;
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data;

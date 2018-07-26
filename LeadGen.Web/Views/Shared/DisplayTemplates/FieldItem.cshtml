@@ -34,7 +34,7 @@
             @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
             break;
         default:
-            @Html.Label(Model.label, new { @class = labelClass })
+            @Html.Label(null, Model.label, new { @class = labelClass })
             break;
     }
 

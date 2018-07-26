@@ -8,7 +8,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace LeadGen.Controllers
+namespace LeadGen.Web.Controllers
 {
     public class TokenController : DatabaseController
     {
@@ -75,7 +75,7 @@ namespace LeadGen.Controllers
                 recoverLogin = Login.SelectOne(DBLGcon, loginID: loginID);
 
             ViewData["tokenKey"] = token.key;
-            return View("~/Views/Login/RecoverPassword.cshtml", recoverLogin);
+            return View("../Login/RecoverPassword", recoverLogin);
         }
 
         [NonAction]
@@ -87,7 +87,7 @@ namespace LeadGen.Controllers
                 {
                     token.Delete(DBLGcon);
                     LeadItem leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: leadID, loadFieldValues: true).FirstOrDefault();
-                    return View("~/Views/Order/ConfirmEmailSuccess.cshtml", leadItem);
+                    return View("../Order/ConfirmEmailSuccess", leadItem);
                 }
                     
 
@@ -106,7 +106,7 @@ namespace LeadGen.Controllers
 
             token.Delete(DBLGcon);
 
-            return View("~/Views/Order/Canceled.cshtml", email);
+            return View("../Order/Canceled", email);
         }
 
     }

@@ -1,5 +1,6 @@
-﻿@model PagedList.Core.IPagedList<Post>
-@using PagedList.Core.Mvc;
+﻿@model X.PagedList.IPagedList<Post>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @using LeadGen.Code.CMS;
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
@@ -23,10 +24,8 @@
     }
 </div>
 
-<pager class="pager-container" asp-action="Index" list="@Model" options="ViewHelpers.PagedListRenderOptionsLeadGen(@Model)"
-       asp-route-urlPath="@String.Format("{0}/page/{1}", cmsContext.urlPath, 1)" />
 @Html.PagedListPager(Model,
-    page => Url.Action("Index", new { urlPath =  }),
+    page => Url.Action("Index", new { urlPath = String.Format("{0}/page/{1}", cmsContext.urlPath, page) }),
     new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
 )
 

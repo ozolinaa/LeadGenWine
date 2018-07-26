@@ -1,14 +1,12 @@
 ﻿using LeadGen.Code.CMS;
 using LeadGen.Code.Map;
-using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace LeadGen.Controllers
+namespace LeadGen.Web.Controllers
 {
     public class CMSController : DatabaseController
     {

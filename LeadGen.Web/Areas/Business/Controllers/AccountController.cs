@@ -2,8 +2,8 @@
 using LeadGen.Code.CMS;
 using LeadGen.Code.Lead;
 using Microsoft.AspNetCore.Mvc;
-using PagedList;
-using PagedList.Core;
+
+using X.PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web;
 
 
-namespace LeadGen.Areas.Business.Controllers
+namespace LeadGen.Web.Areas.Business.Controllers
 {
     public class AccountController : BusinessParentController
     {

@@ -53,29 +53,11 @@ namespace LeadGen.Code.Helpers
             //return string.Empty;
         }
 
-        public static string RenderPartialToString(string filePath, object model, ViewDataDictionary additionalViewData = null)
+        public static string RenderPartialToString(string viewName, object model, ViewDataDictionary additionalViewData = null)
         {
-            throw new NotImplementedException();
-            //StringWriter st = new StringWriter();
-            //HttpContextWrapper context = new HttpContextWrapper(HttpContext.Current);
-            //RouteData routeData = new RouteData();
-            //ControllerContext controllerContext = new ControllerContext(new RequestContext(context, routeData), new LeadGenBaseController());
-
-            //RazorView razor = new RazorView(controllerContext, filePath, null, false, null);
-
-            //ViewDataDictionary viewDataDictionary = new ViewDataDictionary(model);
-            //if (additionalViewData != null)
-            //    foreach (var item in additionalViewData)
-            //        viewDataDictionary.Add(item.Key, item.Value);
-
-            //razor.Render(new ViewContext(controllerContext, razor, viewDataDictionary, new TempDataDictionary(), st), st);
-            //return st.ToString();
+            string viewHtml = SysHelper.ViewRenderService.RenderToStringAsync(viewName, model, additionalViewData).Result;
+            return viewHtml;
         }
-
-        //public static string MapPath(string filePath)
-        //{
-        //    return HttpContext.Current != null ? HttpContext.Current.Server.MapPath(filePath) : string.Format("{0}{1}", AppDomain.CurrentDomain.BaseDirectory, filePath.Replace("~", string.Empty).TrimStart('/'));
-        //}
 
         public static string GetDigitStringFromNumber(decimal? number, bool alwaysShowFraction = false)
         {

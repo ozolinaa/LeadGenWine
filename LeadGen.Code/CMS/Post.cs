@@ -9,10 +9,9 @@ using LeadGen.Code.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 using LeadGen.Code.CMS.Sitemap;
-using PagedList;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using PagedList.Core;
+using X.PagedList;
 
 namespace LeadGen.Code.CMS
 {
@@ -591,7 +590,7 @@ namespace LeadGen.Code.CMS
 
                 foreach (DataRow attachmentRow in dt.DefaultView.ToTable(true, "AttachmentID", "AuthorID", "DateCreated", "AttachmentTypeID", "AttachmentTypeName", "MIME", "URL", "Name", "Description").Rows)
                 {
-                    using (DataTable attachmentData = new DataTable())
+                    using (DataTable attachmentData = dt.Clone())
                     {
                         foreach (DataRow row in dt.Select(String.Format("AttachmentID = {0}", attachmentRow["AttachmentID"])))
                         {

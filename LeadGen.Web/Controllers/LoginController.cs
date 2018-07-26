@@ -1,5 +1,4 @@
 ﻿using LeadGen.Code;
-using LeadGen.Web.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -10,7 +9,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace LeadGen.Controllers
+namespace LeadGen.Web.Controllers
 {
     public class LoginController : DatabaseController
     {
@@ -208,7 +207,7 @@ namespace LeadGen.Controllers
                     ModelState.AddModelError("newPassword.passwordConfirmation", "Confirmation password does not match new password");
             }
 
-            return PartialView("~/Views/Shared/EditorTemplates/LoginPassword.cshtml", postedLogin);
+            return PartialView("EditorTemplates/LoginPassword", postedLogin);
         }
 
     }

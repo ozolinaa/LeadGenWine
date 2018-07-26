@@ -11,8 +11,9 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PagedList.Core;
+using X.PagedList;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LeadGen.Code.Business
 {
@@ -187,13 +188,14 @@ namespace LeadGen.Code.Business
             string mailSubject = "Пожалуйста подтвердите регистрацию";
             string viewPath = "~/Areas/Business/Views/Registration/E-mails/_registrationConfirmation.cshtml";
 
-            Token tokenEmailConfirmation = new Token(con, Token.Action.LoginEmailConfirmation.ToString(), login.ID.ToString());
+            Token token = new Token(con, Token.Action.LoginEmailConfirmation.ToString(), login.ID.ToString());
 
             QueueMailMessage message = new QueueMailMessage(login.email);
             message.Subject = mailSubject;
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", tokenEmailConfirmation.key } };
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
+
             message.Body = ViewHelper.RenderPartialToString(viewPath, login, viewDataDictionary);
-            using (SmtpClient smtp = new SmtpClient())
+            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
             {
                 message.Send(smtp);
             }
