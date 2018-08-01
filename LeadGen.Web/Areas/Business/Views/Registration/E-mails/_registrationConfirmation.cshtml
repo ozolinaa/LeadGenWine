@@ -1,13 +1,12 @@
 ﻿@model LeadGen.Code.Login
 
 @{
-    string hostName = HttpContext.Current.Request.RequestContext.HttpContext.Request.Url.Host;
     string tokenKey = ViewData["tokenKey"].ToString();
 }
 
 <h2>Please, confirm your registration</h2>
  
 <p>Здравствуйте, уважаемая администрация компании @Model.business.name!</p>
-<p>To confirm your resgistration please @Html.ActionLink("click this link", "index", "Token", null, hostName, null, new {area = "", key = tokenKey }, null)</p>
+<p>To confirm your resgistration please @Html.ActionLink("click this link", "index", "Token", Context.Request.Scheme, Context.Request.Host.ToString(), null, new {area = "", key = tokenKey }, null)</p>
 
 <p>For further login please use this password: @Model.password</p>

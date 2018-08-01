@@ -1,166 +1,26 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 @{
     ViewBag.Title = "Index";
-    int groupIndex = 0;
-    int fieldIndex = 0;
 }
 
-<link href="~/Content/Order.css" rel="stylesheet" />
 
 <div class="form-horizontal">
 
     <h1 class="title">Заявка на изготовление памятника №@Model.ID</h1>
 
-    <div class="wanna" style="background:none;">
-        <div class="container">
-            @{
-                groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
-                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "shape");
-                if (Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Where(x => x.isChecked).Any())
+    <div style="background:none;">
+        @for (int i = 0; i < Model.fieldGroups.Count; i++)
+        {
+            <h3>@Model.fieldGroups[i].title</h3>
+            for (int j = 0; j < Model.fieldGroups[i].fields.Count; j++)
+            {
+                if (!Model.fieldGroups[i].fields[j].isContact)
                 {
-                    <h3 class="title">Форма памятника</h3>
-                    <div class="color list">
-                        @for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
-                        {
-                            var term = Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
-                            if (term.isChecked)
-                            {
-                                string imageSrc = string.Format("/Content/themes/izgpam/order/shape/{0}.jpg", term.termURL);
-                                <div class="item">
-                                    <label>
-                                        <img src="@imageSrc" alt="@term.name" title="@term.name" />
-                                        <span class="text">@term.name</span>
-                                    </label>
-                                </div>
-                            }
-                        }
+                    <div>
+                        @Html.DisplayFor(x => x.fieldGroups[i].fields[j])
                     </div>
                 }
-                //Need to render DisplayFor the field because as it renders some required fields
-                <div style="display:none;">
-                    @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                </div>
             }
-
-            @{
-                //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
-                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "material");
-                if (Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Where(x => x.isChecked).Any())
-                {
-                    <h3 class="title">Материалы/цвет</h3>
-                    <div class="color list">
-                        @for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
-                        {
-                            var term = Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
-                            if (term.isChecked)
-                            {
-                                string imageSrc = string.Format("/Content/themes/izgpam/order/material/{0}.jpg", term.termURL);
-                                <div class="item">
-                                    <label>
-                                        <span class="pic">
-                                            <img src="@imageSrc" alt="@term.name" title="@term.name" />
-                                        </span>
-                                        <span class="text">@term.name</span>
-                                    </label>
-                                </div>
-                            }
-                        }
-                    </div>
-                }
-                //Need to render DisplayFor the field because as it renders some required fields
-                <div style="display:none;">
-                    @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                </div>
-            }
-
-            @{
-                //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "comments");
-                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "accessories");
-                if (Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Where(x => x.isChecked).Any())
-                {
-                    <h3 class="title">Аксессуары оформления надгробия</h3>
-                    <div class="color list">
-                        @for (int i = 0; i < Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms.Count(); i++)
-                        {
-                            var term = Model.fieldGroups[groupIndex].fields[fieldIndex].fieldTerms[i];
-                            if (term.isChecked)
-                            {
-                                string imageSrc = string.Format("/Content/themes/izgpam/order/accessories/{0}.jpg", term.termURL);
-                                <div class="item">
-                                    <label>
-                                        <img src="@imageSrc" alt="@term.name" class="img-q" title="@term.name" />
-                                        <span class="text">@term.name</span>
-                                    </label>
-                                </div>
-                            }
-                        }
-                    </div>
-                }
-                //Need to render DisplayFor the field because as it renders some required fields
-                <div style="display:none;">
-                    @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                </div>
-
-
-                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "pamName");
-                <h3 class="title">Кому Памятник</h3>
-                <h4 class="title">@Model.fieldGroups[groupIndex].fields[fieldIndex].fieldText</h4>
-                <div style="display:none;">
-                    @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                </div>
-
-                fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "comments");
-                if (string.IsNullOrEmpty(Model.fieldGroups[groupIndex].fields[fieldIndex].fieldText) == false)
-                {
-                    <h3 class="title">Пожелания к заказу</h3>
-                    <h4 class="title">@Model.fieldGroups[groupIndex].fields[fieldIndex].fieldText</h4>
-                    <div style="display:none;">
-                        @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                    </div>
-                }
-
-
-                <h3 class="title">Условия заказа и уставновки</h3>
-
-                <div class="row">
-                    <div class="col-sm-6">
-                        @{
-                            groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "city");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-
-                            //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "cemetery");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-
-                            //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "installationRequired");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                        }
-
-                    </div>
-                    <div class="col-sm-6">
-                        @{
-                            //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "businessType");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-
-                            //groupIndex = Model.fieldGroups.FindIndex(x => x.code == "terms");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "price");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-
-                            groupIndex = Model.fieldGroups.FindIndex(x => x.code == "dates");
-                            fieldIndex = Model.fieldGroups[groupIndex].fields.FindIndex(x => x.code == "executeDate");
-                            @Html.DisplayFor(x => x.fieldGroups[groupIndex].fields[fieldIndex])
-                        }
-                    </div>
-                </div>
-            }
-
-
-
-
-
-        </div>
+        }
     </div>
 </div>

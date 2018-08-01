@@ -3,6 +3,9 @@
 @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
 <article>
     <h1>@Model.post.title</h1>
+    @{
+        //string orderLink = Url.RouteUrl("LeadPublic", new { area = "", id = 111 }, Context.Request.Scheme);
+    }
     @Html.Raw(Model.post.contentIntro)
     @Html.Raw(Model.post.contentPreview)
     @Html.Raw(Model.post.contentMain)

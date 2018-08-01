@@ -4,15 +4,14 @@
 
 @{
     //string tokenKey = ViewData["tokenKey"].ToString();
-    string hostName = HttpContext.Current.Request.RequestContext.HttpContext.Request.Url.Host;
     Business business = Model.Key;
     List<LeadItem> leads = Model.Value;
-    string systemName = hostName.ToUpper();
+    string systemName = Context.Request.Host.Host.ToUpper();
 }
 
 <h2>New order(s) availeble</h2>
 
-<p>Hello, @business.name! New leads are availeble at @Html.ActionLink(systemName, "index", "CMS", null, hostName, null, new { area = "" }, null)</p>
+<p>Hello, @business.name! New leads are availeble at @Html.ActionLink(systemName, "index", "CMS", Context.Request.Scheme, Context.Request.Host.ToString(), null, new { area = "" }, null)</p>
 
 <ul>
     @foreach (LeadItem lead in leads)

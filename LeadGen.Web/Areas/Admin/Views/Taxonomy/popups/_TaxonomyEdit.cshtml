@@ -60,12 +60,11 @@
     $("#" + popUpID).modal('show');
 
     function TaxonomyEditHandler(data, status, xhr) {
-
         //Romove modal-backdrop after previously shown modal panel
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
 
-        if (data.status == "success") {
+        if (status == "success" && data == "") {
             //Reload the page to display new term
             location.reload();
         }

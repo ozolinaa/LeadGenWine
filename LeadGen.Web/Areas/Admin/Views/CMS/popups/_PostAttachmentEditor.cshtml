@@ -80,7 +80,7 @@
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
 
-        if (data.status == "success") {
+        if (status == "success" && data == "") {
             $("#" + popUpID).modal('hide');
         }
         else {

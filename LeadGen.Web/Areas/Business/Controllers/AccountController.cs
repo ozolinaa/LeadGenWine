@@ -13,7 +13,7 @@ using System.Web;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
-    public class AccountController : BusinessParentController
+    public class AccountController : BusinessBaseController
     {
 
         public override ActionResult Index()

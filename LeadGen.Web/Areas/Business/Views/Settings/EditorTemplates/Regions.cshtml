@@ -63,7 +63,8 @@
             });
         }
 
-        function LoginBusinessRegionsUpdateOnComplete(data) {
+    function LoginBusinessRegionsUpdateOnComplete(data) {
+        debugger;
             if (data.hasOwnProperty('responseJSON') && data.responseJSON.hasOwnProperty('status') && data.responseJSON.status == "success") {
                 bootbox.alert({
                     title: "Новые регионы успешно сохранены!",

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LeadGen.Web.Areas.Business.Controllers
 {
     [Area("Business")]
-    public class BusinessParentController : LeadGen.Web.Controllers.LoginController
+    public class BusinessBaseController : LeadGen.Web.Controllers.LoginController
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {

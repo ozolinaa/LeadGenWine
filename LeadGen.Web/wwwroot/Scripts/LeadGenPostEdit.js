@@ -255,12 +255,13 @@ LeadGen.PostEdit.init = function () {
                 },
                 afterTagAdded: function (event, ui) {
                     var item = JSON.parse($(ui.tag).find("span.tagit-label").text());
+                    item.level = item.level || 1;
 
                     var indexInList = $(event.target).find("li.tagit-choice").length - 1;
                     var termHtmlName = $(event.target).attr("data-termListHtmlName") + "[" + indexInList + "]";
 
                     var inputChecked = '<input type="hidden" name="' + termHtmlName + '.isChecked" value="true" />';
-                    var inputID = '<input type="hidden" name="' + termHtmlName + '.ID" value="' + item.id + '" />';
+                    var inputID = '<input type="hidden" name="' + termHtmlName + '.id" value="' + item.id + '" />';
                     var inputName = '<input type="hidden" name="' + termHtmlName + '.level" value="' + item.level + '" />';
                     var inputUrl = '<input type="hidden" name="' + termHtmlName + '.name" value="' + item.name + '" />';
                     var inputTermURL = '<input type="hidden" name="' + termHtmlName + '.termURL" value="' + item.termURL + '" />';

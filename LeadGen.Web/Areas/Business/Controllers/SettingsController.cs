@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
-    public class SettingsController : BusinessParentController
+    public class SettingsController : BusinessBaseController
     {
 
         public override void OnActionExecuting(ActionExecutingContext context)

@@ -82,6 +82,12 @@ namespace LeadGen.Web
                     template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                 routes.MapRoute(
+                    name: "LeadPublic",
+                    template: "order/{id}",
+                    defaults: new { controller = "Order", action = "Show", id = "id" }
+                );
+
+                routes.MapRoute(
                     name: "CMS",
                     template: "{*urlPath}",
                     defaults: new { controller = "CMS", action = "Index", area = "" }

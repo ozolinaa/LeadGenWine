@@ -13,19 +13,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
+    [Area("Business")]
     public class RegistrationController : LeadGen.Web.Controllers.LoginController
     {
+        public RegistrationController() {
+            publicOnlyActionNames.Add("Registration");
+        }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
-
-            publicOnlyActionNames.Add("Registration");
         }
 
         public ActionResult Registration()
         {
-            Login login = new Login();
-            login.business = new Code.Business.Business();                
+            Term country = Term.SelectFromDB(DBLGcon, TaxonomyCode: "city", TermURL: "usa").First();
+
+            Login login = new Login
+            {
+                business = new Code.Business.Business() {
+                    country = country
+                }
+            };
             return View(login);
         }
 

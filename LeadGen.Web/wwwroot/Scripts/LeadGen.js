@@ -143,7 +143,7 @@
                     //items.css("height", maxHeight);
                 },
                 redirectToUrlFromResponse: function (response) {
-                    window.location.href = response.Url;
+                    window.location.href = response.url;
                 }
             },
             googleMapsActions: {

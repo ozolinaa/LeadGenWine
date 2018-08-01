@@ -10,7 +10,7 @@ using System.Web;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
-    public class InvoiceController : BusinessParentController
+    public class InvoiceController : BusinessBaseController
     {
         public override ActionResult Index()
         {

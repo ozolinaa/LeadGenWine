@@ -39,13 +39,13 @@
     </td>
     <td>
         @Html.ActionLink("Edit", "FieldEdit", null, new { id = Model.ID }, new
-    {
-        @class = "btn btn-warning pull-right",
-        data_ajax = "true",
-        data_ajax_method = "GET",
-        data_ajax_loading = "#LoadingWindowSplash",
-        data_ajax_mode = "replace",
-        data_ajax_update = "#ActionForLeadID-" + @Model.ID
-    })
+   {
+       @class = "btn btn-warning pull-right",
+       data_ajax = "true",
+       data_ajax_method = "GET",
+       data_ajax_loading = "#LoadingWindowSplash",
+       data_ajax_mode = "replace",
+       data_ajax_update = "#PopUp"
+   })
     </td>
 </tr>

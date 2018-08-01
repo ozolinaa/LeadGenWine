@@ -23,16 +23,12 @@ namespace LeadGen.Web.Controllers
 
         protected const string loginSuccessRedirectActionName = "afterLogin";
 
-        protected List<string> publicActionNames;
-        protected List<string> publicOnlyActionNames;
-
+        protected List<string> publicActionNames = new List<string>();
+        protected List<string> publicOnlyActionNames = new List<string>();
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             base.OnActionExecuting(filterContext);
-
-            publicActionNames = new List<string>();
-            publicOnlyActionNames = new List<string>();
 
             //Try authorize login by leadGenLoginSessionCookie
             if (HttpContext.Request.Cookies.TryGetValue(loginSessionCookieName, out string loginSessionCookieValue))
@@ -44,8 +40,8 @@ namespace LeadGen.Web.Controllers
             string controllerName = filterContext.RouteData.Values["controller"].ToString().ToLower();
             string actionName = filterContext.RouteData.Values["action"].ToString().ToLower();
             string areaName = "";
-            if (filterContext.RouteData.DataTokens.ContainsKey("area"))
-                areaName = filterContext.RouteData.DataTokens["area"].ToString().ToLower();
+            if (filterContext.RouteData.Values.ContainsKey("area"))
+                areaName = filterContext.RouteData.Values["area"].ToString().ToLower();
 
 
             publicActionNames.AddRange(publicOnlyActionNames);
