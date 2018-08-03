@@ -21,11 +21,11 @@
 
 
     <div class="pull-right" style="display:flex;">
-        @using (Html.BeginForm("GenerateForBusiness", "Invoice", new { businessID = Model.ID }, FormMethod.Post, null))
+        @using (Html.BeginForm("GenerateForBusiness", "Invoice", new { businessID = Model.ID }, FormMethod.Post, null, null))
         {
             <input type="submit" value="Generate Invoice" class="btn btn-warning" />
         }
-        @using (Html.BeginForm("Impersonate", null, new { businessID = Model.ID }, FormMethod.Post, null))
+        @using (Html.BeginForm("Impersonate", null, new { businessID = Model.ID }, FormMethod.Post, null, null))
         {
             <input type="submit" value="Impersonate" class="btn btn-warning" style="margin-left:20px;" />
         }

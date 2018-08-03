@@ -1,12 +1,15 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div class="action get-contacts">
-    @Ajax.ActionLink(
-        "Получить контакты клиента",
-        "ManageOrder",
-        new { leadID = Model.ID, doAction = "GetContacts" },
-        new AjaxOptions { LoadingElementId = "LoadingWindowSplash", HttpMethod = "Post", UpdateTargetId = "LeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith },
-        new { @class = "btn btn-success btn-md" }
-    )
+
+    @Html.ActionLink("Get Contacts", "ManageOrder", new { leadID = Model.ID, doAction = "GetContacts" },
+new {
+    @class = "btn btn-success btn-md",
+    data_ajax = "true",
+    data_ajax_method = "Post",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#LeadID-" + @Model.ID
+})
 
     @if (Model.getFieldByCode("phoneIsAvailableForBusiness").fieldBool)
     {

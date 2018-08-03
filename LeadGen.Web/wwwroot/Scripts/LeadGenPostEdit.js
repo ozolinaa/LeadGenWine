@@ -11,6 +11,7 @@ LeadGen.PostEdit.init = function () {
     var uploadForm = document.getElementById('uploader');
     uploadForm.onsubmit = function () {
         $('#AttachmentsUploadPopUp').modal('hide');
+        $('#LoadingWindowSplash').show();
 
         var formdata = new FormData(); //FormData object
         var filesToUpload = document.getElementById('filesToUpload');
@@ -25,6 +26,7 @@ LeadGen.PostEdit.init = function () {
         xhr.send(formdata);
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
+                $('#LoadingWindowSplash').hide();
                 $('#attachaments').html(xhr.responseText);
             }
         }
@@ -54,8 +56,8 @@ LeadGen.PostEdit.init = function () {
                     className: "btn-danger",
                     callback: function () {
 
-                        $.post(unlinkURL, { subjectID: subjectID, attachmentID: attachmentID }, function (data) {
-                            if (data.status == 'success') {
+                        $.post(unlinkURL, { subjectID: subjectID, attachmentID: attachmentID }, function (data, status) {
+                            if (status == 'success') {
 
                                 attachment.css("background-color", "#FF3700");
                                 attachment.fadeOut(400, function () {

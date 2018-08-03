@@ -1,7 +1,7 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 @using LeadGen.Code.Lead
 <div>
-@if (Model.businessContactReceivedDateTime != null)
+@if (Model.businessDetails.businessContactReceivedDateTime != null)
 {
     List<FieldItem> contactFields = new List<FieldItem>();
     contactFields.Add(new FieldItem() { isContact = true, label = "E-mail", fieldText = Model.email, fieldType = FieldType.Textbox });

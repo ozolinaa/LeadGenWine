@@ -1,15 +1,21 @@
 ﻿@model LeadGen.Code.Business.NotificationSettings.NotificationEmail
 @{ 
-    string HTMLelementID = String.Format("NotificationEmail-{0}", Model.address.GetHashCode());
-    object routeValues = new { removeEmail = Model.address };
-    AjaxOptions ajaxOptions = new AjaxOptions { LoadingElementId = "LoadingWindowSplash", Confirm = "Вы уверены?", UpdateTargetId = HTMLelementID, InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
-    object htmlAttributes = new { @class = "fa fa-trash btn btn-danger", style = "margin-left: 10px; line-height: inherit;" };
+    string HTMLelementID = string.Format("NotificationEmail-{0}", Model.address.GetHashCode());
 }
-
 <div class="form-group" id="@HTMLelementID">
     <div class="col-md-10 col-md-offset-2">
         @Html.TextBoxFor(x => x.address, new { @class = "form-control pull-left", @readonly = "readonly" })
-        @Ajax.ActionLink(" ", "BusinessNotificationEmailAddressRemove", routeValues, ajaxOptions, htmlAttributes)
+        @Html.ActionLink(" ", "BusinessNotificationEmailAddressRemove", new { removeEmail = Model.address },
+            new {
+                @class = "fa fa-trash btn btn-danger",
+                style = "margin-left: 10px; line-height: inherit;",
+                data_ajax = "true",
+                data_ajax_method = "Post",
+                data_ajax_loading = "#LoadingWindowSplash",
+                data_ajax_confirm = "Are you sure?",
+                data_ajax_mode = "replace-with",
+                data_ajax_update = "#" + HTMLelementID
+            })
     </div>
 </div>
 

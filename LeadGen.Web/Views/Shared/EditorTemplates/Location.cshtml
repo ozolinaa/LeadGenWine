@@ -1,13 +1,13 @@
 ﻿@model LeadGen.Code.Map.Location
-@using System.Configuration;
+@using LeadGen.Code.Helpers;
 @{
-    string googleMapsAPIKey = ConfigurationManager.AppSettings["GoogleMapsAPIKey"];
-    string mapID = "map_"+Guid.NewGuid().ToString().Replace('-', '_');
+    string googleMapsAPIKey = SysHelper.AppSettings.GoogleMapsAPIKey;
+    string mapID = "map_" + Guid.NewGuid().ToString().Replace('-', '_');
 }
 
 <div class="row location-meta-fiels">
     <div class="col-sm-6">
-        @Html.HiddenFor(x => x.lat, new { data_lat =  mapID })
+        @Html.HiddenFor(x => x.lat, new { data_lat = mapID })
         @Html.HiddenFor(x => x.lng, new { data_lng = mapID })
         @Html.HiddenFor(x => x.zoom, new { data_zoom = mapID })
 

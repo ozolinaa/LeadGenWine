@@ -1,7 +1,16 @@
 ﻿@model LeadGen.Code.Business.Billing
 
 @{string formID = "UpdateLoginBusinessBillingForm";}
-@using (Ajax.BeginForm("LoginBusinessBillingUpdate", null, null, new AjaxOptions { UpdateTargetId = formID, InsertionMode = InsertionMode.ReplaceWith }, new { @class = "form-horizontal", id = formID }))
+@using (Html.BeginForm("LoginBusinessBillingUpdate", null, null, FormMethod.Post, true, new
+{
+    @class = "form-horizontal",
+    id = formID,
+    data_ajax = "true",
+    data_ajax_update = "#"+formID,
+    data_ajax_mode = "replace-with",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_success = "LeadGen.ui.showNotificationLabel"
+}))
 {
     <div class="form-group">
         @Html.LabelFor(x => x.name, new { @class = "control-label col-md-2" })
@@ -19,27 +28,27 @@
         </div>
     </div>
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.code2, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(x => x.code2, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.code2, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.code2, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(x => x.code2, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.code2, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.address, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(x => x.address, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.address, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.address, new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(x => x.address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.address, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
         </div>
+    </div>
 
     if (ViewBag.status == true)
     {

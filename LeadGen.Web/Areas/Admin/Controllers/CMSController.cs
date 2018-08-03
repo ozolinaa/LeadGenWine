@@ -350,9 +350,9 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
 
         [HttpPost]
-        public ActionResult AttachmentsUpload(long? PostID, List<IFormFile> files)
+        public ActionResult AttachmentsUpload(long? PostID)
         {
-            foreach (IFormFile file in files)
+            foreach (IFormFile file in ControllerContext.HttpContext.Request.Form.Files)
             {
                 MemoryStream fileStream = new MemoryStream();
                 file.CopyTo(fileStream);

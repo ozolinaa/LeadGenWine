@@ -5,6 +5,6 @@
 }
 
 
-<h1>@Html.ActionLink(Model.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", Model.postType.typeURL) }): @Model.post.title</h1>
+<h1>@Html.ActionLink(Model.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", Model.postType.url) }): @Model.post.title</h1>
 
 @Html.DisplayFor(x => x.postList)

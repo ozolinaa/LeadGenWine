@@ -1,30 +1,41 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div>
-@using (Ajax.BeginForm("SubmitOrderSum", null, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "LeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith }, new { id = "OrderSumEditorForLeadID-" + @Model.ID }))
-{
-    @Html.HiddenFor(x => x.ID)
+    @using (Html.BeginForm("SubmitOrderSum", null, null, FormMethod.Post, true, new
+    {
+        @class = "form-horizontal",
+        id = "OrderSumEditorForLeadID-" + @Model.ID,
+        data_ajax = "true",
+        data_ajax_update = "#" + Model.ID,
+        data_ajax_mode = "replace-with",
+        data_ajax_loading = "#LoadingWindowSplash",
+        data_ajax_success = "LeadGen.ui.showNotificationLabel"
+    }))
+    {
+        @Html.HiddenFor(x => x.ID)
 
-    <p>Сумма заказа  <span>(включая доп. услуги)</span></p>
-    <div class="input-group">
-        <span class="input-group-addon">Руб</span>
-        @Html.TextBoxFor(x => x.businessDetails.orderSum, new { @class = "form-control" })
-        <span class="input-group-addon">.00</span>
-    </div>
-    @Html.ValidationMessageFor(x => x.businessDetails.orderSum)
-    
-    <p><span>После переноса в "Состоявшиеся" изменение суммы не возможно</span></p>
+        <p>Сумма заказа  <span>(включая доп. услуги)</span></p>
+        <div class="input-group">
+            <span class="input-group-addon">Руб</span>
+            @Html.TextBoxFor(x => x.businessDetails.orderSum, new { @class = "form-control" })
+            <span class="input-group-addon">.00</span>
+        </div>
+        @Html.ValidationMessageFor(x => x.businessDetails.orderSum)
 
-    @Ajax.ActionLink(
-    "Отменить",
-    "ManageOrder",
-    new { leadID = Model.ID, doAction = "Cancel" },
-    new AjaxOptions { LoadingElementId = "LoadingWindowSplash", HttpMethod = "Post", UpdateTargetId = "LeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith },
-    new {@class = "btn btn-default pull-left" }
-    )
-    <input type="submit" value="В состоявшиеся" class="btn btn-success pull-right" />
+        <p><span>После переноса в "Состоявшиеся" изменение суммы не возможно</span></p>
+        @Html.ActionLink("Cancel", "ManageOrder", new { leadID = Model.ID, doAction = "Cancel" },
+        new {
+            @class = "btn btn-default pull-left",
+            data_ajax = "true",
+            data_ajax_method = "Post",
+            data_ajax_loading = "#LoadingWindowSplash",
+            data_ajax_mode = "replace-with",
+            data_ajax_update = "#LeadID-" + @Model.ID
+        })
 
-    <p><span class="grey">Оплата за услуги (@Model.businessDetails.systemFeePercent% от суммы заказа) включается в следующий счет</span></p>
-}
+        <input type="submit" value="В состоявшиеся" class="btn btn-success pull-right" />
+
+        <p><span class="grey">Оплата за услуги (@Model.businessDetails.systemFeePercent% от суммы заказа) включается в следующий счет</span></p>
+    }
 
 </div>
 <script>

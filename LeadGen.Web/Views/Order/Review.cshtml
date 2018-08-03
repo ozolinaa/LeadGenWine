@@ -8,7 +8,7 @@
     <h2>Оценка работы гранитной мастерской</h2>
     <p>Уважаемый клиент! Ваша оценка - это ценный вклад в рейтинг и репутацию выбранного Вами производителя.</p>
     <hr />
-    @using (Html.BeginForm("review", "order", new { token = ViewBag.token }, FormMethod.Post, null))
+    @using (Html.BeginForm("review", "order", new { token = ViewBag.token }, FormMethod.Post, null, null))
     {
         @Html.HiddenFor(x => x.leadID)
         @Html.EditorFor(x => x)

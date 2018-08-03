@@ -1,10 +1,12 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div class="action set_interested">
-    @Ajax.ActionLink(
-        "Вернуть в интересные",
-        "ManageOrder",
-        new { leadID = Model.ID, doAction = "SetInterested" },
-        new AjaxOptions { LoadingElementId = "LoadingWindowSplash", HttpMethod = "Post", UpdateTargetId = "LeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith },
-        new { @class = "btn btn-info btn-xs" }
-    )
+    @Html.ActionLink("Set Interested", "ManageOrder", new { leadID = Model.ID, doAction = "SetInterested" },
+new {
+@class = "btn btn-info btn-xs",
+data_ajax = "true",
+data_ajax_method = "Post",
+data_ajax_loading = "#LoadingWindowSplash",
+data_ajax_mode = "replace-with",
+data_ajax_update = "#LeadID-" + @Model.ID
+})
 </div>

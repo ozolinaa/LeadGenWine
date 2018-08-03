@@ -90,7 +90,7 @@ namespace LeadGen.Web
                 routes.MapRoute(
                     name: "CMS",
                     template: "{*urlPath}",
-                    defaults: new { controller = "CMS", action = "Index", area = "" }
+                    defaults: new { controller = "CMS", action = "Index" }
                 );
             });
 

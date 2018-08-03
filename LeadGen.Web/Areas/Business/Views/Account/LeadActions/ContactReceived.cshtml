@@ -13,5 +13,12 @@
     {
         @Html.Partial("DisplayTemplates/FieldItem", field)
     }
-    @Ajax.ActionLink("Set Completed", "ManageOrder", new { leadID = Model.ID, doAction = "CompleteLead" }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith })
+    @Html.ActionLink("Set Completed", "ManageOrder", new { leadID = Model.ID, doAction = "CompleteLead" },
+new {
+    data_ajax = "true",
+    data_ajax_method = "Post",
+    data_ajax_loading = "#LoadingWindowSplash",
+    data_ajax_mode = "replace-with",
+    data_ajax_update = "#ActionForLeadID-" + @Model.ID
+})
 </div>

@@ -15,6 +15,7 @@
         <div class="col-md-6">
             <div>
                 @Html.LabelFor(x => x.createdDateTime)
+   
                 @Html.DisplayFor(x => x.createdDateTime)
             </div>
             <div>
@@ -22,10 +23,17 @@
                 @if (Model.publishedDateTime == null)
                 {
                     string warningMessage = "Are You Sure?";
-                    object routeValues = new { invoiceID = Model.ID };
-                    AjaxOptions ajaxOptions = new AjaxOptions { LoadingElementId = "LoadingWindowSplash", Confirm = warningMessage, UpdateTargetId = "invoiceDisplayTemplate", InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
-                    object htmlAttributes = new { @class = "btn btn-warning" };
-                    @Ajax.ActionLink("Publish", "Publish", routeValues, ajaxOptions, htmlAttributes)
+                    @Html.ActionLink("Publish", "Publish", new { invoiceID = Model.ID },
+                    new {
+                        @class = "btn btn-warning",
+                        data_ajax = "true",
+                        data_ajax_method = "Post",
+                        data_ajax_loading = "#LoadingWindowSplash",
+                        data_ajax_confirm = warningMessage,
+                        data_ajax_mode = "replace-with",
+                        data_ajax_update = "#invoiceDisplayTemplate"
+                    })
+
                 }
                 else
                 {
@@ -37,10 +45,17 @@
                 @if (Model.publishedDateTime != null && Model.paidDateTime == null)
                 {
                     string warningMessage = "Are You Sure?";
-                    object routeValues = new { invoiceID = Model.ID };
-                    AjaxOptions ajaxOptions = new AjaxOptions { LoadingElementId = "LoadingWindowSplash", Confirm = warningMessage, UpdateTargetId = "invoiceDisplayTemplate", InsertionMode = InsertionMode.ReplaceWith, HttpMethod = "Post" };
-                    object htmlAttributes = new { @class = "btn btn-warning" };
-                    @Ajax.ActionLink("Set Paid", "SetPaid", routeValues, ajaxOptions, htmlAttributes)
+                    @Html.ActionLink("Set Paid", "Publish", new { invoiceID = Model.ID },
+                        new {
+                            @class = "btn btn-warning",
+                            data_ajax = "true",
+                            data_ajax_method = "Post",
+                            data_ajax_loading = "#LoadingWindowSplash",
+                            data_ajax_confirm = warningMessage,
+                            data_ajax_mode = "replace-with",
+                            data_ajax_update = "#invoiceDisplayTemplate"
+                        })
+
                 }
                 else
                 {

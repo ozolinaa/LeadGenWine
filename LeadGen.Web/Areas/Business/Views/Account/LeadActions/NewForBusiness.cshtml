@@ -1,4 +1,12 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div id="ActionForLeadID-@Model.ID">
-    @Ajax.ActionLink("Get Contacts", "ManageOrder", new { leadID = Model.ID, doAction = "GetLeadContact" }, new AjaxOptions { HttpMethod = "Post", UpdateTargetId = "ActionForLeadID-" + @Model.ID, InsertionMode = InsertionMode.ReplaceWith })
+    @Html.ActionLink("Get Contacts", "ManageOrder", new { leadID = Model.ID, doAction = "GetLeadContact" },
+new {
+data_ajax = "true",
+data_ajax_method = "Post",
+data_ajax_loading = "#LoadingWindowSplash",
+data_ajax_mode = "replace-with",
+data_ajax_update = "#ActionForLeadID-" + @Model.ID
+})
+
 </div>

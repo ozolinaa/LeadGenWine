@@ -8,10 +8,17 @@
 </style>
 <div id="BusinessLocationEditModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
-
-        @using (Ajax.BeginForm("BusinessLocationEdit", null, null, new AjaxOptions { UpdateTargetId = "BusinessLocationListWrapper", InsertionMode = InsertionMode.Replace, OnSuccess = "businessLocationEditModalHandler" }, new { @class = "form-horizontal", id = "BusinessLocationEditForm" }))
+        @using (Html.BeginForm("BusinessLocationEdit", null, null, FormMethod.Post, true, new
         {
-        <!-- Modal content-->
+            @class = "form-horizontal",
+            id = "BusinessLocationEditForm",
+            data_ajax = "true",
+            data_ajax_update = "#BusinessLocationListWrapper",
+            data_ajax_mode = "replace",
+            data_ajax_success = "businessLocationEditModalHandler"
+        }))
+        {
+            <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -22,16 +29,16 @@
                     @Html.Partial("EditorTemplates/Location", Model)
                 </div>
                 <div class="modal-footer">
-
-                    @Ajax.ActionLink(
-                    "Delete Location", "BusinessLocationDelete", new { locationId = Model.locationID },
-                    new AjaxOptions() {
-                        HttpMethod = "Delete",
-                        InsertionMode = InsertionMode.Replace,
-                        UpdateTargetId = "BusinessLocationListWrapper",
-                        OnSuccess = "businessLocationEditModalHandler"
-                    }, new { @class="btn btn-danger pull-left"})
-
+                    @Html.ActionLink("Delete Location", "BusinessLocationDelete", new { locationId = Model.locationID },
+                        new {
+                            @class = "btn btn-danger pull-left",
+                            data_ajax = "true",
+                            data_ajax_method = "Delete",
+                            data_ajax_confirm = "Are you sure?",
+                            data_ajax_mode = "replace",
+                            data_ajax_success = "businessLocationEditModalHandler",
+                            data_ajax_update = "#BusinessLocationListWrapper"
+                        })
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <input type="submit" value="Сохранить" class="btn btn-primary" />
                 </div>

@@ -1,10 +1,12 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div class="action set-completed">
-    @Ajax.ActionLink(
-    "Заказ состоялся",
-    "ManageOrder",
-    new { leadID = Model.ID, doAction = "SetCompleted" },
-    new AjaxOptions { LoadingElementId = "LoadingWindowSplash", HttpMethod = "Post", UpdateTargetId = "ActionsForLeadID-" + @Model.ID, InsertionMode = InsertionMode.Replace },
-    new { @class = "btn btn-success btn-md" }
-    )
+    @Html.ActionLink("Set Completed", "ManageOrder", new { leadID = Model.ID, doAction = "SetCompleted" },
+new {
+@class = "btn btn-success btn-md",
+data_ajax = "true",
+data_ajax_method = "Post",
+data_ajax_loading = "#LoadingWindowSplash",
+data_ajax_mode = "replace",
+data_ajax_update = "#ActionsForLeadID-" + @Model.ID
+})
 </div>

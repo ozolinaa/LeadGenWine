@@ -32,7 +32,7 @@
                 }
             </td>
             <td>
-                @using (Html.BeginForm("GenerateForBusiness", null, new { businessID = business.ID }, FormMethod.Post, null))
+                @using (Html.BeginForm("GenerateForBusiness", null, new { businessID = business.ID }, FormMethod.Post, null, null))
                 {
                     <input type="submit" value="Generate Invoice" class="btn btn-default" />
                 }

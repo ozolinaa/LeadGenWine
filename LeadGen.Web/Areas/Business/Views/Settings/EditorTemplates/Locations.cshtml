@@ -20,26 +20,34 @@
 </style>
 <div id="BusinessLocationCreateModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
+        @using (Html.BeginForm("BusinessLocationCreate", null, null, FormMethod.Post, true, new
+        {
+            @class = "form-horizontal",
+            id = "BusinessLocationCreateForm",
+            data_ajax = "true",
+            data_ajax_update = "#BusinessLocationListWrapper",
+            data_ajax_mode = "replace",
+            data_ajax_loading = "#LoadingWindowSplash",
+            data_ajax_success = "businessLocationCreateModalHandler"
+        }))
+        {
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add new Location</h4>
+                </div>
+                <div class="modal-body">
 
-@using (Ajax.BeginForm("BusinessLocationCreate", null, null, new AjaxOptions { UpdateTargetId = "BusinessLocationListWrapper", InsertionMode = InsertionMode.Replace, OnSuccess = "businessLocationCreateModalHandler" }, new { @class = "form-horizontal", id = "BusinessLocationCreateForm" }))
-{
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add new Location</h4>
-            </div>
-            <div class="modal-body">
+                    @Html.Partial("EditorTemplates/Location", new BusinessLocation() { lat = 33.725163, lng = -117.772246, zoom = 10 })
 
-                @Html.Partial("EditorTemplates/Location", new BusinessLocation() { lat = 33.725163, lng = -117.772246, zoom = 10 })
-
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Сохранить" class="btn btn-primary" />
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> 
-                <input type="submit" value="Сохранить" class="btn btn-primary" />
-            </div>
-        </div>
-}
+        }
     </div>
 </div>
 <script>

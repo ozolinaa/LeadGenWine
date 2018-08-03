@@ -2,50 +2,57 @@
 @using LeadGen.Code.Business
 
 @{string formID = "UpdateLoginBusinessNotificationForm";}
-    @using (Ajax.BeginForm("LoginBusinessNotificationUpdate", null, null, new AjaxOptions { UpdateTargetId = formID, InsertionMode = InsertionMode.ReplaceWith }, new { @class = "form-horizontal", id = formID }))
-    {
-        <div class="form-group">
-            @Html.LabelFor(x => x.frequency, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+@using (Html.BeginForm("LoginBusinessNotificationUpdate", null, null, FormMethod.Post, true, new
+{
+    @class = "form-horizontal",
+    id = formID,
+    data_ajax = "true",
+    data_ajax_update = "#" + formID,
+    data_ajax_mode = "replace-with"
+}))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.frequency, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
 
-                @foreach (var item in NotificationSettings.FrequencyNameDictionary)
-                {
-                    <div class="radio">
-                        <label>
-                            @Html.RadioButtonFor(x => x.frequency, item.Key)
-                            @item.Value
-                        </label>
-                    </div>
-                }
-
-            </div>
-        </div>
-
-        if (Model.emailList != null)
-        {
-            for (int i = 0; i < Model.emailList.Count(); i++)
+            @foreach (var item in NotificationSettings.FrequencyNameDictionary)
             {
-                @Html.EditorFor(x => x.emailList[i])
+                <div class="radio">
+                    <label>
+                        @Html.RadioButtonFor(x => x.frequency, item.Key)
+                        @item.Value
+                    </label>
+                </div>
             }
-        }
 
-
-        <div class="form-group">
-            @Html.LabelFor(x => x.newNotificationEmail.address, "Новый адрес", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(x => x.newNotificationEmail.address, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.newNotificationEmail.address, "", new { @class = "text-danger" })
-            </div>
         </div>
+    </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Добавить" class="btn btn-primary" />
-            </div>
-        </div>
-
-        if (ViewBag.status == true)
+    if (Model.emailList != null)
+    {
+        for (int i = 0; i < Model.emailList.Count(); i++)
         {
-            <script>LeadGen.ui.showNotificationLabel();</script>
+            @Html.EditorFor(x => x.emailList[i])
         }
     }
+
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.newNotificationEmail.address, "Новый адрес", new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(x => x.newNotificationEmail.address, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.newNotificationEmail.address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Добавить" class="btn btn-primary" />
+        </div>
+    </div>
+
+    if (ViewBag.status == true)
+    {
+        <script>LeadGen.ui.showNotificationLabel();</script>
+    }
+}

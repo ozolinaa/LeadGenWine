@@ -21,16 +21,17 @@
                 {
                     <span class="label label-warning">Pending Approval</span>
                 }
-                
+
             </h3>
             <p>@location.address</p>
-            @Ajax.ActionLink(
-           "Edit Location", "BusinessLocationEdit", new { locationId = location.locationID },
-           new AjaxOptions() {
-               HttpMethod = "GET",
-               InsertionMode = InsertionMode.Replace,
-               UpdateTargetId = "BusinessLocationEditModalWrapper"
-           }, new { @class="btn btn-default" }
+            @Html.ActionLink("Edit Location", "BusinessLocationEdit", new { locationId = location.locationID },
+    new {
+        @class = "btn btn-default",
+        data_ajax = "true",
+        data_ajax_method = "GET",
+        data_ajax_mode = "replace",
+        data_ajax_update = "#BusinessLocationEditModalWrapper"
+    })
        )
         </div>
     </div>
