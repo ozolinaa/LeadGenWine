@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using LeadGen.Code.Helpers;
 
 namespace LeadGen.Web.Controllers
 {
@@ -31,19 +32,11 @@ namespace LeadGen.Web.Controllers
             if (string.IsNullOrEmpty(accessToken))
                 return false;
 
-            string systemAccessToken = GetSystemAccessToken(DBLGcon);
+            string systemAccessToken = SysHelper.AppSettings.SystemAccessToken;
             if (string.IsNullOrEmpty(systemAccessToken) == false && systemAccessToken == accessToken)
                 return true;
 
             return false;
-        }
-
-        private static string GetSystemAccessToken(SqlConnection DBLGcon) {
-            string token = string.Empty;
-            Option taskAdminTokenOption = Option.SelectFromDB(DBLGcon, "systemAccessToken").FirstOrDefault();
-            if (taskAdminTokenOption != null)
-                token = taskAdminTokenOption.value;
-            return token;
         }
 
         [HttpPost]
@@ -77,7 +70,7 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         public static void InitializeScheduledTasks(SqlConnection DBLGcon, string hostUrl, List<Type> types)
         {
-            string systemAccessToken = GetSystemAccessToken(DBLGcon);
+            string systemAccessToken = SysHelper.AppSettings.SystemAccessToken;
             string taskListStr = System.Web.HttpUtility.UrlEncode(string.Join(",", types.Select(x => x.Name)));
             string requestUrl = string.Format("/system/ProcessTasks?accessToken={0}&tasks={1}", systemAccessToken, taskListStr);
 

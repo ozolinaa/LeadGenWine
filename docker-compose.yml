@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   leadgen.web:
-    image: leadgenweb
+    image: ${DOCKER_REGISTRY}leadgenweb
     build:
       context: .
       dockerfile: LeadGen.Web/Dockerfile

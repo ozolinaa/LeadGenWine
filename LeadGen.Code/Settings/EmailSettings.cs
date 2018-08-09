@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LeadGen.Code.Settings
 {
-    public class EmailSettings
+    public struct EmailSettings
     {
         public string FromAddress { get; set; }
         public string FromName { get; set; }
@@ -12,7 +12,7 @@ namespace LeadGen.Code.Settings
         public SmtpSettings SmtpSettings { get; set; }
     }
 
-    public class SmtpSettings
+    public struct SmtpSettings
     {
         public int SendIntervalMilliseconds { get; set; }
         public string Host { get; set; }

@@ -40,6 +40,18 @@ namespace LeadGen.Code.Helpers
             return contentType ?? "application/octet-stream";
         }
 
+        public static bool ConvertToBoolean(string value) {
+            if (string.IsNullOrEmpty(value))
+                return false;
+            return Convert.ToBoolean(value);
+        }
+
+        public static decimal CovertToDecimal(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+                return 0;
+            return Convert.ToDecimal(value);
+        }
 
         private static IServiceProvider _provider;
         public static void InitServiceProvider(IServiceProvider provider)

@@ -24,9 +24,9 @@ namespace LeadGen.Code.Sys
             value = row["OptionValue"].ToString();
         }
 
-        public static List<Option> SelectFromDB(SqlConnection con, string optinonKey = "")
+        public static Dictionary<string, Option> SelectFromDB(SqlConnection con, string optinonKey = "")
         {
-            List <Option> optionList = new List<Option>();
+            List<Option> optionList = new List<Option>();
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[Sys.Option.Select]", con))
             {
@@ -39,10 +39,10 @@ namespace LeadGen.Code.Sys
                     optionList.Add(new Option(row));
             }
 
-            if (optionList.Count() == 0)
+            if (optionList.Any() == false && string.IsNullOrEmpty(optinonKey) == false)
                 optionList.Add(new Option() { key = optinonKey, value = "" });
 
-            return optionList;
+            return optionList.ToDictionary(x => x.key, x => x);
         }
 
         public void Update(SqlConnection con)
@@ -58,14 +58,32 @@ namespace LeadGen.Code.Sys
             }
         }
 
-        public enum LeadSettingKey
+        public enum SettingKey
         {
-            LeadSettingApprovalLocationEnabled,
-            LeadSettingApprovalPermissionEnabled,
-            LeadSettingFieldMappingEmail,
-            LeadSettingFieldMappingDateDue,
-            LeadSettingFieldMappingLocationZip,
-            LeadSettingFieldMappingLocationRadius
+            AzureStorageConnectionString,
+            AzureStorageHostName,
+
+            EmailFromAddress,
+            EmailFromName,
+            EmailReplyToAddress,
+            EmailSmtpHost,
+            EmailSmtpPort,
+            EmailSmtpUserName,
+            EmailSmtpPassword,
+            EmailSmtpEnableSsl,
+            EmailSmtpSendIntervalMilliseconds,
+
+            GoogleMapsAPIKey,
+
+            LeadApprovalLocationEnabled,
+            LeadApprovalPermissionEnabled,
+            LeadSystemFeeDefaultPercent,
+            LeadFieldMappingEmail,
+            LeadFieldMappingDateDue,
+            LeadFieldMappingLocationZip,
+            LeadFieldMappingLocationRadius,
+
+            SystemAccessToken
         };
 
 

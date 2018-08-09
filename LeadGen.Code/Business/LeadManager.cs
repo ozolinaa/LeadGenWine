@@ -22,7 +22,7 @@ namespace LeadGen.Code.Business
             this.con = con;
             this.businessID = businessID;
             this.loginID = loginID;
-            systemFeePercent = Convert.ToDecimal(Helpers.SysHelper.AppSettings.DefaultSystemFeePercent);
+            systemFeePercent = Convert.ToDecimal(Helpers.SysHelper.AppSettings.LeadSettings.SystemFeeDefaultPercent);
         }
 
         public bool GetContacts(ref LeadItem lead, DateTime? getContactsDateTime = null)

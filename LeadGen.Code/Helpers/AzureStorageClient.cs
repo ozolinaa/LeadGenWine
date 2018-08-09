@@ -16,7 +16,7 @@ namespace LeadGen.Code.Helpers
 
         public AzureStorageClient()
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(SysHelper.AppSettings.AzureStorageConnection);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(SysHelper.AppSettings.AzureStorageConnectionString);
             blobStorage = storageAccount.CreateCloudBlobClient();
         }
 

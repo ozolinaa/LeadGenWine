@@ -31,7 +31,8 @@ namespace LeadGen.Web
             services.AddMvc();
 
             //https://joonasw.net/view/aspnet-core-di-deep-dive 
-            AppSettings appSettings = Configuration.GetSection("LeadGenSettings").Get<AppSettings>();
+            CoreSettings coreSettings = Configuration.GetSection("LeadGenCoreSettings").Get<CoreSettings>();
+            AppSettings appSettings = new AppSettings(coreSettings);
             services.AddSingleton<IAppSettings>(appSettings);
 
             //https://stackoverflow.com/questions/41517359/pagedlist-core-mvc-pagedlistpager-html-extension-in-net-core-is-not-there

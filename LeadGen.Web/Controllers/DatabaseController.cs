@@ -13,10 +13,10 @@ namespace LeadGen.Web.Controllers
     public class DatabaseController : LeadGenBaseController
     {
         protected SqlConnection DBLGcon;
-        internal string DBLGconString { get { return getDbConnectionString(); } }
-
-        private static string getDbConnectionString() {
-            return Code.Helpers.SysHelper.AppSettings.SQLConnection;
+        internal string DBLGconString {
+            get {
+                return Code.Helpers.SysHelper.AppSettings.SQLConnectionString;
+            }
         }
 
 

@@ -320,12 +320,10 @@ namespace LeadGen.Code.Lead
                 return false;
 
             //Get ZIPcode and LocationRadiusMappings
-            Option zipMapping = Option.SelectFromDB(con, Option.LeadSettingKey.LeadSettingFieldMappingLocationZip.ToString()).FirstOrDefault();
-            Option radiusMapping = Option.SelectFromDB(con, Option.LeadSettingKey.LeadSettingFieldMappingLocationRadius.ToString()).FirstOrDefault();
-            if (zipMapping != null && radiusMapping != null && string.IsNullOrEmpty(zipMapping.value) == false && string.IsNullOrEmpty(radiusMapping.value) == false)
+            if (!string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip) && !string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius))
             {
                 bool locationUpdateStatus = true;
-                locationUpdateStatus = UpdateLocationInDB(con, zipMapping.value, radiusMapping.value);
+                locationUpdateStatus = UpdateLocationInDB(con, SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip, SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius);
                 if (locationUpdateStatus == false)
                     return false;
             }

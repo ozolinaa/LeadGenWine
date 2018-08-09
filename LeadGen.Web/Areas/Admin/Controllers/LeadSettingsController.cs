@@ -1,4 +1,5 @@
 ﻿using LeadGen.Code;
+using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
 using LeadGen.Web.Controllers;
@@ -15,7 +16,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
     public class LeadSettingsController : AdminBaseController
     {
         public List<FieldGroup> fieldGroups { get; set; }
-        public List<Option> leadSettingOptions { get; set; }
+        public IEnumerable<Option> leadSettingOptions { get; set; }
 
 
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -26,32 +27,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             LeadItem leadItem = new LeadItem();
             leadItem.LoadFieldStructure(DBLGcon, false);
             fieldGroups = leadItem.fieldGroups;
-
-
-            initializeLeadSettingOptions();
-        }
-
-        private void initializeLeadSettingOptions() {
-            leadSettingOptions = Option.SelectFromDB(DBLGcon);
-            bool settingsOpitonsUpdated = false;
-            foreach (Option.LeadSettingKey lsKey in Enum.GetValues(typeof(Option.LeadSettingKey)))
-            {
-                if (leadSettingOptions.FirstOrDefault(x => x.key == lsKey.ToString()) == null)
-                {
-                    Option option = new Option() { key = lsKey.ToString() };
-                    option.Update(DBLGcon);
-                    settingsOpitonsUpdated = true;
-                }
-            }
-            if(settingsOpitonsUpdated)
-                leadSettingOptions = Option.SelectFromDB(DBLGcon);
-
-            List<string> leadSettingKeys = new List<string>();
-            foreach (Option.LeadSettingKey lsKey in Enum.GetValues(typeof(Option.LeadSettingKey)))
-            {
-                leadSettingKeys.Add(lsKey.ToString());
-            }
-            leadSettingOptions = leadSettingOptions.Where(x => leadSettingKeys.Contains(x.key)).ToList();
+            leadSettingOptions = Option.SelectFromDB(DBLGcon).Values;
         }
 
         // GET: Admin/Lead
@@ -60,7 +36,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             return View(leadSettingOptions);
         }
 
-        public ActionResult Edit(Option.LeadSettingKey id)
+        public ActionResult Edit(Option.SettingKey id)
         {
             Option option = leadSettingOptions.First(x => x.key == id.ToString());
             return View(option);
@@ -73,6 +49,8 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
 
             option.Update(DBLGcon);
+            SysHelper.AppSettings.ReloadAppSettingsFromDB(DBLGcon);
+
             return RedirectToAction("Index");
         }
 
