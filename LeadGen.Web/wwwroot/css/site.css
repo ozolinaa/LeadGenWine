@@ -11,16 +11,6 @@ body {
     max-width: 930px;
 }
 
-@font-face {
-    font-family: 'FranklinGothicDemiCondC';
-    src: url('fonts/FranklinGothicDemiCondC.eot') format('embedded-opentype'), url('fonts/FranklinGothicDemiCondC.woff') format('woff'), url('fonts/FranklinGothicDemiCondC.ttf') format('truetype'), url('fonts/FranklinGothicDemiCondC.svg') format('svg');
-}
-
-@font-face {
-    font-family: 'Ubuntu';
-    src: local('Ubuntu'), url('fonts/Ubuntu-B.eot') format('embedded-opentype'), url('fonts/Ubuntu-B.ttf') format('truetype'), url('fonts/Ubuntu-B.woff') format('woff');
-}
-
 h1, h2, h3, h4 {
     font-family: 'PT Sans Narrow', sans-serif;
     color: #000;

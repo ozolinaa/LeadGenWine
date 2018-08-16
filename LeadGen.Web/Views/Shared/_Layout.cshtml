@@ -1,17 +1,16 @@
 ﻿@using LeadGen.Code.Taxonomy
 @using LeadGen.Code.CMS
 <!DOCTYPE html>
-<html lang="ru-RU">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width">
     @RenderSection("SEO", required: false)
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/lightbox.css" rel="stylesheet" />
-    <link href="~/Scripts/mediaelement/mediaelementplayer.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+    <link href="~/lib/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+
 </head>
 <body>
     @{
@@ -52,8 +51,8 @@
 
                 <div class="navbar-brand">
                     <a title="LeadGen" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
-                        <img alt="LeadGen" title="LeadGen" class="logo_big" src="/Content/images/logo_big.png" />
-                        <img alt="LeadGen" title="LeadGen" class="logo_small" src="/Content/images/logo_small.png" />
+                        <img alt="LeadGen" title="LeadGen" class="logo_big" src="/images/logo_big.png" />
+                        <img alt="LeadGen" title="LeadGen" class="logo_small" src="/images/logo_small.png" />
                     </a>
                 </div>
 
@@ -110,7 +109,7 @@
     }
 
     <div id="LoadingWindowSplash">
-        <img id="LoadingWindowSplashImage" src="~/Content/images/spinner-icon.gif" />
+        <img id="LoadingWindowSplashImage" src="~/images/spinner-icon.gif" />
     </div>
 
     <hr />
@@ -119,25 +118,17 @@
         <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
     </footer>
 
-    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/bootbox.min.js"></script>
-    <script src="~/Scripts/lightbox-2.6.min.js"></script>
-    <script src="~/Scripts/mediaelement/mediaelement-and-player.min.js"></script>
-    <script src="~/Scripts/mediaelement/lang/me-i18n-locale-en.js"></script>
-    <script>
-        mejs.i18n.locale.language = 'us'; // Setting US language
-        $('audio').mediaelementplayer({
-            success: function (player, node) {
-                $(player).closest('.mejs__container').attr('lang', mejs.i18n.getLanguage());
-                $('html').attr('lang', mejs.i18n.getLanguage());
-            }
-        });
-    </script>
-    <script src="~/Scripts/LeadGen.js"></script>
+    <script src="~/lib/node_modules/moment/min/moment.min.js"></script>
+    <script src="~/lib/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/node_modules/popper.js/dist/popper.min.js"></script>
+    <script src="~/lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/node_modules/bootbox.js/bootbox.min.js"></script>
+    <script src="~/lib/node_modules/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="~/lib/node_modules/lightbox2/dist/js/lightbox.min.js"></script>
+    <script src="~/js/LeadGen.js"></script>
 
     @RenderSection("Scripts", required: false)
 </body>

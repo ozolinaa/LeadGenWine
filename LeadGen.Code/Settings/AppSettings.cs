@@ -86,7 +86,7 @@ namespace LeadGen.Code.Settings
             int.TryParse(settingOptions[Option.SettingKey.EmailSmtpSendIntervalMilliseconds.ToString()].value, out emailSmtpSendIntervalMilliseconds);
 
             int emailSmtpPort = 0;
-            int.TryParse(settingOptions[Option.SettingKey.EmailSmtpSendIntervalMilliseconds.ToString()].value, out emailSmtpPort);
+            int.TryParse(settingOptions[Option.SettingKey.EmailSmtpPort.ToString()].value, out emailSmtpPort);
 
             _emailSettings = new EmailSettings()
             {

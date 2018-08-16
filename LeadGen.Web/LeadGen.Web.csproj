@@ -6,21 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\packages\TagIt.2.0.110.4\Content\Content\jquery.tagit.css" Link="wwwroot\lib\jquery-tagit\jquery.tagit.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="bootbox" Version="4.3.0" />
-    <PackageReference Include="bootstrap" Version="3.3.7" />
-    <PackageReference Include="Bootstrap.Datepicker" Version="1.7.1" />
-    <PackageReference Include="Bootstrap.v3.Datetimepicker" Version="4.17.45" />
-    <PackageReference Include="FontAwesome" Version="4.7.0" />
+    <PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Html.Abstractions" Version="2.1.1" />
-    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.5" />
-    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Validation" Version="3.2.10" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
-    <PackageReference Include="TagIt" Version="2.0.110.4" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.5.0" />
   </ItemGroup>
 
@@ -31,32 +20,7 @@
   <ItemGroup>
     <Folder Include="Areas\Business\Views\Shared\EditorTemplates\" />
     <Folder Include="Views\Task\" />
-    <Folder Include="wwwroot\Content\img\" />
-    <Folder Include="wwwroot\Content\themes\izgpam\" />
-    <Folder Include="wwwroot\lib\jquery-tagit\" />
-    <Folder Include="wwwroot\Scripts\tablesorter\" />
-    <Folder Include="wwwroot\Scripts\tinymce\plugins\layer\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\config\bolt\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\config\dent\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\scratch\compile\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\scratch\inline\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\demo\css\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\demo\html\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\demo\js\tinymce\inlite\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\alien\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\core\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\file\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\main\js\tinymce\inlite\ui\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\test\js\atomic\alien\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\test\js\atomic\core\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\test\js\browser\alien\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\test\js\browser\core\" />
-    <Folder Include="wwwroot\Scripts\tinymce\themes\inlite\src\test\js\browser\file\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="..\packages\TagIt.2.0.110.4\Content\Scripts\tag-it.js" Link="wwwroot\lib\jquery-tagit\tag-it.js" />
-    <None Include="..\packages\TagIt.2.0.110.4\Content\Scripts\tag-it.min.js" Link="wwwroot\lib\jquery-tagit\tag-it.min.js" />
+    <Folder Include="wwwroot\lib\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,5 +35,26 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
   </ItemGroup>
+
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);node_modules_dev\**</DefaultItemExcludes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="node_modules\bootbox.js\**" Link="wwwroot\lib\node_modules\bootbox.js\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\bootbox.js" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\bootstrap\dist\**" Link="wwwroot\lib\node_modules\bootstrap\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\bootstrap\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\jquery\dist\**" Link="wwwroot\lib\node_modules\jquery\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\jquery-ajax-unobtrusive\**" Link="wwwroot\lib\node_modules\jquery-ajax-unobtrusive\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-ajax-unobtrusive" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\jquery-validation\dist\**" Link="wwwroot\lib\node_modules\jquery-validation\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-validation\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\jquery-validation-unobtrusive\dist\**" Link="wwwroot\lib\node_modules\jquery-validation-unobtrusive\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-validation-unobtrusive\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\popper.js\dist\**" Link="wwwroot\lib\node_modules\popper.js\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\popper.js\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\lightbox2\dist\**" Link="wwwroot\lib\node_modules\lightbox2\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\lightbox2\dist" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\modernizr\lib\**" Link="wwwroot\lib\node_modules\modernizr\lib\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\modernizr\lib" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\moment\min\**" Link="wwwroot\lib\node_modules\moment\min\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\moment\min" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\tempusdominus-bootstrap-4\build\**" Link="wwwroot\lib\node_modules\tempusdominus-bootstrap-4\build\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\tempusdominus-bootstrap-4\build" CopyToOutputDirectory="Always" />
+    <None Include="node_modules\tinymce\**" Link="wwwroot\lib\node_modules\tinymce\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\tinymce" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+
 
 </Project>
