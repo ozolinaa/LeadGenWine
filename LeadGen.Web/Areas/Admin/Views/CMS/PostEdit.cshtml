@@ -56,15 +56,12 @@ new
 </div>
 
 @section Scripts
-{
-    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <script src="~/Scripts/tag-it.min.js"></script>
-    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
-    <script src="~/Scripts/LeadGenPostEdit.js"></script>
+    {
+    <script src="~/js/LeadGen-PostEdit.js"></script>
     <script>
         LeadGen.PostEdit = LeadGen.PostEdit || {};
         LeadGen.PostEdit.PostTypeID = "@Model.postType.ID";
         LeadGen.PostEdit.SearchPostsJsonUrl = "@Url.Action("SearchPostsJson", "CMS", new { area = "admin"})";
-        LeadGen.PostEdit.init(); 
+        LeadGen.PostEdit.init();
     </script>
 }

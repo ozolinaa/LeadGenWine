@@ -15,8 +15,8 @@ $(document).ready(function () {
 
     //Enable datetime pickers
     $(".datetimepicker").datetimepicker({
-        locale: 'ru',
-        defaultDate: '',
+        locale: 'en',
+        allowInputToggle: true
         //format: 'DD.MM.YYYY'
     })
 

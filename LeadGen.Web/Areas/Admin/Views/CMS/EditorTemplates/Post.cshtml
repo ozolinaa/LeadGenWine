@@ -92,10 +92,17 @@
 
                 @if (Model.datePublished != null)
                 {
-                    <div class='form-group'>
-                        @Html.LabelFor(x => x.datePublished)
-                        @Html.TextBoxFor(x => x.datePublished, new { @class = "form-control datetimepicker" })
+
+
+                <div class='form-group'>
+                    @Html.LabelFor(x => x.datePublished)
+                    <div class="input-group date datetimepicker">
+                        @Html.TextBoxFor(x => x.datePublished, new { @class = "form-control" })
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
                     </div>
+                </div>
                 }
 
             </div>
