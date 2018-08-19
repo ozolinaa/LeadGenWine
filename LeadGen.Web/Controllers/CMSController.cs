@@ -18,16 +18,16 @@ namespace LeadGen.Web.Controllers
         {
             if (urlPath == null)
                 urlPath = "";
-            cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath.TrimEnd('/'));
+            cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath.TrimEnd('/'), !preview);
             ViewBag.cmsContext = cmsContext;
             switch (cmsContext.pageType)
             {
                 case CMSContext.PageType.StartPage:
                     return StartPage();
                 case CMSContext.PageType.Post:
-                    return SinglePost(preview);
+                    return SinglePost();
                 case CMSContext.PageType.Exclusion:
-                    return Exclusion(preview);
+                    return Exclusion();
                 case CMSContext.PageType.TermPost:
                     return TermPostList();
                 case CMSContext.PageType.PostType:
@@ -46,12 +46,9 @@ namespace LeadGen.Web.Controllers
         }
 
         [NonAction]
-        public ActionResult SinglePost(bool preview = false)
+        public ActionResult SinglePost()
         {
             Post post = cmsContext.post;
-            //Check if post was fount and if post.postStatus.ID is 50 (or preview is true)
-            if (post == null || (cmsContext.post.postStatus.ID != 50 && preview != true))
-                return NotFound();
 
             if (ViewExists("Single/" + post.postType.url))
                 return View("Single/" + post.postType.url, post);
@@ -63,17 +60,11 @@ namespace LeadGen.Web.Controllers
         }
 
         [NonAction]
-        public ActionResult Exclusion(bool preview = false)
+        public ActionResult Exclusion()
         {
-            if (cmsContext.post != null && (cmsContext.post.postStatus.ID == 50 || preview == true))
-            {
-                if (ViewExists("Exclusion/" + cmsContext.post.postURL))
-                    return View("Exclusion/" + cmsContext.post.postURL, cmsContext);
-                return View("Single/Default", cmsContext.post);
-            }
-
-            else
-                return NotFound();
+            if (ViewExists("Exclusion/" + cmsContext.post.postURL))
+                return View("Exclusion/" + cmsContext.post.postURL, cmsContext);
+            return View("Single/Default", cmsContext.post);
         }
 
         [NonAction]

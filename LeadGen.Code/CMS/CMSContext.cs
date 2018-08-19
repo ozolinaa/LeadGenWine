@@ -62,7 +62,7 @@ namespace LeadGen.Code.CMS
 
         private static string[] exclusionUrls = null;
 
-        public CMSContext(SqlConnection con, ControllerContext controllerContext, string enteredUrlPath)
+        public CMSContext(SqlConnection con, ControllerContext controllerContext, string enteredUrlPath, bool publishedOnly)
         {
             urlPath = enteredUrlPath;
             urlPathSegments = urlPath.Split('/');
@@ -75,13 +75,13 @@ namespace LeadGen.Code.CMS
                 tryLoadContextForStartPage(con);
 
             if (pageType == PageType.NotFond)
-                tryLoadContextForExclusionPath(con);
+                tryLoadContextForExclusionPath(con, publishedOnly);
 
             if (pageType == PageType.NotFond && urlPathSegments.Length == 1)
                 tryLoadContextForPostType(con);
 
             if (pageType == PageType.NotFond)
-                tryLoadContextForPost(con);
+                tryLoadContextForPost(con, publishedOnly);
 
             InitializeAdditionalData(con);
             LoadWidgets(con);
@@ -98,7 +98,7 @@ namespace LeadGen.Code.CMS
                 }
         }
 
-        private bool tryLoadContextForExclusionPath(SqlConnection con)
+        private bool tryLoadContextForExclusionPath(SqlConnection con, bool publishedOnly)
         {
             if (exclusionUrls == null || exclusionUrls.Contains(urlPathSegments[0]) == false)
                 return false;
@@ -155,20 +155,20 @@ namespace LeadGen.Code.CMS
             return true;
         }
 
-        private bool tryLoadContextForPost(SqlConnection con)
+        private bool tryLoadContextForPost(SqlConnection con, bool publishedOnly)
         {
             postType = PostType.SelectFromDB(con, TypeURL: urlPathSegments[0]).FirstOrDefault();
 
             if (postType != null)
             {
-                postParents = getPostsHierarchical(con, postType.ID, urlPathSegments.Skip(1));
+                postParents = getPostsHierarchical(con, postType.ID, urlPathSegments.Skip(1), publishedOnly);
             }
             else
             {
                 //There may be a post type with TypeURL: "" (page type)
                 postType = PostType.SelectFromDB(con, TypeURL: "").FirstOrDefault();
                 if (postType != null)
-                    postParents = getPostsHierarchical(con, postType.ID, urlPathSegments);
+                    postParents = getPostsHierarchical(con, postType.ID, urlPathSegments, publishedOnly);
             }
 
             if (postParents == null || postParents.Count == 0)
@@ -195,16 +195,21 @@ namespace LeadGen.Code.CMS
             return true;
         }
 
-        private List<Post> getPostsHierarchical(SqlConnection con, int postTypeID, IEnumerable<string> postURLPath)
+        private List<Post> getPostsHierarchical(SqlConnection con, int postTypeID, IEnumerable<string> postURLPath, bool publishedOnly = true)
         {
             List<Post> hierarchicalPosts = new List<Post>();
 
             Post post = null;
             long? postParentID = null;
+
+            int? postStatusId = null;
+            if(publishedOnly)
+                postStatusId = 50;
+
             // In first iteration PostParentID is NULL then Select only top level posts
             foreach (string postURL in postURLPath)
             {
-                post = Post.SelectFromDB(con, typeID: postTypeID, postURL: postURL, postParentID: postParentID, statusID:50).FirstOrDefault();
+                post = Post.SelectFromDB(con, typeID: postTypeID, postURL: postURL, postParentID: postParentID, statusID: postStatusId).FirstOrDefault();
                 if (post == null)
                     return null;
 
