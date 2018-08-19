@@ -20,7 +20,12 @@ namespace LeadGen.Code.Sys
         };
 
 
-        public string requestedHttpHostUrl { get { return string.Format("{0}://{1}", Request.Scheme, Request.Host); } }
+        public string requestedHttpHostUrl
+        {
+            get {                
+                return string.Format("{0}://{1}", Request.Scheme, Request.Host);
+            }
+        }
 
         [NonAction]
         public RedirectToActionResult RedirectToMainPage()

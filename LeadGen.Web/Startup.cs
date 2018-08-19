@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Primitives;
 
 namespace LeadGen.Web
 {
@@ -49,6 +50,8 @@ namespace LeadGen.Web
 
         }
 
+
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
@@ -63,6 +66,26 @@ namespace LeadGen.Web
             }
 
             app.UseStaticFiles();
+
+            //Rewrite url path and scheme passed from load balancer 
+            app.Use((context, next) =>
+            {
+                if (context.Request.Headers.TryGetValue("X-Forwarded-PathBase", out StringValues pathBase))
+                {
+                    context.Request.PathBase = new PathString(pathBase);
+                }
+
+                if (context.Request.Headers.TryGetValue("X-Forwarded-Proto", out StringValues proto))
+                {
+                    if (!string.IsNullOrEmpty(proto))
+                    {
+                        context.Request.Protocol = proto;
+                        context.Request.Scheme = proto;
+                    }
+                }
+
+                return next();
+            });
 
             app.UseMvc(routes =>
             {
@@ -94,6 +117,9 @@ namespace LeadGen.Web
                     defaults: new { controller = "CMS", action = "Index" }
                 );
             });
+
+
+
 
             
         }
