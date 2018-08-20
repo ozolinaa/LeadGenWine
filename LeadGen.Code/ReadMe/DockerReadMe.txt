@@ -47,9 +47,10 @@ docker run -d --net=isolated_network --restart=unless-stopped -p 1433:1433 -e 'A
 # docker stop mssql
 # docker rm mssql
 
+leadgenweb:latest
 
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
-docker run -d --net=isolated_network --restart=unless-stopped -p 8080:80 -e sqlConnectionString='Data Source=mssql;Initial Catalog=WineLeadGen;User ID=sa;Password=pass@word1;' --name leadgenweb xtonyx/leadgenweb:20180819065229
+docker run -d --net=isolated_network --restart=unless-stopped -p 8080:80 -e sqlConnectionString='Data Source=mssql;Initial Catalog=WineLeadGen;User ID=sa;Password=pass@word1;' --name leadgenweb xtonyx/leadgenweb:20180819081021
 # docker stop leadgenweb
 # docker rm leadgenweb
 # docker rmi $(docker images -a -q)

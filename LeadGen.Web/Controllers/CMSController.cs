@@ -1,6 +1,8 @@
 ﻿using LeadGen.Code.CMS;
 using LeadGen.Code.Map;
+using LeadGen.Code.Sys;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,31 +14,58 @@ namespace LeadGen.Web.Controllers
     {
         public CMSContext cmsContext { get; set; }
 
+        //https://docs.microsoft.com/en-us/aspnet/core/performance/caching/memory?view=aspnetcore-2.1
+        private CacheProvider _cache;
+        public CMSController(IMemoryCache memoryCache)
+        {
+            _cache = new CacheProvider(memoryCache);
+        }
+
+
         //Cache The Page at the server for 24 hours
-        //[OutputCache(Duration = 60*60*24, Location = System.Web.UI.OutputCacheLocation.Server, VaryByParam = "*")]
-        public ActionResult Index(string urlPath = "", bool preview = false)
+        public IActionResult Index(string urlPath = "", bool preview = false)
         {
             if (urlPath == null)
                 urlPath = "";
-            cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath.TrimEnd('/'), !preview);
+            else
+                urlPath = urlPath.Trim('/');
+
+            IActionResult result = null;
+            if (!preview && _cache.TryGetValue(urlPath, out result)) 
+                return result;
+
+            cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath, !preview);
             ViewBag.cmsContext = cmsContext;
             switch (cmsContext.pageType)
             {
                 case CMSContext.PageType.StartPage:
-                    return StartPage();
+                    result = StartPage();
+                    break;
                 case CMSContext.PageType.Post:
-                    return SinglePost();
+                    result = SinglePost();
+                    break;
                 case CMSContext.PageType.Exclusion:
-                    return Exclusion();
+                    result = Exclusion();
+                    break;
                 case CMSContext.PageType.TermPost:
-                    return TermPostList();
+                    result = TermPostList();
+                    break;
                 case CMSContext.PageType.PostType:
-                    return TypePostList();
+                    result = TypePostList();
+                    break;
                 case CMSContext.PageType.TermPostType:
-                    return TermTypePostList();
+                    result = TermTypePostList();
+                    break;
                 default:
-                    return NotFound();
+                    result = NotFound();
+                    break;
             }
+
+            // Save data in cache (Keep in cache for this time, reset time if accessed)
+            if(!preview)
+                _cache.Set(urlPath, result);
+
+            return result;
         }
 
         [NonAction]

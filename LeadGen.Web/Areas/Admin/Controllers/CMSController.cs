@@ -12,11 +12,20 @@ using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.Extensions.Caching.Memory;
+using LeadGen.Code.Sys;
 
 namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class CMSController : AdminBaseController
     {
+        //https://docs.microsoft.com/en-us/aspnet/core/performance/caching/memory?view=aspnetcore-2.1
+        private CacheProvider _cache;
+        public CMSController(IMemoryCache memoryCache)
+        {
+            _cache = new CacheProvider(memoryCache);
+        }
+
         // GET: Admin/CMS
         public override ActionResult Index()
         {
@@ -174,11 +183,8 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 //Clear the cache for this post
-                string cacheUrl = Url.Action("Index", "CMS", new { area = "", urlPath = postToUpdate.Url }).TrimEnd('/');
-
-                //ANTON TODO
-                //HttpResponse.RemoveOutputCacheItem(cacheUrl);
-                //HttpResponse.RemoveOutputCacheItem(cacheUrl + "/");
+                string cacheUrl = Url.Action("Index", "CMS", new { area = "", urlPath = postToUpdate.Url }).Trim('/');
+                _cache.Remove(cacheUrl);
 
                 //Need to reload post data because DB logic may had changed some fields after the update
                 Post postItem = Post.SelectFromDB(DBLGcon, postID: postToUpdate.ID, loadAttachmentList: true, loadFields: true).First();
@@ -423,11 +429,9 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                 return BadRequest("url is required");
 
             url = url.Replace(requestedHttpHostUrl, "");
-            url = url.TrimEnd('/');
+            url = url.Trim('/');
 
-            //Anton TODO
-            //HttpResponse.RemoveOutputCacheItem(url);
-            //HttpResponse.RemoveOutputCacheItem(url + "/");
+            _cache.Remove(url);
 
             return Ok(string.Format("Cache for URL {0} is cleared", url));
         }
@@ -436,8 +440,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         [HttpPost]
         public ActionResult clearCacheAll()
         {
-            //Anton TODO
-            //HttpRuntime.UnloadAppDomain();
+            _cache.Reset();
             return Ok("All Cache is cleared");
         }
 

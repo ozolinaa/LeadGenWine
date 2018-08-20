@@ -29,6 +29,8 @@ namespace LeadGen.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
+
             services.AddMvc();
 
             //https://joonasw.net/view/aspnet-core-di-deep-dive 

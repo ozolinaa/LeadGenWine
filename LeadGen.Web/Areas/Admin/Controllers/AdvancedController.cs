@@ -1,5 +1,6 @@
 ﻿using LeadGen.Code.Sys;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,10 +11,8 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 {
     public class AdvancedController : AdminBaseController
     {
-        public string clearCache()
+        public AdvancedController()
         {
-            //HttpRuntime.UnloadAppDomain();
-            return "Cache Cleared";
         }
 
         public ActionResult test()
