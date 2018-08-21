@@ -4,11 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <script src="~/Scripts/modernizr-2.8.3.js"></script>
+
+    <link href="~/lib/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/bootstrap-datetimepicker-npm/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/jquery-ui-dist/jquery-ui.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/jquery-ui-dist/jquery-ui.theme.min.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/tag-it/css/jquery.tagit.css" rel="stylesheet" />
+    <link href="~/lib/node_modules/tinymce/skins/lightgray/skin.min.css" rel="stylesheet" />
+    <link href="~/css/site.min.css" rel="stylesheet" />
+
 </head>
 <body>
 
@@ -64,22 +71,26 @@
         </footer>
     </div>
 
-    <script src="~/Scripts/jquery-2.1.4.min.js"></script>
-    <script src="~/Scripts/moment-with-locales.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/lib/node_modules/moment/min/moment.min.js"></script>
+    <script src="~/lib/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/node_modules/jquery-ui-dist/jquery-ui.min.js"></script>
+    <script src="~/lib/node_modules/bootstrap/js/transition.js"></script>
+    <script src="~/lib/node_modules/bootstrap/js/collapse.js"></script>
+    <script src="~/lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/lib/node_modules/bootbox/bootbox.min.js"></script>
+    <script src="~/lib/node_modules/bootstrap-datetimepicker-npm/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/lib/node_modules/lightbox2/dist/js/lightbox.min.js"></script>
 
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    <script src="~/Scripts/LeadGen.js"></script>
-    <script src="~/Scripts/LeadGen-admin.js"></script>
 
+    <script src="~/js/LeadGen.js"></script>
+    <script src="~/js/LeadGen-Admin.js"></script>
 
     @RenderSection("Scripts", required: false)
 
-    
+
 </body>
 </html>

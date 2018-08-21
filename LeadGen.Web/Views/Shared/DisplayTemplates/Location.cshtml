@@ -45,6 +45,21 @@
                 position:{lat: @Model.lat, lng: @Model.lng}
             });
 
+            // Add circle overlay and bind to marker
+            var circle = new google.maps.Circle({
+                fillColor: '#ffffff',
+                fillOpacity: .6,
+                strokeWeight: 1,
+                strokeColor: '#ff0000',
+                draggable: false,
+                editable: false,
+                map: map,
+                center: center,
+                radius: @Model.radiusInMeters,
+                clickable: false
+            });
+            circle.bindTo('center', marker, 'position');
+
             var infowindow = new google.maps.InfoWindow();
             infowindow.setContent('<div><strong>@Model.name</strong><br>@Model.address');
             infowindow.open(map, marker);

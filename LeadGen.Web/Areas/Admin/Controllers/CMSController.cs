@@ -419,6 +419,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
         public ActionResult Cache()
         {
+            ViewBag.siteURL = requestedHttpHostUrl;
             return View();
         }
 

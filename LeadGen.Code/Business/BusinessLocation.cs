@@ -30,6 +30,7 @@ namespace LeadGen.Code.Business
             isAprovedByAdmin = (bool)row["IsAprovedByAdmin"];
             address = (string)row["LocationAddress"];
             name = (string)row["LocationName"];
+            radiusInMeters = (int)row["RadiusMeters"];
             //createdDateTime = (int)row["CreatedDateTime"];
 
 
@@ -53,6 +54,7 @@ namespace LeadGen.Code.Business
 
                 cmd.Parameters.AddWithValue("@BusinessID", businessID);
                 cmd.Parameters.Add(new SqlParameter("@Location", SqlGeography.Point(lat, lng, 4326)) { UdtTypeName = "Geography" });
+                cmd.Parameters.AddWithValue("@RadiusMeters", radiusInMeters);
                 cmd.Parameters.AddWithValue("@LocationAddress", address);
                 cmd.Parameters.AddWithValue("@LocationName", name);
 
@@ -100,6 +102,7 @@ namespace LeadGen.Code.Business
                 cmd.Parameters.AddWithValue("@LocationID", locationID);
                 cmd.Parameters.AddWithValue("@BusinessID", businessID);
                 cmd.Parameters.Add(new SqlParameter("@Location", SqlGeography.Point(lat, lng, 4326)) { UdtTypeName = "Geography" });
+                cmd.Parameters.AddWithValue("@RadiusMeters", radiusInMeters);
                 cmd.Parameters.AddWithValue("@LocationAddress", address);
                 cmd.Parameters.AddWithValue("@LocationName", name);
 

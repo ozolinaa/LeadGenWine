@@ -73,7 +73,7 @@ namespace LeadGen.Code.Lead
                     case FieldType.Dropdown:
                         return (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
                     case FieldType.Checkbox:
-                        return string.Join(", ", fieldTerms.Where(x => x.isChecked == true).ToList().Select(x=>x.name));
+                        return string.Join(", ", fieldTerms == null? new string[0] : fieldTerms.Where(x => x.isChecked == true).ToList().Select(x=>x.name));
                     case FieldType.Radio:
                         return (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
                     case FieldType.Boolean:

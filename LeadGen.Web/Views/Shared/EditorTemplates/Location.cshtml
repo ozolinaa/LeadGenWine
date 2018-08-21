@@ -10,6 +10,7 @@
         @Html.HiddenFor(x => x.lat, new { data_lat = mapID })
         @Html.HiddenFor(x => x.lng, new { data_lng = mapID })
         @Html.HiddenFor(x => x.zoom, new { data_zoom = mapID })
+        @Html.HiddenFor(x => x.radiusInMeters, new { data_radius = mapID })
 
         @Html.LabelFor(x => x.name)
         @Html.TextBoxFor(x => x.name, new { @class = "form-control locationName", data_name = mapID })
@@ -59,6 +60,7 @@
             var autocomplete = new google.maps.places.Autocomplete(input);
             autocomplete.bindTo('bounds', map);
 
+
             var marker = new google.maps.Marker({
                 map: map,
                 anchorPoint: new google.maps.Point(0, -29),
@@ -66,6 +68,20 @@
                 visible:true,
                 position:{lat: @Model.lat, lng: @Model.lng}
             });
+
+            // Add circle overlay and bind to marker
+            var circle = new google.maps.Circle({
+                fillColor: '#ffffff',
+                fillOpacity: .6,
+                strokeWeight: 1,
+                strokeColor: '#ff0000',
+                draggable: false,
+                editable: true,
+                map: map,
+                radius: @Model.radiusInMeters,
+                clickable: false
+            });
+            circle.bindTo('center', marker, 'position');
 
 
             autocomplete.addListener('place_changed', function() {
@@ -84,12 +100,20 @@
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                     map.fitBounds(place.geometry.viewport);
+                    var center = place.geometry.location;
+                    var ne = place.geometry.viewport.getNorthEast();
+                    var radiusInMeeters = google.maps.geometry.spherical.computeDistanceBetween(center, ne);
+                    circle.setRadius(radiusInMeeters);
                 } else {
                     map.setCenter(place.geometry.location);
                     map.setZoom(16);
+                    debugger;
+                    circle.setRadius(5000);
                 }
 
                 marker.setPosition(place.geometry.location);
+
+
                 marker.setVisible(true);
 
                 var address = '';
@@ -104,19 +128,25 @@
                 $('[data-name="'+googleMap.id+'"]').val(place.name);
                 $('[data-address="'+googleMap.id+'"]').val(address);
 
-                updateMarkerLocationFields(marker);
+                updateMarkerLocationFields(marker, circle);
             });
 
-            google.maps.event.addListener(marker, 'dragend', function() { updateMarkerLocationFields(marker); } );
+            google.maps.event.addListener(marker, 'dragend', function () { updateMarkerLocationFields(marker, circle); });
+            google.maps.event.addListener(circle, 'radius_changed', function () { updateMarkerLocationFields(marker, circle); });
+
+            
 
             map.addListener('zoom_changed', function() {
                 $('[data-zoom="'+googleMap.id+'"]').val(map.getZoom());
             });
 
 
-            function updateMarkerLocationFields(marker){
+            function updateMarkerLocationFields(marker, circle) {
+                debugger;
                 $('[data-lat="'+googleMap.id+'"]').val(marker.getPosition().lat());
-                $('[data-lng="'+googleMap.id+'"]').val(marker.getPosition().lng());
+                $('[data-lng="' + googleMap.id + '"]').val(marker.getPosition().lng());
+                $('[data-radius="' + googleMap.id + '"]').val(parseInt(circle.getRadius()));
+
             }
 
         }
