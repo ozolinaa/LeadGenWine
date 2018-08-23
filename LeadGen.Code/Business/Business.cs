@@ -122,7 +122,7 @@ namespace LeadGen.Code.Business
         {
             long businessID;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Create]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -147,7 +147,7 @@ namespace LeadGen.Code.Business
 
         public bool LinkLogin(SqlConnection con, Login newLogin)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.AddLogin]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessAddLogin]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -169,7 +169,7 @@ namespace LeadGen.Code.Business
 
         public void NotifiedAboutLeadSet(SqlConnection con, long leadID, DateTime? notifiedDateTime = null)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetNotified]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetNotified]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -215,7 +215,7 @@ namespace LeadGen.Code.Business
         {
             List<Business> businessList = new List<Business>();
             int totalCount = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessSelect]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@businessID", businessID ?? (object)DBNull.Value);
@@ -246,7 +246,7 @@ namespace LeadGen.Code.Business
 
         public void Update(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Update.Basic]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessUpdateBasic]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -294,7 +294,7 @@ namespace LeadGen.Code.Business
         {
             leadPermissions = new List<LeadPermittion>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Permission.Term.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessPermissionTermSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -333,7 +333,7 @@ namespace LeadGen.Code.Business
 
             List<LeadItem> leadItems = new List<LeadItem>();
             int totalCount = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

@@ -75,7 +75,7 @@ namespace LeadGen.Code.Sys
         {
             this.sendingScheduledDateTime = sendingScheduledDateTime;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Email.Queue.Insert]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[EmailQueueInsert]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -126,7 +126,7 @@ namespace LeadGen.Code.Sys
         {
             this.sendingStartedDateTime = sendingStartedDateTime;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Email.Queue.SetStartedDateTime]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[EmailQueueSetStartedDateTime]", connection))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -141,7 +141,7 @@ namespace LeadGen.Code.Sys
         {
             this.sentDateTime = sentDateTime;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Email.Queue.SetSentDateTime]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[EmailQueueSetSentDateTime]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -168,7 +168,7 @@ namespace LeadGen.Code.Sys
         {
             QueueMailMessage message = null;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Email.Queue.SelectNextEmailToSend]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[EmailQueueSelectNextEmailToSend]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

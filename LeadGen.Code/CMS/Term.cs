@@ -15,7 +15,7 @@ namespace LeadGen.Code.CMS
         {
             List<Taxonomy.Term> TermList = new List<Taxonomy.Term>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Term.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSTermSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

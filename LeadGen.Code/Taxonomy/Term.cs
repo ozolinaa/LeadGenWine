@@ -100,7 +100,7 @@ namespace LeadGen.Code.Taxonomy
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[Taxonomy.Term.Select]";
+                cmd.CommandText = "[dbo].[TaxonomyTermSelect]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@TermID", (object)TermID ?? DBNull.Value);
@@ -141,7 +141,7 @@ namespace LeadGen.Code.Taxonomy
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Taxonomy.Term.Update]";
+                cmd.CommandText = "[dbo].[TaxonomyTermUpdate]";
 
                 cmd.Parameters.AddWithValue("@TermID", ID);
                 cmd.Parameters.AddWithValue("@TermName", name);
@@ -178,7 +178,7 @@ namespace LeadGen.Code.Taxonomy
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Taxonomy.Term.Insert]";
+                cmd.CommandText = "[dbo].[TaxonomyTermInsert]";
 
                 cmd.Parameters.AddWithValue("@TaxonomyID", TaxonomyID);
                 cmd.Parameters.AddWithValue("@TermName", name);
@@ -215,7 +215,7 @@ namespace LeadGen.Code.Taxonomy
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Taxonomy.Term.Delete]";
+                cmd.CommandText = "[dbo].[TaxonomyTermDelete]";
 
                 cmd.Parameters.AddWithValue("@TermID", termID);
 
@@ -234,7 +234,7 @@ namespace LeadGen.Code.Taxonomy
 
         public void SetSystemWord(SqlConnection con, long wordID, string wordCode)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Taxonomy.Term.Word.Set]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[TaxonomyTermWordSet]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -249,7 +249,7 @@ namespace LeadGen.Code.Taxonomy
         public void LoadSystemWords(SqlConnection con, string wordCode = "")
         {
             words = new Dictionary<string, Word>();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Taxonomy.Term.Word.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[TaxonomyTermWordSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

@@ -24,7 +24,7 @@ namespace LeadGen.Code.CMS
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Taxonomy.Select]";
+                cmd.CommandText = "[dbo].[CMSPostTypeTaxonomySelect]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@ForPostTypeID", (object)ForPostTypeID ?? DBNull.Value);
@@ -57,7 +57,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Taxonomy.AddOrUpdate]";
+                cmd.CommandText = "[dbo].[CMSPostTypeTaxonomyAddOrUpdate]";
 
                 cmd.Parameters.AddWithValue("@ForPostTypeID", forPostTypeID.Value);
                 cmd.Parameters.AddWithValue("@ForTaxonomyID", taxonomy.ID);
@@ -97,7 +97,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Taxonomy.Disable]";
+                cmd.CommandText = "[dbo].[CMSPostTypeTaxonomyDisable]";
 
                 cmd.Parameters.AddWithValue("@ForPostTypeID", forPostTypeID.Value);
                 cmd.Parameters.AddWithValue("@ForTaxonomyID", taxonomy.ID);

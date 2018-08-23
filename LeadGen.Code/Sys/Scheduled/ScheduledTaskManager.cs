@@ -22,7 +22,7 @@ namespace LeadGen.Code.Sys.Scheduled
         {
             ScheduledTask scheduledTask = null;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[System.ScheduledTasks.SelectCurrentTasks]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SystemScheduledTasksSelectCurrentTasks]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);

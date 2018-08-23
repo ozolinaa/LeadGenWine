@@ -53,7 +53,7 @@ namespace LeadGen.Code.Business
         public void LoadEmailList(SqlConnection con, long businessID)
         {
             emailList = new List<NotificationEmail>();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Notification.Email.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessNotificationEmailSelect]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@businessID", businessID);
@@ -70,7 +70,7 @@ namespace LeadGen.Code.Business
         public static bool EmailAdd(SqlConnection con, long businessID, string email )
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Notification.Email.Insert]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessNotificationEmailInsert]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -93,7 +93,7 @@ namespace LeadGen.Code.Business
             if (String.IsNullOrEmpty(email))
                 return result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Notification.Email.Delete]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessNotificationEmailDelete]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -113,7 +113,7 @@ namespace LeadGen.Code.Business
         public static bool FrequencyTryUpdate(SqlConnection con, long businessID, Frequency newFrequency)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Notification.Frequency.Update]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessNotificationFrequencyUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

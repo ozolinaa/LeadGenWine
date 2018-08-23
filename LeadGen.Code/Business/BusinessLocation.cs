@@ -39,7 +39,6 @@ namespace LeadGen.Code.Business
 
             lat = (double)location.Lat;
             lng = (double)location.Long;
-            zoom = 14;
         }
 
 
@@ -48,7 +47,7 @@ namespace LeadGen.Code.Business
             locationID = 0;
             isAprovedByAdmin = false;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Location.Create]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -75,7 +74,7 @@ namespace LeadGen.Code.Business
         {
             List<BusinessLocation> result = new List<BusinessLocation>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Location.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -95,7 +94,7 @@ namespace LeadGen.Code.Business
 
         public void UpdateInDB(SqlConnection con, long businessID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Location.Update]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -112,7 +111,7 @@ namespace LeadGen.Code.Business
 
         public static void DeleteFromDB(SqlConnection con, long locationID, long businessID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Location.Delete]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationDelete]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -125,7 +124,7 @@ namespace LeadGen.Code.Business
 
         public void ApprovalSetByAdmin(SqlConnection con, long adminLoginID, bool approve)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Location.AdminApprovalSet]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationAdminApprovalSet]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

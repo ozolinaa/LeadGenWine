@@ -42,9 +42,19 @@
         googleMap.instance = null;
 
         googleMap.init = function() {
-            var center = {lat: @Model.lat, lng: @Model.lng};
+            var center = { lat: @Model.lat, lng: @Model.lng};
+
+            var zoomLevel = @Model.zoom;
+            if (@Model.radiusInMeters > 0) {
+                var radius = @Model.radiusInMeters;
+                var scale = radius / 400;
+                zoomLevel = (16 - Math.log(scale) / Math.log(2));
+            } else if (zoomLevel == 0) {
+                zoomLevel = 14;
+            }
+
             var map = new google.maps.Map(document.getElementById(googleMap.id), {
-                zoom: @Model.zoom,
+                zoom: zoomLevel,
                 center:center,
             });
             map.initialCenter = center;
@@ -107,7 +117,6 @@
                 } else {
                     map.setCenter(place.geometry.location);
                     map.setZoom(16);
-                    debugger;
                     circle.setRadius(5000);
                 }
 
@@ -134,7 +143,7 @@
             google.maps.event.addListener(marker, 'dragend', function () { updateMarkerLocationFields(marker, circle); });
             google.maps.event.addListener(circle, 'radius_changed', function () { updateMarkerLocationFields(marker, circle); });
 
-            
+
 
             map.addListener('zoom_changed', function() {
                 $('[data-zoom="'+googleMap.id+'"]').val(map.getZoom());
@@ -142,11 +151,9 @@
 
 
             function updateMarkerLocationFields(marker, circle) {
-                debugger;
                 $('[data-lat="'+googleMap.id+'"]').val(marker.getPosition().lat());
                 $('[data-lng="' + googleMap.id + '"]').val(marker.getPosition().lng());
                 $('[data-radius="' + googleMap.id + '"]').val(parseInt(circle.getRadius()));
-
             }
 
         }

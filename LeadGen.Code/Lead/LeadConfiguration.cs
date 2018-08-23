@@ -12,7 +12,7 @@ namespace LeadGen.Code.Lead
     {
         public static void FieldMetaTermSetAllowance(SqlConnection con, long termID, bool isAllowed)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Meta.Term.SetAllowance]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldMetaTermSetAllowance]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -27,7 +27,7 @@ namespace LeadGen.Code.Lead
         {
             bool result = false;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Meta.Term.IsAllowed]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldMetaTermIsAllowed]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

@@ -18,7 +18,7 @@ namespace LeadGen.Code
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[User.Login.Session.Create]";
+                cmd.CommandText = "[dbo].[UserLoginSessionCreate]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@loginID", loginID);
@@ -46,7 +46,7 @@ namespace LeadGen.Code
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[User.Login.Session.Delete]";
+                cmd.CommandText = "[dbo].[UserLoginSessionDelete]";
 
                 cmd.Parameters.AddWithValue("@sessionID", sessionID);
                 cmd.Parameters.AddWithValue("@loginID", loginID);
@@ -73,7 +73,7 @@ namespace LeadGen.Code
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[User.Login.Session.SelectLoginDetailsBySessionID]";
+                cmd.CommandText = "[dbo].[UserLoginSessionSelectLoginDetailsBySessionID]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@sessionID", sessionID);

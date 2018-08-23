@@ -31,7 +31,7 @@ namespace LeadGen.Code.CMS
         {
             List<ImageSize> results = new List<ImageSize>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Image.Size.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentImageSizeSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
@@ -56,7 +56,7 @@ namespace LeadGen.Code.CMS
         {
             List<SitemapItem> sitemapItems = new List<SitemapItem>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Type.Select_SiteMapData]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTypeSelect_SiteMapData]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

@@ -38,7 +38,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetGetContact]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetGetContact]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -79,7 +79,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetCompleted]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetCompleted]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -118,7 +118,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetNotInterested]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetNotInterested]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -155,7 +155,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetInterested]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetInterested]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -190,7 +190,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetImportant]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetImportant]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -227,7 +227,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetNotImportant]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetNotImportant]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

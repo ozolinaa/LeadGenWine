@@ -10,14 +10,5 @@ new {
     data_ajax_mode = "replace-with",
     data_ajax_update = "#LeadID-" + @Model.ID
 })
-
-    @if (Model.getFieldByCode("phoneIsAvailableForBusiness").fieldBool)
-    {
-        <span class="grey">Указаны email и телефон</span>
-    }
-    else
-    {
-        <span class="grey">Указан только email</span>
-    }
 </div>
 

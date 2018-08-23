@@ -101,7 +101,7 @@ namespace LeadGen.Code.Business.Inovice
         {
             List<Inovice.Invoice> result = new List<Inovice.Invoice>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@InoiceID", (object)invoiceID ?? DBNull.Value);
@@ -127,7 +127,7 @@ namespace LeadGen.Code.Business.Inovice
             Invoice result = null;
             long generatedInvoiceID = 0;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Create]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -154,7 +154,7 @@ namespace LeadGen.Code.Business.Inovice
         public void TryAddLineWithLeads(SqlConnection con, string invoiceLineDescription)
         {
             //Int16 newLine = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Line.Leads.Create]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceLineLeadsCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -176,7 +176,7 @@ namespace LeadGen.Code.Business.Inovice
         public Int16 LineAdd(SqlConnection con, string invoiceLineDescription = "", decimal unitPrice = 0, Int16 quantaty = 1, decimal tax = 0)
         {
             Int16 newLine = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Line.Create]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceLineCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -202,7 +202,7 @@ namespace LeadGen.Code.Business.Inovice
 
         public void LineRemove(SqlConnection con, Int16 lineID)
         {
-            using (SqlCommand cmd = new SqlCommand("[Business.Invoice.Line.Delete]", con))
+            using (SqlCommand cmd = new SqlCommand("[BusinessInvoiceLineDelete]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -219,7 +219,7 @@ namespace LeadGen.Code.Business.Inovice
             {
                 this.publishedDateTime = publishedDateTime;
 
-                using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Publish]", con))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoicePublish]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -237,7 +237,7 @@ namespace LeadGen.Code.Business.Inovice
             {
                 this.paidDateTime = paidDateTime;
 
-                using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.SetPaid]", con))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceSetPaid]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -258,7 +258,7 @@ namespace LeadGen.Code.Business.Inovice
         private void BillingUpdateInDB(SqlConnection con)
         {
             if(legalBilling != null && buisnessBilling != null)
-                using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.UpdateBilling]", con))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceUpdateBilling]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -295,7 +295,7 @@ namespace LeadGen.Code.Business.Inovice
 
         public static void DeleteFromDB(SqlConnection con, long invoiceID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Delete]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceDelete]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -309,7 +309,7 @@ namespace LeadGen.Code.Business.Inovice
         {
             leadCompleatedData = new List<LeadItemCompleatedData>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Leads.SelectCompleted]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceLeadsSelectCompleted]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@InoiceID", ID);

@@ -20,10 +20,20 @@
         googleMaps[googleMap.id] = googleMap;
 
         googleMap.instance = null;
+
+        var zoomLevel = @Model.zoom;
+        if (@Model.radiusInMeters > 0) { 
+            var radius = @Model.radiusInMeters;
+            var scale = radius / 400;
+            zoomLevel = (16 - Math.log(scale) / Math.log(2));
+        } else if (zoomLevel == 0) {
+            zoomLevel = 14;
+        }
+
         googleMap.init = function() {
             var center = {lat: @Model.lat, lng: @Model.lng};
             var map = new google.maps.Map(document.getElementById(googleMap.id), {
-                zoom: @Model.zoom,
+                zoom: zoomLevel,
                 center: center,
                 scrollwheel: false,
             });

@@ -108,7 +108,7 @@ namespace LeadGen.Code.Business.Notification
         private static DataView GetLeadBusinessPostNotificationDataView(SqlConnection connection, DateTime publishedAfter)
         {
             DataView leadNotificationView = null;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SelectBusinessPostNotificationData]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectBusinessPostNotificationData]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PublishedAfter", publishedAfter);
@@ -126,7 +126,7 @@ namespace LeadGen.Code.Business.Notification
         private static DataView GetLeadBusinessNotificationDataView(SqlConnection connection, Frequency frequency, DateTime publishedAfter)
         {
             DataView leadNotificationView = null;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SelectBusinessNotificationData]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectBusinessNotificationData]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PublishedAfter", publishedAfter);
@@ -273,7 +273,7 @@ namespace LeadGen.Code.Business.Notification
 
         private static void PostNotifiedAboutLeadSet(SqlConnection con, long businessPostID, long leadID, DateTime? notifiedDateTime = null)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.SetNotifiedPost]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadSetNotifiedPost]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

@@ -43,7 +43,7 @@ namespace LeadGen.Code.Business
 
         public void Update(SqlConnection con, long businessID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Update.Billing]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessUpdateBilling]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

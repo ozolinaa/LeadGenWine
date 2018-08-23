@@ -19,7 +19,7 @@ namespace LeadGen.Code.CMS
         {
             List<PostTypeAttachmentTaxonomy> postTypeAttachmentTaxonomies = new List<PostTypeAttachmentTaxonomy>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Type.Attachment.Taxonomy.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTypeAttachmentTaxonomySelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -42,7 +42,7 @@ namespace LeadGen.Code.CMS
 
         public void Update(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Type.Attachment.Taxonomy.AddOrUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTypeAttachmentTaxonomyAddOrUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -55,7 +55,7 @@ namespace LeadGen.Code.CMS
 
         public void Disable(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Type.Attachment.Taxonomy.Disable]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTypeAttachmentTaxonomyDisable]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

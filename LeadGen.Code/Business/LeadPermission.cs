@@ -38,12 +38,12 @@ namespace LeadGen.Code.Business
         {
             ID = null;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Permission.Request]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessPermissionRequest]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@BusinessID", businessID);
-                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@TermIDTable", "[dbo].[Sys.Bigint.TableType]", terms.Select(x=>x.ID).Distinct()));
+                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@TermIDTable", "[dbo].[SysBigintTableType]", terms.Select(x=>x.ID).Distinct()));
 
                 SqlParameter permissionIDParameter = new SqlParameter();
                 permissionIDParameter.ParameterName = "@PermissionID";
@@ -65,7 +65,7 @@ namespace LeadGen.Code.Business
         public bool RemoveRequestFromDB(SqlConnection con, long businessID)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Permission.RemoveRequest]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessPermissionRemoveRequest]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -90,7 +90,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Permission.Approve]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessPermissionApprove]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -117,7 +117,7 @@ namespace LeadGen.Code.Business
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Permission.CancelApprove]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessPermissionCancelApprove]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

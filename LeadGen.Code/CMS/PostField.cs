@@ -145,7 +145,7 @@ namespace LeadGen.Code.CMS
             //if (type == FieldType.Location)
 
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Field.Value.InsertOrUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostFieldValueInsertOrUpdate]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

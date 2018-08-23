@@ -147,7 +147,7 @@ namespace LeadGen.Code.Lead
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Lead.Field.Structure.InsertOrUpdate]";
+                cmd.CommandText = "[dbo].[LeadFieldStructureInsertOrUpdate]";
 
                 cmd.Parameters.AddWithValue("@FieldTypeID", (int)fieldType);
                 cmd.Parameters.AddWithValue("@FieldCode", code); 
@@ -210,7 +210,7 @@ namespace LeadGen.Code.Lead
         private bool SaveLeadScalarFieldValue(SqlConnection con, long leadID)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Value.Scalar.InsertOrUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldValueScalarInsertOrUpdate]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -234,7 +234,7 @@ namespace LeadGen.Code.Lead
         private void ClearLeadTaxonomyFieldValues(SqlConnection con, long leadID)
         {
             bool deleted = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Value.Taxonomy.Delete]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldValueTaxonomyDelete]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -253,7 +253,7 @@ namespace LeadGen.Code.Lead
         private bool SaveLeadTaxonomyFieldValue(SqlConnection con, long leadID, long termID)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Value.Taxonomy.Insert]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldValueTaxonomyInsert]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

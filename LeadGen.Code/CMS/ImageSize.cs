@@ -30,7 +30,7 @@ namespace LeadGen.Code.CMS
 
         public void InsertImage(SqlConnection con, long attachmentID, string url)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Image.Insert]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentImageInsert]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

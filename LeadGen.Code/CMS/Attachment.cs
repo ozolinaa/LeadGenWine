@@ -51,7 +51,7 @@ namespace LeadGen.Code.CMS
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[CMS.Attachment.GetByID]";
+                cmd.CommandText = "[dbo].[CMSAttachmentGetByID]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@AttachmentID", AttachmentID);
@@ -148,7 +148,7 @@ namespace LeadGen.Code.CMS
             Type fileType = GetFileTypeByName(fileName);
 
             //Create new Attachment
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.ProcessNew]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentProcessNew]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -188,7 +188,7 @@ namespace LeadGen.Code.CMS
                 {
                     try
                     {
-                        using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.SetURL]", con))
+                        using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentSetURL]", con))
                         {
                             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -250,7 +250,7 @@ namespace LeadGen.Code.CMS
             Attachment attachmentToDelete = new Attachment(con, attachmentID);
             if (attachmentToDelete != null)
             {
-                using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Delete]", con))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentDelete]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -290,7 +290,7 @@ namespace LeadGen.Code.CMS
 
         public void LinkToPost(SqlConnection con, long postID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Attachment.Link]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostAttachmentLink]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -309,7 +309,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Attachment.Unlink]";
+                cmd.CommandText = "[dbo].[CMSPostAttachmentUnlink]";
 
                 cmd.Parameters.AddWithValue("@PostID", postID);
                 cmd.Parameters.AddWithValue("@AttachmentID", attachmentID);
@@ -361,7 +361,7 @@ namespace LeadGen.Code.CMS
         private void UpdateTermsFromTaxonomyList(SqlConnection con)
         {
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Term.RemoveAll]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentTermRemoveAll]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@AttachmentID", attachmentID);
@@ -372,7 +372,7 @@ namespace LeadGen.Code.CMS
             {
                 foreach (Taxonomy.Term tax in taxonomies.SelectMany(x => x.termList).Where(x => x.isChecked == true))
                 {
-                    using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Term.Add]", con))
+                    using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentTermAdd]", con))
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
 
@@ -388,7 +388,7 @@ namespace LeadGen.Code.CMS
 
         private void UpdateBasicData(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Attachment.Update]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@AttachmentID", attachmentID);

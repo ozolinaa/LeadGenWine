@@ -64,7 +64,7 @@ namespace LeadGen.Code.CMS
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Select]";
+                cmd.CommandText = "[dbo].[CMSPostTypeSelect]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@TypeID", (object)TypeID ?? DBNull.Value);
@@ -90,7 +90,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Update]";
+                cmd.CommandText = "[dbo].[CMSPostTypeUpdate]";
 
                 if (SEO == null)
                     SEO = new SEOFields();
@@ -136,7 +136,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Type.Insert]";
+                cmd.CommandText = "[dbo].[CMSPostTypeInsert]";
 
                 if (SEO == null)
                     SEO = new SEOFields();

@@ -1,5 +1,18 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <div>
+
+    @if (Model.businessDetails.businessCompletedDateTime == null && Model.businessDetails.businessContactReceivedDateTime != null)
+    {
+        @if (Model.businessDetails.businessImportantDateTime == null)
+        {
+            @Html.Partial("LeadActionParts/_SetImportant", Model)
+        }
+        else
+        {
+            @Html.Partial("LeadActionParts/_SetNotImportant", Model)
+        }
+    }
+
     @if (Model.businessDetails.businessContactReceivedDateTime != null)
     {
         @Html.Partial("LeadActionParts/_Contacts", Model)

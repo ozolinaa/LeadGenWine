@@ -28,7 +28,7 @@ namespace LeadGen.Code.Sys
         {
             List<Option> optionList = new List<Option>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Sys.Option.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SysOptionSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -47,7 +47,7 @@ namespace LeadGen.Code.Sys
 
         public void Update(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Sys.Option.InsertOrUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SysOptionInsertOrUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

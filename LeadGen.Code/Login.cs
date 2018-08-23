@@ -98,7 +98,7 @@ namespace LeadGen.Code
         {
             Login login = null;
 
-            using (SqlCommand cmd = new SqlCommand("dbo.[User.Login.Authenticate]", con))
+            using (SqlCommand cmd = new SqlCommand("dbo.[UserLoginAuthenticate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -119,7 +119,7 @@ namespace LeadGen.Code
         {
             Login login = null;
 
-            using (SqlCommand cmd = new SqlCommand("dbo.[User.Login.SelectOne]", con))
+            using (SqlCommand cmd = new SqlCommand("dbo.[UserLoginSelectOne]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -146,7 +146,7 @@ namespace LeadGen.Code
             string passwordHash = GeneratePasswordHash(password);
             email = email.ToLower();
 
-            SqlCommand cmd = new SqlCommand("[dbo].[User.Login.Create]", con);
+            SqlCommand cmd = new SqlCommand("[dbo].[UserLoginCreate]", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@roleID", (int)role);
@@ -175,7 +175,7 @@ namespace LeadGen.Code
 
         public static void EmailConfirm(SqlConnection con, long loginID)
         {
-            SqlCommand cmd = new SqlCommand("[dbo].[User.Login.EmailConfirm]", con)
+            SqlCommand cmd = new SqlCommand("[dbo].[UserLoginEmailConfirm]", con)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -190,7 +190,7 @@ namespace LeadGen.Code
         {
             bool result = false;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[User.Login.PasswordHashUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[UserLoginPasswordHashUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

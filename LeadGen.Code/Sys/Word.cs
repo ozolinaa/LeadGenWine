@@ -62,7 +62,7 @@ namespace LeadGen.Code.Sys
 
         private void InsertToDB(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Sys.WordCase.Insert]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SysWordCaseInsert]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -92,7 +92,7 @@ namespace LeadGen.Code.Sys
 
         private void UpdateInDB(SqlConnection con)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Sys.WordCase.Update]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SysWordCaseUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -116,11 +116,11 @@ namespace LeadGen.Code.Sys
 
         public static void LoadWordsForTerms(SqlConnection con, ref List<Taxonomy.Term> terms, string wordCode = null)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Taxonomy.Term.Word.SelectForMany]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[TaxonomyTermWordSelectForMany]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@TermIDTable", "[dbo].[Sys.Bigint.TableType]", terms.Select(x => x.ID)));
+                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@TermIDTable", "[dbo].[SysBigintTableType]", terms.Select(x => x.ID)));
                 cmd.Parameters.AddWithValue("@WordCode", String.IsNullOrEmpty(wordCode) ? (object)DBNull.Value : wordCode);
 
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);

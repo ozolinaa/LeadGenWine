@@ -5,10 +5,9 @@
         @class = "form-horizontal",
         id = "OrderSumEditorForLeadID-" + @Model.ID,
         data_ajax = "true",
-        data_ajax_update = "#" + Model.ID,
+        data_ajax_update = "#OrderSumEditorForLeadID-" + Model.ID,
         data_ajax_mode = "replace-with",
-        data_ajax_loading = "#LoadingWindowSplash",
-        data_ajax_success = "LeadGen.ui.showNotificationLabel"
+        data_ajax_loading = "#LoadingWindowSplash"
     }))
     {
         @Html.HiddenFor(x => x.ID)

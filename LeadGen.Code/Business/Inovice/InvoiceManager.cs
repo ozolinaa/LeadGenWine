@@ -16,7 +16,7 @@ namespace LeadGen.Code.Business.Inovice
         {
             List<Business> result = new List<Business>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Lead.Completed.SelectForNewInvoices]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLeadCompletedSelectForNewInvoices]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 

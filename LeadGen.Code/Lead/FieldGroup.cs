@@ -67,7 +67,7 @@ namespace LeadGen.Code.Lead
         public bool UpdateInDB(SqlConnection con)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Structure.Group.InsertOrUpdate]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldStructureGroupInsertOrUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

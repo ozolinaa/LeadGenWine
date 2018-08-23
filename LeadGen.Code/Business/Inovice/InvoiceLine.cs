@@ -43,7 +43,7 @@ namespace LeadGen.Code.Business.Inovice
         {
             List<InvoiceLine> result = new List<InvoiceLine>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Line.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceLineSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@InoiceID", invoiceID);
@@ -58,7 +58,7 @@ namespace LeadGen.Code.Business.Inovice
 
         public void UpdateInDB(SqlConnection con, long invoiceID)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Business.Invoice.Line.Update]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessInvoiceLineUpdate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

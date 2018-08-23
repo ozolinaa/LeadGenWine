@@ -95,7 +95,7 @@ namespace LeadGen.Code.Lead
             List<Review> reviewsList = new List<Review>();
             int totalCount = 0;
             DataTable reviewsData = null;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Select]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewSelect]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -132,7 +132,7 @@ namespace LeadGen.Code.Lead
         public void LoadMeasures(SqlConnection connection)
         {
             DataTable dt = null;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Measure.Select]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewMeasureSelect]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@LeadID", leadID);
@@ -153,7 +153,7 @@ namespace LeadGen.Code.Lead
             businessOptions = new List<Business.Business>();
 
             DataTable dt = null;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.SelectBuisnessOptions]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewSelectBuisnessOptions]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@LeadID", leadID);
@@ -170,7 +170,7 @@ namespace LeadGen.Code.Lead
 
         public void SaveInDB(SqlConnection connection)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Save]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewSave]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -194,7 +194,7 @@ namespace LeadGen.Code.Lead
             if (measureScores == null)
                 return;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Measure.Score.DeleteAll]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewMeasureScoreDeleteAll]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@LeadID", leadID);
@@ -206,7 +206,7 @@ namespace LeadGen.Code.Lead
                 if (item.Value < 1)
                     continue;
 
-                using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Measure.Score.Insert]", connection))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewMeasureScoreInsert]", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -231,7 +231,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.Publish]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewPublish]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -258,7 +258,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Review.UnPublish]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadReviewUnPublish]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

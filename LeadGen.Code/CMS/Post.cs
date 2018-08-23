@@ -30,7 +30,7 @@ namespace LeadGen.Code.CMS
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     cmd.Connection = con;
-                    cmd.CommandText = "[dbo].[CMS.Post.Status.Select]";
+                    cmd.CommandText = "[dbo].[CMSPostStatusSelect]";
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
@@ -218,7 +218,7 @@ namespace LeadGen.Code.CMS
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[CMS.Post.CreateEmpty]";
+                cmd.CommandText = "[dbo].[CMSPostCreateEmpty]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@AuthorID", AuthorID);
@@ -279,7 +279,7 @@ namespace LeadGen.Code.CMS
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.Update]";
+                cmd.CommandText = "[dbo].[CMSPostUpdate]";
 
                 cmd.Parameters.AddWithValue("@PostID", ID);
                 cmd.Parameters.AddWithValue("@PostParentID", (object)postParentID ?? DBNull.Value);
@@ -343,7 +343,7 @@ namespace LeadGen.Code.CMS
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[CMS.Post.IsUniqueURL]";
+                cmd.CommandText = "[dbo].[CMSPostIsUniqueURL]";
 
                 cmd.Parameters.AddWithValue("@PostURL", postURL);
                 cmd.Parameters.AddWithValue("@PostTypeID", postType.ID);
@@ -391,7 +391,7 @@ namespace LeadGen.Code.CMS
             if (taxonomies == null)
                 return;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Term.RemoveAll]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTermRemoveAll]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -402,7 +402,7 @@ namespace LeadGen.Code.CMS
 
             foreach (Taxonomy.Term tax in taxonomies.Where(x=>x.taxonomy.termList != null).SelectMany(x => x.taxonomy.termList).Where(x => x.isChecked == true))
             {
-                using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Term.Add]", con))
+                using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTermAdd]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -442,7 +442,7 @@ namespace LeadGen.Code.CMS
 
             List<Post> postList = new List<Post>();
             int totalCount = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -508,7 +508,7 @@ namespace LeadGen.Code.CMS
 
             List<Post> PostList = new List<Post>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.SelectByScalarField]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelectByScalarField]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -551,7 +551,7 @@ namespace LeadGen.Code.CMS
             List<Post> PostList = new List<Post>();
 
             postUrls.ForEach(x => x.Trim('/'));
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.SelectByUrls]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelectByUrls]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PostURLs", string.Join(",", postUrls));
@@ -580,7 +580,7 @@ namespace LeadGen.Code.CMS
         {
             attachmentList = new List<Attachment>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[CMS.Post.GetAttachments]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostGetAttachments]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -609,7 +609,7 @@ namespace LeadGen.Code.CMS
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[CMS.Post.Field.Value.Select]";
+                cmd.CommandText = "[dbo].[CMSPostFieldValueSelect]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@PostID", ID);

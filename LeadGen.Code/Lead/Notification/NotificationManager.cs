@@ -31,7 +31,7 @@ namespace LeadGen.Code.Lead.Notification
         {
             List<LeadItem> leadItems = new List<LeadItem>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SelectForReview]", connection))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectForReview]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 

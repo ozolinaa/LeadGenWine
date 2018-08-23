@@ -23,8 +23,8 @@ namespace LeadGen.Code.Lead
     {
         public long ID { get; set; }
 
-        [EmailAddress(ErrorMessage = "Введён неверный Email")]
-        [Required(ErrorMessage = "Поле \"Email\" обязательно к заполнению")]
+        [EmailAddress(ErrorMessage = "Invalid E-Mail")]
+        [Required(ErrorMessage = "E-Mail is required")]
         public string email { get; set; }
 
         public AdminDetails adminDetails { get; set; }
@@ -34,15 +34,17 @@ namespace LeadGen.Code.Lead
         public FieldItem getFieldByCode(string code)
         {
             FieldItem field = null;
-            foreach (var group in fieldGroups)
+            if (string.IsNullOrEmpty(code) == false)
             {
-                if (group.fields != null)
-                    field = group.fields.FirstOrDefault(x => x.code == code);
-                if (field != null)
-                    return
-                        field;
+                foreach (var group in fieldGroups)
+                {
+                    if (group.fields != null)
+                        field = group.fields.FirstOrDefault(x => x.code.Equals(code, StringComparison.OrdinalIgnoreCase));
+                    if (field != null)
+                        break;
+                }
             }
-            return null;
+            return field;
         }
 
         public LeadItem() { }
@@ -74,7 +76,7 @@ namespace LeadGen.Code.Lead
                 query = query.Trim();
 
             int totalCount = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -113,7 +115,7 @@ namespace LeadGen.Code.Lead
         {
             List<LeadItem> leadItems = new List<LeadItem>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SelectByEmail]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectByEmail]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -132,7 +134,7 @@ namespace LeadGen.Code.Lead
             if (fieldGroups == null)
                 fieldGroups = new List<FieldGroup>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Structure.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldStructureSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -184,11 +186,11 @@ namespace LeadGen.Code.Lead
             if (fieldGroups == null)
                 fieldGroups = new List<FieldGroup>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Value.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldValueSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@LeadIDTable", "[dbo].[Sys.Bigint.TableType]", new long[] { ID }));
+                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@LeadIDTable", "[dbo].[SysBigintTableType]", new long[] { ID }));
 
                 using (DataTable fieldGroupDataTable = DBHelper.ExecuteCommandToDataTable(cmd))
                 {
@@ -199,11 +201,11 @@ namespace LeadGen.Code.Lead
 
         public static void LoadFieldValuesForLeads(SqlConnection con, IEnumerable<LeadItem> leadItems)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Field.Value.Select]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadFieldValueSelect]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@LeadIDTable", "[dbo].[Sys.Bigint.TableType]", leadItems.Select(x => x.ID)));
+                cmd.Parameters.Add(DBHelper.GetNumericTableTypeParamter("@LeadIDTable", "[dbo].[SysBigintTableType]", leadItems.Select(x => x.ID)));
 
                 using (DataTable mixedLeadFieldGroupDataTable = DBHelper.ExecuteCommandToDataTable(cmd))
                 {
@@ -285,7 +287,7 @@ namespace LeadGen.Code.Lead
         {
             //Inser Lead Record
             ID = 0;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Insert]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadInsert]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@Email", email);
@@ -320,7 +322,7 @@ namespace LeadGen.Code.Lead
                 return false;
 
             //Get ZIPcode and LocationRadiusMappings
-            if (!string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip) && !string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius))
+            if (!string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip))
             {
                 bool locationUpdateStatus = true;
                 locationUpdateStatus = UpdateLocationInDB(con, SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip, SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius);
@@ -356,7 +358,7 @@ namespace LeadGen.Code.Lead
         public static bool EmailConfirm(SqlConnection con, long leadID)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.EmailConfirm]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadEmailConfirm]", con))
             {
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -377,7 +379,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.TryPublish]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadTryPublish]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -406,7 +408,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.TryUnPublish]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadTryUnPublish]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -434,7 +436,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.TryUnPublishByUser]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadTryUnPublishByUser]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -461,7 +463,7 @@ namespace LeadGen.Code.Lead
         {
             bool result;
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SetReviewRequestSent]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSetReviewRequestSent]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -485,7 +487,7 @@ namespace LeadGen.Code.Lead
             if (adminDetails == null)
                 adminDetails = new AdminDetails();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.SelectBusinessDetails]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectBusinessDetails]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -506,7 +508,7 @@ namespace LeadGen.Code.Lead
         public bool CancelByUser(SqlConnection con, DateTime? canceledDateTime)
         {
             bool result = false;
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.CancelByUser]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadCancelByUser]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -539,7 +541,7 @@ namespace LeadGen.Code.Lead
         {
             List<SitemapItem> sitemapItems = new List<SitemapItem>();
 
-            using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Select_SiteMapData]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelect_SiteMapData]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -565,17 +567,21 @@ namespace LeadGen.Code.Lead
             try
             {
                 FieldItem zipField = getFieldByCode(zipMapping);
-                FieldItem radiusField = getFieldByCode(radiusMapping);
                 Map.Location zipLocation = Map.GoogleMapsClientWrapper.GetLocationByUsZipCode(Int32.Parse(zipField.stringValue));
 
-                using (SqlCommand cmd = new SqlCommand("[dbo].[Lead.Location.InsertOrUpdate]", con))
+                int radiusInMeters = 0;
+                FieldItem radiusField = getFieldByCode(radiusMapping);
+                if (radiusField != null)
+                    radiusInMeters = Convert.ToInt32(Int32.Parse(radiusField.stringValue) * 1.609344 * 1000);
+
+                using (SqlCommand cmd = new SqlCommand("[dbo].[LeadLocationInsertOrUpdate]", con))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     cmd.Parameters.AddWithValue("@LeadID", ID);
                     cmd.Parameters.Add(new SqlParameter("@Location", Microsoft.SqlServer.Types.SqlGeography.Point(zipLocation.lat, zipLocation.lng, 4326)) { UdtTypeName = "Geography" });
                     cmd.Parameters.AddWithValue("@LocationAccuracyMeters", zipLocation.radiusInMeters);
-                    cmd.Parameters.AddWithValue("@LeadRadiusMeters", Convert.ToInt32(Int32.Parse(radiusField.stringValue) * 1.609344 * 1000));
+                    cmd.Parameters.AddWithValue("@LeadRadiusMeters", radiusInMeters);
                     cmd.Parameters.AddWithValue("@StreetAddress", DBNull.Value);
                     cmd.Parameters.AddWithValue("@PostalCode", zipField.stringValue);
                     cmd.Parameters.AddWithValue("@City", DBNull.Value);

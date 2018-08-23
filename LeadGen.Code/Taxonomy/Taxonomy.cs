@@ -43,7 +43,7 @@ namespace LeadGen.Code.Taxonomy
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[Taxonomy.Select]";
+                cmd.CommandText = "[dbo].[TaxonomySelect]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@TaxonomyID", (object)TaxonomyID ?? DBNull.Value);
@@ -134,7 +134,7 @@ namespace LeadGen.Code.Taxonomy
             {
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Taxonomy.Insert]";
+                cmd.CommandText = "[dbo].[TaxonomyInsert]";
 
                 cmd.Parameters.AddWithValue("@TaxonomyCode", CMSManager.ClearURL(code));
                 cmd.Parameters.AddWithValue("@TaxonomyName", name);
@@ -169,7 +169,7 @@ namespace LeadGen.Code.Taxonomy
 
                 cmd.Connection = con;
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "[dbo].[Taxonomy.Update]";
+                cmd.CommandText = "[dbo].[TaxonomyUpdate]";
 
                 cmd.Parameters.AddWithValue("@TaxonomyID", ID); 
                 cmd.Parameters.AddWithValue("@TaxonomyCode", code);

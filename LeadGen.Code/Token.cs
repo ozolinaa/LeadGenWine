@@ -42,7 +42,7 @@ namespace LeadGen.Code
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[Sys.Token.Create]";
+                cmd.CommandText = "[dbo].[SysTokenCreate]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@tokenAction", action);
@@ -67,7 +67,7 @@ namespace LeadGen.Code
         {
             Token token = null;
 
-            SqlCommand cmd = new SqlCommand("[dbo].[Sys.Token.Select]", con);
+            SqlCommand cmd = new SqlCommand("[dbo].[SysTokenSelect]", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
             cmd.Parameters.AddWithValue("@tokenKey", tokenKey);
@@ -84,7 +84,7 @@ namespace LeadGen.Code
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.Connection = con;
-                cmd.CommandText = "[dbo].[Sys.Token.Delete]";
+                cmd.CommandText = "[dbo].[SysTokenDelete]";
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@tokenKey", key);
