@@ -12,6 +12,7 @@ using LeadGen.Code.Helpers;
 using System.Configuration;
 using LeadGen.Code.Sys;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LeadGen.Code
 {
@@ -37,7 +38,7 @@ namespace LeadGen.Code
         //    }
         //}
 
-        public struct NewPassword
+        public class NewPassword
         {
             [DataType(DataType.Password)]
             [Required]
@@ -186,7 +187,7 @@ namespace LeadGen.Code
             cmd.Dispose();
         }
 
-        public static bool SetNewPassword(SqlConnection con, long loginID, string sessionID, string newPassword)
+        public static bool SetNewPassword(SqlConnection con, long loginID, string sessionID, NewPassword newPassword)
         {
             bool result = false;
 
@@ -194,11 +195,11 @@ namespace LeadGen.Code
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                string passwordHash = GeneratePasswordHash(newPassword);
+                string passwordHash = GeneratePasswordHash(newPassword.password);
 
                 cmd.Parameters.AddWithValue("@loginID", loginID);
                 cmd.Parameters.AddWithValue("@sessionID", sessionID.ToString());
-                cmd.Parameters.AddWithValue("@passwordHash", GeneratePasswordHash(newPassword));
+                cmd.Parameters.AddWithValue("@passwordHash", GeneratePasswordHash(newPassword.password));
 
                 SqlParameter returnParameter = cmd.Parameters.Add("RetVal", SqlDbType.Bit);
                 returnParameter.Direction = ParameterDirection.ReturnValue;
@@ -214,23 +215,21 @@ namespace LeadGen.Code
 
         public bool PasswordRecoverySendEmail(SqlConnection con)
         {
-            throw new NotImplementedException();
-            //string mailSubject = "Восстановление пароля";
-            //string viewPath = "Views/Login/E-mails/_PasswordRecovery";
+            string mailSubject = "Восстановление пароля";
+            string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
 
-            //Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
-            //ViewDataDictionary viewDataDictionary = new ViewDataDictionary( { "tokenKey", token.key } };
+            Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
 
+            QueueMailMessage message = new QueueMailMessage(email);
+            message.Subject = mailSubject;
+            message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
+            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
+            {
+                message.Send(smtp);
+            }
 
-            //QueueMailMessage message = new QueueMailMessage(email);
-            //message.Subject = mailSubject;
-            //message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
-            //using (SmtpClient smtp = new SmtpClient())
-            //{
-            //    message.Send(smtp);
-            //}
-
-            //return true;
+            return true;
         }
     }
 }

@@ -167,7 +167,7 @@ namespace LeadGen.Web.Controllers
                         if (postedLogin.newPassword.password != postedLogin.newPassword.passwordConfirmation)
                             ModelState.AddModelError("newPassword.passwordConfirmation", "Confirmation password does not match new password");
                         else
-                            status = Login.SetNewPassword(DBLGcon, loginID, "", postedLogin.newPassword.password);
+                            status = Login.SetNewPassword(DBLGcon, loginID, "", postedLogin.newPassword);
                     }
 
                     if (status == false)
@@ -196,7 +196,7 @@ namespace LeadGen.Web.Controllers
             {
                 if (postedLogin.newPassword.password == postedLogin.newPassword.passwordConfirmation)
                     if (Login.Authenticate(DBLGcon, login.email, postedLogin.password) != null)
-                        ViewBag.status = Login.SetNewPassword(DBLGcon, login.ID, loginSessionID, postedLogin.newPassword.password);
+                        ViewBag.status = Login.SetNewPassword(DBLGcon, login.ID, loginSessionID, postedLogin.newPassword);
                     else
                         ModelState.AddModelError("password", "Wrong Password");
                 else

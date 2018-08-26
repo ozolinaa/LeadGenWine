@@ -25,15 +25,14 @@ namespace LeadGen.Web.Controllers
 
         private bool requestHasValidAccessToken()
         {
-            
             ControllerContext.RouteData.DataTokens.TryGetValue("accessToken", out object accessTokenObj);
 
             string accessToken = accessTokenObj as string;
             if (string.IsNullOrEmpty(accessToken))
                 return false;
 
-            string systemAccessToken = SysHelper.AppSettings.SystemAccessToken;
-            if (string.IsNullOrEmpty(systemAccessToken) == false && systemAccessToken == accessToken)
+            string validAccessToken = SysHelper.AppSettings.SystemAccessToken;
+            if (validAccessToken == accessToken)
                 return true;
 
             return false;
@@ -79,8 +78,7 @@ namespace LeadGen.Web.Controllers
                 using (var client = new HttpClient())
                 {
                     client.BaseAddress = new Uri(hostUrl);
-                    var content = new FormUrlEncodedContent(new[] { new KeyValuePair<string, string>("", "login") });
-                    var res = await client.PostAsync(requestUrl, content);
+                    var res = await client.PostAsync(requestUrl, null);
                 }
             });
         }

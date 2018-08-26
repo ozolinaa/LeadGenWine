@@ -189,11 +189,11 @@ namespace LeadGen.Code.Business
             string viewPath = "~/Areas/Business/Views/Registration/E-mails/_registrationConfirmation.cshtml";
 
             Token token = new Token(con, Token.Action.LoginEmailConfirmation.ToString(), login.ID.ToString());
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
+
 
             QueueMailMessage message = new QueueMailMessage(login.email);
             message.Subject = mailSubject;
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
-
             message.Body = ViewHelper.RenderPartialToString(viewPath, login, viewDataDictionary);
             using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
             {
