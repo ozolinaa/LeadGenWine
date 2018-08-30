@@ -11,13 +11,6 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     public class ScheduledTaskManager
     {
-        private string DBLGconString;
-
-        public enum KnownScheduledTask
-        {
-            SendQueuedMail = 1,
-        };
-
         public ScheduledTask SelectNextTask(SqlConnection con)
         {
             ScheduledTask scheduledTask = null;
@@ -37,7 +30,7 @@ namespace LeadGen.Code.Sys.Scheduled
         }
 
 
-        public ScheduledTask GetScheduledTaskByName(string taskName)
+        public static ScheduledTask GetScheduledTaskByName(string taskName)
         {
             Type type = typeof(ScheduledTask);
             IEnumerable<Type> childTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -48,15 +41,23 @@ namespace LeadGen.Code.Sys.Scheduled
             if (scheduledTaskType == null)
                 throw new ArgumentException(string.Format("Task '{0}' is not inherited from ScheduledTask abstract class", taskName));
 
-
-            ScheduledTask taskInstance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType, new object[] { DBLGconString });
+            ScheduledTask taskInstance = (ScheduledTask)Activator.CreateInstance(scheduledTaskType);
             return taskInstance;
         }
 
-        public ScheduledTaskManager(string connectionString)
+        public static void RunTasksInNewThread(List<Type> types)
         {
-            DBLGconString = connectionString;
-        }
+            // Validate type names in the same thread
+            List<ScheduledTask> scheduledTasks = new List<ScheduledTask>();
+            types.ForEach(x => scheduledTasks.Add(GetScheduledTaskByName(x.Name)));
 
+            // Sequentially run ScheduledTask a separate thread
+            Task.Factory.StartNew(() => {
+                foreach (ScheduledTask scheduledTask in scheduledTasks)
+                {
+                    scheduledTask.Run();
+                }
+            });
+        }
     }
 }

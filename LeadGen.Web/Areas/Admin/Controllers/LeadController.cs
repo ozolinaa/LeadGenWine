@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LeadGen.Web.Controllers;
+using LeadGen.Code.Sys.Scheduled;
 
 namespace LeadGen.Web.Areas.Admin.Controllers
 {
@@ -55,12 +56,10 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                     {
                         NotificationManager.QueueMailMessagesForBusinessesRegisteredAboutNewLeads(DBLGcon, Code.Business.NotificationSettings.Frequency.Immediate);
 
-                        //This code will perform HTTP call that will run these tasks in the separate thread
-                        SystemController.InitializeScheduledTasks(DBLGcon, requestedHttpHostUrl, new List<Type>() {
-                            typeof(Code.Sys.Scheduled.SendQueuedMail)
+                        ScheduledTaskManager.RunTasksInNewThread(new List<Type>() {
+                            typeof(SendQueuedMail)
                         });
                     }
-
                 }
                 else if (doAction == "TryUnPublish")
                     result = leadItem.TryUnPublishByAdmin(DBLGcon, login.ID);

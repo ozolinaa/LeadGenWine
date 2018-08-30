@@ -9,10 +9,6 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     public class SendQueuedMail: ScheduledTask
     {
-        public SendQueuedMail(string DBLGconString) : base(DBLGconString)
-        {
-        }
-
         protected override string RunInternal(SqlConnection con)
         {
             int messagesSentNumber = QueueMailMessage.SendQueuedMessages(con);

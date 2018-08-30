@@ -69,7 +69,7 @@ namespace LeadGen.Web
 
             app.UseStaticFiles();
 
-            ////Rewrite url path and scheme passed from load balancer 
+            //Rewrite url path and scheme passed from load balancer 
             app.Use((context, next) =>
             {
                 if (context.Request.Headers.TryGetValue("X-Forwarded-PathBase", out StringValues pathBase))
@@ -85,7 +85,6 @@ namespace LeadGen.Web
                         context.Request.Scheme = proto;
                     }
                 }
-
                 return next();
             });
 

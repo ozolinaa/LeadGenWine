@@ -16,9 +16,9 @@ namespace LeadGen.Code.Sys.Scheduled
 
         protected string _DBLGconString;
 
-        public ScheduledTask(string DBLGconString)
+        public ScheduledTask()
         {
-            _DBLGconString = DBLGconString;
+            _DBLGconString = SysHelper.AppSettings.SQLConnectionString;
         }
 
         private void SetStarted(SqlConnection con)

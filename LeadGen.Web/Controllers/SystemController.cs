@@ -19,14 +19,16 @@ namespace LeadGen.Web.Controllers
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (requestHasValidAccessToken() == false)
-                filterContext.HttpContext.Response.StatusCode = 403;
+            base.OnActionExecuting(filterContext);
+            if (RequestHasValidAccessToken() == false)
+            {
+                throw new Exception("Forbidden");
+            }
         }
 
-        private bool requestHasValidAccessToken()
+        private bool RequestHasValidAccessToken()
         {
             ControllerContext.RouteData.DataTokens.TryGetValue("accessToken", out object accessTokenObj);
-
             string accessToken = accessTokenObj as string;
             if (string.IsNullOrEmpty(accessToken))
                 return false;
@@ -44,15 +46,13 @@ namespace LeadGen.Web.Controllers
             if (string.IsNullOrEmpty(tasks))
                 return BadRequest("tasks parameter is empty");
 
-            ScheduledTaskManager tm = new ScheduledTaskManager(DBLGconString);
-
             string[] taskNames = tasks.Split(',');
 
             //Try create tasks to validate taskNames
             foreach (string taskName in taskNames)
                 try
                 {
-                    tm.GetScheduledTaskByName(taskName);
+                    ScheduledTaskManager.GetScheduledTaskByName(taskName);
                 }
                 catch (Exception e)
                 {
@@ -61,27 +61,9 @@ namespace LeadGen.Web.Controllers
 
             foreach (string taskName in taskNames)
             {
-                tm.GetScheduledTaskByName(taskName).Run();
+                ScheduledTaskManager.GetScheduledTaskByName(taskName).Run();
             }
             return Ok();
         }
-
-        [NonAction]
-        public static void InitializeScheduledTasks(SqlConnection DBLGcon, string hostUrl, List<Type> types)
-        {
-            string systemAccessToken = SysHelper.AppSettings.SystemAccessToken;
-            string taskListStr = System.Web.HttpUtility.UrlEncode(string.Join(",", types.Select(x => x.Name)));
-            string requestUrl = string.Format("/system/ProcessTasks?accessToken={0}&tasks={1}", systemAccessToken, taskListStr);
-
-            System.Threading.ThreadPool.QueueUserWorkItem(async o =>
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(hostUrl);
-                    var res = await client.PostAsync(requestUrl, null);
-                }
-            });
-        }
-
     }
 }

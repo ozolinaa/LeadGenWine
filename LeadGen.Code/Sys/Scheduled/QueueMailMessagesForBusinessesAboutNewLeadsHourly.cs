@@ -11,10 +11,6 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     public class QueueMailMessagesForBusinessesAboutNewLeadsHourly : ScheduledTask
     {
-        public QueueMailMessagesForBusinessesAboutNewLeadsHourly(string DBLGconString) : base(DBLGconString)
-        {
-        }
-
         protected override string RunInternal(SqlConnection con)
         {
             List<QueueMailMessage> qeuedMailMessages = NotificationManager.QueueMailMessagesForBusinessesRegisteredAboutNewLeads(con, Frequency.Hourly);

@@ -10,10 +10,6 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     class QueueMailMessagesForLeadsAboutReviewRequest : ScheduledTask
     {
-        public QueueMailMessagesForLeadsAboutReviewRequest(string DBLGconString) : base(DBLGconString)
-        {
-        }
-
         protected override string RunInternal(SqlConnection con)
         {
             List<QueueMailMessage> qeuedMailMessages = NotificationManager.QueueMailMessagesForLeadsAboutReviewRequest(con);
