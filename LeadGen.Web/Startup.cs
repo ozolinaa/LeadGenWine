@@ -81,7 +81,7 @@ namespace LeadGen.Web
                 {
                     if (!string.IsNullOrEmpty(proto))
                     {
-                        context.Request.Protocol = proto;
+                        //context.Request.Protocol = proto;
                         context.Request.Scheme = proto;
                     }
                 }
