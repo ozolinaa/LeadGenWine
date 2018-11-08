@@ -8,13 +8,12 @@
 <hr />
 
 <ul class="nav nav-tabs" style="margin-top:20px;">
-    <li class="active"><a data-toggle="tab" href="#section-LoginBusinessMain" aria-expanded="true"><i class="fa fa-list-alt"></i> О компании</a></li>
-    <li><a data-toggle="tab" href="#section-contact" aria-expanded="false"><i class="fa fa-phone"></i> Контакты</a></li>
-    <li><a data-toggle="tab" href="#section-locations" aria-expanded="false"><i class="fa fa-map-marker"></i> Офисы</a></li>
-    <li><a data-toggle="tab" href="#section-permissions" aria-expanded="false"><i class="fa fa-tag"></i> Регионы</a></li>
-    <li><a data-toggle="tab" href="#section-notification" aria-expanded="false"><i class="fa fa-envelope-o"></i> Уведомления</a></li>
-    <li><a data-toggle="tab" href="#section-billing" aria-expanded="false"><i class="fa fa-money"></i> Реквизиты компании</a></li>
-    <li><a data-toggle="tab" href="#section-password" aria-expanded="false"><i class="fa fa-asterisk"></i> Пароль</a></li>
+    <li class="active"><a data-toggle="tab" href="#section-LoginBusinessMain" aria-expanded="true"><i class="fa fa-list-alt"></i> Company</a></li>
+    <li><a data-toggle="tab" href="#section-contact" aria-expanded="false"><i class="fa fa-phone"></i> Cantacts</a></li>
+    <li><a data-toggle="tab" href="#section-locations" aria-expanded="false"><i class="fa fa-map-marker"></i> Locations</a></li>
+    <li><a data-toggle="tab" href="#section-notification" aria-expanded="false"><i class="fa fa-envelope-o"></i> Notification</a></li>
+    <li><a data-toggle="tab" href="#section-billing" aria-expanded="false"><i class="fa fa-money"></i> Billing Details</a></li>
+    <li><a data-toggle="tab" href="#section-password" aria-expanded="false"><i class="fa fa-asterisk"></i> Password</a></li>
 </ul>
 
 
@@ -34,10 +33,6 @@
 
     <div id="section-locations" class="tab-pane fade">
         @Html.EditorFor(x => x, "Locations")
-    </div>
-
-    <div id="section-permissions" class="tab-pane fade">
-        @Html.EditorFor(x => x, "Regions")
     </div>
 
     <div id="section-billing" class="tab-pane fade">

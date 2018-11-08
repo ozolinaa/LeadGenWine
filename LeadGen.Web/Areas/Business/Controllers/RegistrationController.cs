@@ -31,7 +31,10 @@ namespace LeadGen.Web.Areas.Business.Controllers
             Login login = new Login
             {
                 business = new Code.Business.Business() {
-                    country = country
+                    country = country,
+                    locations = new List<BusinessLocation>() {
+                        new BusinessLocation() { lat = 34.2898097, lng = -117.6294237, zoom = 7, radiusInMeters = 220*1000, address = "Southern California", name = "Southern California" }
+                    }
                 }
             };
             return View(login);
@@ -69,6 +72,13 @@ namespace LeadGen.Web.Areas.Business.Controllers
             // If executing this code, means everything is ok (All errors already handled)
 
             newLogin.business = Code.Business.Business.Create(DBLGcon, postedLogin.business.name, postedLogin.business.webSite, postedLogin.business.country.ID);
+
+            foreach (BusinessLocation location in postedLogin.business.locations)
+            {
+                location.CreateInDB(DBLGcon, newLogin.business.ID);
+            }
+
+
             newLogin.business.LinkLogin(DBLGcon, newLogin); //Link login to business
 
             List<long[]> requestedTermIDs = new List<long[]>();

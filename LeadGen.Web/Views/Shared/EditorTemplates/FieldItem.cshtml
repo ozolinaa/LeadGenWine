@@ -58,11 +58,11 @@
 
 @if (input.ToLower() != "none")
 {
-<div class="lead_field_@Model.code @wrapperClass">
+<div class="lead-field lead-field-@Model.code @wrapperClass form-group">
 
-    @{ string labelClass = "";}
+    @{ string labelClass = "field-label";}
     @switch (Model.fieldType)
-            {
+    {
         case LeadGen.Code.Lead.FieldType.Textbox:
             @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
             break;
@@ -76,65 +76,72 @@
             @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
             break;
         default:
-            @Html.Label(null, Model.label, new { @class = labelClass })
+            <div class="@labelClass">
+                @Model.label
+            </div>
             break;
     }
 
 
-        @switch (Model.fieldType)
-        {
-            case LeadGen.Code.Lead.FieldType.Textbox:
-                @Html.TextBoxFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
-                @Html.ValidationMessageFor(x => x.fieldText)
-                break;
-            case LeadGen.Code.Lead.FieldType.Textarea:
-                @Html.TextAreaFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
-                @Html.ValidationMessageFor(x => x.fieldText)
-                break;
-            case LeadGen.Code.Lead.FieldType.Boolean:
-                @Html.CheckBoxFor(x => x.fieldBool)
-                @Html.ValidationMessageFor(x => x.fieldBool)
-                break;
-            case LeadGen.Code.Lead.FieldType.Datetime:
-                @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker" })
-                @Html.ValidationMessageFor(x => x.fieldDatetime)
-                break;
-            case LeadGen.Code.Lead.FieldType.Number:
-                @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder })
-                @Html.ValidationMessageFor(x => x.fieldNumber)
-                break;
-            case LeadGen.Code.Lead.FieldType.Dropdown:
-                @Html.DropDownListFor(x => x.termIDSelected, new SelectList(Model.fieldTerms, "ID", "nameDashed", Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected)), Model.placeholder, new { @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.termIDSelected)
-                break;
-            case LeadGen.Code.Lead.FieldType.Checkbox:
-                if (Model.fieldTerms != null)
-                {
-                    for (int i = 0; i < Model.fieldTerms.Count(); i++)
+    @switch (Model.fieldType)
+    {
+        case LeadGen.Code.Lead.FieldType.Textbox:
+            @Html.TextBoxFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
+            @Html.ValidationMessageFor(x => x.fieldText)
+            break;
+        case LeadGen.Code.Lead.FieldType.Textarea:
+            @Html.TextAreaFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
+            @Html.ValidationMessageFor(x => x.fieldText)
+            break;
+        case LeadGen.Code.Lead.FieldType.Boolean:
+            @Html.CheckBoxFor(x => x.fieldBool)
+            @Html.ValidationMessageFor(x => x.fieldBool)
+            break;
+        case LeadGen.Code.Lead.FieldType.Datetime:
+            @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker" })
+            @Html.ValidationMessageFor(x => x.fieldDatetime)
+            break;
+        case LeadGen.Code.Lead.FieldType.Number:
+            @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder })
+            @Html.ValidationMessageFor(x => x.fieldNumber)
+            break;
+        case LeadGen.Code.Lead.FieldType.Dropdown:
+            @Html.DropDownListFor(x => x.termIDSelected, new SelectList(Model.fieldTerms, "ID", "nameDashed", Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected)), Model.placeholder, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.termIDSelected)
+            break;
+        case LeadGen.Code.Lead.FieldType.Checkbox:
+            if (Model.fieldTerms != null)
+            {
+                <div class="field-option-list">
+                    @for (int i = 0; i < Model.fieldTerms.Count(); i++)
                     {
-                        <div>
-                            @Html.LabelFor(x => x.fieldTerms[i].isChecked, Model.fieldTerms[i].name)
+                        <div class="field-option field-option-checkbox field-option-@Model.fieldTerms[i].termURL">
                             @Html.CheckBoxFor(x => x.fieldTerms[i].isChecked)
+                            @Html.LabelFor(x => x.fieldTerms[i].isChecked, Model.fieldTerms[i].name)
                             @Html.HiddenFor(x => x.fieldTerms[i].ID)
                             @Html.HiddenFor(x => x.fieldTerms[i].name)
                             @Html.HiddenFor(x => x.fieldTerms[i].termURL)
                         </div>
                     }
-                }
-                @Html.ValidationMessageFor(x => x.fieldTerms)
-                break;
-            case LeadGen.Code.Lead.FieldType.Radio:
-                foreach (var term in Model.fieldTerms)
-                {
-                    <label style="margin-right:10px;">
-                        @term.name
-                        @Html.RadioButtonFor(x => x.termIDSelected, term.ID, (Model.termIDSelected != null && Model.termIDSelected == term.ID ? new { @checked = "checked" } : null))
-                    </label>
-                }
-                @Html.ValidationMessageFor(x => x.termIDSelected)
-                break;
-            default:
-                break;
-        }
+                </div>
+            }
+            @Html.ValidationMessageFor(x => x.fieldTerms)
+            break;
+        case LeadGen.Code.Lead.FieldType.Radio:
+                <div class="field-option-list">
+                    @for (int i = 0; i < Model.fieldTerms.Count(); i++)
+                    {
+                        string radioId = Html.IdFor(x => x.termIDSelected) + "_" + Model.fieldTerms[i].ID;
+                        <div class="field-option field-option-radio field-option-@Model.fieldTerms[i].termURL">
+                            @Html.RadioButtonFor(x => x.termIDSelected, Model.fieldTerms[i].ID, new { id = radioId })
+                            @Html.Label("termIDSelected_" + Model.fieldTerms[i].ID, Model.fieldTerms[i].name)
+                        </div>
+                    }
+                </div>
+            @Html.ValidationMessageFor(x => x.termIDSelected)
+            break;
+        default:
+            break;
+    }
 </div>
 }

@@ -1,23 +1,24 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
-    @using LeadGen.Code.CMS;
+@using LeadGen.Code.CMS;
 @{
     ViewBag.Title = "Index";
 }
 
-@section SEO{@{ 
-    SEOFields seo = new SEOFields(){
-        title = "Заказать надгробный памятник через тендер среди мастерских",
-        metaKeywords = "заказать памятник, купить памятник, на могилу, надгробие, продажа, недорого",
-        metaDescription = "Заполните заявку на изготовление памятника! Гранитные мастерские направят Вам свои предложения и цены на эту модель. Сравните и выберите лучшее!"
-    };
-    Html.RenderPartial("DisplayTemplates/SEOFields", seo);
+@section SEO {
+    @{
+        SEOFields seo = new SEOFields()
+        {
+            title = "Order Wine Cellar",
+            metaKeywords = "wine cellars, order",
+            metaDescription = "Complete wine cellar quote to find best options"
+        };
+        <partial name="DisplayTemplates/SEOFields" model="seo" />
+    }
 }
-}
-
-<link href="~/Content/css/select2.min.css" rel="stylesheet" />
+<link href="~/lib/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
 @*<link href="~/Content/jquery.formstyler.css" rel="stylesheet" />*@
-<link href="~/Content/select2-bootstrap.css" rel="stylesheet" />
-@*<link href="~/Content/Order.css" rel="stylesheet" />*@
+<link href="~/css/select2-bootstrap.css" rel="stylesheet" />
+<link href="~/css/order.css" rel="stylesheet" />
 
 <style>
     select option[disabled] {
@@ -25,19 +26,22 @@
     }
 
     #countrySwitchWrapper span {
-        cursor:pointer;
-        text-decoration:underline;
+        cursor: pointer;
+        text-decoration: underline;
     }
-    #countrySwitchWrapper span:hover {
-        text-decoration:underline;
-    }
-    #countrySwitchWrapper span.active {
-        cursor:initial;
-        text-decoration:none;
-    }
-    #countrySwitchWrapper span.active:hover {
-        text-decoration:none;
-    }
+
+        #countrySwitchWrapper span:hover {
+            text-decoration: underline;
+        }
+
+        #countrySwitchWrapper span.active {
+            cursor: initial;
+            text-decoration: none;
+        }
+
+            #countrySwitchWrapper span.active:hover {
+                text-decoration: none;
+            }
 </style>
 
 <div class="container">
@@ -53,12 +57,10 @@
 </div>
 
 @section Scripts
-{
-<script src="~/Scripts/select2.min.js"></script>
-
+    {
+    <script src="~/lib/node_modules/select2/dist/js/select2.min.js"></script>
     <script>
-        function initializeLeadForm()
-        {
+        function initializeLeadForm() {
             if (window.mobileAndTabletcheck() == false) {
                 $('[data-toggle="popover"]').popover()
             }

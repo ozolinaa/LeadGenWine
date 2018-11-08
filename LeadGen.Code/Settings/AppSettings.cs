@@ -49,6 +49,7 @@ namespace LeadGen.Code.Settings
 
             using (SqlConnection con = new SqlConnection(_sqlConnectionString))
             {
+
                 con.Open();
                 _initSettingOptionsInDB(con);
                 ReloadAppSettingsFromDB(con);
