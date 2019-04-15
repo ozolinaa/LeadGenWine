@@ -32,8 +32,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - /home/anton/leadgen/nginxConfig:/config 
-     # - /home/anton/leadgen/nginxConfig/nginx.conf:/config/nginx/site-confs/default
+      - /home/anton/leadgen/nginxVolume:/config 
     depends_on:
       - app
     restart: on-failure
@@ -48,7 +47,7 @@ services:
       - TZ=America/LosAngeles
       - VALIDATION=http # using dns validation
       - DNSPLUGIN=dnsimple # via dnsimple, note there is additional configuration require separate from this file
-      # - STAGING=true # this should be uncommented when testing for initial success, to avoi   d some rate limiting
+      - STAGING=true # this should be uncommented when testing for initial success, to avoi   d some rate limiting
 
 networks:
   leadgen-core:
