@@ -38,7 +38,7 @@
             break;
     }
 
-    <div class="col-sm-10">
+    <div class="col-sm-10 lead-field lead-field-display">
         @switch (Model.fieldType)
         {
             case LeadGen.Code.Lead.FieldType.Textbox:
@@ -62,25 +62,47 @@
                 break;
             case LeadGen.Code.Lead.FieldType.Dropdown:
                 var selectedDropdownTerm = Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected);
-                if (selectedDropdownTerm != null) { @selectedDropdownTerm.name}
-                @Html.HiddenFor(x => x.termIDSelected)
-                break;
-            case LeadGen.Code.Lead.FieldType.Checkbox:
-                foreach (var term in Model.fieldTerms.Where(x=>x.isChecked))
+                if (selectedDropdownTerm != null)
+                { @selectedDropdownTerm.name}
+            @Html.HiddenFor(x => x.termIDSelected)
+            break;
+        case LeadGen.Code.Lead.FieldType.Checkbox:
+            <div class="field-option-list">
+                @for (int i = 0; i < Model.fieldTerms.Count(); i++)
                 {
-                    <div>
-                        @term.name
-                    </div>
+                    if (Model.fieldTerms[i].isChecked)
+                    {
+                        <div class="field-option field-option-checkbox field-option-@Model.fieldTerms[i].termURL">
+                            @Html.CheckBoxFor(x => x.fieldTerms[i].isChecked, new { disabled = "disabled" })
+                            @Html.LabelFor(x => x.fieldTerms[i].isChecked, Model.fieldTerms[i].name)
+                        </div>
+                    }
                 }
-                break;
-            case LeadGen.Code.Lead.FieldType.Radio:
-                var selectedRadioTerm = Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected);
-                if (selectedRadioTerm != null) { @selectedRadioTerm.name}
-                @Html.HiddenFor(x => x.termIDSelected)
-                break;
-            default:
-                break;
-        }
+            </div>
+            break;
+        case LeadGen.Code.Lead.FieldType.Radio:
+            var selectedRadioTerm = Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected);
+            if (selectedRadioTerm != null)
+            {
+            <div class="field-option-list">
+                @for (int i = 0; i < Model.fieldTerms.Count(); i++)
+                {
+                    if (Model.fieldTerms[i].ID == Model.termIDSelected)
+                    {
+                        string radioId = Html.IdFor(x => x.termIDSelected) + "_" + Model.fieldTerms[i].ID;
+                        <div class="field-option field-option-radio field-option-@Model.fieldTerms[i].termURL">
+                            @Html.RadioButtonFor(x => x.termIDSelected, Model.fieldTerms[i].ID, new { id = radioId, disabled = "disabled" })
+                            @Html.Label("termIDSelected_" + Model.fieldTerms[i].ID, Model.fieldTerms[i].name)
+                        </div>
+                    }
+                }
+            </div>
+            }
+            @Html.HiddenFor(x => x.termIDSelected)
+            break;
+        default:
+            break;
+    }
         @if (Model.fieldTerms != null)
         {
             for (int i = 0; i < Model.fieldTerms.Count(); i++)

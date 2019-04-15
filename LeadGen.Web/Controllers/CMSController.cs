@@ -31,8 +31,10 @@ namespace LeadGen.Web.Controllers
                 urlPath = urlPath.Trim('/');
 
             IActionResult result = null;
-            if (!preview && _cache.TryGetValue(urlPath, out result)) 
-                return result;
+            if (false) {
+                if (!preview && _cache.TryGetValue(urlPath, out result))
+                    return result;
+            }
 
             cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath, !preview);
             ViewBag.cmsContext = cmsContext;

@@ -55,3 +55,10 @@ docker run -d --net=isolated_network --restart=unless-stopped -p 8080:80 -e sqlC
 # docker rm leadgenweb
 # docker rmi $(docker images -a -q)
 # docker attach leadgenweb
+
+
+
+#deploy docker
+docker-compose up -d
+#update app
+docker-compose up -d --no-deps --build app

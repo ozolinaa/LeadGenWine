@@ -11,7 +11,7 @@
     <link href="~/lib/node_modules/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
     <link href="~/lib/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/css/site.min.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
     @{
@@ -39,52 +39,48 @@
     }
 
     <nav class="navbar navbar-default navbar-leadgen" role="navigation">
-        <div class="container container-IzgPam">
+        <div class="container">
             <div class="navbar-header">
 
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+
+                    <div class="navbar-brand">
+                        <a title="Home" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
+                            Home
+                        </a>
+                    </div>
 
 
 
-                <div class="navbar-brand">
-                    <a title="LeadGen" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
-                        <img alt="LeadGen" title="LeadGen" class="logo_big" src="/images/logo_big.png" />
-                        <img alt="LeadGen" title="LeadGen" class="logo_small" src="/images/logo_small.png" />
-                    </a>
-                </div>
+                    <span class="btn-header-order-wrapper">
+                        @Html.ActionLink("New Lead", "Index", "Order", new { area = "" }, new { @class = "btn btn-success" })
+                    </span>
 
-                <div class="btn-header-order">
-                    @Html.ActionLink("New Lead", "Index", "Order", new { area = "" }, new { @class = "teaser-btn" })
-                </div>
+                    <div class="navbar-collapse collapse navbar-collapse-leadgen">
 
-                @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default login-big pull-right", rel = "nofollow" })
+                        <ul class="nav nav-pills nav-justified">
+                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
+                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
+                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
+                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
+                        </ul>
 
-            </div>
-
-
-            <div class="navbar-collapse collapse">
-
-                <ul class="nav nav-pills nav-justified">
-                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
-                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
-                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
-                    <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
-
-                    @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default login-small" })
-
-                </ul>
+                    </div>
 
             </div>
+
+
+            
         </div>
     </nav>
 
     @if (ViewContext.RouteData.Values["controller"].ToString() == "CMS")
     {
-        <div class="container body-content container-IzgPam">
+        <div class="container body-content">
             <div class="row">
                 @if (IsSectionDefined("Sidebar"))
                 {
@@ -116,7 +112,8 @@
     <hr />
 
     <footer class="container">
-        <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
+        <p class="copyright">&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin v2</p>
+        @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
     </footer>
 
     <script src="~/lib/node_modules/moment/min/moment.min.js"></script>

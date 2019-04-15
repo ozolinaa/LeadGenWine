@@ -38,13 +38,15 @@
             },
             navigateToInputValidationError: function() {
                 //Detect validation errors and focus on the input
-                var invalidInputs = $('.input-validation-error');
+                var invalidInputs = $('.input-validation-error,.field-validation-error');
                 if (invalidInputs.length > 0)
                 {
                     //http://stackoverflow.com/questions/18150090/jquery-scroll-element-to-the-middle-of-the-screen-instead-of-to-the-top-with-a
-                    var el = $(invalidInputs[0]);
-                    var elOffset = el.offset().top;
-                    var elHeight = el.height();
+                    var $el = $(invalidInputs.toArray().reduce(function (a, b) {
+                        return a.getBoundingClientRect().top < b.getBoundingClientRect().top ? a : b;
+                    }));
+                    var elOffset = $el.offset().top;
+                    var elHeight = $el.height();
                     var windowHeight = $(window).height();
                     var offset;
 
@@ -58,7 +60,7 @@
                     $('html, body').animate({
                         scrollTop: offset
                     }, 700);
-                    el.click().focus();
+                    $el.click().focus();
                 }
         
             },
