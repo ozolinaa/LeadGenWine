@@ -47,6 +47,10 @@ docker run -d --net=isolated_network --restart=unless-stopped -p 1433:1433 -e 'A
 # docker stop mssql
 # docker rm mssql
 
+docker run --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=Express' -e 'SA_PASSWORD=pass@word1' -v /home/anton/leadgen/mssql:/var/opt/mssql --name mssql -d microsoft/mssql-server-linux:2017-latest
+
+
+
 leadgenweb:latest
 
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04

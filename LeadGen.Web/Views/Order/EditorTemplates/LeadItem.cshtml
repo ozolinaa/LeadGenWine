@@ -14,13 +14,7 @@
 }))
 {
     <h2>Please fill the form</h2>
-    @Html.EditorFor(x => x.fieldGroups)
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.email, "E-mail")
-        @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.ru" })
-        @Html.ValidationMessageFor(x => x.email)
-    </div>
+    @Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">

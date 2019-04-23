@@ -57,6 +57,7 @@ h4 {
 
 /* Nav Bar */
 .navbar-leadgen {
+    z-index: 10;
     height: 80px;
     border: none;
     background-color: black;

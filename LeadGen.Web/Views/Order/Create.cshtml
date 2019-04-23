@@ -44,7 +44,7 @@
             }
 </style>
 
-<div class="container">
+<div class="container lead-container">
     @Html.EditorFor(x => x)
 </div>
 
@@ -55,6 +55,12 @@
         function initializeLeadForm() {
             if (window.mobileAndTabletcheck() == false) {
                 $('[data-toggle="popover"]').popover()
+            }
+
+            var priceInput = document.getElementsByClassName("lead-field-price_range")[0].querySelector("select");
+            if (!priceInput.value) {
+                var defaultOption = priceInput.children[2];
+                priceInput.value = defaultOption.value;
             }
 
             //Detect validation errors and focus on the input

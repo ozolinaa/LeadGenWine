@@ -23,7 +23,7 @@ namespace LeadGen.Code.Settings
 
     public class AppSettings : IAppSettings
     {
-        private readonly string _sqlConnectionString;
+        private string _sqlConnectionString;
         private string _azureStorageHostName;
         private string _azureStorageConnectionString;
         private string _googleMapsAPIKey;
@@ -49,7 +49,6 @@ namespace LeadGen.Code.Settings
 
             using (SqlConnection con = new SqlConnection(_sqlConnectionString))
             {
-
                 con.Open();
                 _initSettingOptionsInDB(con);
                 ReloadAppSettingsFromDB(con);

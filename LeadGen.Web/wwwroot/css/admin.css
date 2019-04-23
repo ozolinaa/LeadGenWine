@@ -11,3 +11,9 @@
 #post-edit-page textarea {
     max-width:none;
 }
+
+nav .navbar-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

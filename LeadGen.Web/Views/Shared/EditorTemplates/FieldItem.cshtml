@@ -76,9 +76,7 @@
             @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
             break;
         default:
-            <div class="@labelClass">
-                @Model.label
-            </div>
+            @Html.LabelFor(x => x.termIDSelected, Model.label, new { @class = labelClass })
             break;
     }
 
@@ -128,16 +126,16 @@
             @Html.ValidationMessageFor(x => x.fieldTerms)
             break;
         case LeadGen.Code.Lead.FieldType.Radio:
-                <div class="field-option-list">
-                    @for (int i = 0; i < Model.fieldTerms.Count(); i++)
-                    {
-                        string radioId = Html.IdFor(x => x.termIDSelected) + "_" + Model.fieldTerms[i].ID;
-                        <div class="field-option field-option-radio field-option-@Model.fieldTerms[i].termURL">
-                            @Html.RadioButtonFor(x => x.termIDSelected, Model.fieldTerms[i].ID, new { id = radioId })
-                            @Html.Label("termIDSelected_" + Model.fieldTerms[i].ID, Model.fieldTerms[i].name)
-                        </div>
-                    }
-                </div>
+            <div class="field-option-list">
+                @for (int i = 0; i < Model.fieldTerms.Count(); i++)
+                {
+                    string radioId = Html.IdFor(x => x.termIDSelected) + "_" + Model.fieldTerms[i].ID;
+                    <div class="field-option field-option-radio field-option-@Model.fieldTerms[i].termURL">
+                        @Html.RadioButtonFor(x => x.termIDSelected, Model.fieldTerms[i].ID, new { id = radioId })
+                        @Html.Label("termIDSelected_" + Model.fieldTerms[i].ID, Model.fieldTerms[i].name)
+                    </div>
+                }
+            </div>
             @Html.ValidationMessageFor(x => x.termIDSelected)
             break;
         default:

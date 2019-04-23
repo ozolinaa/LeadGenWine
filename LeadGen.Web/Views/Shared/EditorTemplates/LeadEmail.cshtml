@@ -1,0 +1,9 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+@{
+    ViewData.TemplateInfo.HtmlFieldPrefix = "";
+}
+<div class="form-group">
+    @Html.LabelFor(x => x.email, "E-mail")
+    @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.ru" })
+    @Html.ValidationMessageFor(x => x.email)
+</div>

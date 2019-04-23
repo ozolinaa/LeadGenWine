@@ -42,34 +42,36 @@
         <div class="container">
             <div class="navbar-header">
 
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
 
-                    <div class="navbar-brand">
-                        <a title="Home" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
-                            Home
-                        </a>
-                    </div>
+
+                <div class="navbar-brand">
+                    <a title="Home" href="@Url.Action("Index", "CMS", new { urlPath = "" , area = "" })">
+                        Home
+                    </a>
+                </div>
 
 
 
-                    <span class="btn-header-order-wrapper">
-                        @Html.ActionLink("New Lead", "Index", "Order", new { area = "" }, new { @class = "btn btn-success" })
-                    </span>
+                <span class="btn-header-order-wrapper">
+                    @Html.ActionLink("New Lead", "Index", "Order", new { area = "" }, new { @class = "btn btn-success" })
+                </span>
 
-                    <div class="navbar-collapse collapse navbar-collapse-leadgen">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-                        <ul class="nav nav-pills nav-justified">
-                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
-                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
-                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
-                            <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
-                        </ul>
+                <div class="navbar-collapse collapse navbar-collapse-leadgen">
 
-                    </div>
+                    <ul class="nav nav-pills nav-justified">
+                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
+                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
+                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
+                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
+                    </ul>
+
+                </div>
 
             </div>
 
@@ -112,7 +114,7 @@
     <hr />
 
     <footer class="container">
-        <p class="copyright">&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin v2</p>
+        <p class="copyright">&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin v3</p>
         @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
     </footer>
 

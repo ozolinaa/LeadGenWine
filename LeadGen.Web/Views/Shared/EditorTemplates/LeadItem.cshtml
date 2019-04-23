@@ -1,14 +1,11 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 
-@Html.HiddenFor(x=>x.ID)
+@Html.HiddenFor(x => x.ID)
 
-@Html.EditorFor(x => x.fieldGroups)
+@Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
 
-<div class="form-group">
-    @Html.LabelFor(x => x.email, "E-mail")
-    @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.ru" })
-    @Html.ValidationMessageFor(x => x.email)
-</div>
+@Html.EditorFor(x => x, "LeadEmail")
+
 
 @Html.ValidationSummary()
 

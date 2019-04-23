@@ -1,13 +1,36 @@
+.lead-container {
+    max-width: 800px;
+}
+
+.lead_field_group {
+    background-color: white;
+    padding: 15px 30px;
+    margin-bottom: 30px;
+    border: 1px solid #eee;
+}
+    .lead_field_group h3 {
+        text-align: center;
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
+    .lead_field_group .field-option-list {
+        background: #fafafa;
+        padding: 30px;
+        padding-bottom: 15px;
+        border: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-content: space-between;
+    }
+        .lead_field_group .field-option-list .field-option {
+            margin-bottom: 15px;
+        }
 
 
-.field-option-list {
-    display: flex;
-    justify-content: space-between;
-    align-content: space-between;
-}
-.lead-field.lead-field-display .field-option-list {
-    justify-content: flex-start;
-}
+        .lead-field.lead-field-display .field-option-list {
+            justify-content: flex-start;
+        }
 .lead-field.lead-field-display .field-option-list {
     justify-content: flex-start;
 }
@@ -19,49 +42,140 @@
     }
 
 .lead-field .field-option {
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
 }
+
+
+    .lead-field .field-option input[type="checkbox"],
+    .lead-field .field-option input[type="radio"] {
+        display: none;
+    }
+
+    .lead-field .field-option input:not(:checked) + label:hover::before {
+        border-color: #9e9e9e2e;
+        transition: border-color 1.0s ease-out, background-size 0.5s ease-out;
+    }
+
+    .lead-field .field-option input:checked + label::before {
+        border-color: #009d0085; /*green*/
+        background-size: 130%;
+        transition: border-color 0.5s ease-in, background-size 0.5s ease-in;
+    }
+
+    .lead-field .field-option label:hover::before {
+        background-size: 130%;
+    }
+
     .lead-field .field-option label {
         text-align: center;
         cursor: pointer;
+        font-size: 20px;
+        margin-bottom: 0;
     }
 
         .lead-field .field-option label::before {
             display: block;
             content: " ";
-            background-image: url(../images/order/bottles/1.jpg);
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
             height: 150px;
             width: 150px;
             border-radius: 50%;
             border-style: solid;
             border-width: 10px;
             border-color: #9e9e9e2e;
+            background-image: url(../images/order/bottles/1.jpg);
+            background-repeat: no-repeat;
+            /*background-size: cover;*/
+            background-size: 115%;
+            background-position: center;
+            background-position-x: 50%;
+            background-position-y: 50%;
             box-sizing: content-box;
-            transition: border-color 0.5s ease-out;
+            transition: border-color 0.5s ease-out, background-size 0.5s ease-out;
+            margin-bottom: 10px;
+        }
+
+    .lead-field .field-option.field-option-room label::before {
+        background-image: url('../images/order/icons/room.jpg');
+    }
+    .lead-field .field-option.field-option-cabinet label::before {
+        background-image: url('../images/order/icons/cabinet.jpg');
+    }
+    .lead-field .field-option.field-option-rack label::before {
+        background-image: url('../images/order/icons/rack.jpg');
+    }
+    .lead-field .field-option.field-option-wood label::before {
+        background-image: url('../images/order/icons/wood.jpg');
+    }
+    .lead-field .field-option.field-option-glass_metal label::before {
+        background-image: url('../images/order/icons/glass_metal.jpg');
+    }
+    .lead-field .field-option.field-option-iron_wrought label::before {
+        background-image: url('../images/order/icons/iron_wrought.jpg');
+    }
+    .lead-field .field-option.field-option-furniture label::before {
+        background-image: url('../images/order/icons/furniture.jpg');
+    }
+    .lead-field .field-option.field-option-glasses_bottles label::before {
+        background-image: url('../images/order/icons/glasses_bottles.jpg');
+    }
+    .lead-field .field-option.field-option-decor label::before {
+        background-image: url('../images/order/icons/decor.jpg');
+    }
+    .lead-field .field-option.field-option-residential label::before {
+        background-image: url('../images/order/icons/residential.jpg');
+    }
+    .lead-field .field-option.field-option-business label::before {
+        background-image: url('../images/order/icons/business.jpg');
+    }
+
+.lead-field-legal_entity .field-option-list {
+    justify-content: space-around;
+}
+
+
+
+@media (max-width: 768px) {
+
+    .lead-field .field-option label {
+        font-size: 16px;
+    }
+
+        .lead-field .field-option label::before {
+            height: 100px;
+            width: 100px;
+            border-width: 6px;
             margin-bottom: 5px;
         }
+}
+
 @media (max-width: 576px) {
+
+    .lead_field_group {
+        margin: 0 -15px 15px -15px;
+        padding: 15px 15px;
+        border-left: none;
+        border-right: none;
+    }
+
+        .lead_field_group .field-option-list {
+            margin: 0 -15px;
+            padding: 15px;
+            border-left: none;
+            border-right: none;
+        }
+
+
+    .lead-field .field-option label {
+        font-size: 14px;
+    }
     .lead-field .field-option label::before {
         height: 90px;
         width: 90px;
         border-width: 6px;
+        margin-bottom: 5px;
     }
 }
-    .lead-field .field-option input:not(:checked) + label:hover::before {
-        border-color: #ff9800;
-        transition: border-color 1.5s ease-out;
-    }
-    .lead-field .field-option input:checked + label::before {
-        border-color: green;
-        transition: border-color 0.5s ease-in;
-    }
-    .lead-field .field-option input[type="checkbox"],
-    .lead-field .field-option input[type="radio"] {
-        display: none;
-    }
+
 
 
 
