@@ -55,6 +55,13 @@
             </div>
         }
 
+        <div class="row">
+            <div class="form-group col-xs-12">
+                @Html.LabelFor(x => x.customCSS)
+                @Html.TextAreaFor(x => x.customCSS, 20, 0, new { @class = "css-editor", style = "min-height:100px;" })
+            </div>
+        </div>
+
         @if (Model.fields != null && Model.fields.Count > 0)
         {
             <div class="panel panel-default">

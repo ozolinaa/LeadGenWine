@@ -12,6 +12,11 @@
     max-width:none;
 }
 
+#post-edit-page .css-editor {
+    display: block;
+    width: 100%;
+}
+
 nav .navbar-brand {
     display: flex;
     justify-content: center;

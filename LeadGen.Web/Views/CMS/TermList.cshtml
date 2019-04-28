@@ -1,7 +1,8 @@
 ﻿@model LeadGen.Code.CMS.CMSContext
 
 @{
-    ViewBag.Title = "TermPostList";
+    @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
+    @section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.post.customCSS);}}
 }
 
 

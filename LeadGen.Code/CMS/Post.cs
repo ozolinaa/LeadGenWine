@@ -89,9 +89,8 @@ namespace LeadGen.Code.CMS
         public string content { get; set; }
         public string contentPreview { get; set; }
         public string contentMain { get; set; }
-
-
         public string contentEnding { get; set; }
+        public string customCSS { get; set; }
 
         public SEOFields SEO { get; set; }
 
@@ -203,6 +202,7 @@ namespace LeadGen.Code.CMS
             contentPreview = DBNull.Value.Equals(row["ContentPreview"]) ? null : row["ContentPreview"].ToString();
             contentMain = row["ContentMain"].ToString();
             contentEnding = DBNull.Value.Equals(row["ContentEnding"]) ? null : row["ContentEnding"].ToString();
+            customCSS = DBNull.Value.Equals(row["CustomCSS"]) ? null : row["CustomCSS"].ToString();
             content = DBNull.Value.Equals(row["ContentPreview"]) ? row["ContentMain"].ToString() : row["ContentPreview"] + CMSManager.postContentPreviewSeparator + row["ContentMain"];
             postURLParentPath = row["ParentPathURL"].ToString();
             postURL = DBNull.Value.Equals(row["PostURL"]) ? null : row["PostURL"].ToString();
@@ -286,10 +286,11 @@ namespace LeadGen.Code.CMS
                 cmd.Parameters.AddWithValue("@AuthorID", authorID);
                 cmd.Parameters.AddWithValue("@StatusID", postStatus.ID);
                 cmd.Parameters.AddWithValue("@Title", title);
-                cmd.Parameters.AddWithValue("@contentIntro", (object)contentIntro ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ContentIntro", (object)contentIntro ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@ContentPreview", (object)contentPreview ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@ContentMain", (contentMain == null) ? "" : contentMain);
-                cmd.Parameters.AddWithValue("@contentEnding", (object)contentEnding ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@ContentEnding", (object)contentEnding ?? DBNull.Value);
+                cmd.Parameters.AddWithValue("@CustomCSS", (object)customCSS ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@PostURL", CMSManager.ClearURL(postURL));
                 cmd.Parameters.AddWithValue("@seoTitle", String.IsNullOrEmpty(SEO.title) ? (object)DBNull.Value : SEO.title);
                 cmd.Parameters.AddWithValue("@seoMetaDescription", String.IsNullOrEmpty(SEO.metaDescription) ? (object)DBNull.Value : SEO.metaDescription);

@@ -5,6 +5,7 @@
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
     @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
+    @section CustomCSS{@{ Html.RenderPartial("DisplayTemplates/CustomCSS", cmsContext.post.customCSS); }}
 }
 
 @*@Html.ActionLink("<= "+ cmsContext.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", cmsContext.postType.typeURL) })*@

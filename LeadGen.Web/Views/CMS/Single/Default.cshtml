@@ -1,6 +1,7 @@
 ﻿@model Post
 @using LeadGen.Code.CMS
 @section SEO{@Html.DisplayFor(x => x.SEO)}
+@section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.customCSS);}}
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
 }

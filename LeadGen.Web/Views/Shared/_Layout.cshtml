@@ -12,6 +12,7 @@
     <link href="~/lib/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+    @RenderSection("CustomCSS", required: false)
 </head>
 <body>
     @{
@@ -76,7 +77,7 @@
             </div>
 
 
-            
+
         </div>
     </nav>
 
@@ -113,8 +114,10 @@
 
     <hr />
 
+    
+
     <footer class="container">
-        <p class="copyright">&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin v3</p>
+        <p class="copyright">&copy; @DateTime.UtcNow.Year - @Html.ActionLink("WineCellars.pro", "Index", "CMS", new { area = "" }) - smart way of ordering wine cellars. @Html.ActionLink("Submit your wine cellar order", "Index", "Order", new { area = "" }) now. Receive quotes from wine cellar companies. Choose the best one offer you.</p>
         @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
     </footer>
 

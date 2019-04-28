@@ -6,7 +6,8 @@
 
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
-    ViewBag.Title = "TermPostList";
+    @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
+    @section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", cmsContext.post.customCSS);}}
 }
 
 

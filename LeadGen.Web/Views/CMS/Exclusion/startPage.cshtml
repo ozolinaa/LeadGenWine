@@ -1,6 +1,7 @@
 ﻿@model CMSContext
 @using LeadGen.Code.CMS;
-@section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
+@section SEO{@{Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
+@section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.post.customCSS); }}
 <article>
     <h1>@Model.post.title</h1>
     @{
@@ -23,13 +24,13 @@
     }
 </nav>
 
-    @if (Model.widgetsLayoutSidebarRight != null && Model.widgetsLayoutSidebarRight.Any())
-    {
-        @section Sidebar{
-            @foreach (Post widget in Model.widgetsLayoutSidebarRight)
-            {
-                Html.RenderPartial("Widgets/_WidgetLayout", widget);
-            }
+@if (Model.widgetsLayoutSidebarRight != null && Model.widgetsLayoutSidebarRight.Any())
+{
+    @section Sidebar{
+        @foreach (Post widget in Model.widgetsLayoutSidebarRight)
+        {
+            Html.RenderPartial("Widgets/_WidgetLayout", widget);
         }
     }
+}
 

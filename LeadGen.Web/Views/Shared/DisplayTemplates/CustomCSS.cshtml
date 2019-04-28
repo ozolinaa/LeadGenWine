@@ -1,0 +1,6 @@
+﻿@model System.String
+@if (!string.IsNullOrEmpty(@Model)) {
+    <style>
+        @Html.Raw(@Model)
+    </style>
+}
