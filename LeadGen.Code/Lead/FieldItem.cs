@@ -77,7 +77,7 @@ namespace LeadGen.Code.Lead
                     case FieldType.Radio:
                         return (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
                     case FieldType.Boolean:
-                        return fieldBool ? "Да" : "Нет";
+                        return fieldBool ? "Yes" : "No";
                     case FieldType.Datetime:
                         if (fieldDatetime == null)
                             return string.Empty;
@@ -94,42 +94,42 @@ namespace LeadGen.Code.Lead
         {
             get
             {
-                string fieldPrefix = "Поле";
-                string requiredSuffix = "обязательно к заполнению";
+                string fieldPrefix = "Please select ";
+                string requiredSuffix = ", it is required field";
 
                 switch (fieldType)
                 {
                     case FieldType.Textbox:
                         if (isRequired && String.IsNullOrEmpty(fieldText))
-                            return new KeyValuePair<string, string>("fieldText", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldText", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Dropdown:
                         if (isRequired && termIDSelected == null)
-                            return new KeyValuePair<string, string>("termIDSelected", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("termIDSelected", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Checkbox:
                         if (isRequired && fieldTerms.Where(x => x.isChecked == true).Count() == 0)
-                            return new KeyValuePair<string, string>("fieldTerms", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldTerms", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Radio:
                         if (isRequired && termIDSelected == null)
-                            return new KeyValuePair<string, string>("termIDSelected", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("termIDSelected", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Boolean:
                         if (isRequired && fieldBool == false)
-                            return new KeyValuePair<string, string>("fieldBool", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldBool", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Datetime:
                         if (isRequired && fieldDatetime == null)
-                            return new KeyValuePair<string, string>("fieldDatetime", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldDatetime", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
                     case FieldType.Number:
                         if (isRequired && fieldNumber == null)
-                            return new KeyValuePair<string, string>("fieldNumber", string.Format("{2} \"{0}\" {1}", name, requiredSuffix, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldNumber", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         else if (minValue != null && fieldNumber < minValue)
-                            return new KeyValuePair<string, string>("fieldNumber", string.Format("{3} \"{0}\" {1} {2}", name, "must be >= ", minValue, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldNumber", string.Format("\"{0}\"{1} {2}", name, " must be >= ", minValue).Trim());
                         else if (maxValue != null && fieldNumber > maxValue)
-                            return new KeyValuePair<string, string>("fieldNumber", string.Format("{3} \"{0}\" {1} {2}", name, "must be <= ", maxValue, fieldPrefix).Trim());
+                            return new KeyValuePair<string, string>("fieldNumber", string.Format("\"{0}\"{1} {2}", name, " must be <= ", maxValue).Trim());
                         break;
                 }
                 return null;

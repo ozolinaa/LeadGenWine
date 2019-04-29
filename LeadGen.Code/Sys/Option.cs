@@ -63,6 +63,12 @@ namespace LeadGen.Code.Sys
             AzureStorageConnectionString,
             AzureStorageHostName,
 
+            AWSAccessKeyID,
+            AWSAccessKeySecret,
+            AWSRegionName,
+            AWSs3BucketName,
+            AWSs3BucketHostName,
+
             EmailFromAddress,
             EmailFromName,
             EmailReplyToAddress,

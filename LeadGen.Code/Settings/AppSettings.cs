@@ -11,10 +11,10 @@ namespace LeadGen.Code.Settings
     public interface IAppSettings
     {
         string SQLConnectionString { get; }
-        string AzureStorageConnectionString { get; }
-        string AzureStorageHostName { get; }
         string GoogleMapsAPIKey { get; }
         string SystemAccessToken { get; }
+        AzureSettings AzureSettings { get; }
+        AWSSettings AWSSettings { get; }
         EmailSettings EmailSettings { get;  }
         LeadSettings LeadSettings { get; }
 
@@ -24,19 +24,20 @@ namespace LeadGen.Code.Settings
     public class AppSettings : IAppSettings
     {
         private string _sqlConnectionString;
-        private string _azureStorageHostName;
-        private string _azureStorageConnectionString;
         private string _googleMapsAPIKey;
         private string _systemAccessToken;
+        private AzureSettings _azureSettings;
+        private AWSSettings _awsSettings;
         private EmailSettings _emailSettings;
         private LeadSettings _leadSettings;
 
         public string SQLConnectionString { get { return _sqlConnectionString; }  }
-        public string AzureStorageConnectionString { get { return _azureStorageConnectionString; } }
-        public string AzureStorageHostName { get { return _azureStorageHostName; } }
         public string GoogleMapsAPIKey { get { return _googleMapsAPIKey; } }
         public string SystemAccessToken { get { return _systemAccessToken; } }
 
+
+        public AzureSettings AzureSettings { get { return _azureSettings; } }
+        public AWSSettings AWSSettings { get { return _awsSettings; } }
         public EmailSettings EmailSettings { get { return _emailSettings; } }
         public LeadSettings LeadSettings { get { return _leadSettings; } }
 
@@ -73,17 +74,36 @@ namespace LeadGen.Code.Settings
             Dictionary<string, Option> settingOptions = Option.SelectFromDB(con);
 
             Option tmpOption;
-            if (settingOptions.TryGetValue(Option.SettingKey.AzureStorageConnectionString.ToString(), out tmpOption))
-                _azureStorageConnectionString = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
-            if (settingOptions.TryGetValue(Option.SettingKey.AzureStorageHostName.ToString(), out tmpOption))
-                _azureStorageHostName = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
             if (settingOptions.TryGetValue(Option.SettingKey.GoogleMapsAPIKey.ToString(), out tmpOption))
                 _googleMapsAPIKey = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
             if (settingOptions.TryGetValue(Option.SettingKey.SystemAccessToken.ToString(), out tmpOption))
                 _systemAccessToken = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
 
-            int emailSmtpSendIntervalMilliseconds = 0;
-            int.TryParse(settingOptions[Option.SettingKey.EmailSmtpSendIntervalMilliseconds.ToString()].value, out emailSmtpSendIntervalMilliseconds);
+            if (settingOptions.ContainsKey(Option.SettingKey.AzureStorageHostName.ToString()) && settingOptions.ContainsKey(Option.SettingKey.AzureStorageConnectionString.ToString())) {
+                _azureSettings = new AzureSettings()
+                {
+                    StorageHostName = settingOptions[Option.SettingKey.AzureStorageHostName.ToString()].value,
+                    StorageConnectionString = settingOptions[Option.SettingKey.AzureStorageConnectionString.ToString()].value,
+                };
+            }
+
+            if (settingOptions.ContainsKey(Option.SettingKey.AWSAccessKeyID.ToString()) 
+                && settingOptions.ContainsKey(Option.SettingKey.AWSAccessKeySecret.ToString())
+                && settingOptions.ContainsKey(Option.SettingKey.AWSRegionName.ToString())
+                && settingOptions.ContainsKey(Option.SettingKey.AWSs3BucketName.ToString())
+                && settingOptions.ContainsKey(Option.SettingKey.AWSs3BucketHostName.ToString()))
+            {
+                _awsSettings = new AWSSettings()
+                {
+                    AccessKeyID = settingOptions[Option.SettingKey.AWSAccessKeyID.ToString()].value,
+                    AccessKeySecret = settingOptions[Option.SettingKey.AWSAccessKeySecret.ToString()].value,
+                    RegionName = settingOptions[Option.SettingKey.AWSRegionName.ToString()].value,
+                    BucketName = settingOptions[Option.SettingKey.AWSs3BucketName.ToString()].value,
+                    BucketHostName = settingOptions[Option.SettingKey.AWSs3BucketHostName.ToString()].value
+                };
+            }
+
+            int.TryParse(settingOptions[Option.SettingKey.EmailSmtpSendIntervalMilliseconds.ToString()].value, out int emailSmtpSendIntervalMilliseconds);
 
             int emailSmtpPort = 0;
             int.TryParse(settingOptions[Option.SettingKey.EmailSmtpPort.ToString()].value, out emailSmtpPort);

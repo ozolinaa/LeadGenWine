@@ -1,4 +1,5 @@
-﻿using LeadGen.Code.Helpers;
+﻿using LeadGen.Code.Clients;
+using LeadGen.Code.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -180,42 +181,42 @@ namespace LeadGen.Code.CMS
                 //Set File URL 
                 string clearedFileName = CMSManager.ClearURL(Path.GetFileNameWithoutExtension(fileName)) + Path.GetExtension(fileName);
 
-                string attachmentHostName = SysHelper.AppSettings.AzureStorageHostName.Trim('/');
-                string fileURL = string.Format("{0}/{1}/{2}/{3}/{4}", attachmentHostName, "cms", year.ToString().PadLeft(4, '0'), month.ToString().PadLeft(2, '0'), clearedFileName).ToLower();
-
-                bool attachmentUrlSetSuccessfully = false;
-                while (attachmentUrlSetSuccessfully == false)
+                using (ICloudStorageClient client = CloudStorageClientFactory.GetClient())
                 {
-                    try
+                    string attachmentHostName = client.GetFileHostName();
+                    string fileURL = string.Format("{0}/{1}/{2}/{3}/{4}", attachmentHostName, "cms", year.ToString().PadLeft(4, '0'), month.ToString().PadLeft(2, '0'), clearedFileName).ToLower();
+
+                    bool attachmentUrlSetSuccessfully = false;
+                    while (attachmentUrlSetSuccessfully == false)
                     {
-                        using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentSetURL]", con))
+                        try
                         {
-                            cmd.CommandType = CommandType.StoredProcedure;
+                            using (SqlCommand cmd = new SqlCommand("[dbo].[CMSAttachmentSetURL]", con))
+                            {
+                                cmd.CommandType = CommandType.StoredProcedure;
 
-                            cmd.Parameters.AddWithValue("@AttachmentID", attachmentID);
-                            cmd.Parameters.AddWithValue("@URL", fileURL);
+                                cmd.Parameters.AddWithValue("@AttachmentID", attachmentID);
+                                cmd.Parameters.AddWithValue("@URL", fileURL);
 
-                            cmd.ExecuteNonQuery();
+                                cmd.ExecuteNonQuery();
+                            }
+
+                            attachmentUrlSetSuccessfully = true;
                         }
-
-                        attachmentUrlSetSuccessfully = true;
+                        catch (Exception)
+                        {
+                            //Insert "_" before "."
+                            fileURL = fileURL.Insert(fileURL.LastIndexOf('.'), "_");
+                        }
                     }
-                    catch (Exception)
-                    {
-                        //Insert "_" before "."
-                        fileURL = fileURL.Insert(fileURL.LastIndexOf('.'), "_");
-                    }
-                }
 
-                //Save File
-                using (AzureStorageClient client = new AzureStorageClient())
-                {
+                    //Save File
                     client.SaveFile(fileStream, new Uri(fileURL));
-                }
 
-                //Process Image Sizes
-                if (fileType == Type.Image)
-                    ProcessImageSizes(con, attachmentID, fileStream, fileURL);
+                    //Process Image Sizes
+                    if (fileType == Type.Image)
+                        ProcessImageSizes(con, attachmentID, fileStream, fileURL);
+                }
             }
 
             return new Attachment(con, attachmentID);
@@ -234,7 +235,7 @@ namespace LeadGen.Code.CMS
                 string sizedFileURL = originalFileURL.Insert(originalFileURL.LastIndexOf('.'), "_"+size.code).ToLower();
 
                 //Save File
-                using (AzureStorageClient client = new AzureStorageClient())
+                using (ICloudStorageClient client = CloudStorageClientFactory.GetClient())
                 {
                     client.SaveFile(resizedImageStream, new Uri(sizedFileURL));
                 }
@@ -274,7 +275,10 @@ namespace LeadGen.Code.CMS
 
         protected void DeleteFromStorage()
         {
-            List<Uri> filesToDelete = new List<Uri>() { new Uri(attachmentURL) };
+            List<Uri> filesToDelete = new List<Uri>();
+            if (string.IsNullOrEmpty(attachmentURL) == false) {
+                filesToDelete.Add(new Uri(attachmentURL));
+            }
             if (images != null)
                 filesToDelete.AddRange(images.Select(x => x.Value));
             filesToDelete.ForEach(x => DeleteFileFromStorage(x));
@@ -282,7 +286,7 @@ namespace LeadGen.Code.CMS
 
         protected static void DeleteFileFromStorage(Uri fileURL)
         {
-            using (AzureStorageClient client = new AzureStorageClient())
+            using (ICloudStorageClient client = CloudStorageClientFactory.GetClient())
             {
                 client.DeleteFile(fileURL);
             }
@@ -408,7 +412,7 @@ namespace LeadGen.Code.CMS
                     return images[foundSize];
                 }
             }
-            return new Uri(attachmentURL);
+            return string.IsNullOrEmpty(attachmentURL) ? null : new Uri(attachmentURL);
         }
 
         public static Attachment UploadFromURL(SqlConnection connection, long loginID, Uri fileUri, int year = 0, int month = 0)

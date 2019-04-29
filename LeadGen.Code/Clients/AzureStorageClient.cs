@@ -7,17 +7,21 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LeadGen.Code.Helpers;
+using LeadGen.Code.Settings;
 
-namespace LeadGen.Code.Helpers
+namespace LeadGen.Code.Clients
 {
-    public class AzureStorageClient : IDisposable
+    public class AzureStorageClient : ICloudStorageClient
     {
-        private CloudBlobClient blobStorage = null;
+        private AzureSettings _azureSettings = null;
+        private CloudBlobClient _client = null;
 
-        public AzureStorageClient()
+        public AzureStorageClient(AzureSettings azureSettings)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(SysHelper.AppSettings.AzureStorageConnectionString);
-            blobStorage = storageAccount.CreateCloudBlobClient();
+            _azureSettings = azureSettings;
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_azureSettings.StorageConnectionString);
+            _client = storageAccount.CreateCloudBlobClient();
         }
 
 
@@ -26,7 +30,7 @@ namespace LeadGen.Code.Helpers
             string cantainerName = fileUrl.Segments[1].Trim('/').ToLower();
             string blobName = string.Join("", fileUrl.Segments.Skip(2)).ToLower();
 
-            CloudBlobContainer cloudBlobContainer = blobStorage.GetContainerReference(cantainerName);
+            CloudBlobContainer cloudBlobContainer = _client.GetContainerReference(cantainerName);
             if (cloudBlobContainer.CreateIfNotExistsAsync().Result)
             {
                 // configure container for public access
@@ -47,7 +51,7 @@ namespace LeadGen.Code.Helpers
             string cantainerName = fileUrl.Segments[1].Trim('/').ToLower();
             string blobName = string.Join("", fileUrl.Segments.Skip(2)).ToLower();
 
-            CloudBlobContainer cloudBlobContainer = blobStorage.GetContainerReference(cantainerName);
+            CloudBlobContainer cloudBlobContainer = _client.GetContainerReference(cantainerName);
             if (cloudBlobContainer.CreateIfNotExistsAsync().Result)
             {
                 // configure container for public access
@@ -60,10 +64,15 @@ namespace LeadGen.Code.Helpers
             blob.DeleteAsync().Wait();
         }
 
+        public string GetFileHostName()
+        {
+            return _azureSettings.StorageHostName.Trim('/');
+        }
 
         public void Dispose()
         {
-            blobStorage = null;
+            _azureSettings = null;
+            _client = null;
         }
     }
 }

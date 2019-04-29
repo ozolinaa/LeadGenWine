@@ -15,10 +15,10 @@ services:
     environment:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express
-      - SA_PASSWORD=pass@word1
+      - SA_PASSWORD=*k_U^Jp+PZ6*CDmQ
     restart: on-failure
   app:
-    image: xtonyx/leadgenweb:20190423040701
+    image: xtonyx/leadgenweb:20190428042206
     depends_on:
       - mssql
     ports:
@@ -26,7 +26,7 @@ services:
     networks:
       - leadgen_core
     environment:
-      - sqlConnectionString=Data Source=mssql;Initial Catalog=LeadGenDB;User ID=sa;Password=pass@word1;
+      - sqlConnectionString=Data Source=mssql;Initial Catalog=LeadGenDB;User ID=sa;Password=*k_U^Jp+PZ6*CDmQ;
     restart: on-failure
   nginx:
     image: linuxserver/letsencrypt
