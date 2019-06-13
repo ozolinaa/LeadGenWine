@@ -31,6 +31,9 @@
     <Content Update="Areas\Business\Views\_ViewImports.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\CMS\Exclusion\pageStartPage.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Order\Show.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

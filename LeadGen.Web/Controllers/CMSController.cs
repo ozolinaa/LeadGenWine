@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using static LeadGen.Code.CMS.CMSManager;
 
 namespace LeadGen.Web.Controllers
 {
@@ -73,7 +74,9 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         public ActionResult StartPage()
         {
-            return View("Exclusion/startPage", cmsContext);
+            if(cmsContext.post.postType.ID == (int)PostTypesBuiltIn.Page)
+                return View("Exclusion/pageStartPage", cmsContext);
+            return View("Exclusion/postTypeStartPage", cmsContext);
         }
 
         [NonAction]

@@ -1,0 +1,11 @@
+﻿@model CMSContext
+@using LeadGen.Code.CMS;
+@section SEO{@{Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
+@section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.post.customCSS); }}
+
+<article>
+    @Html.Raw(Model.post.contentIntro)
+    @Html.Raw(Model.post.contentPreview)
+    @Html.Raw(Model.post.contentMain)
+    @Html.Raw(Model.post.contentEnding)
+</article>

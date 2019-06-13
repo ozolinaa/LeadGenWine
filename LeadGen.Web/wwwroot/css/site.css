@@ -109,15 +109,24 @@ h4 {
     font-weight: 500;
     color: white;
 }
+.navbar .navbar-collapse.navbar-collapse-leadgen > .nav-justified > li.active > a {
+    background-color: initial;
+}
 .navbar .navbar-collapse.navbar-collapse-leadgen > .nav-justified > li > a:hover {
     background-color: initial;
 }
-
 
 @media (min-width: 768px) {
     .navbar-leadgen .navbar-header {
         width: 100%;
     }
+        .navbar-leadgen .navbar-header .btn-header-order-wrapper {
+            display: none;
+            font-size: 13px;
+            padding: 10px 15px;
+            border: none;
+            margin-left: 40px;
+        }
         .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {
             font-size: 13px;
             padding: 10px 15px;
@@ -127,7 +136,7 @@ h4 {
     .navbar .navbar-collapse.navbar-collapse-leadgen {
         display: inline-block !important;
         float: right;
-        width: calc(100% - 230px);
+        width: calc(100% - 95px);
         padding-right: 0;
     }
     .navbar .navbar-collapse.navbar-collapse-leadgen > .nav-justified {
@@ -157,7 +166,7 @@ h4 {
     /*Make Order Button Centered*/
     .navbar-leadgen .navbar-header .btn-header-order-wrapper {
         position: absolute;
-        left: calc(50% - 45px);
+        left: calc(50% - 60px);
         text-align: center;
     }
         .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {

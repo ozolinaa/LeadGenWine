@@ -16,14 +16,14 @@
 </head>
 <body>
     @{
-        string link1URL = Url.Action("Index", "CMS", new { urlPath = "about", area = "" });
-        string link1Text = "Link1";
-        string link2URL = Url.Action("Index", "CMS", new { urlPath = "kladbisha", area = "" });
-        string link2Text = "Link2";
-        string link3URL = Url.Action("Index", "CMS", new { urlPath = "na-mogilu", area = "" });
-        string link3Text = "Link3";
-        string link4URL = Url.Action("Index", "CMS", new { urlPath = "znamenitostyam", area = "" });
-        string link4Text = "Link4";
+        string link1URL = Url.Action("Index", "CMS", new { urlPath = "how-to-store-wine", area = "" });
+        string link1Text = "How To Store Wine";
+        string link2URL = Url.Action("Index", "CMS", new { urlPath = "wine-cellars", area = "" });
+        string link2Text = "Wine Cellars";
+        string link3URL = Url.Action("Index", "CMS", new { urlPath = "manufacturers", area = "" });
+        string link3Text = "Manufacturers";
+        string link4URL = Url.Action("Index", "CMS", new { urlPath = "order", area = ""});
+        string link4Text = "Order wine cellar";
 
         CMSContext cmsContext = ViewBag.cmsContext;
         if (cmsContext?.regionCity?.termURL != null)
@@ -54,7 +54,7 @@
 
 
                 <span class="btn-header-order-wrapper">
-                    @Html.ActionLink("New Lead", "Index", "Order", new { area = "" }, new { @class = "btn btn-success" })
+                    @Html.ActionLink("Order wine cellar", "Index", "order", new { area = "" }, new { @class = "btn btn-success" })
                 </span>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -69,7 +69,7 @@
                         <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link1URL.Trim('/').ToLower() ? "active" : "")"><a href="@link1URL">@link1Text</a></li>
                         <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link2URL.Trim('/').ToLower() ? "active" : "")"><a href="@link2URL">@link2Text</a></li>
                         <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link3URL.Trim('/').ToLower() ? "active" : "")"><a href="@link3URL">@link3Text</a></li>
-                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL">@link4Text</a></li>
+                        <li role="presentation" class="@(cmsContext?.urlPath.ToString() == link4URL.Trim('/').ToLower() ? "active" : "")"><a href="@link4URL" class="order_link">@link4Text</a></li>
                     </ul>
 
                 </div>
