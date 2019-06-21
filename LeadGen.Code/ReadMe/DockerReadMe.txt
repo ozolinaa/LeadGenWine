@@ -65,4 +65,5 @@ docker run -d --net=isolated_network --restart=unless-stopped -p 8080:80 -e sqlC
 #deploy docker
 docker-compose up -d
 #update app
-docker-compose up -d --no-deps --build app
+sudo docker-compose up -d --no-deps --build app
+#if errors stopping container - https://stackoverflow.com/questions/49104733/docker-on-ubuntu-16-04-error-when-killing-container

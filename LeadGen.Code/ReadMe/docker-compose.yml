@@ -18,7 +18,7 @@ services:
       - SA_PASSWORD=*k_U^Jp+PZ6*CDmQ
     restart: on-failure
   app:
-    image: xtonyx/leadgenweb:20190429122505
+    image: xtonyx/leadgenweb:20190613042124
     depends_on:
       - mssql
     ports:

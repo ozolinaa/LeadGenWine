@@ -62,6 +62,11 @@ new
         LeadGen.PostEdit = LeadGen.PostEdit || {};
         LeadGen.PostEdit.PostTypeID = "@Model.postType.ID";
         LeadGen.PostEdit.SearchPostsJsonUrl = "@Url.Action("SearchPostsJson", "CMS", new { area = "admin"})";
-        LeadGen.PostEdit.init();
+
+        setTimeout(function () {
+            LeadGen.PostEdit.init();
+        }, 1000);
+
+        
     </script>
 }

@@ -6,11 +6,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width">
     @RenderSection("SEO", required: false)
-    <link href="~/lib/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/node_modules/bootstrap-datetimepicker-npm/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/lib/node_modules/lightbox2/dist/css/lightbox.min.css" rel="stylesheet" />
-    <link href="~/lib/node_modules/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="~/lib/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/lib/lightbox2/css/lightbox.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
+    <link href="~/lib/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     @RenderSection("CustomCSS", required: false)
 </head>
@@ -22,7 +22,7 @@
         string link2Text = "Wine Cellars";
         string link3URL = Url.Action("Index", "CMS", new { urlPath = "manufacturers", area = "" });
         string link3Text = "Manufacturers";
-        string link4URL = Url.Action("Index", "CMS", new { urlPath = "order", area = ""});
+        string link4URL = Url.Action("Index", "CMS", new { urlPath = "order", area = "" });
         string link4Text = "Order wine cellar";
 
         CMSContext cmsContext = ViewBag.cmsContext;
@@ -114,24 +114,24 @@
 
     <hr />
 
-    
+
 
     <footer class="container">
         <p class="copyright">&copy; @DateTime.UtcNow.Year - @Html.ActionLink("WineCellars.pro", "Index", "CMS", new { area = "" }) - smart way of ordering wine cellars. @Html.ActionLink("Submit your wine cellar order", "Index", "Order", new { area = "" }) now. Receive quotes from wine cellar companies. Choose the best one offer you.</p>
         @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
     </footer>
 
-    <script src="~/lib/node_modules/moment/min/moment.min.js"></script>
-    <script src="~/lib/node_modules/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/node_modules/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/lib/node_modules/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-    <script src="~/lib/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="~/lib/node_modules/bootbox/bootbox.min.js"></script>
-    <script src="~/lib/node_modules/bootstrap-datetimepicker-npm/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/lib/node_modules/lightbox2/dist/js/lightbox.min.js"></script>
+    <script src="~/lib/moment/moment.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/lib/bootbox/bootbox.min.js"></script>
+    <script src="~/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/lib/lightbox2/js/lightbox.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
     <script src="~/js/LeadGen.js"></script>
-
     @RenderSection("Scripts", required: false)
 </body>
 </html>

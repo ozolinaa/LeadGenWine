@@ -13,13 +13,16 @@
             @Html.ActionLink(Model.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", Model.postType.url) }):
         </span>
     }
-
     int i = 0;
     foreach (Term term in Model.taxonomy.termList)
     {
         i++;
-        IHtmlContent termLink = Html.ActionLink((string)ViewData["termPrefix"] + term.name, "Index", new { urlPath = String.Format("{0}/{1}/", Model.postType.url, term.termURL) });
-        termLink = new HtmlString(String.Format("{0}{1}", termLink, (i < Model.taxonomy.termList.Count) ? ", " : ""));
-        @termLink
+        string termUrl = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = String.Format("{0}/{1}/", Model.postType.url, term.termURL) , area = "" }));
+        string termName = (string)ViewData["termPrefix"] + term.name;
+        <a href="@termUrl">@termName</a>
+        if (i < Model.taxonomy.termList.Count)
+        {
+            <text>, </text>
+        }
     }
 }

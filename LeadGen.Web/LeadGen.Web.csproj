@@ -43,22 +43,6 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);node_modules_dev\**</DefaultItemExcludes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Include="node_modules\bootbox\**" Link="wwwroot\lib\node_modules\bootbox\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\bootbox" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\bootstrap\**" Link="wwwroot\lib\node_modules\bootstrap\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\bootstrap" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\bootstrap-datetimepicker-npm\build\**" Link="wwwroot\lib\node_modules\bootstrap-datetimepicker-npm\build\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\bootstrap-datetimepicker-npm\build" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\jquery\dist\**" Link="wwwroot\lib\node_modules\jquery\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery\dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\jquery-ui-dist\**" Link="wwwroot\lib\node_modules\jquery-ui-dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-ui-dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\jquery-ajax-unobtrusive\**" Link="wwwroot\lib\node_modules\jquery-ajax-unobtrusive\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-ajax-unobtrusive" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\jquery-validation\dist\**" Link="wwwroot\lib\node_modules\jquery-validation\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-validation\dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\jquery-validation-unobtrusive\dist\**" Link="wwwroot\lib\node_modules\jquery-validation-unobtrusive\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\jquery-validation-unobtrusive\dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\lightbox2\dist\**" Link="wwwroot\lib\node_modules\lightbox2\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\lightbox2\dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\moment\min\**" Link="wwwroot\lib\node_modules\moment\min\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\moment\min" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\select2\dist\**" Link="wwwroot\lib\node_modules\select2\dist\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\select2\dist" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\tinymce\**" Link="wwwroot\lib\node_modules\tinymce\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\tinymce" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\tag-it\**" Link="wwwroot\lib\node_modules\tag-it\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\tag-it" CopyToOutputDirectory="Always" />
-    <None Include="node_modules\font-awesome\**" Link="wwwroot\lib\node_modules\font-awesome\%(RecursiveDir)%(Filename)%(Extension)" OutputDirectory="wwwroot\lib\node_modules\font-awesome" CopyToOutputDirectory="Always" />
-  </ItemGroup>
   
 
 

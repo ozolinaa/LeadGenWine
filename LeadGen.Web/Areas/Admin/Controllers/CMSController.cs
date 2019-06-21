@@ -148,7 +148,10 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             TryUpdateModelAsync(postToUpdate,"", x=> postEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
 
             //Remove taxonomies validation errors as tags urls and other properties are not availeble
-            ModelState.Keys.Where(x => x.StartsWith("taxonomies[")).ToList().ForEach(x => ModelState[x].Errors.Clear());
+            ModelState.Keys.Where(x => x.StartsWith("taxonomies[")).ToList().ForEach(x => {
+                ModelState[x].Errors.Clear();
+                ModelState[x].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+            });
 
             //Check selected taxonomies
             if (postedPostItem.taxonomies != null)
