@@ -17,9 +17,9 @@ namespace LeadGen.Code.Business.Notification
 {
     public class NotificationManager
     {
-        public static List<QueueMailMessage> QueueMailMessagesForBusinessesRegisteredAboutNewLeads(SqlConnection connection, Frequency frequency)
+        public static List<MailMessageLeadGen> QueueMailMessagesForBusinessesRegisteredAboutNewLeads(SqlConnection connection, Frequency frequency)
         {
-            List<QueueMailMessage> queuedMessages = new List<QueueMailMessage>();
+            List<MailMessageLeadGen> queuedMessages = new List<MailMessageLeadGen>();
 
             DateTime now = DateTime.UtcNow;
             DateTime notificationDateTime = now;
@@ -31,7 +31,7 @@ namespace LeadGen.Code.Business.Notification
 
             //Registered Businesses Process and Queue Messages
             Dictionary<Business, List<LeadItem>> businessesWithLeadsToNotifyAbout = GetBusinessesWithLeadsToNotifyAbout(connection, frequency, now.AddDays(-7));
-            List<QueueMailMessage> businessMessages = GenerateEmailBusinessNotificationMessages(businessesWithLeadsToNotifyAbout);
+            List<MailMessageLeadGen> businessMessages = GenerateEmailBusinessNotificationMessages(businessesWithLeadsToNotifyAbout);
 
             foreach (Business business in businessesWithLeadsToNotifyAbout.Keys)
                 foreach (LeadItem lead in businessesWithLeadsToNotifyAbout[business])
@@ -43,9 +43,9 @@ namespace LeadGen.Code.Business.Notification
             return queuedMessages;
         }
 
-        public static List<QueueMailMessage> QueueMailMessagesForBusinessesPostsAboutNewLeads(SqlConnection connection)
+        public static List<MailMessageLeadGen> QueueMailMessagesForBusinessesPostsAboutNewLeads(SqlConnection connection)
         {
-            List<QueueMailMessage> queuedMessages = new List<QueueMailMessage>();
+            List<MailMessageLeadGen> queuedMessages = new List<MailMessageLeadGen>();
 
             DateTime now = DateTime.UtcNow;
             DateTime notificationDateTime = now;
@@ -56,7 +56,7 @@ namespace LeadGen.Code.Business.Notification
 
             //CRM Businesses (Posts) Process and Queue Messages
             Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetBusinessesPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
-            List<QueueMailMessage> postMessages = GenerateEmailBusinessNotificationMessages(crmBusinessesWithLeadsToNotifyAbout);
+            List<MailMessageLeadGen> postMessages = GenerateEmailBusinessNotificationMessages(crmBusinessesWithLeadsToNotifyAbout);
 
             foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
                 foreach (LeadItem lead in crmBusinessesWithLeadsToNotifyAbout[businessPost])
@@ -166,9 +166,9 @@ namespace LeadGen.Code.Business.Notification
             return businessesSendTo;
         }
 
-        private static List<QueueMailMessage> GenerateEmailBusinessNotificationMessages(Dictionary<Business, List<LeadItem>> businessesWithLeadsToNotifyAbout)
+        private static List<MailMessageLeadGen> GenerateEmailBusinessNotificationMessages(Dictionary<Business, List<LeadItem>> businessesWithLeadsToNotifyAbout)
         {
-            List<QueueMailMessage> messages = new List<QueueMailMessage>();
+            List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
             string mailSubject = "Новые заявки";
             string viewPath = "~/Areas/Business/Views/E-mails/_BusinessLeadNotification.cshtml";
@@ -180,9 +180,9 @@ namespace LeadGen.Code.Business.Notification
                 {
                     //try
                     //{
-                        QueueMailMessage message = new QueueMailMessage(email.address);
+                        MailMessageLeadGen message = new MailMessageLeadGen(email.address);
                         message.Subject = mailSubject;
-                        message.Body = ViewHelper.RenderPartialToString(viewPath, businessLeads);
+                        message.Body = ViewHelper.RenderViewToString(viewPath, businessLeads);
                         messages.Add(message);
                     //}
                     //catch (Exception e)
@@ -245,9 +245,9 @@ namespace LeadGen.Code.Business.Notification
             return businessPostsSendTo;
         }
 
-        private static List<QueueMailMessage> GenerateEmailBusinessNotificationMessages(Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
+        private static List<MailMessageLeadGen> GenerateEmailBusinessNotificationMessages(Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
         {
-            List<QueueMailMessage> messages = new List<QueueMailMessage>();
+            List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
             string mailSubject = "Новые заявки";
             string viewPath = "~/Areas/Business/Views/E-mails/_BusinessPostLeadNotification.cshtml";
@@ -257,9 +257,9 @@ namespace LeadGen.Code.Business.Notification
                 try
                 {
                     Post businessPost = businessPostLeads.Key;
-                    QueueMailMessage message = new QueueMailMessage(businessPost.getFieldByCode("master_email").fieldText);
+                    MailMessageLeadGen message = new MailMessageLeadGen(businessPost.getFieldByCode("master_email").fieldText);
                     message.Subject = mailSubject;
-                    message.Body = ViewHelper.RenderPartialToString(viewPath, businessPostLeads);
+                    message.Body = ViewHelper.RenderViewToString(viewPath, businessPostLeads);
                     messages.Add(message);
                 }
                 catch (Exception e)

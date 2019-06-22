@@ -11,7 +11,7 @@ namespace LeadGen.Code.Sys.Scheduled
     {
         protected override string RunInternal(SqlConnection con)
         {
-            int messagesSentNumber = QueueMailMessage.SendQueuedMessages(con);
+            int messagesSentNumber = MailMessageLeadGen.SendQueuedMessages(con);
             return string.Format("Messages Sent: {0}", messagesSentNumber);
         }
     }

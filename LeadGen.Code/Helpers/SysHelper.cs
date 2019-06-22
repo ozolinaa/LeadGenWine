@@ -68,12 +68,9 @@ namespace LeadGen.Code.Helpers
             }
         }
 
-        public static IViewRenderService ViewRenderService
+        public static T GetService<T>()
         {
-            get
-            {
-                return GetServiceProvider.GetRequiredService<IViewRenderService>();
-            }
+            return _provider.GetRequiredService<T>();
         }
     }
 }

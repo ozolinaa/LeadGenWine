@@ -1,8 +1,0 @@
-﻿@model LeadGen.Code.Lead.LeadItem
-
-@{
-    string tokenKey = ViewData["tokenKey"].ToString();
-}
-
-<h2>Подтверждение email</h2>
-<p>Для подтверждения email перейдите по @Html.ActionLink("этой ссылке", "index", "Token", Context.Request.Scheme, Context.Request.Host.ToString(), null, new { area = "", key = tokenKey }, null)</p>

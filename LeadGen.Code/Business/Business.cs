@@ -183,7 +183,7 @@ namespace LeadGen.Code.Business
 
         
 
-        public bool SendRegistrationConfirmationEmail(SqlConnection con, Login login)
+        public void SendRegistrationConfirmationEmail(SqlConnection con, Login login)
         {
             string mailSubject = "Пожалуйста подтвердите регистрацию";
             string viewPath = "~/Areas/Business/Views/Registration/E-mails/_registrationConfirmation.cshtml";
@@ -192,16 +192,13 @@ namespace LeadGen.Code.Business
             ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
 
 
-            QueueMailMessage message = new QueueMailMessage(login.email);
+            MailMessageLeadGen message = new MailMessageLeadGen(login.email);
             message.Subject = mailSubject;
-            message.Body = ViewHelper.RenderPartialToString(viewPath, login, viewDataDictionary);
-            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
+            message.Body = ViewHelper.RenderViewToString(viewPath, login, viewDataDictionary);
+            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
             {
-                message.Send(smtp);
+                smtpClient.Send(message);
             }
-            
-
-            return true;
         }
 
 

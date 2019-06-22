@@ -1,9 +1,7 @@
 ﻿using LeadGen.Code.CMS.Sitemap;
 using LeadGen.Code.Helpers;
-using LeadGen.Code.Sys;
 using LeadGen.Code.Taxonomy;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using X.PagedList;
 using System;
 using System.Collections.Generic;
@@ -328,28 +326,6 @@ namespace LeadGen.Code.Lead
                 locationUpdateStatus = UpdateLocationInDB(con, SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip, SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius);
                 if (locationUpdateStatus == false)
                     return false;
-            }
-
-            return true;
-        }
-
-
-        public bool EmailConfirmationSendEmail(SqlConnection con)
-        {
-            string mailSubject = "Подтверждение E-mail адреса";
-            string viewPath = "~/Views/Order/E-mails/_EmailConfirm.cshtml";
-
-
-
-            Token token = new Token(con, Token.Action.LeadEmailConfirmation.ToString(), ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
-
-            QueueMailMessage message = new QueueMailMessage(email);
-            message.Subject = mailSubject;
-            message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
-            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
-            {
-                message.Send(smtp);
             }
 
             return true;

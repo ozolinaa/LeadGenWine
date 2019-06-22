@@ -98,7 +98,7 @@ namespace LeadGen.Web
                     name: "Default",
                     template: "{controller=CMS}/{action=Index}/{id?}",
                     defaults:null,
-                    constraints: new { controller = @"^Login|Token|Order|System" }
+                    constraints: new { controller = @"^Login|Token|Order|System|Test" }
                 );
 
                 //https://docs.microsoft.com/en-us/aspnet/core/mvc/controllers/areas?view=aspnetcore-2.1

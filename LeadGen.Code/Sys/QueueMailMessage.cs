@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LeadGen.Code.Sys
 {
-    public class QueueMailMessage : MailMessage
+    public class MailMessageLeadGen : MailMessage
     {
         #region Fields
         private Guid ID;
@@ -23,7 +23,7 @@ namespace LeadGen.Code.Sys
 
         #region Constructors
 
-        public QueueMailMessage() : base()
+        public MailMessageLeadGen() : base()
         {
             ID = Guid.NewGuid();
             createdDateTime = DateTime.UtcNow;
@@ -32,12 +32,12 @@ namespace LeadGen.Code.Sys
             IsBodyHtml = true;
         }
 
-        public QueueMailMessage(string emailAddressString) : this()
+        public MailMessageLeadGen(string emailAddressString) : this()
         {
             To.Add(new MailAddress(emailAddressString.ToLower().Trim()));
         }
 
-        public QueueMailMessage(DataRow row)
+        public MailMessageLeadGen(DataRow row)
         {
             ID = (Guid)row["EmailID"];
 
@@ -101,7 +101,7 @@ namespace LeadGen.Code.Sys
                 int sendIntervalMilliseconds = SysHelper.AppSettings.EmailSettings.SmtpSettings.SendIntervalMilliseconds;
                 do
                 {
-                    QueueMailMessage message = GetNextMessageFromTheQueue(connection);
+                    MailMessageLeadGen message = GetNextMessageFromTheQueue(connection);
                     if (message == null)
                         break;
 
@@ -164,9 +164,9 @@ namespace LeadGen.Code.Sys
             UpdateSentDateTimeDateTimeInDB(connection, DateTime.UtcNow);
         }
 
-        private static QueueMailMessage GetNextMessageFromTheQueue(SqlConnection connection)
+        private static MailMessageLeadGen GetNextMessageFromTheQueue(SqlConnection connection)
         {
-            QueueMailMessage message = null;
+            MailMessageLeadGen message = null;
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[EmailQueueSelectNextEmailToSend]", connection))
             {
@@ -176,7 +176,7 @@ namespace LeadGen.Code.Sys
 
                 using (DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd))
                     if (dt.Rows.Count > 0)
-                        message = new QueueMailMessage(dt.Rows[0]);
+                        message = new MailMessageLeadGen(dt.Rows[0]);
             }
 
             if (message == null)

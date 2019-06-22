@@ -223,7 +223,7 @@ namespace LeadGen.Code.Lead
         public void scheduleReviewRequestAfterDays(SqlConnection connection, int days)
         {
             LeadItem leadItem = LeadItem.SelectFromDB(connection, leadID: leadID, loadFieldValues: true).First();
-            QueueMailMessage message = Notification.NotificationManager.ReviewRequestGenerateEmailMessages(connection, new List<LeadItem>() { leadItem }).First();
+            MailMessageLeadGen message = Notification.NotificationManager.ReviewRequestGenerateEmailMessages(connection, new List<LeadItem>() { leadItem }).First();
             message.QueueToDB(connection, DateTime.UtcNow.AddDays(days));
         }
 

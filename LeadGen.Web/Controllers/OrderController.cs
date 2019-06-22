@@ -3,6 +3,7 @@ using LeadGen.Code.CMS;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
+using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
@@ -66,11 +67,16 @@ namespace LeadGen.Web.Controllers
                 return PartialView("DisplayTemplates/LeadItem", leadItem);
             }
 
-            // If we are here, means everything is correct
+            // If we are here, means everything is valid and user agreed
             if (leadItem.Insert(DBLGcon))
-                if (leadItem.EmailConfirmationSendEmail(DBLGcon))
-                    return PartialView("ConfirmEmail", leadItem);
-
+            {
+                MailMessageLeadGen message = MailMessageBuilder.BuildLeadEmailVerifyMailMessage(leadItem, DBLGcon);
+                using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
+                {
+                    smtp.Send(message);
+                }
+                return PartialView("ConfirmEmail", leadItem);
+            }
             return RedirectToAction("");
         }
 
@@ -149,10 +155,10 @@ namespace LeadGen.Web.Controllers
         {
             string error = "";
 
-            QueueMailMessage message = null;
+            MailMessageLeadGen message = null;
             try
             {
-                message = new QueueMailMessage(email);
+                message = new MailMessageLeadGen(email);
             }
             catch (Exception)
             {
@@ -170,10 +176,11 @@ namespace LeadGen.Web.Controllers
             ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.key } };
 
             message.Subject = "Подтверждение на удаление заявки";
-            message.Body = ViewHelper.RenderPartialToString("~/Views/Order/E-mails/_CancelOrders.cshtml", email, viewDataDictionary);
-            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
+            message.Body = ViewHelper.RenderViewToString("~/Views/Order/E-mails/_CancelOrders.cshtml", email, viewDataDictionary);
+
+            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
             {
-                message.Send(smtp);
+                smtpClient.Send(message);
             }
 
             return View("CancelSubmitted", email);

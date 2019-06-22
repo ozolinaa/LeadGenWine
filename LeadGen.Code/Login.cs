@@ -213,7 +213,7 @@ namespace LeadGen.Code
         }
 
 
-        public bool PasswordRecoverySendEmail(SqlConnection con)
+        public void PasswordRecoverySendEmail(SqlConnection con)
         {
             string mailSubject = "Восстановление пароля";
             string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
@@ -221,15 +221,15 @@ namespace LeadGen.Code
             Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
             ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
 
-            QueueMailMessage message = new QueueMailMessage(email);
-            message.Subject = mailSubject;
-            message.Body = ViewHelper.RenderPartialToString(viewPath, this, viewDataDictionary);
-            using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
-            {
-                message.Send(smtp);
-            }
+            MailMessageLeadGen message = new MailMessageLeadGen(email);
 
-            return true;
+            message.Subject = mailSubject;
+            message.Body = ViewHelper.RenderViewToString(viewPath, this, viewDataDictionary);
+
+            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
+            {
+                smtpClient.Send(message);
+            }
         }
     }
 }

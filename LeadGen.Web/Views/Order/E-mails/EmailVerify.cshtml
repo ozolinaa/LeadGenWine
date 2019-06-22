@@ -1,0 +1,15 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+
+@{
+    Layout = "~/Views/Shared/Email/_Layout.cshtml";
+    string tokenKey = ViewData["tokenKey"].ToString();
+    string confirmationUrl = HttpUtility.UrlDecode(Url.Action("Index", "Token", new { area = "", key = tokenKey }, Context.Request.Scheme, Context.Request.Host.ToString()));
+}
+
+@section Title {
+    Email Verification
+}
+
+<p>Please click the button below to verify your E-Mail</p>
+
+@await Html.PartialAsync("Email/ButtonPrimary", null, new ViewDataDictionary(this.ViewData) { { "url", confirmationUrl }, { "value", "Click here" } })

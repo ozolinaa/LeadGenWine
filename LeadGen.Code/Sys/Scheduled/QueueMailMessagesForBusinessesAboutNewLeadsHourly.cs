@@ -13,7 +13,7 @@ namespace LeadGen.Code.Sys.Scheduled
     {
         protected override string RunInternal(SqlConnection con)
         {
-            List<QueueMailMessage> qeuedMailMessages = NotificationManager.QueueMailMessagesForBusinessesRegisteredAboutNewLeads(con, Frequency.Hourly);
+            List<MailMessageLeadGen> qeuedMailMessages = NotificationManager.QueueMailMessagesForBusinessesRegisteredAboutNewLeads(con, Frequency.Hourly);
             return string.Format("Messages Queued: {0}", qeuedMailMessages.Count);
         }
     }

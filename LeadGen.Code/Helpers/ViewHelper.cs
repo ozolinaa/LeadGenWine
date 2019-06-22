@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -53,10 +54,10 @@ namespace LeadGen.Code.Helpers
             //return string.Empty;
         }
 
-        public static string RenderPartialToString(string viewName, object model, ViewDataDictionary additionalViewData = null)
+        public static string RenderViewToString(string viewPath, object model, ViewDataDictionary additionalViewData = null)
         {
-            string viewHtml = SysHelper.ViewRenderService.RenderToStringAsync(viewName, model, additionalViewData).Result;
-            return viewHtml;
+            IViewRenderService viewRenderService = SysHelper.GetService<IViewRenderService>();
+            return viewRenderService.RenderToStringAsync(viewPath, model, additionalViewData).Result;
         }
 
         public static string GetDigitStringFromNumber(decimal? number, bool alwaysShowFraction = false)

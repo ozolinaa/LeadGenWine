@@ -16,12 +16,12 @@ namespace LeadGen.Code.Lead.Notification
 {
     public class NotificationManager
     {
-        public static List<QueueMailMessage> QueueMailMessagesForLeadsAboutReviewRequest(SqlConnection connection)
+        public static List<MailMessageLeadGen> QueueMailMessagesForLeadsAboutReviewRequest(SqlConnection connection)
         {
             DateTime now = DateTime.UtcNow;
             List<LeadItem> leads = ReviewRequestSelectLeads(connection, 30);
             LeadItem.LoadFieldValuesForLeads(connection, leads);
-            List<QueueMailMessage> messages = ReviewRequestGenerateEmailMessages(connection, leads);
+            List<MailMessageLeadGen> messages = ReviewRequestGenerateEmailMessages(connection, leads);
             leads.ForEach(x => x.SetReviewRequestSent(connection));
             messages.ForEach(x => x.QueueToDB(connection, now));
             return messages;
@@ -47,9 +47,9 @@ namespace LeadGen.Code.Lead.Notification
             return leadItems;
         }
 
-        public static List<QueueMailMessage> ReviewRequestGenerateEmailMessages(SqlConnection con, List<LeadItem> leads)
+        public static List<MailMessageLeadGen> ReviewRequestGenerateEmailMessages(SqlConnection con, List<LeadItem> leads)
         {
-            List<QueueMailMessage> messages = new List<QueueMailMessage>();
+            List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
             string mailSubject = "Отзыв о заявке";
             string viewPath = "~/Views/Order/E-mails/_ReviewRequest.cshtml";
@@ -60,9 +60,9 @@ namespace LeadGen.Code.Lead.Notification
                 ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
 
 
-                QueueMailMessage message = new QueueMailMessage(item.email);
+                MailMessageLeadGen message = new MailMessageLeadGen(item.email);
                 message.Subject = mailSubject;
-                message.Body = ViewHelper.RenderPartialToString(viewPath, item, viewDataDictionary);
+                message.Body = ViewHelper.RenderViewToString(viewPath, item, viewDataDictionary);
                 messages.Add(message);
             }
 
