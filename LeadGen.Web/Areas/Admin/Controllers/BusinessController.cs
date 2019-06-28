@@ -72,12 +72,12 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         public ActionResult BusinessLocationApproval(long businessID, long locationID, bool approve) {
             Code.Business.Business business = Code.Business.Business.SelectFromDB(DBLGcon, businessID: businessID).First();
             business.LoadLocations(DBLGcon);
-            BusinessLocation location = business.locations.First(x => x.locationID == locationID);
+            BusinessLocation location = business.locations.First(x => x.Location.ID == locationID);
             location.ApprovalSetByAdmin(DBLGcon, login.ID, approve);
 
             //Just In Case, reload location data from DB (instead of setting approval in code)
             business.LoadLocations(DBLGcon);
-            location = business.locations.First(x => x.locationID == locationID);
+            location = business.locations.First(x => x.Location.ID == locationID);
 
             return PartialView("_LocationDetails", location);
         }

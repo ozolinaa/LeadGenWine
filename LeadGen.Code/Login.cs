@@ -226,10 +226,7 @@ namespace LeadGen.Code
             message.Subject = mailSubject;
             message.Body = ViewHelper.RenderViewToString(viewPath, this, viewDataDictionary);
 
-            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
-            {
-                smtpClient.Send(message);
-            }
+            SmtpClientLeadGen.SendSingleMessage(message);
         }
     }
 }

@@ -281,7 +281,7 @@ namespace LeadGen.Code.Lead
                         }
         }
 
-        public bool Insert(SqlConnection con)
+        public void Insert(SqlConnection con)
         {
             //Inser Lead Record
             ID = 0;
@@ -296,17 +296,13 @@ namespace LeadGen.Code.Lead
             }
 
             if (ID == 0)
-                return false;
+                throw new Exception("LeadItem Record ID was not generated");
 
             //Save Lead Fields
-            bool fieldsUpdateStatus = UpdateFieldGroupsInDB(con);
-            if (fieldsUpdateStatus == false)
-                return false;
-
-            return true;
+            UpdateFieldGroupsInDB(con);
         }
 
-        public bool UpdateFieldGroupsInDB(SqlConnection con)
+        public void UpdateFieldGroupsInDB(SqlConnection con)
         {
             //Update Fields in All Groups
             List<bool> fieldSaveResults = new List<bool>();
@@ -317,18 +313,13 @@ namespace LeadGen.Code.Lead
 
             //Retrun false is there were any false statuses
             if (fieldSaveResults.Where(x => x == false).Any())
-                return false;
+                throw new Exception("Some fieldSaveResults are not soccessfull");
 
             //Get ZIPcode and LocationRadiusMappings
             if (!string.IsNullOrEmpty(SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip))
             {
-                bool locationUpdateStatus = true;
-                locationUpdateStatus = UpdateLocationInDB(con, SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip, SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius);
-                if (locationUpdateStatus == false)
-                    return false;
+                UpdateLocationInDB(con, SysHelper.AppSettings.LeadSettings.FieldMappingLocationZip, SysHelper.AppSettings.LeadSettings.FieldMappingLocationRadius);
             }
-
-            return true;
         }
 
         public static bool EmailConfirm(SqlConnection con, long leadID)
@@ -538,40 +529,28 @@ namespace LeadGen.Code.Lead
             return sitemapItems;
         }
 
-        private bool UpdateLocationInDB(SqlConnection con, string zipMapping, string radiusMapping)
+        private void UpdateLocationInDB(SqlConnection con, string zipMapping, string radiusMapping)
         {
-            try
+            FieldItem zipField = getFieldByCode(zipMapping);
+            Map.Location zipLocation = Map.GoogleMapsClientWrapper.GetLocationByUsZipCode(Int32.Parse(zipField.stringValue));
+
+            int radiusInMeters = 0;
+            FieldItem radiusField = getFieldByCode(radiusMapping);
+            if (radiusField != null)
+                radiusInMeters = Convert.ToInt32(Int32.Parse(radiusField.stringValue) * 1.609344 * 1000);
+
+
+            zipLocation.CreateInDB(con);
+
+
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LeadLocationInsertOrUpdate]", con))
             {
-                FieldItem zipField = getFieldByCode(zipMapping);
-                Map.Location zipLocation = Map.GoogleMapsClientWrapper.GetLocationByUsZipCode(Int32.Parse(zipField.stringValue));
+                cmd.CommandType = CommandType.StoredProcedure;
 
-                int radiusInMeters = 0;
-                FieldItem radiusField = getFieldByCode(radiusMapping);
-                if (radiusField != null)
-                    radiusInMeters = Convert.ToInt32(Int32.Parse(radiusField.stringValue) * 1.609344 * 1000);
-
-                using (SqlCommand cmd = new SqlCommand("[dbo].[LeadLocationInsertOrUpdate]", con))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    cmd.Parameters.AddWithValue("@LeadID", ID);
-                    cmd.Parameters.Add(new SqlParameter("@Location", Microsoft.SqlServer.Types.SqlGeography.Point(zipLocation.lat, zipLocation.lng, 4326)) { UdtTypeName = "Geography" });
-                    cmd.Parameters.AddWithValue("@LocationAccuracyMeters", zipLocation.radiusInMeters);
-                    cmd.Parameters.AddWithValue("@LeadRadiusMeters", radiusInMeters);
-                    cmd.Parameters.AddWithValue("@StreetAddress", DBNull.Value);
-                    cmd.Parameters.AddWithValue("@PostalCode", zipField.stringValue);
-                    cmd.Parameters.AddWithValue("@City", DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Region", DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Country", DBNull.Value);
-                    cmd.ExecuteNonQuery();
-                }
-                return true;
+                cmd.Parameters.AddWithValue("@LeadID", ID);
+                cmd.Parameters.AddWithValue("@LocationId", zipLocation.ID);
+                cmd.ExecuteNonQuery();
             }
-            catch (Exception e)
-            {
-                return false;
-            }
-
         }
     }
 }

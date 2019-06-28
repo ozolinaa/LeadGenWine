@@ -68,16 +68,11 @@ namespace LeadGen.Web.Controllers
             }
 
             // If we are here, means everything is valid and user agreed
-            if (leadItem.Insert(DBLGcon))
-            {
-                MailMessageLeadGen message = MailMessageBuilder.BuildLeadEmailVerifyMailMessage(leadItem, DBLGcon);
-                using (SmtpClientLeadGen smtp = new SmtpClientLeadGen())
-                {
-                    smtp.Send(message);
-                }
-                return PartialView("ConfirmEmail", leadItem);
-            }
-            return RedirectToAction("");
+            leadItem.Insert(DBLGcon);
+            MailMessageLeadGen message = MailMessageBuilder.BuildLeadEmailVerifyMailMessage(leadItem, DBLGcon);
+            SmtpClientLeadGen.SendSingleMessage(message);
+
+            return PartialView("ConfirmEmail", leadItem);
         }
 
         public ActionResult Show(long id)
@@ -178,10 +173,7 @@ namespace LeadGen.Web.Controllers
             message.Subject = "Подтверждение на удаление заявки";
             message.Body = ViewHelper.RenderViewToString("~/Views/Order/E-mails/_CancelOrders.cshtml", email, viewDataDictionary);
 
-            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
-            {
-                smtpClient.Send(message);
-            }
+            SmtpClientLeadGen.SendSingleMessage(message);
 
             return View("CancelSubmitted", email);
         }

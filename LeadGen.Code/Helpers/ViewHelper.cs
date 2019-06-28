@@ -57,6 +57,8 @@ namespace LeadGen.Code.Helpers
         public static string RenderViewToString(string viewPath, object model, ViewDataDictionary additionalViewData = null)
         {
             IViewRenderService viewRenderService = SysHelper.GetService<IViewRenderService>();
+            if (additionalViewData == null)
+                return viewRenderService.RenderToStringAsync(viewPath, model).Result;
             return viewRenderService.RenderToStringAsync(viewPath, model, additionalViewData).Result;
         }
 

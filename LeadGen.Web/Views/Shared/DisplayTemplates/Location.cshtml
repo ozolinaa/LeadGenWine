@@ -21,9 +21,9 @@
 
         googleMap.instance = null;
 
-        var zoomLevel = @Model.zoom;
-        if (@Model.radiusInMeters > 0) { 
-            var radius = @Model.radiusInMeters;
+        var zoomLevel = @Model.Zoom;
+        if (@Model.RadiusMeters > 0) { 
+            var radius = @Model.RadiusMeters;
             var scale = radius / 400;
             zoomLevel = (16 - Math.log(scale) / Math.log(2));
         } else if (zoomLevel == 0) {
@@ -31,7 +31,7 @@
         }
 
         googleMap.init = function() {
-            var center = {lat: @Model.lat, lng: @Model.lng};
+            var center = {lat: @Model.Lat, lng: @Model.Lng};
             var map = new google.maps.Map(document.getElementById(googleMap.id), {
                 zoom: zoomLevel,
                 center: center,
@@ -52,7 +52,7 @@
                 anchorPoint: new google.maps.Point(0, -29),
                 draggable:false,
                 visible:true,
-                position:{lat: @Model.lat, lng: @Model.lng}
+                position:{lat: @Model.Lat, lng: @Model.Lng}
             });
 
             // Add circle overlay and bind to marker
@@ -65,13 +65,13 @@
                 editable: false,
                 map: map,
                 center: center,
-                radius: @Model.radiusInMeters,
+                radius: @Model.RadiusMeters,
                 clickable: false
             });
             circle.bindTo('center', marker, 'position');
 
             var infowindow = new google.maps.InfoWindow();
-            infowindow.setContent('<div><strong>@Model.name</strong><br>@Model.address');
+            infowindow.setContent('<div><strong>@Model.Name</strong><br>@Model.StreetAddress');
             infowindow.open(map, marker);
         };
 

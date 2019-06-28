@@ -1,5 +1,4 @@
-﻿@model BusinessLocation
-@using LeadGen.Code.Business
+﻿@model LeadGen.Code.Map.Location
 <!-- Map Add New Modal -->
 <style>
     #BusinessLocationEditModal .location-meta-fiels {
@@ -25,11 +24,11 @@
                     <h4 class="modal-title">Edit Location</h4>
                 </div>
                 <div class="modal-body">
-                    @Html.HiddenFor(x => x.locationID)
-                    @Html.Partial("EditorTemplates/Location", Model)
+                    @Html.HiddenFor(x => x.ID)
+                    @await Html.PartialAsync("EditorTemplates/Location", Model)
                 </div>
                 <div class="modal-footer">
-                    @Html.ActionLink("Delete Location", "BusinessLocationDelete", new { locationId = Model.locationID },
+                    @Html.ActionLink("Delete Location", "BusinessLocationDelete", new { locationId = Model.ID },
                         new {
                             @class = "btn btn-danger pull-left",
                             data_ajax = "true",

@@ -1,6 +1,9 @@
 ﻿using LeadGen.Code;
+using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
+using LeadGen.Code.Sys;
 using LeadGen.Web.Controllers;
+using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -58,6 +61,9 @@ namespace LeadGen.Web.Controllers
                 if (confirmLogin.business != null)
                 {
                     Code.Business.NotificationSettings.EmailAdd(DBLGcon, confirmLogin.business.ID, confirmLogin.email);
+
+                    SendMessageToAdmins("New Business Registered", string.Format("New business: #{0} {1}", confirmLogin.business.ID, confirmLogin.business.name));
+
                     return RedirectToAction("Index", "Account", new { area = "Business" });
                 }
             } 
@@ -87,6 +93,9 @@ namespace LeadGen.Web.Controllers
                 {
                     token.Delete(DBLGcon);
                     LeadItem leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: leadID, loadFieldValues: true).FirstOrDefault();
+
+                    SendMessageToAdmins("New Lead Confirmed", string.Format("New Lead: #{0}", leadItem.ID));
+
                     return View("../Order/ConfirmEmailSuccess", leadItem);
                 }
                     
@@ -109,5 +118,15 @@ namespace LeadGen.Web.Controllers
             return View("../Order/Canceled", email);
         }
 
+
+        private static void SendMessageToAdmins(string subject, string message) {
+
+            IEnumerable<MailMessageLeadGen> mailMessages = MailMessageBuilder.BuildAdminNotificationMessages(subject, message);
+
+            foreach (MailMessageLeadGen mailMessage in mailMessages)
+            {
+                SmtpClientLeadGen.SendSingleMessage(mailMessage);
+            }
+        }
     }
 }

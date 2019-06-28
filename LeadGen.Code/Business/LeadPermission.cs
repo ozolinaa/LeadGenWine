@@ -23,7 +23,7 @@ namespace LeadGen.Code.Business
         {
             ID = (long)permissionRow["PermissionID"];
             requestedDateTime = (DateTime?)(permissionRow["RequestedDateTime"] == DBNull.Value ? null : permissionRow["RequestedDateTime"]);
-            approvedDateTime = (DateTime?)(permissionRow["ApprovedDateTime"] == DBNull.Value ? null : permissionRow["ApprovedDateTime"]);
+            approvedDateTime = (DateTime?)(permissionRow["ApprovedByAdminDateTime"] == DBNull.Value ? null : permissionRow["ApprovedByAdminDateTime"]);
 
             terms = new List<Term>();
             foreach (DataRow row in termDataRows)

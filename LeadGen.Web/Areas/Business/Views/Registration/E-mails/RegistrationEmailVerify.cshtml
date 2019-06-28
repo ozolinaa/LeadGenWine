@@ -1,0 +1,17 @@
+﻿@model LeadGen.Code.Login
+
+@{
+    Layout = "~/Views/Shared/Email/_Layout.cshtml";
+    string tokenKey = ViewData["tokenKey"].ToString();
+    string confirmationUrl = HttpUtility.UrlDecode(Url.Action("Index", "Token", new { area = "", key = tokenKey }, Context.Request.Scheme, Context.Request.Host.ToString()));
+}
+
+@section Title {
+    Welcome, @Model.business.name!
+}
+
+<p>Please click the button below to confirm your resgistration</p>
+
+@await Html.PartialAsync("Email/ButtonPrimary", null, new ViewDataDictionary(this.ViewData) { { "url", confirmationUrl }, { "value", "Click here" } })
+
+<p>For further login please use this password: <br /><strong>@Model.password</strong></p>

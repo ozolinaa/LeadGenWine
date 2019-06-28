@@ -181,26 +181,6 @@ namespace LeadGen.Code.Business
             }
         }
 
-        
-
-        public void SendRegistrationConfirmationEmail(SqlConnection con, Login login)
-        {
-            string mailSubject = "Пожалуйста подтвердите регистрацию";
-            string viewPath = "~/Areas/Business/Views/Registration/E-mails/_registrationConfirmation.cshtml";
-
-            Token token = new Token(con, Token.Action.LoginEmailConfirmation.ToString(), login.ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
-
-
-            MailMessageLeadGen message = new MailMessageLeadGen(login.email);
-            message.Subject = mailSubject;
-            message.Body = ViewHelper.RenderViewToString(viewPath, login, viewDataDictionary);
-            using (SmtpClientLeadGen smtpClient = new SmtpClientLeadGen())
-            {
-                smtpClient.Send(message);
-            }
-        }
-
 
         public static List<Business> SelectPendingForAdmin(SqlConnection con, long? countryID, long? regionID)
         {
@@ -300,7 +280,7 @@ namespace LeadGen.Code.Business
 
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
 
-                foreach (DataRow permissionRow in dt.DefaultView.ToTable(true, "PermissionID", "RequestedDateTime", "ApprovedDateTime").Rows)
+                foreach (DataRow permissionRow in dt.DefaultView.ToTable(true, "PermissionID", "RequestedDateTime", "ApprovedByAdminDateTime").Rows)
                 {
                     DataRow[] termDataRows = dt.Select(String.Format("PermissionID = {0}", permissionRow["PermissionID"]));
                     leadPermissions.Add(new LeadPermittion(permissionRow, termDataRows));

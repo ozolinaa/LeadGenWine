@@ -33,10 +33,10 @@ namespace LeadGen.Code.Map
                 var result = data.results[0];
 
                 location = new Location();
-                location.name = address;
-                location.address = result.formatted_address;
-                location.lat = result.geometry.location.lat;
-                location.lng = result.geometry.location.lng;
+                location.Name = address;
+                location.StreetAddress = result.formatted_address;
+                location.Lat = result.geometry.location.lat;
+                location.Lng = result.geometry.location.lng;
 
                 GeoCoordinate sCoord = new GeoCoordinate((double)result.geometry.bounds.southwest.lat, (double)result.geometry.bounds.southwest.lng);
                 GeoCoordinate eCoord = new GeoCoordinate((double)result.geometry.bounds.northeast.lat, (double)result.geometry.bounds.northeast.lng);
@@ -44,7 +44,7 @@ namespace LeadGen.Code.Map
                 double boundsDiag = sCoord.GetDistanceTo(eCoord);
                 double boundsSide = boundsDiag / Math.Sqrt(2);
 
-                location.radiusInMeters = Convert.ToInt32(boundsSide / 2);
+                location.RadiusMeters = Convert.ToInt32(boundsSide / 2);
 
                 return location;
 

@@ -21,11 +21,11 @@ namespace LeadGen.Code.Map
             if (center != null)
                 return;
             else if (locations.Count() == 0)
-                center = new Location() { lat = -34.397, lng = 150.644, zoom = 8 };
+                center = new Location() { Lat = -34.397, Lng = 150.644, Zoom = 8 };
             else if (locations.Count() == 1)
                 center = locations[0];
             else
-                center = new Location() { lat = locations.Average(x => x.lat), lng = locations.Average(x => x.lng), zoom = 8 };
+                center = new Location() { Lat = locations.Average(x => x.Lat), Lng = locations.Average(x => x.Lng), Zoom = 8 };
         }
     }
 }

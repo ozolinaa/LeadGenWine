@@ -10,6 +10,8 @@ using System.Web;
 
 using LeadGen.Code.Business;
 using Microsoft.AspNetCore.Mvc;
+using LeadGen.Web.Helpers;
+using LeadGen.Code.Sys;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
@@ -33,7 +35,15 @@ namespace LeadGen.Web.Areas.Business.Controllers
                 business = new Code.Business.Business() {
                     country = country,
                     locations = new List<BusinessLocation>() {
-                        new BusinessLocation() { lat = 34.2898097, lng = -117.6294237, zoom = 7, radiusInMeters = 220*1000, address = "Southern California", name = "Southern California" }
+                        new BusinessLocation() {
+                            Location = new Code.Map.Location() {
+                                Lat = 34.2898097,
+                                Lng = -117.6294237,
+                                Zoom = 7,
+                                RadiusMeters = 220*1000,
+                                StreetAddress = "Southern California",
+                                Name = "Southern California" }
+                        } 
                     }
                 }
             };
@@ -84,7 +94,9 @@ namespace LeadGen.Web.Areas.Business.Controllers
             List<long[]> requestedTermIDs = new List<long[]>();
             newLogin.business.UpdateRequestedPermissions(DBLGcon, requestedTermIDs, new List<LeadPermittion>());
 
-            newLogin.business.SendRegistrationConfirmationEmail(DBLGcon, newLogin);
+            MailMessageLeadGen message = MailMessageBuilder.BuildCompanyRegistrationVerifyMailMessage(newLogin, DBLGcon);
+
+            SmtpClientLeadGen.SendSingleMessage(message);
 
             return View("confirmEmailRequest", newLogin);
         }

@@ -1,25 +1,25 @@
 ﻿@model LeadGen.Code.Business.BusinessLocation
 @using LeadGen.Code.Business
 @{ 
-    string locationDetailsElementId = "locationDetailsForMapId_" + Model.locationID;
+    string locationDetailsElementId = "locationDetailsForMapId_" + Model.Location.ID;
 }
 <div id="@locationDetailsElementId">
     <h3>
-        @Model.name
-        @if (Model.isAprovedByAdmin)
-        {
-            <span class="label label-success">Approved</span>
-        }
-        else
+        @Model.Location.Name
+        @if (Model.ApprovedByAdminDateTime == null)
         {
             <span class="label label-warning">Pending Approval</span>
         }
+        else
+        {
+            <span class="label label-success">Approved</span>
+        }
     </h3>
-    <p>@Model.address</p>
-    @Html.ActionLink(Model.isAprovedByAdmin ? "Cancel Approval" : "Approve", "BusinessLocationApproval", null, new { businessID = Model.businessID, locationID = Model.locationID, approve = !Model.isAprovedByAdmin },
+    <p>@Model.Location.StreetAddress</p>
+    @Html.ActionLink(Model.ApprovedByAdminDateTime == null ? "Approve" : "Cancel Approval", "BusinessLocationApproval", null, new { businessID = Model.BusinessID, locationID = Model.Location.ID, approve = (Model.ApprovedByAdminDateTime == null) },
          new
          {
-             @class = "btn " + (Model.isAprovedByAdmin ? "btn-danger" : "btn-success"),
+             @class = "btn " + (Model.ApprovedByAdminDateTime == null ? "btn-success" : "btn-danger" ),
              data_ajax = "true",
              data_ajax_method = "POST",
              data_ajax_loading = "#LoadingWindowSplash",

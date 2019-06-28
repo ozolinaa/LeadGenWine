@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 
 using Microsoft.AspNetCore.Mvc.Filters;
-
+using LeadGen.Code.Map;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
@@ -95,9 +95,13 @@ namespace LeadGen.Web.Areas.Business.Controllers
         #region BusinessLcations
 
         [HttpPost]
-        public ActionResult BusinessLocationCreate(BusinessLocation location)
+        public ActionResult BusinessLocationCreate(Location location)
         {
-            location.CreateInDB(DBLGcon, login.business.ID);
+            BusinessLocation bl = new BusinessLocation() {
+                Location = location
+            };
+
+            bl.CreateInDB(DBLGcon, login.business.ID);
             login.business.LoadLocations(DBLGcon);
             return PartialView("_LocationsMapList", login.business.locations);
         }
@@ -105,19 +109,22 @@ namespace LeadGen.Web.Areas.Business.Controllers
         [HttpGet]
         public ActionResult BusinessLocationEdit(long locationID)
         {
-            BusinessLocation location = login.business.locations.First(x => x.locationID == locationID);
-            return PartialView("_LocationMapEditorModal", location);
+            BusinessLocation location = login.business.locations.First(x => x.Location.ID == locationID);
+            return PartialView("_LocationMapEditorModal", location.Location);
         }
 
         [HttpPost]
-        public ActionResult BusinessLocationEdit(BusinessLocation location)
+        public ActionResult BusinessLocationEdit(Location location)
         {
-            location.UpdateInDB(DBLGcon, login.business.ID);
+            if (!login.business.locations.Any(x => x.Location.ID == location.ID))
+                throw new Exception("Location does not belong to business");
+            
+            location.UpdateInDB(DBLGcon);
             login.business.LoadLocations(DBLGcon);
             return PartialView("_LocationsMapList", login.business.locations);
         }
 
-        [HttpDelete]
+        [HttpPost]
         public ActionResult BusinessLocationDelete(long locationID)
         {
             BusinessLocation.DeleteFromDB(DBLGcon, locationID, login.business.ID);

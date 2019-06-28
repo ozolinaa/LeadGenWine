@@ -43,7 +43,7 @@ namespace LeadGen.Code.Business.Notification
             return queuedMessages;
         }
 
-        public static List<MailMessageLeadGen> QueueMailMessagesForBusinessesPostsAboutNewLeads(SqlConnection connection)
+        public static List<MailMessageLeadGen> QueueMailMessagesForCompanyPostsAboutNewLeads(SqlConnection connection)
         {
             List<MailMessageLeadGen> queuedMessages = new List<MailMessageLeadGen>();
 
@@ -55,7 +55,7 @@ namespace LeadGen.Code.Business.Notification
             notificationDateTime = notificationDateTime.AddMilliseconds((-notificationDateTime.Millisecond));
 
             //CRM Businesses (Posts) Process and Queue Messages
-            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetBusinessesPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
+            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
             List<MailMessageLeadGen> postMessages = GenerateEmailBusinessNotificationMessages(crmBusinessesWithLeadsToNotifyAbout);
 
             foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
@@ -105,14 +105,14 @@ namespace LeadGen.Code.Business.Notification
             return businessesWithLeads;
         }
 
-        private static DataView GetLeadBusinessPostNotificationDataView(SqlConnection connection, DateTime publishedAfter)
+        private static DataView GetLeadCompanyPostNotificationDataView(SqlConnection connection, DateTime publishedAfter)
         {
             DataView leadNotificationView = null;
             using (SqlCommand cmd = new SqlCommand("[dbo].[LeadSelectBusinessPostNotificationData]", connection))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PublishedAfter", publishedAfter);
-                cmd.Parameters.AddWithValue("@BusinessPostTypeID", 6); //6 - Masterstaya
+                cmd.Parameters.AddWithValue("@BusinessPostTypeID", 3); //6 - company
                 cmd.Parameters.AddWithValue("@BusinessLeadRelationTaxonomyID", 3); //3 - City
                 cmd.Parameters.AddWithValue("@BusinessPostFieldIDDoNotSendEmails", 10); //10 - master_doNotSendLeads
                 cmd.Parameters.AddWithValue("@BusinessPostFieldIDBusiness", 1); //1 - master_businessID
@@ -198,11 +198,11 @@ namespace LeadGen.Code.Business.Notification
         }
 
 
-        private static Dictionary<Post, List<LeadItem>> GetBusinessesPostsWithLeadsToNotifyAbout(SqlConnection connection, DateTime publishedAfter)
+        private static Dictionary<Post, List<LeadItem>> GetCompanyPostsWithLeadsToNotifyAbout(SqlConnection connection, DateTime publishedAfter)
         {
             Dictionary<Post, List<LeadItem>> businessPostsWithLeads = new Dictionary<Post, List<LeadItem>>();
 
-            DataView leadNotificationData = GetLeadBusinessPostNotificationDataView(connection, publishedAfter);
+            DataView leadNotificationData = GetLeadCompanyPostNotificationDataView(connection, publishedAfter);
             List<LeadItem> leadsToSend = LoadLeadsFromTheNotificationView(connection, leadNotificationData);
             List<Post> businessesSendTo = LoadBusinessesPostsFromTheNotificationView(connection, leadNotificationData);
 

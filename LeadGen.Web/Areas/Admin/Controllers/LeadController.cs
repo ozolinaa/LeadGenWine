@@ -93,9 +93,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                bool updateResult = leadItem.UpdateFieldGroupsInDB(DBLGcon);
-                if (updateResult == false)
-                    ModelState.AddModelError("", "Something is wrong");
+                leadItem.UpdateFieldGroupsInDB(DBLGcon);
             }
 
             ViewBag.NofificationStatus = ModelState.IsValid;
@@ -118,8 +116,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             leadItem.LoadFieldStructure(DBLGcon, false);
             leadItem.SafeReplaceLeadValuesWith(duplicateLeadItem);
 
-            if (leadItem.Insert(DBLGcon) == false)
-                return BadRequest("Can not create new Lead in the database");
+            leadItem.Insert(DBLGcon);
 
             leadItem.UpdateFieldGroupsInDB(DBLGcon);
             LeadItem.EmailConfirm(DBLGcon, leadItem.ID);

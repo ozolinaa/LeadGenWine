@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 
 namespace LeadGen.Code.Business
 {
-    public class BusinessLocation : Map.Location
+    public class BusinessLocation
     {
-        public long locationID { get; set; }
-        public bool isAprovedByAdmin { get; set; }
         private long _businessID;
-        public long businessID { get { return _businessID; } }
+        public long BusinessID { get { return _businessID; } }
+
+        public Map.Location Location { get; set; }
+
+        public DateTime? ApprovedByAdminDateTime { get; set; }
 
 
         public BusinessLocation()
@@ -24,49 +26,25 @@ namespace LeadGen.Code.Business
 
         public BusinessLocation(SqlDataReader row)
         {
-            locationID = (long)row["LocationID"];
             _businessID = (long)row["BusinessID"];
-
-            isAprovedByAdmin = (bool)row["IsAprovedByAdmin"];
-            address = (string)row["LocationAddress"];
-            name = (string)row["LocationName"];
-            radiusInMeters = (int)row["RadiusMeters"];
-            //createdDateTime = (int)row["CreatedDateTime"];
-
-
-
-            SqlGeography location = (SqlGeography)row["Location"];
-
-            lat = (double)location.Lat;
-            lng = (double)location.Long;
+            if(row["ApprovedByAdminDateTime"] != DBNull.Value)
+                ApprovedByAdminDateTime = (DateTime)row["ApprovedByAdminDateTime"];
+            Location = new Map.Location(row);
         }
 
 
         public void CreateInDB(SqlConnection con, long businessID)
         {
-            locationID = 0;
-            isAprovedByAdmin = false;
+            long locationID = Location.CreateInDB(con);
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationCreate]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@BusinessID", businessID);
-                cmd.Parameters.Add(new SqlParameter("@Location", SqlGeography.Point(lat, lng, 4326)) { UdtTypeName = "Geography" });
-                cmd.Parameters.AddWithValue("@RadiusMeters", radiusInMeters);
-                cmd.Parameters.AddWithValue("@LocationAddress", address);
-                cmd.Parameters.AddWithValue("@LocationName", name);
-
-                SqlParameter outputParameter = new SqlParameter();
-                outputParameter.ParameterName = "@LocationID";
-                outputParameter.SqlDbType = SqlDbType.BigInt;
-                outputParameter.Direction = ParameterDirection.Output;
-                cmd.Parameters.Add(outputParameter);
+                cmd.Parameters.AddWithValue("@LocationID", locationID);
 
                 cmd.ExecuteNonQuery();
-
-                locationID = long.Parse(outputParameter.Value.ToString());
-                isAprovedByAdmin = false;
             }
         }
 
@@ -92,23 +70,6 @@ namespace LeadGen.Code.Business
             return result;
         }
 
-        public void UpdateInDB(SqlConnection con, long businessID)
-        {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationUpdate]", con))
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@LocationID", locationID);
-                cmd.Parameters.AddWithValue("@BusinessID", businessID);
-                cmd.Parameters.Add(new SqlParameter("@Location", SqlGeography.Point(lat, lng, 4326)) { UdtTypeName = "Geography" });
-                cmd.Parameters.AddWithValue("@RadiusMeters", radiusInMeters);
-                cmd.Parameters.AddWithValue("@LocationAddress", address);
-                cmd.Parameters.AddWithValue("@LocationName", name);
-
-                cmd.ExecuteNonQuery();
-            }
-        }
-
         public static void DeleteFromDB(SqlConnection con, long locationID, long businessID)
         {
             using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLocationDelete]", con))
@@ -128,9 +89,9 @@ namespace LeadGen.Code.Business
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@LocationID", locationID);
-                cmd.Parameters.AddWithValue("@BusinessID", businessID);
-                cmd.Parameters.AddWithValue("@Approve", approve);
+                cmd.Parameters.AddWithValue("@LocationID", Location.ID);
+                cmd.Parameters.AddWithValue("@BusinessID", BusinessID);
+                cmd.Parameters.AddWithValue("@ApprovedByAdminDateTime", approve ? DateTime.UtcNow : (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@LoginID", adminLoginID);
 
                 cmd.ExecuteNonQuery();

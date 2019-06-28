@@ -10,14 +10,14 @@
 
 <hr />
 
-@foreach (BusinessLocation location in Model.locations)
+@foreach (BusinessLocation businessLocation in Model.locations)
 {
     <div class="row">
         <div class="col-md-8">
-            @Html.Partial("DisplayTemplates/Location", location)
+            @await Html.PartialAsync("DisplayTemplates/Location", businessLocation.Location)
         </div>
         <div class="col-md-4">
-            @Html.Partial("_LocationDetails", location)
+            @await Html.PartialAsync("_LocationDetails", businessLocation)
         </div>
     </div>
 

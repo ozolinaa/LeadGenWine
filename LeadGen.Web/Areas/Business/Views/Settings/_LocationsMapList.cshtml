@@ -4,27 +4,27 @@
 {
     <h3>Business Locations</h3>
 }
-@foreach (BusinessLocation location in Model)
+@foreach (BusinessLocation businessLocation in Model)
 {
     <div class="row">
         <div class="col-md-8">
-            @Html.Partial("DisplayTemplates/Location", location)
+            @await Html.PartialAsync("DisplayTemplates/Location", businessLocation.Location)
         </div>
         <div class="col-md-4">
             <h3>
-                @location.name
-                @if (location.isAprovedByAdmin)
-                {
-                    <span class="label label-success">Approved</span>
-                }
-                else
+                @businessLocation.Location.Name
+                @if (businessLocation.ApprovedByAdminDateTime == null)
                 {
                     <span class="label label-warning">Pending Approval</span>
                 }
+                else
+                {
+                    <span class="label label-success">Approved</span>
+                }
 
             </h3>
-            <p>@location.address</p>
-            @Html.ActionLink("Edit Location", "BusinessLocationEdit", new { locationId = location.locationID },
+            <p>@businessLocation.Location.StreetAddress</p>
+            @Html.ActionLink("Edit Location", "BusinessLocationEdit", new { locationId = businessLocation.Location.ID },
     new {
         @class = "btn btn-default",
         data_ajax = "true",

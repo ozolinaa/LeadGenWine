@@ -7,17 +7,17 @@
 
 <div class="row location-meta-fiels">
     <div class="col-sm-6">
-        @Html.HiddenFor(x => x.lat, new { data_lat = mapID })
-        @Html.HiddenFor(x => x.lng, new { data_lng = mapID })
-        @Html.HiddenFor(x => x.zoom, new { data_zoom = mapID })
-        @Html.HiddenFor(x => x.radiusInMeters, new { data_radius = mapID })
+        @Html.HiddenFor(x => x.Lat, new { data_lat = mapID })
+        @Html.HiddenFor(x => x.Lng, new { data_lng = mapID })
+        @Html.HiddenFor(x => x.Zoom, new { data_zoom = mapID })
+        @Html.HiddenFor(x => x.RadiusMeters, new { data_radius = mapID })
 
-        @Html.LabelFor(x => x.name)
-        @Html.TextBoxFor(x => x.name, new { @class = "form-control locationName", data_name = mapID })
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control locationName", data_name = mapID })
     </div>
     <div class="col-sm-6">
-        @Html.LabelFor(x => x.address)
-        @Html.TextBoxFor(x => x.address, new { @class = "form-control locationAddress", data_address = mapID })
+        @Html.LabelFor(x => x.StreetAddress)
+        @Html.TextBoxFor(x => x.StreetAddress, new { @class = "form-control locationAddress", data_address = mapID })
     </div>
 </div>
 
@@ -42,11 +42,11 @@
         googleMap.instance = null;
 
         googleMap.init = function() {
-            var center = { lat: @Model.lat, lng: @Model.lng};
+            var center = { lat: @Model.Lat, lng: @Model.Lng};
 
-            var zoomLevel = @Model.zoom;
-            if (@Model.radiusInMeters > 0) {
-                var radius = @Model.radiusInMeters;
+            var zoomLevel = @Model.Zoom;
+            if (@Model.RadiusMeters > 0) {
+                var radius = @Model.RadiusMeters;
                 var scale = radius / 400;
                 zoomLevel = (16 - Math.log(scale) / Math.log(2));
             } else if (zoomLevel == 0) {
@@ -76,7 +76,7 @@
                 anchorPoint: new google.maps.Point(0, -29),
                 draggable:true,
                 visible:true,
-                position:{lat: @Model.lat, lng: @Model.lng}
+                position:{lat: @Model.Lat, lng: @Model.Lng}
             });
 
             // Add circle overlay and bind to marker
@@ -88,7 +88,7 @@
                 draggable: false,
                 editable: true,
                 map: map,
-                radius: @Model.radiusInMeters,
+                radius: @Model.RadiusMeters,
                 clickable: false
             });
             circle.bindTo('center', marker, 'position');

@@ -38,9 +38,11 @@
                     <h4 class="modal-title">Add new Location</h4>
                 </div>
                 <div class="modal-body">
-
-                    @Html.Partial("EditorTemplates/Location", new BusinessLocation() { lat = 33.725163, lng = -117.772246, zoom = 10 })
-
+                    @await Html.PartialAsync("EditorTemplates/Location", new LeadGen.Code.Map.Location() {
+                           Lat = 33.725163,
+                           Lng = -117.772246,
+                           Zoom = 10
+                       })
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

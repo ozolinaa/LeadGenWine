@@ -46,10 +46,10 @@
             }
         </style>
         <div class="form-group">
-            @Html.LabelFor(x => x.business.locations[0].name, "Business Area", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(x => x.business.locations[0].Location.Name, "Business Area", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(x=>x.business.locations[0])
-                @Html.ValidationMessageFor(x => x.business.locations[0].name, "", new { @class = "text-danger" })
+                @Html.EditorFor(x=>x.business.locations[0].Location)
+                @Html.ValidationMessageFor(x => x.business.locations[0].Location.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 

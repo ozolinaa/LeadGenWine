@@ -136,7 +136,7 @@ namespace LeadGen.Code.CMS
         private bool tryLoadContextForPostType(SqlConnection con)
         {
             postType = PostType.SelectFromDB(con, TypeURL: urlPathSegments[0]).FirstOrDefault();
-            if (postType == null)
+            if (postType == null || !postType.isBrowsable)
                 return false;
 
             if (postType.forTaxonomyID == null)
@@ -170,6 +170,9 @@ namespace LeadGen.Code.CMS
                 if (postType != null)
                     postParents = getPostsHierarchical(con, postType.ID, urlPathSegments, publishedOnly);
             }
+
+            if(postType == null || !postType.isBrowsable)
+                return false;
 
             if (postParents == null || postParents.Count == 0)
                 return false;
@@ -231,8 +234,6 @@ namespace LeadGen.Code.CMS
                 if (cityTax != null)
                     initializeContextCityTerms(con, cityTax.taxonomy);
             }
-
-            initializePostsBusiness(con);
         }
 
         private void initializeContextCityTerms(SqlConnection con, Taxonomy.Taxonomy cityTax)
@@ -306,43 +307,5 @@ namespace LeadGen.Code.CMS
             }
 
         }
-
-        private void initializePostsBusiness(SqlConnection con)
-        {
-            //Populate posts list
-            List<Post> posts = new List<Post>();
-            string[] masterRelatedPostTypeUrls = new string[] { "masterskaya"};
-
-
-            //if the post has postBuisnessTypeUrl
-            if (pageType == PageType.Post && string.IsNullOrEmpty(post.postURL) == false && masterRelatedPostTypeUrls.Contains(post.postType.url))
-                posts.Add(post);
-            //if the post in postList postBuisnessTypeUrl
-            if (postList != null)
-                foreach (Post item in postList)
-                    if (masterRelatedPostTypeUrls.Contains(item.postType.url))
-                        posts.Add(item);
-
-            //Populate postBusinesses dictionary
-            postBusinesses = new Dictionary<long, Business.Business>();
-            string postBuisnessIdKey = "LeadGenBusinessID";
-            foreach (Post item in posts)
-            {
-                long? businessID = item.fields.FirstOrDefault(x => x.code == postBuisnessIdKey)?.fieldNumber;
-                if (businessID == null)
-                    continue;
-
-                Business.Business business = Business.Business.SelectFromDB(con, businessID: businessID.Value).FirstOrDefault();
-                if (business == null)
-                    continue;
-
-                business.LoadReviews(con, published: true);
-
-                if(postBusinesses.ContainsKey(item.ID) == false)
-                    postBusinesses.Add(item.ID, business);
-            }
-
-        }
-
     }
 }
