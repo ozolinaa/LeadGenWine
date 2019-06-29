@@ -8,7 +8,7 @@
         @if (Model.code == "contacts")
         {
             LeadGen.Code.Lead.LeadItem leadItem = ViewData["leadItem"] as LeadGen.Code.Lead.LeadItem;
-            Html.RenderPartial("EditorTemplates/LeadEmail", leadItem);
+            await Html.RenderPartialAsync("EditorTemplates/LeadEmail", leadItem);
                         //var viewData = new ViewDataDictionary(ViewData);
             //viewData.TemplateInfo = null;
             //{

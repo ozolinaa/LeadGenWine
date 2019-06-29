@@ -16,7 +16,7 @@
         {
             <span class="ratings-header grey">Отзывы клиентов</span>
             <div class="ratings">
-                @{Html.RenderPartial("DisplayTemplates/Rating", business.rating);}
+                @{await Html.RenderPartialAsync("DisplayTemplates/Rating", business.rating);}
             </div>
         }
     </div>

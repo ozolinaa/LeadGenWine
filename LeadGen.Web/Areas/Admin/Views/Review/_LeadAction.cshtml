@@ -2,10 +2,10 @@
 <div>
     @if (Model.publishedDateTime == null)
     {
-        @Html.Partial("LeadActionParts/_Publish", Model)
+        @await Html.PartialAsync("LeadActionParts/_Publish", Model)
     }
     else
     {
-        @Html.Partial("LeadActionParts/_UnPublish", Model)
+        @await Html.PartialAsync("LeadActionParts/_UnPublish", Model)
     }
 </div>

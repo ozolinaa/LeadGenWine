@@ -5,17 +5,17 @@
     {
         @if (Model.businessDetails.businessImportantDateTime == null)
         {
-            @Html.Partial("LeadActionParts/_SetImportant", Model)
+            @await Html.PartialAsync("LeadActionParts/_SetImportant", Model)
         }
         else
         {
-            @Html.Partial("LeadActionParts/_SetNotImportant", Model)
+            @await Html.PartialAsync("LeadActionParts/_SetNotImportant", Model)
         }
     }
 
     @if (Model.businessDetails.businessContactReceivedDateTime != null)
     {
-        @Html.Partial("LeadActionParts/_Contacts", Model)
+        @await Html.PartialAsync("LeadActionParts/_Contacts", Model)
     }
 
 
@@ -23,30 +23,30 @@
     {
         if (Model.businessDetails.businessNotInterestedDateTime == null)
         {
-            @Html.Partial("LeadActionParts/_SetNotInterested", Model)
+            @await Html.PartialAsync("LeadActionParts/_SetNotInterested", Model)
         }
         else
         {
-            @Html.Partial("LeadActionParts/_SetInterested", Model)
+            @await Html.PartialAsync("LeadActionParts/_SetInterested", Model)
         }
 
         if (Model.businessDetails.isPermittedForBusiness)
         {
-            @Html.Partial("LeadActionParts/_GetContacts", Model)
+            @await Html.PartialAsync("LeadActionParts/_GetContacts", Model)
         }
         else
         {
-            @Html.Partial("LeadActionParts/_WaitingApproval", Model)
+            @await Html.PartialAsync("LeadActionParts/_WaitingApproval", Model)
         }
     }
 
 
     @if (Model.businessDetails.businessCompletedDateTime == null && Model.businessDetails.businessContactReceivedDateTime != null)
     {
-        @Html.Partial("LeadActionParts/_SetCompleted", Model)
+        @await Html.PartialAsync("LeadActionParts/_SetCompleted", Model)
     }
     else if (Model.businessDetails.businessCompletedDateTime != null)
     {
-        @Html.Partial("LeadActionParts/_Completed", Model)
+        @await Html.PartialAsync("LeadActionParts/_Completed", Model)
     }
 </div>

@@ -6,8 +6,8 @@
 
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
-    @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
-    @section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", cmsContext.post.customCSS);}}
+    @section SEO{@{ await Html.RenderPartialAsync("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
+    @section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", cmsContext.post.customCSS);}}
 }
 
 

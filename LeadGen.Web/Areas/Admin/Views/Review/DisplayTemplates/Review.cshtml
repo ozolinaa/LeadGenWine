@@ -50,6 +50,6 @@
         }
     </td>
     <td id="ActionForLeadID-@Model.leadID">
-        @Html.Partial("_LeadAction", Model)
+        @await Html.PartialAsync("_LeadAction", Model)
     </td>
 </tr>

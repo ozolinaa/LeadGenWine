@@ -9,7 +9,7 @@
     </td>
     @Html.DisplayFor(x => x.fieldGroups)
     <td>
-        @Html.Partial("LeadActions/_" + Model.adminDetails.status.ToString(), Model)
+        @await Html.PartialAsync("LeadActions/_" + Model.adminDetails.status.ToString(), Model)
     </td>
 </tr>
 <tr>

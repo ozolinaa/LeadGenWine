@@ -1,7 +1,7 @@
 ﻿@model CMSContext
 @using LeadGen.Code.CMS;
-@section SEO{@{Html.RenderPartial("DisplayTemplates/SEOFields", Model.post.SEO); }}
-@section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.post.customCSS); }}
+@section SEO{@{await Html.RenderPartialAsync("DisplayTemplates/SEOFields", Model.post.SEO); }}
+@section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", Model.post.customCSS); }}
 <article>
     <h1>@Model.post.title</h1>
     @{
@@ -19,7 +19,7 @@
         Post teaserWidget = Model.widgets.FirstOrDefault(x => x.postURL == "kak-zakazat-pamyatnik-i-ne-pereplatit");
         if (teaserWidget != null)
         {
-            Html.RenderPartial("Widgets/_TeaserWithBackground", teaserWidget);
+            await Html.RenderPartialAsync("Widgets/_TeaserWithBackground", teaserWidget);
         }
     }
 </nav>
@@ -29,7 +29,7 @@
     @section Sidebar{
         @foreach (Post widget in Model.widgetsLayoutSidebarRight)
         {
-            Html.RenderPartial("Widgets/_WidgetLayout", widget);
+            await Html.RenderPartialAsync("Widgets/_WidgetLayout", widget);
         }
     }
 }

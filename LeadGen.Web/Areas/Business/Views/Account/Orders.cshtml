@@ -128,19 +128,19 @@
 @switch (status)
 {
     case BusinessDetails.Status.NewForBusiness:
-        Html.RenderPartial("LeadLists/_NewForBusiness", Model);
+        await Html.RenderPartialAsync("LeadLists/_NewForBusiness", Model);
         break;
     case BusinessDetails.Status.NotInterested:
-        Html.RenderPartial("LeadLists/_NewForBusiness", Model);
+        await Html.RenderPartialAsync("LeadLists/_NewForBusiness", Model);
         break;
     case BusinessDetails.Status.Completed:
-        Html.RenderPartial("LeadLists/_Completed", Model);
+        await Html.RenderPartialAsync("LeadLists/_Completed", Model);
         break;
     case BusinessDetails.Status.All:
-        Html.RenderPartial("LeadLists/_All", Model);
+        await Html.RenderPartialAsync("LeadLists/_All", Model);
         break;
     default:
-        Html.RenderPartial("LeadLists/_ContactReceived", Model);
+        await Html.RenderPartialAsync("LeadLists/_ContactReceived", Model);
         break;
 }
 

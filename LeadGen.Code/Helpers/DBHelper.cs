@@ -22,10 +22,8 @@ namespace LeadGen.Code.Helpers
                     retVal = true;
                 }
             }
-
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw;
             }
 
             return retVal;

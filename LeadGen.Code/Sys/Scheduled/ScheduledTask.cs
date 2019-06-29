@@ -74,7 +74,7 @@ namespace LeadGen.Code.Sys.Scheduled
                         SetCompleted(con, status, message);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Can not start the task (probably because it is already running)
                 } 

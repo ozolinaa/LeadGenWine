@@ -2,6 +2,6 @@
 <tr id="LeadID-@Model.ID">
     @Html.DisplayFor(x => x.fieldGroups, new {lead = Model } )
     <td class="leadActions" id="ActionsForLeadID-@Model.ID">
-        @Html.Partial("_LeadAction", Model)
+        @await Html.PartialAsync("_LeadAction", Model)
     </td>
 </tr>

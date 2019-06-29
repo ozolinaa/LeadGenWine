@@ -1,7 +1,7 @@
 ﻿@model Post
 @using LeadGen.Code.CMS
 @section SEO{@Html.DisplayFor(x => x.SEO)}
-@section CustomCSS{@{Html.RenderPartial("DisplayTemplates/CustomCSS", Model.customCSS);}}
+@section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", Model.customCSS);}}
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
 }
@@ -14,14 +14,14 @@
     @Html.Raw(Model.contentEnding)
 </article>
 
-@{ Html.RenderPartial("_UnderArticleContent");}
+@{ await Html.RenderPartialAsync("_UnderArticleContent");}
 
 @if (cmsContext.widgetsLayoutSidebarRight != null && cmsContext.widgetsLayoutSidebarRight.Any())
 {
     @section Sidebar{
         @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)
         {
-            Html.RenderPartial("Widgets/_WidgetLayout", widget);
+            await Html.RenderPartialAsync("Widgets/_WidgetLayout", widget);
         }
     }
 }

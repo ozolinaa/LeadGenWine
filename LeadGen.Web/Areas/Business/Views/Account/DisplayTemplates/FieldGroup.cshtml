@@ -30,11 +30,11 @@
             {
                 if (lead.businessDetails.businessImportantDateTime == null)
                 {
-                    @Html.Partial("LeadActionParts/_SetImportant", lead)
+                    @await Html.PartialAsync("LeadActionParts/_SetImportant", lead)
                 }
                 else
                 {
-                    @Html.Partial("LeadActionParts/_SetNotImportant", lead)
+                    @await Html.PartialAsync("LeadActionParts/_SetNotImportant", lead)
                 }
             }
         }

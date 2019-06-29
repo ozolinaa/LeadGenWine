@@ -95,10 +95,10 @@
 
 @if (showAct)
 {
-    Html.RenderPartial("Russia/_Act", Model);
+    await Html.RenderPartialAsync("Russia/_Act", Model);
 }
 else
 {
-    Html.RenderPartial("Russia/_Invoice", Model);
+    await Html.RenderPartialAsync("Russia/_Invoice", Model);
 }
 

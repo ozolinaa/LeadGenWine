@@ -11,7 +11,7 @@
 <div id="ActionForLeadID-@Model.ID">
     @foreach (FieldItem field in contactFields)
     {
-        @Html.Partial("DisplayTemplates/FieldItem", field)
+        @await Html.PartialAsync("DisplayTemplates/FieldItem", field)
     }
     @Html.ActionLink("Set Completed", "ManageOrder", new { leadID = Model.ID, doAction = "CompleteLead" },
 new {

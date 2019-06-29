@@ -9,7 +9,7 @@
     <div class="tab-content">
 
         <div id="section-login" class="tab-pane active">
-            @{Html.RenderPartial("FormLogin", Model);}
+            @{await Html.RenderPartialAsync("FormLogin", Model);}
             <div>
                 @Html.ActionLink("Business registration", "Registration", "Registration", new { Area = "Business" }, new { })
                 |
@@ -18,7 +18,7 @@
         </div>
 
         <div id="section-forgot-password" class="tab-pane">
-            @{Html.RenderPartial("FormForgotPassword", Model);}
+            @{await Html.RenderPartialAsync("FormForgotPassword", Model);}
             <a data-toggle="tab" href="#section-login" aria-expanded="false">Login</a>
         </div>
 

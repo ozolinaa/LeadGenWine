@@ -8,7 +8,7 @@
     contactFields.AddRange(Model.fieldGroups.SelectMany(x => x.fields).Where(x => x.isContact));
     foreach (FieldItem field in contactFields)
     {
-        @Html.Partial("DisplayTemplates/FieldItem", field)
+        @await Html.PartialAsync("DisplayTemplates/FieldItem", field)
     }
 }
 </div>

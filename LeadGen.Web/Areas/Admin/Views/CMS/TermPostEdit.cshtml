@@ -64,7 +64,7 @@
             }
 
             <div id="attachaments" class="row attachaments">
-                @{Html.RenderPartial("_PostAttahments", Model);}
+                @{await Html.RenderPartialAsync("_PostAttahments", Model);}
             </div>
 
             <div class="row">

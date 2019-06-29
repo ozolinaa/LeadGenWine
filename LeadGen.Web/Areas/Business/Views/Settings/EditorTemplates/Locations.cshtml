@@ -63,7 +63,7 @@
 <div id="BusinessLocationEditModalWrapper"></div>
 
 <div id="BusinessLocationListWrapper">
-    @Html.Partial("_LocationsMapList", Model.business.locations)
+    @await Html.PartialAsync("_LocationsMapList", Model.business.locations)
 </div>
 
 

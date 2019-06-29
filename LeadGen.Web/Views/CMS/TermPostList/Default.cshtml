@@ -4,8 +4,8 @@
 @using LeadGen.Code.CMS;
 @{
     CMSContext cmsContext = ViewBag.CMSContext;
-    @section SEO{@{ Html.RenderPartial("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
-    @section CustomCSS{@{ Html.RenderPartial("DisplayTemplates/CustomCSS", cmsContext.post.customCSS); }}
+    @section SEO{@{ await Html.RenderPartialAsync("DisplayTemplates/SEOFields", cmsContext.post.SEO); }}
+    @section CustomCSS{@{ await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", cmsContext.post.customCSS); }}
 }
 
 @*@Html.ActionLink("<= "+ cmsContext.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", cmsContext.postType.typeURL) })*@
@@ -36,7 +36,7 @@
         Post teaserWidget = cmsContext.widgets.FirstOrDefault(x => x.postURL == "kak-zakazat-pamyatnik-i-ne-pereplatit");
         if (teaserWidget != null)
         {
-            Html.RenderPartial("Widgets/_TeaserWithBackground", teaserWidget);
+            await Html.RenderPartialAsync("Widgets/_TeaserWithBackground", teaserWidget);
         }
     }
 </nav>
@@ -46,7 +46,7 @@
     @section Sidebar{
         @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)
         {
-            Html.RenderPartial("Widgets/_WidgetLayout", widget);
+            await Html.RenderPartialAsync("Widgets/_WidgetLayout", widget);
         }
     }
 }

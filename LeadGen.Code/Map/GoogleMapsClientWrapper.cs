@@ -49,9 +49,8 @@ namespace LeadGen.Code.Map
                 return location;
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                location = null;
             }
 
             return location;
