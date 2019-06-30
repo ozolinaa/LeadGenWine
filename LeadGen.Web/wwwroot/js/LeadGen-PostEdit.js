@@ -25,7 +25,7 @@ LeadGen.PostEdit.init = function () {
         xhr.open('POST', uploadForm.getAttribute("action"));
         xhr.send(formdata);
         xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+            if (xhr.readyState === 4 && xhr.status === 200) {
                 $('#LoadingWindowSplash').hide();
                 $('#attachaments').html(xhr.responseText);
             }
@@ -57,7 +57,7 @@ LeadGen.PostEdit.init = function () {
                     callback: function () {
 
                         $.post(unlinkURL, { subjectID: subjectID, attachmentID: attachmentID }, function (data, status) {
-                            if (status == 'success') {
+                            if (status === 'success') {
 
                                 attachment.css("background-color", "#FF3700");
                                 attachment.fadeOut(400, function () {
@@ -73,8 +73,6 @@ LeadGen.PostEdit.init = function () {
             }
         });
     });
-
-
 
     //TinyMCE
 
@@ -321,19 +319,19 @@ LeadGen.PostEdit.init = function () {
         $termsBlock.find("label").css("text-decoration", "none");
 
         var text = $search.val();
-        if (text == "") {
+        if (text === "") {
             return;
         }
 
         var $foundTerms = $termsBlock.find("label:contains('" + text + "')");
 
-        if ($foundTerms.length == 0) {
+        if ($foundTerms.length === 0) {
             alert("Not found");
             return;
         }
 
         $foundTerms.css("text-decoration", "underline");
-        var $foundTerm = $foundTerms.first()
+        var $foundTerm = $foundTerms.first();
 
 
         var scrollpx = $foundTerm.offset().top - $termsBlock.offset().top + $($termsBlock).scrollTop();
@@ -384,7 +382,7 @@ LeadGen.PostEdit.init = function () {
             $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
         },
         change: function (event, ui) {
-            if ($('#postParentUrl').val() == "") {
+            if ($('#postParentUrl').val() === "") {
                 $("#postParentID").val("");
             }
         }
@@ -393,8 +391,9 @@ LeadGen.PostEdit.init = function () {
     var errorText = $(".validation-summary-errors").html();
     if (errorText) {
         LeadGen.ui.showNotificationLabel(errorText, 'danger');
-    } else if (LeadGen.PostEdit.isFirstInit == false) {
+    } else if (LeadGen.PostEdit.isFirstInit === false) {
         LeadGen.ui.showNotificationLabel();
+        LeadGen.ui.googleMapsActions.refreshMapsInSelector();
     }
     
 };

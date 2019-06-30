@@ -76,48 +76,52 @@ namespace LeadGen.Code.CMS
                     fieldText = row["TextValue"].ToString();
                     break;
                 case FieldType.Datetime:
-                    if (row["DatetimeValue"] == DBNull.Value)
-                    {
-                        fieldDatetime = null;
-                    }
-                    else
+                    if (row["DatetimeValue"] != DBNull.Value)
                     {
                         fieldDatetime = Convert.ToDateTime(row["DatetimeValue"]);
                     }
                     break;
                 case FieldType.Bool:
                     fieldBool = false;
-                    bool parsedBool = false;
-                    if (bool.TryParse(row["BoolValue"].ToString(), out parsedBool))
+                    if (bool.TryParse(row["BoolValue"].ToString(), out bool parsedBool))
                         fieldBool = parsedBool;
                     break;
                 case FieldType.Number:
-                    if (row["NumberValue"] == DBNull.Value)
-                    {
-                        fieldNumber = null;
-                    }
-                    else
+                    if (row["NumberValue"] != DBNull.Value)
                     {
                         fieldNumber = (long)row["NumberValue"];
                     }
                     break;
                 case FieldType.Location:
-                    if (row["LocationID"] == DBNull.Value)
-                    {
-                        location = null;
-                    }
-                    else
+                    if (row["LocationID"] != DBNull.Value)
                     {
                         location = new Location() { ID = (long)row["LocationID"] };
                     }
                     break;
             }
-
         }
 
 
 
+        private void ProcessLocationBeforeSave(SqlConnection con)
+        {
+            if (location != null && location.Lat == 0 && location.Lng == 0)
+            {
+                location = null;
+            }
 
+            if (location != null)
+            {
+                if (location.ID > 0)
+                {
+                    location.UpdateInDB(con);
+                }
+                else
+                {
+                    location.CreateInDB(con);
+                }
+            }
+        }
 
         public bool SaveToDB(SqlConnection con, long postID)
         {
@@ -143,17 +147,7 @@ namespace LeadGen.Code.CMS
             }
             //if (type == FieldType.Location)
 
-            if (location != null)
-            {
-                if (location.ID > 0)
-                {
-                    location.UpdateInDB(con);
-                }
-                else
-                {
-                    location.CreateInDB(con);
-                }
-            }
+            ProcessLocationBeforeSave(con);
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostFieldValueInsertOrUpdate]", con))
             {
