@@ -27,31 +27,21 @@ namespace LeadGen.Code.Map
 
             dynamic data = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
 
-            Location location = null;
-            try
-            {
-                var result = data.results[0];
+            var result = data.results[0];
 
-                location = new Location();
-                location.Name = address;
-                location.StreetAddress = result.formatted_address;
-                location.Lat = result.geometry.location.lat;
-                location.Lng = result.geometry.location.lng;
+            Location location = new Location();
+            location.Name = address;
+            location.StreetAddress = result.formatted_address;
+            location.Lat = result.geometry.location.lat;
+            location.Lng = result.geometry.location.lng;
 
-                GeoCoordinate sCoord = new GeoCoordinate((double)result.geometry.bounds.southwest.lat, (double)result.geometry.bounds.southwest.lng);
-                GeoCoordinate eCoord = new GeoCoordinate((double)result.geometry.bounds.northeast.lat, (double)result.geometry.bounds.northeast.lng);
+            GeoCoordinate sCoord = new GeoCoordinate((double)result.geometry.bounds.southwest.lat, (double)result.geometry.bounds.southwest.lng);
+            GeoCoordinate eCoord = new GeoCoordinate((double)result.geometry.bounds.northeast.lat, (double)result.geometry.bounds.northeast.lng);
 
-                double boundsDiag = sCoord.GetDistanceTo(eCoord);
-                double boundsSide = boundsDiag / Math.Sqrt(2);
+            double boundsDiag = sCoord.GetDistanceTo(eCoord);
+            double boundsSide = boundsDiag / Math.Sqrt(2);
 
-                location.RadiusMeters = Convert.ToInt32(boundsSide / 2);
-
-                return location;
-
-            }
-            catch (Exception)
-            {
-            }
+            location.RadiusMeters = Convert.ToInt32(boundsSide / 2);
 
             return location;
         }

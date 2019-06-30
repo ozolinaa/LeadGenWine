@@ -102,13 +102,13 @@ namespace LeadGen.Code.CMS
                     }
                     break;
                 case FieldType.Location:
-                    if (row["TextValue"] == DBNull.Value)
+                    if (row["LocationID"] == DBNull.Value)
                     {
                         location = null;
                     }
                     else
                     {
-                        location = JsonConvert.DeserializeObject<Location>((string)row["TextValue"]);
+                        location = new Location() { ID = (long)row["LocationID"] };
                     }
                     break;
             }
@@ -137,13 +137,23 @@ namespace LeadGen.Code.CMS
                 case FieldType.Number:
                     break;
                 case FieldType.Location:
-                    TextValue = JsonConvert.SerializeObject(location);
                     break;
                 default:
                     break;
             }
             //if (type == FieldType.Location)
 
+            if (location != null)
+            {
+                if (location.ID > 0)
+                {
+                    location.UpdateInDB(con);
+                }
+                else
+                {
+                    location.CreateInDB(con);
+                }
+            }
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostFieldValueInsertOrUpdate]", con))
             {
@@ -155,6 +165,7 @@ namespace LeadGen.Code.CMS
                 cmd.Parameters.AddWithValue("@DatetimeValue", type == FieldType.Datetime ? (object)fieldDatetime ?? DBNull.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@BoolValue", type == FieldType.Bool ? fieldBool : (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@NumberValue", type == FieldType.Number ? (object)fieldNumber ?? DBNull.Value : DBNull.Value);
+                cmd.Parameters.AddWithValue("@LocationID", location == null ? (object)DBNull.Value : location.ID);
 
                 SqlParameter returnParameter = cmd.Parameters.Add("RetVal", SqlDbType.Bit);
                 returnParameter.Direction = ParameterDirection.ReturnValue;

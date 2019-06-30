@@ -27,12 +27,15 @@
                 @Html.ValidationMessageFor(x => x.fieldNumber)
                 break;
             case PostField.FieldType.Location:
-                if (Model.location == null)
-                {
-                    Model.location = new LeadGen.Code.Map.Location();
-                }
-                @Html.EditorFor(x => x.location)
-                @Html.ValidationMessageFor(x => x.location)
+        <div class="location-field-editor">
+            <a onclick="confirm('Are you sure?') ? $(this).closest('.location-field-editor').remove() : ''" class="fas fa-trash btn btn-danger" style="position:absolute; top:8px; right:15px;"></a>
+            @if (Model.location == null)
+            {
+                Model.location = new LeadGen.Code.Map.Location();
+            }
+            @Html.EditorFor(x => x.location)
+            @Html.ValidationMessageFor(x => x.location)
+        </div>
                 break;
         }
 

@@ -12,6 +12,7 @@ using LeadGen.Code.CMS.Sitemap;
 using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
+using LeadGen.Code.Map;
 
 namespace LeadGen.Code.CMS
 {
@@ -619,7 +620,12 @@ namespace LeadGen.Code.CMS
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
                 foreach (DataRow row in dt.Rows)
                 {
-                    fields.Add(new PostField(row));
+                    PostField field = new PostField(row);
+                    if (field.location != null)
+                    {
+                        field.location = Location.LoadFromDB(field.location.ID, con);
+                    }
+                    fields.Add(field);
                 }
             }
         }

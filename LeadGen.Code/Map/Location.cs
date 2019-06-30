@@ -1,4 +1,5 @@
-﻿using Microsoft.SqlServer.Types;
+﻿using LeadGen.Code.Helpers;
+using Microsoft.SqlServer.Types;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -25,6 +26,26 @@ namespace LeadGen.Code.Map
         public string Name { get; set; }
         public DateTime CreatedDateTime { get; set; }
         public DateTime? UpdatedDateTime { get; set; }
+
+        public static Location LoadFromDB(long LocationID, SqlConnection con)
+        {
+            Location result = null;
+            using (SqlCommand cmd = new SqlCommand("[dbo].[LocationSelect]", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@LocationID", LocationID);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result = new Location(reader);
+                    }
+                }
+            }
+            return result;
+        }
+
 
         public long CreateInDB(SqlConnection con)
         {
@@ -94,7 +115,7 @@ namespace LeadGen.Code.Map
             Region = row["Region"].ToString();
             Country = row["Country"].ToString();
             PostalCode = row["PostalCode"].ToString();
-            Zoom = Int32.Parse(row["Zoom"].ToString());
+            Zoom = Int32.Parse(string.IsNullOrEmpty(row["Zoom"].ToString()) ? "0" : row["Zoom"].ToString());
             Name = row["Name"].ToString();
             CreatedDateTime = (DateTime)row["CreatedDateTime"];
             if (row["UpdatedDateTime"] != DBNull.Value)
