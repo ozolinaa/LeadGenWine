@@ -1,0 +1,32 @@
+﻿CREATE TABLE [dbo].[CMSPostTypeFieldStructure](
+	[FieldID] [int] IDENTITY(1,1) NOT NULL,
+	[PostTypeID] [int] NOT NULL,
+	[FieldTypeID] [int] NOT NULL,
+	[FieldCode] [nvarchar](50) NOT NULL,
+	[FieldLabelText] [nvarchar](255) NOT NULL,
+ CONSTRAINT [PK_CMSPostFieldStructure] PRIMARY KEY CLUSTERED 
+(
+	[FieldID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [IX_CMSPostFieldStructure] UNIQUE NONCLUSTERED 
+(
+	[FieldCode] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+ CONSTRAINT [IX_CMSPostTypeFieldStructure] UNIQUE NONCLUSTERED 
+(
+	[FieldID] ASC,
+	[PostTypeID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CMSPostTypeFieldStructure]  WITH CHECK ADD  CONSTRAINT [FK_CMS.Post.Field.Structure_CMS.Post.Type] FOREIGN KEY([PostTypeID])
+REFERENCES [dbo].[CMSPostType] ([TypeID])
+GO
+
+ALTER TABLE [dbo].[CMSPostTypeFieldStructure] CHECK CONSTRAINT [FK_CMS.Post.Field.Structure_CMS.Post.Type]
+GO
+ALTER TABLE [dbo].[CMSPostTypeFieldStructure]  WITH CHECK ADD  CONSTRAINT [FK_CMS.Post.Type.Field.Structure_CMS.Field.Types] FOREIGN KEY([FieldTypeID])
+REFERENCES [dbo].[CMSFieldType] ([FieldTypeID])
+GO
+
+ALTER TABLE [dbo].[CMSPostTypeFieldStructure] CHECK CONSTRAINT [FK_CMS.Post.Type.Field.Structure_CMS.Field.Types]

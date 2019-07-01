@@ -1,0 +1,23 @@
+﻿CREATE TABLE [dbo].[CMSPostTerm](
+	[PostID] [bigint] NOT NULL,
+	[TermID] [bigint] NOT NULL,
+	[PostTypeID] [int] NOT NULL,
+	[TaxonomyID] [int] NOT NULL,
+ CONSTRAINT [PK_CMSPostTerm] PRIMARY KEY CLUSTERED 
+(
+	[PostID] ASC,
+	[TermID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[CMSPostTerm]  WITH CHECK ADD  CONSTRAINT [FK_CMS.Post.Term_CMS.Post] FOREIGN KEY([PostID], [PostTypeID])
+REFERENCES [dbo].[CMSPost] ([PostID], [TypeID])
+GO
+
+ALTER TABLE [dbo].[CMSPostTerm] CHECK CONSTRAINT [FK_CMS.Post.Term_CMS.Post]
+GO
+ALTER TABLE [dbo].[CMSPostTerm]  WITH CHECK ADD  CONSTRAINT [FK_CMS.Post.Term_CMS.Taxonomy.Term] FOREIGN KEY([TermID], [TaxonomyID])
+REFERENCES [dbo].[TaxonomyTerm] ([TermID], [TaxonomyID])
+GO
+
+ALTER TABLE [dbo].[CMSPostTerm] CHECK CONSTRAINT [FK_CMS.Post.Term_CMS.Taxonomy.Term]

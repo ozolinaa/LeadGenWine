@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>LeadGen.SQL</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{c2d17ba9-e7df-4d67-8e38-cb9008be3047}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>LeadGen.SQL</RootNamespace>
+    <AssemblyName>LeadGen.SQL</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo\" />
+    <Folder Include="dbo\Tables\" />
+    <Folder Include="dbo\Views\" />
+    <Folder Include="Storage\" />
+    <Folder Include="dbo\Functions\" />
+    <Folder Include="dbo\Stored Procedures\" />
+    <Folder Include="dbo\User Defined Types\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Snapshots" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\Location.sql" />
+    <Build Include="dbo\Tables\BusinessLeadPermission.sql" />
+    <Build Include="dbo\Tables\BusinessLeadPermissionTerm.sql" />
+    <Build Include="dbo\Tables\Lead.sql" />
+    <Build Include="dbo\Tables\LeadFieldValueTaxonomy.sql" />
+    <Build Include="dbo\Tables\LeadFieldStructure.sql" />
+    <Build Include="dbo\Tables\BusinessLocation.sql" />
+    <Build Include="dbo\Tables\LeadLocation.sql" />
+    <Build Include="dbo\Tables\CMSPost.sql" />
+    <Build Include="dbo\Tables\CMSPostStatus.sql" />
+    <Build Include="dbo\Tables\CMSPostType.sql" />
+    <Build Include="dbo\Tables\BusinessLeadCompleted.sql" />
+    <Build Include="dbo\Tables\BusinessLeadContactsRecieved.sql" />
+    <Build Include="dbo\Tables\BusinessLeadImportant.sql" />
+    <Build Include="dbo\Tables\BusinessLeadNotInterested.sql" />
+    <Build Include="dbo\Tables\Business.sql" />
+    <Build Include="dbo\Tables\Taxonomy.sql" />
+    <Build Include="dbo\Tables\TaxonomyTerm.sql" />
+    <Build Include="dbo\Tables\LeadFieldValueScalar.sql" />
+    <Build Include="dbo\Tables\BusinessInvoice.sql" />
+    <Build Include="dbo\Tables\BusinessInvoiceLine.sql" />
+    <Build Include="dbo\Tables\BusinessLeadNotified.sql" />
+    <Build Include="dbo\Tables\BusinessLeadNotifiedPost.sql" />
+    <Build Include="dbo\Tables\BusinessLogin.sql" />
+    <Build Include="dbo\Tables\BusinessNotificationEmail.sql" />
+    <Build Include="dbo\Tables\CMSAttachment.sql" />
+    <Build Include="dbo\Tables\CMSAttachmentImage.sql" />
+    <Build Include="dbo\Tables\CMSAttachmentImageSize.sql" />
+    <Build Include="dbo\Tables\CMSAttachmentTerm.sql" />
+    <Build Include="dbo\Tables\CMSAttachmentType.sql" />
+    <Build Include="dbo\Tables\CMSFieldType.sql" />
+    <Build Include="dbo\Tables\CMSPostAttachment.sql" />
+    <Build Include="dbo\Tables\CMSPostFieldValue.sql" />
+    <Build Include="dbo\Tables\CMSPostTerm.sql" />
+    <Build Include="dbo\Tables\CMSPostTypeAttachmentTaxonomy.sql" />
+    <Build Include="dbo\Tables\CMSPostTypeFieldStructure.sql" />
+    <Build Include="dbo\Tables\CMSPostTypeTaxonomy.sql" />
+    <Build Include="dbo\Tables\CMSSitemapChangeFrequency.sql" />
+    <Build Include="dbo\Tables\EmailQueue.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaChekbox.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaDropdown.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaNumber.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaRadio.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaTermsAllowed.sql" />
+    <Build Include="dbo\Tables\LeadFieldMetaTextbox.sql" />
+    <Build Include="dbo\Tables\LeadFieldStructureGroup.sql" />
+    <Build Include="dbo\Tables\LeadFieldType.sql" />
+    <Build Include="dbo\Tables\LeadReview.sql" />
+    <Build Include="dbo\Tables\LeadReviewMeasure.sql" />
+    <Build Include="dbo\Tables\LeadReviewMeasureScore.sql" />
+    <Build Include="dbo\Tables\LeadGenLegal.sql" />
+    <Build Include="dbo\Tables\NotificationFrequency.sql" />
+    <Build Include="dbo\Tables\SystemOptions.sql" />
+    <Build Include="dbo\Tables\SystemScheduledTask.sql" />
+    <Build Include="dbo\Tables\SystemScheduledTaskInterval.sql" />
+    <Build Include="dbo\Tables\SystemLog.sql" />
+    <Build Include="dbo\Tables\SystemScheduledTaskLog.sql" />
+    <Build Include="dbo\Tables\SystemToken.sql" />
+    <Build Include="dbo\Tables\SystemWordCase.sql" />
+    <Build Include="dbo\Tables\TaxonomyTermWord.sql" />
+    <Build Include="dbo\Tables\UserLogin.sql" />
+    <Build Include="dbo\Tables\UserRole.sql" />
+    <Build Include="dbo\Tables\UserSession.sql" />
+    <Build Include="dbo\Views\BusinessLeadWorked.sql" />
+    <Build Include="dbo\Views\BusinessRegionCountry.sql" />
+    <Build Include="dbo\Views\LeadFieldText.sql" />
+    <Build Include="Storage\leadScalarTextCatalog.sql" />
+    <Build Include="dbo\Functions\Business.Lead.Completed.GetCompletedTotalFeeSumBeforeDateForInvoice.sql" />
+    <Build Include="dbo\Functions\BusinessLeadGetLastNotifiedDate.sql" />
+    <Build Include="dbo\Functions\BusinessLeadGetNextAllowedNotificationDateTime.sql" />
+    <Build Include="dbo\Functions\CMSPostURLGetParentPath.sql" />
+    <Build Include="dbo\Functions\SysConvertToBit.sql" />
+    <Build Include="dbo\Functions\SysOptionGet.sql" />
+    <Build Include="dbo\Functions\ExtractNumberFromString.sql" />
+    <Build Include="dbo\Functions\BusinessLeadSelectRequested.sql" />
+    <Build Include="dbo\Functions\LeadBusinessSelectRequested.sql" />
+    <Build Include="dbo\Functions\SysStringSplit.sql" />
+    <Build Include="dbo\Functions\BusinessPermissionGetRequestedLeadIDs.sql" />
+    <Build Include="dbo\Functions\BusienssPermissionGetBusinessesRequested.sql" />
+    <Build Include="dbo\Functions\BusinessLocationGetNearByLeadIDs.sql" />
+    <Build Include="dbo\Functions\CMSPostSelectByIDs.sql" />
+    <Build Include="dbo\Functions\LeadSelectByIDs.sql" />
+    <Build Include="dbo\Functions\BusienssLocationGetBusinessesNearBy.sql" />
+    <Build Include="dbo\Stored Procedures\AdminBusinessPermissionSelectPending.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessAddLogin.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceDelete.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLeadsSelectCompleted.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineCustomCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineDelete.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineLeadsCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceLineUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoicePublish.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceSetPaid.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceTotalSumUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessInvoiceUpdateBilling.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadCompletedSelectForNewInvoices.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetCompleted.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetGetContact.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetGetContact_PRODUCTION.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetImportant.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetInterested.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetNotified.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetNotifiedPost.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetNotImportant.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLeadSetNotInterested.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLocationAdminApprovalSet.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLocationCreate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLocationDelete.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLocationSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessNotificationEmailDelete.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessNotificationEmailInsert.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessNotificationEmailSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessNotificationFrequencyUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessPermissionApprove.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessPermissionCancelApprove.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessPermissionRemoveRequest.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessPermissionRequest.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessPermissionTermSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessSelect.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessUpdateBasic.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessUpdateBilling.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessUpdateContact.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentDelete.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentGetByID.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentImageInsert.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentImageSizeSelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentProcessNew.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentSetURL.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentTermAdd.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentTermRemoveAll.sql" />
+    <Build Include="dbo\Stored Procedures\CMSAttachmentUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostAttachmentLink.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostAttachmentUnlink.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostCreateEmpty.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostCreateMultipleForTaxonomyType.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostDelete.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostDisableMultipleForTaxonomyType.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostFieldValueInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostFieldValueSelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostGetAttachments.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostIfPostExistInOffsprings.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostIsUniqueURL.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostSelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostSelectByScalarField.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostSelectByUrls.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostStatusSelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTermAdd.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTermRemoveAll.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeAttachmentTaxonomyAddOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeAttachmentTaxonomyDisable.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeAttachmentTaxonomySelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeInsert.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeSelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeSelect_SiteMapData.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeTaxonomyAddOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeTaxonomyDisable.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeTaxonomySelect.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostTypeUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSPostUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\CMSTermSelect.sql" />
+    <Build Include="dbo\Stored Procedures\EmailQueueInsert.sql" />
+    <Build Include="dbo\Stored Procedures\EmailQueueSelectNextEmailToSend.sql" />
+    <Build Include="dbo\Stored Procedures\EmailQueueSetSentDateTime.sql" />
+    <Build Include="dbo\Stored Procedures\EmailQueueSetStartedDateTime.sql" />
+    <Build Include="dbo\Stored Procedures\LeadCancelByUser.sql" />
+    <Build Include="dbo\Stored Procedures\LeadEmailConfirm.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldMetaTermIsAllowed.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldMetaTermSetAllowance.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldStructureGroupInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldStructureInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldStructureSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldValueScalarDelete.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldValueScalarInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldValueSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldValueTaxonomyDelete.sql" />
+    <Build Include="dbo\Stored Procedures\LeadFieldValueTaxonomyInsert.sql" />
+    <Build Include="dbo\Stored Procedures\LeadGetEmailConfirmationKey.sql" />
+    <Build Include="dbo\Stored Procedures\LeadInsert.sql" />
+    <Build Include="dbo\Stored Procedures\LocationSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LocationCreate.sql" />
+    <Build Include="dbo\Stored Procedures\LocationUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\LocationDelete.sql" />
+    <Build Include="dbo\Stored Procedures\LeadLocationInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewMeasureScoreDeleteAll.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewMeasureScoreInsert.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewMeasureSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewPublish.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewSave.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewSelectBuisnessOptions.sql" />
+    <Build Include="dbo\Stored Procedures\LeadReviewUnPublish.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelect.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelect_SiteMapData.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelectBusinessDetails.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelectBusinessNotificationData.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelectBusinessPostNotificationData.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelectByEmail.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSelectForReview.sql" />
+    <Build Include="dbo\Stored Procedures\LeadSetReviewRequestSent.sql" />
+    <Build Include="dbo\Stored Procedures\LeadTryPublish.sql" />
+    <Build Include="dbo\Stored Procedures\LeadTryUnPublish.sql" />
+    <Build Include="dbo\Stored Procedures\LeadTryUnPublishByUser.sql" />
+    <Build Include="dbo\Stored Procedures\SysGenerateRandomString.sql" />
+    <Build Include="dbo\Stored Procedures\SysOptionInsertOrUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\SysOptionSelect.sql" />
+    <Build Include="dbo\Stored Procedures\SysTokenCreate.sql" />
+    <Build Include="dbo\Stored Procedures\SysTokenDelete.sql" />
+    <Build Include="dbo\Stored Procedures\SysTokenSelect.sql" />
+    <Build Include="dbo\Stored Procedures\SysWordCaseInsert.sql" />
+    <Build Include="dbo\Stored Procedures\SysWordCaseUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\SysGetNewPrimaryKeyValueForTable.sql" />
+    <Build Include="dbo\Stored Procedures\SystemScheduledTasksSelect.sql" />
+    <Build Include="dbo\Stored Procedures\SystemScheduledTasksSelectCurrentTasks.sql" />
+    <Build Include="dbo\Stored Procedures\SystemScheduledTasksSetCompleted.sql" />
+    <Build Include="dbo\Stored Procedures\SystemScheduledTasksSetStarted.sql" />
+    <Build Include="dbo\Stored Procedures\SystemLogInsert.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyInsert.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomySelect.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermDelete.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermIfTermExistInOffsprings.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermInsert.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermSelect.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermWordSelect.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermWordSelectForMany.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyTermWordSet.sql" />
+    <Build Include="dbo\Stored Procedures\TaxonomyUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginAuthenticate.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginCreate.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginEmailConfirm.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginPasswordHashUpdate.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginSelectOne.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginSessionCreate.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginSessionDelete.sql" />
+    <Build Include="dbo\Stored Procedures\UserLoginSessionSelectLoginDetailsBySessionID.sql" />
+    <Build Include="dbo\User Defined Types\SysBigintTableType.sql" />
+    <None Include="Scripts\FullInstall_Legacy.sql" />
+    <None Include="Scripts\DropDB.sql" />
+    <None Include="Scripts\Seed.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LeadGen.SQL.publish.xml" />
+  </ItemGroup>
+</Project>

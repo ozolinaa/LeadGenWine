@@ -112,10 +112,6 @@ namespace LeadGen.Code.Business.Notification
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@PublishedAfter", publishedAfter);
-                cmd.Parameters.AddWithValue("@BusinessPostTypeID", 3); //6 - company
-                cmd.Parameters.AddWithValue("@BusinessLeadRelationTaxonomyID", 3); //3 - City
-                cmd.Parameters.AddWithValue("@BusinessPostFieldIDDoNotSendEmails", 10); //10 - master_doNotSendLeads
-                cmd.Parameters.AddWithValue("@BusinessPostFieldIDBusiness", 1); //1 - master_businessID
 
                 leadNotificationView = new DataView(DBHelper.ExecuteCommandToDataTable(cmd));
             }
