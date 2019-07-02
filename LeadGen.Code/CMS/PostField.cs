@@ -35,27 +35,6 @@ namespace LeadGen.Code.CMS
         public long? fieldNumber { get; set; }
         public Location location { get; set; }
 
-        public object fieldValue {
-            get {
-                switch (type)
-                {
-                    case FieldType.Text:
-                        return fieldText;
-                    case FieldType.Datetime:
-                        return fieldDatetime;
-                    case FieldType.Bool:
-                        return fieldBool;
-                    case FieldType.Number:
-                        return fieldNumber;
-                    case FieldType.Location:
-                        return location;
-                    default:
-                        return null;
-                }
-            }
-        }
-
-
 
         public PostField() { }
 
@@ -141,13 +120,9 @@ namespace LeadGen.Code.CMS
                 case FieldType.Number:
                     break;
                 case FieldType.Location:
-                    break;
-                default:
+                    ProcessLocationBeforeSave(con);
                     break;
             }
-            //if (type == FieldType.Location)
-
-            ProcessLocationBeforeSave(con);
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostFieldValueInsertOrUpdate]", con))
             {

@@ -45,28 +45,23 @@ namespace LeadGen.Code.Business.Notification
 
         public static List<MailMessageLeadGen> QueueMailMessagesForCompanyPostsAboutNewLeads(SqlConnection connection)
         {
-            List<MailMessageLeadGen> queuedMessages = new List<MailMessageLeadGen>();
-
             DateTime now = DateTime.UtcNow;
-            DateTime notificationDateTime = now;
-            //Set notificationDateTime to the beginning of the current hour
-            notificationDateTime = notificationDateTime.AddMinutes((-now.Minute));
-            notificationDateTime = notificationDateTime.AddSeconds((-notificationDateTime.Second));
-            notificationDateTime = notificationDateTime.AddMilliseconds((-notificationDateTime.Millisecond));
 
             //CRM Businesses (Posts) Process and Queue Messages
-            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
-            List<MailMessageLeadGen> postMessages = GenerateEmailBusinessNotificationMessages(crmBusinessesWithLeadsToNotifyAbout);
+            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-1));
+            IEnumerable<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(crmBusinessesWithLeadsToNotifyAbout);
+            return postMessages.ToList();
 
             foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
                 foreach (LeadItem lead in crmBusinessesWithLeadsToNotifyAbout[businessPost])
-                    PostNotifiedAboutLeadSet(connection, businessPost.ID, lead.ID, notificationDateTime);
+                    PostNotifiedAboutLeadSet(connection, businessPost.ID, lead.ID, now);
 
-            postMessages.ForEach(x => x.QueueToDB(connection, notificationDateTime));
-            queuedMessages.AddRange(postMessages);
+            foreach (MailMessageLeadGen postMessage in postMessages)
+            {
+                postMessage.QueueToDB(connection, now);
+            }
 
-
-            return queuedMessages;
+            return postMessages.ToList();
         }
 
 

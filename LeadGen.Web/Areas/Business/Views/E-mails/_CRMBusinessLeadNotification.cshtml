@@ -1,0 +1,54 @@
+﻿@model KeyValuePair<Post, List<LeadItem>>
+@using LeadGen.Code.CMS;
+@using LeadGen.Code.Lead;
+
+@{
+    Layout = "~/Views/Shared/Email/_Layout.cshtml";
+    //string tokenKey = ViewData["tokenKey"].ToString();
+    Post businessPost = Model.Key;
+    List<LeadItem> leads = Model.Value;
+    string systemName = Context.Request.Host.Host.ToUpper();
+    string businessLocationName = businessPost.getFieldByCode("company_notification_location")?.location?.Name;
+    string businessWebSite = businessPost.getFieldByCode("company_web_site_official")?.fieldText;
+    if (string.IsNullOrEmpty(businessWebSite))
+    {
+         businessWebSite = businessPost.getFieldByCode("company_web_site_other")?.fieldText;
+    }
+}
+
+@section Title {
+    Hello, @businessPost.title!
+}
+
+    <p>
+        We have a customer
+        @if (!string.IsNullOrEmpty(businessLocationName))
+        {
+            <text>in @businessLocationName</text>
+        }
+        who is interested in ordering wine cellar.
+    </p>
+<p>
+    We have sent you this email because this page <a href="@businessWebSite" target="_blank">@businessWebSite</a> shows that you are a professional at wine cellars market.
+</p>
+
+<p>New wine cellar lead(s) availeble</p>
+<p>
+    You are reciving this message because we see that you are a Wine Cellar PRO, and there is a customer that needs your services
+</p>
+
+
+
+<ul>
+    @foreach (LeadItem lead in leads)
+    {
+        <li>
+            Lead #@lead.ID published at @lead.adminDetails.publishedDateTime.Value.ToShortDateString()
+        </li>
+    }
+</ul>
+
+<p><strong>If you don`t want</strong>to recieve info from new potential customers please <a>click here</a>, you won't hear from us anymore, we promise.</p>
+
+<p>But if you are interested in getting contacts of customers who are interested in wine cellars, go ahead and</p>
+

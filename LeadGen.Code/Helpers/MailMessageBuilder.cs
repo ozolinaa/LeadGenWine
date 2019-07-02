@@ -1,4 +1,4 @@
-﻿using LeadGen.Code;
+﻿using LeadGen.Code.CMS;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LeadGen.Web.Helpers
+namespace LeadGen.Code.Helpers
 {
     public static class MailMessageBuilder
     {
@@ -67,6 +67,41 @@ namespace LeadGen.Web.Helpers
             }
 
             return result;
+        }
+
+        public static IEnumerable<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
+        {
+            List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
+
+            string viewPath = "~/Areas/Business/Views/E-mails/_CRMBusinessLeadNotification.cshtml";
+
+            foreach (KeyValuePair<Post, List<LeadItem>> businessPostLeads in businessPostsWithLeadsToNotifyAbout)
+            {
+                try
+                {
+                    Post businessPost = businessPostLeads.Key;
+                    string businessLocation = businessPost.getFieldByCode("company_notification_location").location.Name;
+                    string businessEmail = businessPost.getFieldByCode("company_notification_email").fieldText;
+
+                    string mailSubject = string.Format("Wine cellar order for {0}, please review", businessPost.title);
+                    if (!string.IsNullOrEmpty(businessLocation))
+                        mailSubject = string.Format("Wine cellar order in {0}, {1} please review", businessLocation, businessPost.title);
+
+                    MailMessageLeadGen message = new MailMessageLeadGen(businessEmail);
+                    message.Subject = mailSubject;
+                    message.Body = ViewHelper.RenderViewToString(viewPath, businessPostLeads);
+                    messages.Add(message);
+                }
+                catch (Exception e)
+                {
+                    //May be master_email does not have a valid email
+                    //Or View rendering
+                    //Log.Insert(e.ToString());
+                    throw e;
+                }
+            }
+
+            return messages;
         }
     }
 }

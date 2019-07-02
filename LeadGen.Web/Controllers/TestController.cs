@@ -4,15 +4,17 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using LeadGen.Code;
+using LeadGen.Code.Business.Notification;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
+using LeadGen.Code.Sys;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace LeadGen.Web.Controllers
 {
-    public class TestController : Controller
+    public class TestController : DatabaseController
     {
         [HttpGet]
         public ContentResult OrderEmailVerify()
@@ -54,5 +56,20 @@ namespace LeadGen.Web.Controllers
                 Content = html
             };
         }
+
+
+        [HttpGet]
+        public ContentResult BusinessCRMEmail()
+        {
+            List<MailMessageLeadGen> messages = NotificationManager.QueueMailMessagesForCompanyPostsAboutNewLeads(DBLGcon);
+
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)HttpStatusCode.OK,
+                Content = messages.First().Body
+            };
+        }
+        
     }
 }
