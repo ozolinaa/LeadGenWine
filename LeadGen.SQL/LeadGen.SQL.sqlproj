@@ -65,6 +65,7 @@
     <Folder Include="dbo\User Defined Types\" />
     <Folder Include="Scripts\" />
     <Folder Include="Snapshots" />
+    <Folder Include="Scripts\Post-Deployments" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Location.sql" />
@@ -311,9 +312,15 @@
     <Build Include="dbo\User Defined Types\SysBigintTableType.sql" />
     <None Include="Scripts\FullInstall_Legacy.sql" />
     <None Include="Scripts\DropDB.sql" />
-    <None Include="Scripts\Seed.sql" />
+    <None Include="Scripts\Post-Deployments\Seed_basic.sql" />
+    <None Include="Scripts\Post-Deployments\Seed_wine_settings.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="LeadGen.SQL.publish.xml" />
+    <PostDeploy Include="Scripts\Post-Deployments\_PostDeployment.sql" />
+    <None Include="Scripts\Post-Deployments\Seed_credentials.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LeadGen.LOCAL.publish.xml" />
+    <None Include="LeadGen.PROD.publish.xml" />
   </ItemGroup>
 </Project>

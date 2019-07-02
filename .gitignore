@@ -260,3 +260,5 @@ paket-files/
 __pycache__/
 *.pyc
 /LeadGen.Web/wwwroot/lib/*
+
+/LeadGen.SQL/Scripts/Post-Deployments/Seed_credentials.sql

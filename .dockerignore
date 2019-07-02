@@ -8,4 +8,5 @@ docker-compose.yml
 docker-compose.*.yml
 */bin
 */obj
-LeadGen.SQL/*
+LeadGen.SQL/LeadGen.SQL.dbmdl
+LeadGen.SQL/LeadGen.SQL.jfm
