@@ -49,7 +49,7 @@ namespace LeadGen.Code.Business.Notification
 
             //CRM Businesses (Posts) Process and Queue Messages
             Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-1));
-            IEnumerable<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(crmBusinessesWithLeadsToNotifyAbout);
+            IEnumerable<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(connection, crmBusinessesWithLeadsToNotifyAbout);
             return postMessages.ToList();
 
             foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)

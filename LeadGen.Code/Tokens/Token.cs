@@ -5,8 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace LeadGen.Code.Tokens
 {
@@ -19,8 +18,7 @@ namespace LeadGen.Code.Tokens
         public DateTime DateCreated { get; set; }
 
         [JsonIgnore()]
-        public string Json => JsonConvert.SerializeObject(this, Formatting.None);
-
+        private string Json => JsonConvert.SerializeObject(this, Formatting.None);
 
         public Token()
         {

@@ -4,7 +4,7 @@
 
 @{
     Layout = "~/Views/Shared/Email/_Layout.cshtml";
-    //string tokenKey = ViewData["tokenKey"].ToString();
+
     Post businessPost = Model.Key;
     List<LeadItem> leads = Model.Value;
     string systemName = Context.Request.Host.Host.ToUpper();
@@ -12,22 +12,27 @@
     string businessWebSite = businessPost.getFieldByCode("company_web_site_official")?.fieldText;
     if (string.IsNullOrEmpty(businessWebSite))
     {
-         businessWebSite = businessPost.getFieldByCode("company_web_site_other")?.fieldText;
+        businessWebSite = businessPost.getFieldByCode("company_web_site_other")?.fieldText;
     }
+
+    string unsubscribeTokenKey = ViewData["unsubscribeTokenKey"].ToString();
+    string unsubscribeUrl = HttpUtility.UrlDecode(Url.Action("Index", "Token", new { area = "", key = unsubscribeTokenKey }, Context.Request.Scheme, Context.Request.Host.ToString()));
+
+    string registrationUrl = HttpUtility.UrlDecode(Url.Action("Registration", "Registration", new { area = "Business" }, Context.Request.Scheme, Context.Request.Host.ToString()));
 }
 
 @section Title {
     Hello, @businessPost.title!
 }
 
-    <p>
-        We have a customer
-        @if (!string.IsNullOrEmpty(businessLocationName))
-        {
-            <text>in @businessLocationName</text>
-        }
-        who is interested in ordering wine cellar.
-    </p>
+<p>
+    We have a customer
+    @if (!string.IsNullOrEmpty(businessLocationName))
+    {
+        <text>in @businessLocationName</text>
+    }
+    who is interested in ordering wine cellar.
+</p>
 <p>
     We have sent you this email because this page <a href="@businessWebSite" target="_blank">@businessWebSite</a> shows that you are a professional at wine cellars market.
 </p>
@@ -48,7 +53,9 @@
     }
 </ul>
 
-<p><strong>If you don`t want</strong>to recieve info from new potential customers please <a>click here</a>, you won't hear from us anymore, we promise.</p>
+<p><strong>If you don`t want</strong>to recieve info from new potential customers please <a href="@unsubscribeUrl" target="_blank">click here</a>, you won't hear from us anymore, we promise.</p>
 
 <p>But if you are interested in getting contacts of customers who are interested in wine cellars, go ahead and</p>
+
+@await Html.PartialAsync("Email/ButtonPrimary", null, new ViewDataDictionary(this.ViewData) { { "url", registrationUrl }, { "value", "Register" } })
 

@@ -116,20 +116,13 @@ namespace LeadGen.Web.Controllers
 
         private ActionResult BusinessCRMLeadUnsubscribe(BusinessCRMLeadUnsubscribeToken token)
         {
-
-            int businessPostFieldIDDoNotSendEmails = 8;
-
-            Post businessPost = Post.SelectFromDB(DBLGcon, postID: token.BusinessPostID).First();
-            businessPost.LoadFields(DBLGcon);
-            PostField field = businessPost.fields.First(x => x.ID == businessPostFieldIDDoNotSendEmails);
-            field.fieldBool = true; //TRUE means DO NOT send
-            field.SaveToDB(DBLGcon, businessPost.ID);
+            Post businessPost = token.UnsubscribeBusinessPost(DBLGcon);
+            token.DeleteFromDB(DBLGcon);
 
             SendMessageToAdmins("CRM Business unsubscribed", string.Format("CRM business post: #{0}", businessPost.ID));
 
-            return View("../Business/BusinessCRMLeadUnsubscribeSuccess", businessPost);
+            return View("BusinessCRMLeadUnsubscribeSuccess", businessPost);
         }
-
         
     }
 }

@@ -75,7 +75,7 @@ namespace LeadGen.Code.Helpers
             return result;
         }
 
-        public static IEnumerable<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
+        public static IEnumerable<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(SqlConnection con, Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
         {
             List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
@@ -93,9 +93,14 @@ namespace LeadGen.Code.Helpers
                     if (!string.IsNullOrEmpty(businessLocation))
                         mailSubject = string.Format("Wine cellar order in {0}, {1} please review", businessLocation, businessPost.title);
 
+                    BusinessCRMLeadUnsubscribeToken token = new BusinessCRMLeadUnsubscribeToken(businessPost.ID);
+                    token.CreateInDB(con);
+
+                    ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "unsubscribeTokenKey", token.Key } };
+
                     MailMessageLeadGen message = new MailMessageLeadGen(businessEmail);
                     message.Subject = mailSubject;
-                    message.Body = ViewHelper.RenderViewToString(viewPath, businessPostLeads);
+                    message.Body = ViewHelper.RenderViewToString(viewPath, businessPostLeads, viewDataDictionary);
                     messages.Add(message);
                 }
                 catch (Exception e)
