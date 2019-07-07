@@ -12,7 +12,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	SELECT [TokenKey], [TokenAction], [TokenValue], [TokenDateCreated]
+	SELECT [TokenKey], [TokenType], [TokenJson], [TokenDateCreated]
 	FROM [dbo].[SystemToken]
 	WHERE [TokenKey] = @tokenKey
 

@@ -13,6 +13,7 @@ using System.Configuration;
 using LeadGen.Code.Sys;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using LeadGen.Code.Tokens;
 
 namespace LeadGen.Code
 {
@@ -218,8 +219,10 @@ namespace LeadGen.Code
             string mailSubject = "Восстановление пароля";
             string viewPath = "~/Views/Login/E-mails/_PasswordRecovery.cshtml";
 
-            Token token = new Token(con, Token.Action.LoginRecoverPassword.ToString(), ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
+            LoginRecoverPasswordToken token = new LoginRecoverPasswordToken(ID);
+            token.CreateInDB(con);
+
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.Key } };
 
             MailMessageLeadGen message = new MailMessageLeadGen(email);
 

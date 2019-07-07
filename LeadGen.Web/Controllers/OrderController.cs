@@ -3,6 +3,7 @@ using LeadGen.Code.CMS;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
+using LeadGen.Code.Tokens;
 using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -83,10 +84,11 @@ namespace LeadGen.Web.Controllers
 
         public ActionResult Review(long id, string token)
         {
-            Token foundToken = Token.Find(DBLGcon, token);
-            if (foundToken == null || (Token.Action)Enum.Parse(typeof(Token.Action), foundToken.action) != Token.Action.LeadReviewCreate || foundToken.value != id.ToString())
+            LeadReviewCreateToken foundToken = Token.LoadFromDB(DBLGcon, token) as LeadReviewCreateToken;
+            if (foundToken == null || foundToken.LeadID != id)
                 return RedirectToMainPage();
-            ViewBag.token = foundToken.key;
+
+            ViewBag.token = foundToken.Key;
 
             leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: id, loadFieldValues: true).FirstOrDefault();
             Review review = new Review(leadItem.ID);
@@ -98,10 +100,11 @@ namespace LeadGen.Web.Controllers
         [HttpPost]
         public ActionResult Review(long id, string token, Review review)
         {
-            Token foundToken = Token.Find(DBLGcon, token);
-            if (foundToken == null || (Token.Action)Enum.Parse(typeof(Token.Action), foundToken.action) != Token.Action.LeadReviewCreate || foundToken.value != id.ToString())
+            LeadReviewCreateToken foundToken = Token.LoadFromDB(DBLGcon, token) as LeadReviewCreateToken;
+            if (foundToken == null || foundToken.LeadID != id)
                 return RedirectToMainPage();
-            ViewBag.token = foundToken.key;
+
+            ViewBag.token = foundToken.Key;
 
             ModelState.Clear();
 
@@ -127,7 +130,7 @@ namespace LeadGen.Web.Controllers
 
             review.reviewText = SysHelper.ReplaceNewLinesWithParagraph(review.reviewText);
             review.SaveInDB(DBLGcon);
-            foundToken.Delete(DBLGcon);
+            foundToken.DeleteFromDB(DBLGcon);
 
             //If review.notCompleted then genereate another review request for the next month
             if (review.notCompleted ?? false == true)
@@ -167,8 +170,9 @@ namespace LeadGen.Web.Controllers
                 return RedirectToAction("Cancel", new { email = email, error = error });
             }
 
-            Token token = new Token(DBLGcon, Token.Action.LeadRemoveByUser.ToString(), email);
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.key } };
+            LeadRemoveByUserToken token = new LeadRemoveByUserToken(email);
+            token.CreateInDB(DBLGcon);
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(null) { { "tokenKey", token.Key } };
 
             message.Subject = "Подтверждение на удаление заявки";
             message.Body = ViewHelper.RenderViewToString("~/Views/Order/E-mails/_CancelOrders.cshtml", email, viewDataDictionary);

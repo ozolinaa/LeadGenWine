@@ -1,4 +1,5 @@
 ﻿using LeadGen.Code;
+using LeadGen.Code.Tokens;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -154,36 +155,30 @@ namespace LeadGen.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SetNewPassword(Login postedLogin, string tokenKey)
         {
-            long loginID;
-            Token.Action tokenAction;
             bool status = false;
 
-            Token token = Token.Find(DBLGcon, tokenKey);
-            if (Enum.TryParse(token.action, out tokenAction))
-                if (tokenAction == Token.Action.LoginRecoverPassword && Int64.TryParse(token.value, out loginID))
-                {
-                    if (!ModelState["newPassword.password"].Errors.Any() && !ModelState["newPassword.passwordConfirmation"].Errors.Any())
-                    {
-                        if (postedLogin.newPassword.password != postedLogin.newPassword.passwordConfirmation)
-                            ModelState.AddModelError("newPassword.passwordConfirmation", "Confirmation password does not match new password");
-                        else
-                            status = Login.SetNewPassword(DBLGcon, loginID, "", postedLogin.newPassword);
-                    }
+            LoginRecoverPasswordToken token = Token.LoadFromDB(DBLGcon, tokenKey) as LoginRecoverPasswordToken;
+            if(token == null)
+                return RedirectToAction("index", "Home"); //Error   
 
-                    if (status == false)
-                    {
-                        ViewData["tokenKey"] = tokenKey;
-                        return PartialView("RecoverPassword", postedLogin);
-                    }
-                    else
-                    {
-                        //success
-                        SetLoginSessionCookie(DBLGcon, HttpContext, loginID);
-                        return RedirectToAction(loginActionName, "Login", new { area = "" });
-                    }
-                }
+            if (!ModelState["newPassword.password"].Errors.Any() && !ModelState["newPassword.passwordConfirmation"].Errors.Any())
+            {
+                if (postedLogin.newPassword.password != postedLogin.newPassword.passwordConfirmation)
+                    ModelState.AddModelError("newPassword.passwordConfirmation", "Confirmation password does not match new password");
+                else
+                    status = Login.SetNewPassword(DBLGcon, token.LoginID, "", postedLogin.newPassword);
+            }
 
-            return RedirectToAction("index", "Home"); //Error   
+            if (status == false)
+            {
+                ViewData["tokenKey"] = tokenKey;
+                return View("RecoverPassword", postedLogin);
+            }
+
+            //success
+            token.DeleteFromDB(DBLGcon);
+            SetLoginSessionCookie(DBLGcon, HttpContext, token.LoginID);
+            return RedirectToAction(loginActionName, "Login", new { area = "" });
         }
 
 

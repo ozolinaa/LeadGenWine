@@ -2,6 +2,7 @@
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
+using LeadGen.Code.Tokens;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
@@ -19,8 +20,11 @@ namespace LeadGen.Code.Helpers
             string mailSubject = "E-mail address verification";
             string viewPath = "~/Views/Order/E-mails/EmailVerify.cshtml";
 
-            Token token = new Token(con, Token.Action.LeadEmailConfirmation.ToString(), lead.ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
+
+            LeadEmailConfirmationToken token = new LeadEmailConfirmationToken(lead.ID);
+            token.CreateInDB(con);
+
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.Key } };
 
             MailMessageLeadGen message = new MailMessageLeadGen(lead.email);
 
@@ -35,8 +39,10 @@ namespace LeadGen.Code.Helpers
             string mailSubject = "Confirm business E-mail address";
             string viewPath = "~/Areas/Business/Views/Registration/E-mails/RegistrationEmailVerify.cshtml";
 
-            Token token = new Token(con, Token.Action.LoginEmailConfirmation.ToString(), login.ID.ToString());
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.key } };
+            BusinessRegistrationEmaiConfirmationToken token = new BusinessRegistrationEmaiConfirmationToken(login.ID);
+            token.CreateInDB(con);
+
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.Key } };
 
             MailMessageLeadGen message = new MailMessageLeadGen(login.email);
 

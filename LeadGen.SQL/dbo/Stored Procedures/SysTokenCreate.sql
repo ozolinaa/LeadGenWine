@@ -5,8 +5,8 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[SysTokenCreate]
 	-- Add the parameters for the stored procedure here
-	@tokenAction nvarchar(255),
-	@tokenValue nvarchar(255),
+	@tokenType nvarchar(255),
+	@tokenJson nvarchar(255),
 	@tokenKeySet nvarchar(255),
 	@tokenKey nvarchar(255) OUTPUT
 AS
@@ -25,17 +25,17 @@ BEGIN
 	BEGIN
 		INSERT INTO [dbo].[SystemToken]
 			([TokenKey], 
-			[TokenAction],
-			[TokenValue],
+			[TokenType],
+			[TokenJson],
 			[TokenDateCreated])
 		VALUES 
 			(@tokenKey,
-			@tokenAction,
-			@tokenValue,
+			@tokenType,
+			@tokenJson,
 			GETUTCDATE())
 		RETURN
 	END
 	ELSE
-		EXEC [dbo].[SysTokenCreate] @tokenAction, @tokenValue, NULL, @tokenKey OUT
+		EXEC [dbo].[SysTokenCreate] @tokenType, @tokenJson, NULL, @tokenKey OUT
 
 END

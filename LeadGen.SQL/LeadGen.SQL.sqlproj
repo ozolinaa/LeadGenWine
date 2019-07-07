@@ -250,7 +250,6 @@
     <Build Include="dbo\Stored Procedures\LeadFieldValueSelect.sql" />
     <Build Include="dbo\Stored Procedures\LeadFieldValueTaxonomyDelete.sql" />
     <Build Include="dbo\Stored Procedures\LeadFieldValueTaxonomyInsert.sql" />
-    <Build Include="dbo\Stored Procedures\LeadGetEmailConfirmationKey.sql" />
     <Build Include="dbo\Stored Procedures\LeadInsert.sql" />
     <Build Include="dbo\Stored Procedures\LocationSelect.sql" />
     <Build Include="dbo\Stored Procedures\LocationCreate.sql" />

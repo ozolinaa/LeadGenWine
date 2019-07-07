@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [dbo].[SystemToken](
 	[TokenKey] [nvarchar](255) NOT NULL,
-	[TokenAction] [nvarchar](255) NOT NULL,
-	[TokenValue] [nvarchar](255) NOT NULL,
+	[TokenType] [nvarchar](255) NOT NULL,
+	[TokenJson] [nvarchar](MAX) NOT NULL,
 	[TokenDateCreated] [datetime] NOT NULL,
  CONSTRAINT [PK_Token] PRIMARY KEY CLUSTERED 
 (

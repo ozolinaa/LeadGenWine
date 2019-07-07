@@ -1,7 +1,9 @@
 ﻿using LeadGen.Code;
+using LeadGen.Code.CMS;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Lead;
 using LeadGen.Code.Sys;
+using LeadGen.Code.Tokens;
 using LeadGen.Web.Controllers;
 using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
@@ -18,43 +20,34 @@ namespace LeadGen.Web.Controllers
         // GET: Token
         public ActionResult Index(string key)
         {
-            Token token = Token.Find(DBLGcon, key);
-
-            Token.Action tokenAction;
-            if (token == null || !Enum.TryParse(token.action, out tokenAction))
+            Token token = Token.LoadFromDB(DBLGcon, key);
+            if (token == null)
                 return View("error");
 
-            switch (tokenAction)
-            {
-                case Token.Action.LoginEmailConfirmation:
-                    return LoginEmailConfirm(token);
-                case Token.Action.LoginRecoverPassword:
-                    return LoginRecoverPassword(token);
-                case Token.Action.LeadEmailConfirmation:
-                    return LeadEmailConfirm(token);
-                case Token.Action.LeadRemoveByUser:
-                    return LeadRemoveByUser(token);
-                default:
-                    return RedirectToAction("Index", "Home", new { area = "" });
-            }
+            if (token is BusinessRegistrationEmaiConfirmationToken)
+                return LoginEmailConfirm(token as BusinessRegistrationEmaiConfirmationToken);
+            else if (token is LoginRecoverPasswordToken)
+                return LoginRecoverPassword(token as LoginRecoverPasswordToken);
+            else if (token is LeadEmailConfirmationToken)
+                return LeadEmailConfirm(token as LeadEmailConfirmationToken);
+            else if (token is LeadRemoveByUserToken)
+                return LeadRemoveByUser(token as LeadRemoveByUserToken);
+            else if (token is Token)
+                return BusinessCRMLeadUnsubscribe(token as BusinessCRMLeadUnsubscribeToken);
 
-
+            return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         [NonAction]
-        private ActionResult LoginEmailConfirm(Token token)
+        private ActionResult LoginEmailConfirm(BusinessRegistrationEmaiConfirmationToken token)
         {
-            long loginID;
-            Login confirmLogin = null;
-
-            if (Int64.TryParse(token.value, out loginID))
-                confirmLogin = Login.SelectOne(DBLGcon, loginID: loginID);
+            Login confirmLogin = Login.SelectOne(DBLGcon, loginID: token.LoginID);
 
             if (confirmLogin != null)
             {
                 Login.EmailConfirm(DBLGcon, confirmLogin.ID);
                 string sessionID = LoginController.SetLoginSessionCookie(DBLGcon, HttpContext, confirmLogin.ID);
-                token.Delete(DBLGcon);
+                token.DeleteFromDB(DBLGcon);
 
                 confirmLogin = LeadGen.Code.Session.GetLoginBySessionID(DBLGcon, sessionID);
 
@@ -73,49 +66,41 @@ namespace LeadGen.Web.Controllers
         }
 
         [NonAction]
-        private ActionResult LoginRecoverPassword(Token token)
+        private ActionResult LoginRecoverPassword(LoginRecoverPasswordToken token)
         {
-            Login recoverLogin = null;
-            long loginID;
-            if (Int64.TryParse(token.value, out loginID))
-                recoverLogin = Login.SelectOne(DBLGcon, loginID: loginID);
+            Login recoverLogin = Login.SelectOne(DBLGcon, loginID: token.LoginID);
 
-            ViewData["tokenKey"] = token.key;
+            ViewData["tokenKey"] = token.Key;
             return View("../Login/RecoverPassword", recoverLogin);
         }
 
         [NonAction]
-        private ActionResult LeadEmailConfirm(Token token)
+        private ActionResult LeadEmailConfirm(LeadEmailConfirmationToken token)
         {
-            long leadID;
-            if (Int64.TryParse(token.value, out leadID))
-                if (LeadItem.EmailConfirm(DBLGcon, leadID))
-                {
-                    token.Delete(DBLGcon);
-                    LeadItem leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: leadID, loadFieldValues: true).FirstOrDefault();
+            if (LeadItem.EmailConfirm(DBLGcon, token.LeadID))
+            {
+                token.DeleteFromDB(DBLGcon);
+                LeadItem leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: token.LeadID, loadFieldValues: true).FirstOrDefault();
 
-                    SendMessageToAdmins("New Lead Confirmed", string.Format("New Lead: #{0}", leadItem.ID));
+                SendMessageToAdmins("New Lead Confirmed", string.Format("New Lead: #{0}", leadItem.ID));
 
-                    return View("../Order/ConfirmEmailSuccess", leadItem);
-                }
-                    
+                return View("../Order/ConfirmEmailSuccess", leadItem);
+            }
 
             //Error
             return RedirectToAction("Index", "Home", new { area = "" });
         }
 
         [NonAction]
-        private ActionResult LeadRemoveByUser(Token token)
+        private ActionResult LeadRemoveByUser(LeadRemoveByUserToken token)
         {
-            string email = token.value.Trim();
-
-            List<LeadItem> userLeads = LeadItem.SelectFromDB(DBLGcon, email).Where(x=>x.adminDetails.publishedDateTime != null).ToList();
+            List<LeadItem> userLeads = LeadItem.SelectFromDB(DBLGcon, token.UserEmailAddress).Where(x=>x.adminDetails.publishedDateTime != null).ToList();
             foreach (LeadItem lead in userLeads)
                 lead.CancelByUser(DBLGcon, DateTime.UtcNow);
 
-            token.Delete(DBLGcon);
+            token.DeleteFromDB(DBLGcon);
 
-            return View("../Order/Canceled", email);
+            return View("../Order/Canceled", token.UserEmailAddress);
         }
 
 
@@ -128,5 +113,23 @@ namespace LeadGen.Web.Controllers
                 SmtpClientLeadGen.SendSingleMessage(mailMessage);
             }
         }
+
+        private ActionResult BusinessCRMLeadUnsubscribe(BusinessCRMLeadUnsubscribeToken token)
+        {
+
+            int businessPostFieldIDDoNotSendEmails = 8;
+
+            Post businessPost = Post.SelectFromDB(DBLGcon, postID: token.BusinessPostID).First();
+            businessPost.LoadFields(DBLGcon);
+            PostField field = businessPost.fields.First(x => x.ID == businessPostFieldIDDoNotSendEmails);
+            field.fieldBool = true; //TRUE means DO NOT send
+            field.SaveToDB(DBLGcon, businessPost.ID);
+
+            SendMessageToAdmins("CRM Business unsubscribed", string.Format("CRM business post: #{0}", businessPost.ID));
+
+            return View("../Business/BusinessCRMLeadUnsubscribeSuccess", businessPost);
+        }
+
+        
     }
 }
