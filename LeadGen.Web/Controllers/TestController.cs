@@ -61,7 +61,7 @@ namespace LeadGen.Web.Controllers
         [HttpGet]
         public ContentResult BusinessCRMEmail()
         {
-            List<MailMessageLeadGen> messages = NotificationManager.QueueMailMessagesForCompanyPostsAboutNewLeads(DBLGcon);
+            List<MailMessageLeadGen> messages = NotificationManager.QueueMailMessagesForCompanyPostsAboutNewLeads(DBLGcon, true);
 
             return new ContentResult
             {

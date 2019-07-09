@@ -43,14 +43,16 @@ namespace LeadGen.Code.Business.Notification
             return queuedMessages;
         }
 
-        public static List<MailMessageLeadGen> QueueMailMessagesForCompanyPostsAboutNewLeads(SqlConnection connection)
+        public static List<MailMessageLeadGen> QueueMailMessagesForCompanyPostsAboutNewLeads(SqlConnection connection, bool isDebugMode = false)
         {
             DateTime now = DateTime.UtcNow;
 
             //CRM Businesses (Posts) Process and Queue Messages
             Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
-            IEnumerable<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(connection, crmBusinessesWithLeadsToNotifyAbout);
-            return postMessages.ToList();
+            List<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(connection, crmBusinessesWithLeadsToNotifyAbout);
+
+            if(isDebugMode)
+                return postMessages;
 
             foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
                 foreach (LeadItem lead in crmBusinessesWithLeadsToNotifyAbout[businessPost])
@@ -61,7 +63,7 @@ namespace LeadGen.Code.Business.Notification
                 postMessage.QueueToDB(connection, now);
             }
 
-            return postMessages.ToList();
+            return postMessages;
         }
 
 

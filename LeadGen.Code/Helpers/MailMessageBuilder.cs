@@ -75,7 +75,7 @@ namespace LeadGen.Code.Helpers
             return result;
         }
 
-        public static IEnumerable<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(SqlConnection con, Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
+        public static List<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(SqlConnection con, Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
         {
             List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
@@ -107,7 +107,7 @@ namespace LeadGen.Code.Helpers
                 {
                     //May be master_email does not have a valid email
                     //Or View rendering
-                    //Log.Insert(e.ToString());
+                    Log.Insert(e.ToString());
                     throw e;
                 }
             }
