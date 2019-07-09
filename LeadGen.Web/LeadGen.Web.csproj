@@ -31,7 +31,10 @@
     <Content Update="Areas\Admin\Views\E-mails\Notification.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
-    <Content Update="Views\Token\BusinessCRMLeadUnsubscribeSuccess.cshtml">
+    <Content Update="Views\Token\BusinessCRMLeadUnsubscribe\ShowSuccess.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Token\BusinessCRMLeadUnsubscribe\AskConfirmation.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Business\Views\_ViewImports.cshtml">

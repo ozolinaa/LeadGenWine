@@ -19,17 +19,28 @@ namespace LeadGen.Code.Tokens
         [JsonProperty("businessPostID")]
         public long BusinessPostID { get; set; }
 
-        public Post UnsubscribeBusinessPost(SqlConnection con)
+        [JsonIgnore]
+        private Post _businessPost;
+
+        [JsonIgnore]
+        public Post BusinessPost => _businessPost;
+
+        public void LoadBusinessPost(SqlConnection con)
         {
+            _businessPost = Post.SelectFromDB(con, postID: BusinessPostID).First();
+            _businessPost.LoadFields(con);
+        }
+
+        public void UnsubscribeBusinessPost(SqlConnection con)
+        {
+            if (_businessPost == null)
+            {
+                LoadBusinessPost(con);
+            }
             int businessPostFieldIDDoNotSendEmails = 8;
-
-            Post businessPost = Post.SelectFromDB(con, postID: BusinessPostID).First();
-            businessPost.LoadFields(con);
-            PostField field = businessPost.fields.First(x => x.ID == businessPostFieldIDDoNotSendEmails);
+            PostField field = _businessPost.fields.First(x => x.ID == businessPostFieldIDDoNotSendEmails);
             field.fieldBool = true; //TRUE means DO NOT send
-            field.SaveToDB(con, businessPost.ID);
-
-            return businessPost;
+            field.SaveToDB(con, _businessPost.ID);
         }
     }
 }

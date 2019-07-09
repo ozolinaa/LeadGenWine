@@ -48,7 +48,7 @@ namespace LeadGen.Code.Business.Notification
             DateTime now = DateTime.UtcNow;
 
             //CRM Businesses (Posts) Process and Queue Messages
-            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-1));
+            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
             IEnumerable<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(connection, crmBusinessesWithLeadsToNotifyAbout);
             return postMessages.ToList();
 

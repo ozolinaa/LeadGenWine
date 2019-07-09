@@ -1,0 +1,7 @@
+﻿@model LeadGen.Code.Tokens.BusinessCRMLeadUnsubscribeToken
+@using (Html.BeginForm("BusinessCRMLeadUnsubscribeSubmitConfirmation", null, FormMethod.Post, null))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Key)
+    <input type="submit" value="Confirm unsubscribe from new leads" />
+}

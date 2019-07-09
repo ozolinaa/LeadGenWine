@@ -32,8 +32,8 @@ namespace LeadGen.Web.Controllers
                 return LeadEmailConfirm(token as LeadEmailConfirmationToken);
             else if (token is LeadRemoveByUserToken)
                 return LeadRemoveByUser(token as LeadRemoveByUserToken);
-            else if (token is Token)
-                return BusinessCRMLeadUnsubscribe(token as BusinessCRMLeadUnsubscribeToken);
+            else if (token is BusinessCRMLeadUnsubscribeToken)
+                return BusinessCRMLeadUnsubscribeAskConfirmation(token as BusinessCRMLeadUnsubscribeToken);
 
             return RedirectToAction("Index", "Home", new { area = "" });
         }
@@ -59,8 +59,8 @@ namespace LeadGen.Web.Controllers
 
                     return RedirectToAction("Index", "Account", new { area = "Business" });
                 }
-            } 
-   
+            }
+
             //Error
             return RedirectToAction("Index", "Home", new { area = "" });
         }
@@ -94,7 +94,7 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         private ActionResult LeadRemoveByUser(LeadRemoveByUserToken token)
         {
-            List<LeadItem> userLeads = LeadItem.SelectFromDB(DBLGcon, token.UserEmailAddress).Where(x=>x.adminDetails.publishedDateTime != null).ToList();
+            List<LeadItem> userLeads = LeadItem.SelectFromDB(DBLGcon, token.UserEmailAddress).Where(x => x.adminDetails.publishedDateTime != null).ToList();
             foreach (LeadItem lead in userLeads)
                 lead.CancelByUser(DBLGcon, DateTime.UtcNow);
 
@@ -114,15 +114,30 @@ namespace LeadGen.Web.Controllers
             }
         }
 
-        private ActionResult BusinessCRMLeadUnsubscribe(BusinessCRMLeadUnsubscribeToken token)
+        #region BusinessCRMLeadUnsubscribe
+
+        private ActionResult BusinessCRMLeadUnsubscribeAskConfirmation(BusinessCRMLeadUnsubscribeToken token)
         {
-            Post businessPost = token.UnsubscribeBusinessPost(DBLGcon);
+            token.LoadBusinessPost(DBLGcon);
+            return View("BusinessCRMLeadUnsubscribe/AskConfirmation", token);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult BusinessCRMLeadUnsubscribeSubmitConfirmation(BusinessCRMLeadUnsubscribeToken token)
+        {
+            token = (BusinessCRMLeadUnsubscribeToken)Token.LoadFromDB(DBLGcon, token.Key);
+            token.UnsubscribeBusinessPost(DBLGcon);
             token.DeleteFromDB(DBLGcon);
 
-            SendMessageToAdmins("CRM Business unsubscribed", string.Format("CRM business post: #{0}", businessPost.ID));
+            SendMessageToAdmins("CRM Business unsubscribed", string.Format("CRM business post: #{0}", token.BusinessPost.ID));
 
-            return View("BusinessCRMLeadUnsubscribeSuccess", businessPost);
+            return View("BusinessCRMLeadUnsubscribe/ShowSuccess", token);
         }
-        
+
+        #endregion
+
+
+
     }
 }
