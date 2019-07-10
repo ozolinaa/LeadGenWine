@@ -10,6 +10,7 @@
     data_ajax_update = "#" + formID,
 }))
 {
+    @Html.AntiForgeryToken()
     <h2>Please Confirm The Order</h2>
 
     @Html.DisplayFor(x => x.fieldGroups)

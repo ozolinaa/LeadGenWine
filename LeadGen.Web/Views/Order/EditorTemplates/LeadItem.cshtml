@@ -13,6 +13,7 @@
     data_ajax_complete = "( function() { LeadGen.refreshUnobtrusiveValidation(" + formID + "); } )"
 }))
 {
+    @Html.AntiForgeryToken()
     <h2>Please fill the form</h2>
     @Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
 

@@ -29,6 +29,7 @@ namespace LeadGen.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(LeadItem postedLeadItem)
         {
             leadItem = new LeadItem();
@@ -47,6 +48,7 @@ namespace LeadGen.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Confirm(LeadItem postedLeadItem, bool GoBackToOrder = false, bool AgreeWithSystemTerms = false)
         {
             leadItem = new LeadItem();
