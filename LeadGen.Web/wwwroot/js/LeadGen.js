@@ -51,11 +51,12 @@
                     var offset;
 
                     if (elHeight < windowHeight) {
-                        offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+                        offset = elOffset - ((windowHeight / 3) - (elHeight / 2));
                     }
                     else {
                         offset = elOffset;
                     }
+
 
                     $('html, body').animate({
                         scrollTop: offset

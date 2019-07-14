@@ -1,17 +1,37 @@
 .lead-container {
-    max-width: 800px;
+    max-width: 835px;
 }
+
+h1, h2, h3, h4 {
+    text-align: center;
+}
+
+h1 {
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 5px;
+    color: #eac47d;
+}
+
+h3 {
+    font-size: 40px;
+    font-weight: 800;
+}
+
 
 .lead_field_group {
     background-color: white;
     padding: 15px 30px;
     margin-bottom: 30px;
     border: 1px solid #eee;
+    position: relative;
 }
+
+
     .lead_field_group h3 {
         text-align: center;
         margin-top: 10px;
-        margin-bottom: 0;
+        margin-bottom: 10px;
     }
 
     .lead_field_group .field-option-list {
@@ -23,6 +43,14 @@
         justify-content: space-between;
         align-content: space-between;
     }
+
+.field-validation-error {
+    color: red;
+    font-weight: bold;
+    display: inline-block;
+    margin-left: 10px;
+}
+
         .lead_field_group .field-option-list .field-option {
             margin-bottom: 15px;
         }
@@ -46,6 +74,12 @@
 }
 
 
+
+
+.lead-field.form-group {
+    margin-bottom: 20px;
+}
+
     .lead-field .field-option input[type="checkbox"],
     .lead-field .field-option input[type="radio"] {
         display: none;
@@ -53,13 +87,13 @@
 
     .lead-field .field-option input:not(:checked) + label:hover::before {
         border-color: #9e9e9e2e;
-        transition: border-color 1.0s ease-out, background-size 0.5s ease-out;
+        transition: border-color 0.5s ease-out, background-size 0.5s ease-out;
     }
 
     .lead-field .field-option input:checked + label::before {
         border-color: #009d0085; /*green*/
         background-size: 130%;
-        transition: border-color 0.5s ease-in, background-size 0.5s ease-in;
+        transition: border-color 0.2s ease-in, background-size 0.5s ease-in;
     }
 
     .lead-field .field-option label:hover::before {
@@ -69,7 +103,7 @@
     .lead-field .field-option label {
         text-align: center;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 18px;
         margin-bottom: 0;
     }
 
@@ -133,10 +167,35 @@
 }
 
 
+.lead-field.lead-field-cellar_type .field-option-list {
+    padding-bottom: 70px;
+}
+
+.lead-field.lead-field-climate_required {
+    margin-top: -65px;
+    text-align: center;
+    position: absolute;
+    width: calc(100% - 60px); /*60px = container paddings left+right*/
+}
+    .lead-field-climate_required label {
+        font-size: 18px;
+        vertical-align: middle;
+        margin: 0;
+        margin-right: 7px;
+        cursor: pointer;
+    }
+.lead-field-climate_required input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
 
 @media (max-width: 768px) {
-
-    .lead-field .field-option label {
+    .lead-field .field-option label, .lead-field-climate_required label {
         font-size: 16px;
     }
 
@@ -156,6 +215,9 @@
         border-left: none;
         border-right: none;
     }
+        .lead_field_group h3 {
+            font-size: 30px;
+        }
 
         .lead_field_group .field-option-list {
             margin: 0 -15px;
@@ -163,9 +225,15 @@
             border-left: none;
             border-right: none;
         }
+        .lead_field_group .lead-field.lead-field-cellar_type .field-option-list {
+            padding-bottom: 50px;
+        }
+        .lead_field_group .lead-field.lead-field-climate_required {
+            margin-top: -55px;
+        }
 
 
-    .lead-field .field-option label {
+    .lead-field .field-option label, .lead-field-climate_required label {
         font-size: 14px;
     }
     .lead-field .field-option label::before {
@@ -173,6 +241,11 @@
         width: 90px;
         border-width: 6px;
         margin-bottom: 5px;
+    }
+
+    .lead-field-climate_required input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
     }
 }
 

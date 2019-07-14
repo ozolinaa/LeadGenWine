@@ -65,18 +65,35 @@
     {
         case LeadGen.Code.Lead.FieldType.Textbox:
             @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldText)
+            break;
+        case LeadGen.Code.Lead.FieldType.Textarea:
+            @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldText)
             break;
         case LeadGen.Code.Lead.FieldType.Boolean:
             @Html.LabelFor(x => x.fieldBool, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldBool)
             break;
         case LeadGen.Code.Lead.FieldType.Datetime:
             @Html.LabelFor(x => x.fieldDatetime, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldDatetime)
             break;
         case LeadGen.Code.Lead.FieldType.Number:
             @Html.LabelFor(x => x.fieldNumber, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldNumber)
             break;
-        default:
+        case LeadGen.Code.Lead.FieldType.Dropdown:
             @Html.LabelFor(x => x.termIDSelected, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.termIDSelected)
+            break;
+        case LeadGen.Code.Lead.FieldType.Checkbox:
+            @Html.LabelFor(x => x.fieldTerms, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.fieldTerms)
+            break;
+        case LeadGen.Code.Lead.FieldType.Radio:
+            @Html.LabelFor(x => x.termIDSelected, Model.label, new { @class = labelClass })
+            @Html.ValidationMessageFor(x => x.termIDSelected)
             break;
     }
 
@@ -85,27 +102,21 @@
     {
         case LeadGen.Code.Lead.FieldType.Textbox:
             @Html.TextBoxFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
-            @Html.ValidationMessageFor(x => x.fieldText)
             break;
         case LeadGen.Code.Lead.FieldType.Textarea:
             @Html.TextAreaFor(x => x.fieldText, new { @class = "form-control", placeholder = Model.placeholder })
-            @Html.ValidationMessageFor(x => x.fieldText)
             break;
         case LeadGen.Code.Lead.FieldType.Boolean:
             @Html.CheckBoxFor(x => x.fieldBool)
-            @Html.ValidationMessageFor(x => x.fieldBool)
             break;
         case LeadGen.Code.Lead.FieldType.Datetime:
             @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker" })
-            @Html.ValidationMessageFor(x => x.fieldDatetime)
             break;
         case LeadGen.Code.Lead.FieldType.Number:
             @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder })
-            @Html.ValidationMessageFor(x => x.fieldNumber)
             break;
         case LeadGen.Code.Lead.FieldType.Dropdown:
             @Html.DropDownListFor(x => x.termIDSelected, new SelectList(Model.fieldTerms, "ID", "nameDashed", Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected)), Model.placeholder, new { @class = "form-control" })
-            @Html.ValidationMessageFor(x => x.termIDSelected)
             break;
         case LeadGen.Code.Lead.FieldType.Checkbox:
             if (Model.fieldTerms != null)
@@ -123,7 +134,6 @@
                     }
                 </div>
             }
-            @Html.ValidationMessageFor(x => x.fieldTerms)
             break;
         case LeadGen.Code.Lead.FieldType.Radio:
             <div class="field-option-list">
@@ -136,7 +146,6 @@
                     </div>
                 }
             </div>
-            @Html.ValidationMessageFor(x => x.termIDSelected)
             break;
         default:
             break;

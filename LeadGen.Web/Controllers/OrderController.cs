@@ -23,7 +23,7 @@ namespace LeadGen.Web.Controllers
         public ActionResult Index()
         {
             leadItem = new LeadItem();
-            leadItem.LoadFieldStructure(DBLGcon, false);
+            leadItem.LoadFieldStructure(DBLGcon, true);
 
             return View("Create", leadItem);
         }
@@ -33,7 +33,7 @@ namespace LeadGen.Web.Controllers
         public ActionResult Index(LeadItem postedLeadItem)
         {
             leadItem = new LeadItem();
-            leadItem.LoadFieldStructure(DBLGcon, false);
+            leadItem.LoadFieldStructure(DBLGcon, true);
             leadItem.SafeReplaceLeadValuesWith(postedLeadItem);
             leadItem = leadItem;
 
@@ -52,7 +52,7 @@ namespace LeadGen.Web.Controllers
         public ActionResult Confirm(LeadItem postedLeadItem, bool GoBackToOrder = false, bool AgreeWithSystemTerms = false)
         {
             leadItem = new LeadItem();
-            leadItem.LoadFieldStructure(DBLGcon, false);
+            leadItem.LoadFieldStructure(DBLGcon, true);
             leadItem.SafeReplaceLeadValuesWith(postedLeadItem);
 
             //Validate and send back to order editor template if model is not valid
