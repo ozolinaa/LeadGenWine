@@ -33,7 +33,7 @@ ALTER TABLE [dbo].[LeadFieldValueScalar] CHECK CONSTRAINT [FK_Lead.Field.Value.S
 GO
 ALTER TABLE [dbo].[LeadFieldValueScalar] ADD  CONSTRAINT [DF_Lead.Field.Value.Scalar_ID]  DEFAULT (newid()) FOR [ID]
 GO
-ALTER TABLE [dbo].[LeadFieldValueScalar]  WITH CHECK ADD  CONSTRAINT [CK_Lead.Field.Value.Scalar.FieldTypeID] CHECK  (([FieldTypeID]=(7) OR [FieldTypeID]=(6) OR [FieldTypeID]=(5) OR [FieldTypeID]=(1)))
+ALTER TABLE [dbo].[LeadFieldValueScalar]  WITH CHECK ADD  CONSTRAINT [CK_Lead.Field.Value.Scalar.FieldTypeID] CHECK  (([FieldTypeID]=(7) OR [FieldTypeID]=(6) OR [FieldTypeID]=(5) OR [FieldTypeID]=(1) OR [FieldTypeID]=(8)))
 GO
 
 ALTER TABLE [dbo].[LeadFieldValueScalar] CHECK CONSTRAINT [CK_Lead.Field.Value.Scalar.FieldTypeID]

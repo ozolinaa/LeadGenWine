@@ -9,6 +9,12 @@
         $.validator.unobtrusive.parse($form);
     }
 
+    LeadGen.onLeadFormSubmit = function (formID) {
+        debugger;
+        alert("ggg");
+        LeadGen.refreshUnobtrusiveValidation(formID);
+    }
+
     LeadGen.ui = {
             //UI notifications
             showNotificationLabelForElement: function (addToElementID, labelText) {

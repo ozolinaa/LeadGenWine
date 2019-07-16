@@ -193,6 +193,10 @@ h3 {
     cursor: pointer;
 }
 
+.lead-field-cellar_comment textarea {
+    padding: 10px 12px !important;
+    min-height: 60px;
+}
 
 @media (max-width: 768px) {
     .lead-field .field-option label, .lead-field-climate_required label {
@@ -260,4 +264,14 @@ textarea.form-control {
     font-size: 16px;
     line-height: 18px;
     min-height: 45px;
+
+    border: 1px solid #eee;
+    padding: 0px 15px;
+    background: #fff;
+    outline: none;
+    width: 100%;
+    border-radius: 0px;
+    box-shadow: none;
+    color: #333;
+    margin-bottom: 15px;
 }

@@ -70,12 +70,14 @@ namespace LeadGen.Code.Lead
                 {
                     case FieldType.Textbox:
                         return fieldText;
+                    case FieldType.Textarea:
+                        return fieldText;
                     case FieldType.Dropdown:
-                        return (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
+                        return fieldTerms == null ? "" : (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
                     case FieldType.Checkbox:
                         return string.Join(", ", fieldTerms == null? new string[0] : fieldTerms.Where(x => x.isChecked == true).ToList().Select(x=>x.name));
                     case FieldType.Radio:
-                        return (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
+                        return fieldTerms == null ? "" : (fieldTerms.FirstOrDefault(x => x.ID == termIDSelected) ?? new Term()).name;
                     case FieldType.Boolean:
                         return fieldBool ? "Yes" : "No";
                     case FieldType.Datetime:
@@ -100,6 +102,10 @@ namespace LeadGen.Code.Lead
                 switch (fieldType)
                 {
                     case FieldType.Textbox:
+                        if (isRequired && String.IsNullOrEmpty(fieldText))
+                            return new KeyValuePair<string, string>("fieldText", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
+                        break;
+                    case FieldType.Textarea:
                         if (isRequired && String.IsNullOrEmpty(fieldText))
                             return new KeyValuePair<string, string>("fieldText", string.Format("{1}\"{0}\"{2}", name, fieldPrefix, requiredSuffix).Trim());
                         break;
@@ -136,7 +142,7 @@ namespace LeadGen.Code.Lead
             }
         }
 
-        private static FieldType[] scalarFieldTypes = new FieldType[] { FieldType.Boolean, FieldType.Datetime, FieldType.Number, FieldType.Textbox };
+        private static FieldType[] scalarFieldTypes = new FieldType[] { FieldType.Boolean, FieldType.Datetime, FieldType.Number, FieldType.Textbox, FieldType.Textarea };
 
 
         public bool UpdateInDB(SqlConnection con, ref string errorMessage)
@@ -216,7 +222,7 @@ namespace LeadGen.Code.Lead
 
                 cmd.Parameters.AddWithValue("@LeadID", leadID);
                 cmd.Parameters.AddWithValue("@FieldID", ID);
-                cmd.Parameters.AddWithValue("@TextValue", fieldType == FieldType.Textbox ? fieldText : (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@TextValue", fieldType == FieldType.Textbox || fieldType == FieldType.Textarea ? fieldText : (object)DBNull.Value);
                 cmd.Parameters.AddWithValue("@BoolValue", fieldType == FieldType.Boolean ? fieldBool : (object)DBNull.Value); 
                 cmd.Parameters.AddWithValue("@DatetimeValue", fieldType == FieldType.Datetime ? (object)fieldDatetime ?? DBNull.Value : DBNull.Value);
                 cmd.Parameters.AddWithValue("@NumberValue", fieldType == FieldType.Number ? (object)fieldNumber ?? DBNull.Value : DBNull.Value);
@@ -293,6 +299,9 @@ namespace LeadGen.Code.Lead
             switch (fieldType)
             {
                 case FieldType.Textbox:
+                    fieldText = row["TextValue"].ToString();
+                    break;
+                case FieldType.Textarea:
                     fieldText = row["TextValue"].ToString();
                     break;
                 case FieldType.Boolean:

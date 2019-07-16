@@ -74,9 +74,8 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             if (leadItem == null)
                 return RedirectToAction("List", "Lead", new { area = "Admin" });
 
-            leadItem.LoadFieldStructure(DBLGcon);
+            leadItem.LoadFieldStructure(DBLGcon, ActiveOnly: false);
             leadItem.LoadFieldValues(DBLGcon);
-            
 
             return View(leadItem);
         }
@@ -85,7 +84,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         public ActionResult Edit(LeadItem postedLeadItem)
         {
             LeadItem leadItem = new LeadItem() {ID = postedLeadItem.ID };
-            leadItem.LoadFieldStructure(DBLGcon, false);
+            leadItem.LoadFieldStructure(DBLGcon, ActiveOnly: false);
             leadItem.SafeReplaceLeadValuesWith(postedLeadItem);
 
             leadItem.Validate(ModelState);

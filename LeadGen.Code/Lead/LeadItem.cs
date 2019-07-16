@@ -249,6 +249,9 @@ namespace LeadGen.Code.Lead
                                         case FieldType.Textbox:
                                             fieldToReplace.fieldText = importField.fieldText;
                                             break;
+                                        case FieldType.Textarea:
+                                            fieldToReplace.fieldText = importField.fieldText;
+                                            break;
                                         case FieldType.Dropdown:
                                             if (importField.termIDSelected != null)
                                                 fieldToReplace.termIDSelected = fieldToReplace.fieldTerms.First(x => x.ID == importField.termIDSelected).ID;

@@ -24,6 +24,9 @@
                 case LeadGen.Code.Lead.FieldType.Textbox:
             @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
             break;
+                    case LeadGen.Code.Lead.FieldType.Textarea:
+            @Html.LabelFor(x => x.fieldText, Model.label, new { @class = labelClass })
+            break;
         case LeadGen.Code.Lead.FieldType.Boolean:
             @Html.LabelFor(x => x.fieldBool, Model.label, new { @class = labelClass })
             break;
@@ -42,6 +45,10 @@
         @switch (Model.fieldType)
         {
             case LeadGen.Code.Lead.FieldType.Textbox:
+                @Model.fieldText
+                @Html.HiddenFor(x => x.fieldText)
+                break;
+            case LeadGen.Code.Lead.FieldType.Textarea:
                 @Model.fieldText
                 @Html.HiddenFor(x => x.fieldText)
                 break;

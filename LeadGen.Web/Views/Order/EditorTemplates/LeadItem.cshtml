@@ -10,7 +10,7 @@
     data_ajax_loading = "#LoadingWindowSplash",
     data_ajax_mode = "replace-with",
     data_ajax_update = "#" + formID,
-    data_ajax_complete = "( function() { LeadGen.refreshUnobtrusiveValidation(" + formID + "); } )"
+    data_ajax_complete = "( function() { LeadGen.onLeadFormSubmit(); } )"
 }))
 {
     @Html.AntiForgeryToken()
