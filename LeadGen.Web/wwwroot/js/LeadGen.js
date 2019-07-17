@@ -7,13 +7,7 @@
         //Refresh unobtrusive form validation (NEED REFRESH Validation TO HANDLE NEW FIELDS ERRORS)
         $form.removeData("validator").removeData("unobtrusiveValidation");
         $.validator.unobtrusive.parse($form);
-    }
-
-    LeadGen.onLeadFormSubmit = function (formID) {
-        debugger;
-        alert("ggg");
-        LeadGen.refreshUnobtrusiveValidation(formID);
-    }
+    };
 
     LeadGen.ui = {
             //UI notifications
@@ -36,7 +30,7 @@
 
 
                 var fadeOutDelay = 2000;
-                if (alertClass == 'danger') {
+                if (alertClass === 'danger') {
                     fadeOutDelay = fadeOutDelay * 3;
                 };
 
@@ -82,7 +76,7 @@
                 adjustThumbnailGridItemsHeight: function () {
                     var items = $(".ThumbnailGrid .item");
 
-                    if (items.length == 0)
+                    if (items.length === 0)
                         return;
 
                     //set height to zero to make propper items destribution (using css)
@@ -146,7 +140,7 @@
                     //    return $(this).height();
                     //}).get());
 
-                    //if (maxImageHeight == 0)
+                    //if (maxImageHeight === 0)
                     //    maxHeight = maxHeight + 200;
 
                     //items.css("height", maxHeight);
@@ -160,17 +154,17 @@
                     //Check if there are any maps to initialize
                     if (LeadGen.googleMaps) {
                         //Load google maps library if needed
-                        if ((window.google == null || window.google.maps == null)) {
+                        if ((window.google === null || window.google.maps === null)) {
                             var apiKey = LeadGen.settings.googleMapsAPIKey;
                             var file = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places";
                             //pass the same method as a callback this code will not be executed next time as window.google.maps will be initialized
                             LeadGen.util.loadScript(file, LeadGen.ui.googleMapsActions.initializeAll);
                             return;
                         }
-                        //Initialize each visible map that is not yet initialized (instance == null)
+                        //Initialize each visible map that is not yet initialized (instance === null)
                         for (var mapId in LeadGen.googleMaps) {
                             var map = LeadGen.googleMaps[mapId];
-                            if (map.instance == null) {
+                            if (map.instance === null) {
                                 if ($('#' + mapId).is(":visible")) {
                                     map.init();
                                 }
@@ -211,14 +205,14 @@
             var separator = args.separator;
 
             function switchCityCountry(setCountry) {
-                if ($(cityInputSelector).attr("country") == setCountry) { return; }
+                if ($(cityInputSelector).attr("country") === setCountry) { return; }
 
                 $(cityInputSelector + ' option').removeAttr('disabled');
                 $(cityInputSelector + ' option[country!="' + setCountry + '"]').attr('disabled', true);
 
-                var countryItem = $.grep(countryData, function (x) { return x.country == setCountry; })[0];
+                var countryItem = $.grep(countryData, function (x) { return x.country === setCountry; })[0];
 
-                $selectedOption = $(cityInputSelector + ' option[country="' + setCountry + '"]').filter(function () { return $(this).html() == countryItem.defaultText; });
+                $selectedOption = $(cityInputSelector + ' option[country="' + setCountry + '"]').filter(function () { return $(this).html() === countryItem.defaultText; });
 
                 $(cityInputSelector).val($selectedOption.val());
                 $(cityInputSelector).attr("country", setCountry)
@@ -234,8 +228,8 @@
                 var currentCountryName;
                 $(cityInputSelector + ' option').each(function (index) {
                     var name = $(this).text();
-                    if (name.length == 0) { return }
-                    if (name.substring(0, 1) != "-") {
+                    if (name.length === 0) { return }
+                    if (name.substring(0, 1) !== "-") {
                         currentCountryName = name
                     }
                     else {
@@ -253,7 +247,7 @@
 
                 countryData.forEach(function (element, index, list) {
 
-                    if (index == list.length - 1) { separator = ""; }
+                    if (index === list.length - 1) { separator = ""; }
                     $("#" + countrySwitchWrapperID).append("<span data-country='" + element.country + "'>" + element.display + "</span>" + separator);
                 });
 
@@ -277,10 +271,10 @@
             //check if selectedValue was not a country
             //update setCountry with selectedCountry
             //countryData[i].defaultText to rhe selectedText
-            if (selectedCountry != undefined) {
+            if (selectedCountry !== undefined) {
                 setCountry = selectedCountry;
                 for (var i = 0; i < countryData.length; i++) {
-                    if (countryData[i].country == selectedCountry) {
+                    if (countryData[i].country === selectedCountry) {
                         countryData[i].defaultText = selectedText;
                     }
                 }
@@ -347,7 +341,7 @@ function makeRadiosDeselectableInClass(className) {
             var previousValue = $(this).attr('previousValue');
             var name = $(this).attr('name');
 
-            if (previousValue == 'checked') {
+            if (previousValue === 'checked') {
                 $(this).removeAttr('checked');
                 $(this).attr('previousValue', false);
             }
@@ -361,7 +355,7 @@ function makeRadiosDeselectableInClass(className) {
 
 
 function AjaxOnCompleteExample(data) {
-    if (data.hasOwnProperty('statusText') && data.statusText != "OK") {
+    if (data.hasOwnProperty('statusText') && data.statusText !== "OK") {
         //System Error
         bootbox.alert({
             title: "Внимание, системная ошибка!",
@@ -371,11 +365,11 @@ function AjaxOnCompleteExample(data) {
     else if (data.hasOwnProperty('responseJSON')) {
         //JSON
         var json = data.responseJSON;
-        if (json.status == "success" && json.hasOwnProperty('message')) {
+        if (json.status === "success" && json.hasOwnProperty('message')) {
             // Email Removed
             $(this).closest(".NotificationEmail").remove();
         }
-        else if (json.status == "error") {
+        else if (json.status === "error") {
             bootbox.alert({
                 title: "Внимание, ошибка!",
                 message: "<p>Вероятно этот адрес уже добавлен.</p>"

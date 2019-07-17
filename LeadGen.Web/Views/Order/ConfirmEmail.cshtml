@@ -15,3 +15,14 @@
         </p>
     </center>
 </div>
+
+<script>
+    window.location.hash = "confirm";
+    setTimeout(function () {
+        var fn = function () {
+            window.removeEventListener('hashchange', fn, false);
+            window.location.replace(window.location.href.split('#')[0]);
+        }
+        window.addEventListener('hashchange', fn, false);
+    }, 200);
+</script>

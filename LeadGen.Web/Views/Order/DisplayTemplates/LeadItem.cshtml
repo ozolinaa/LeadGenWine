@@ -7,11 +7,11 @@
     data_ajax = "true",
     data_ajax_loading = "#LoadingWindowSplash",
     data_ajax_mode = "replace-with",
-    data_ajax_update = "#" + formID,
+    data_ajax_update = "#" + formID
 }))
 {
     @Html.AntiForgeryToken()
-    <h2>Please Confirm The Order</h2>
+    <h2>Please Review The Order</h2>
 
     @Html.DisplayFor(x => x.fieldGroups)
 
@@ -37,9 +37,22 @@
 
     <div class="form-group">
         @Html.Hidden("GoBackToOrder", false, new { id = "GoBackToOrder" })
-        <div class="col-xs-2"><button type="submit" class="btn btn-default" onclick="$('#GoBackToOrder').val('True')">Back</button></div>
+        <div class="col-xs-2"><button id="GoBackToOrderBtn" type="submit" class="btn btn-default" onclick="$('#GoBackToOrder').val('True')">Back</button></div>
         <div class="col-xs-10"><button type="submit" class="btn btn-primary">Confirm</button></div>
     </div>
+
+    <script>
+    if (window.location.hash != "review") {
+        window.location.hash = "review"
+        setTimeout(function () {
+            var fn = function () {
+                window.removeEventListener('hashchange', fn, false);
+                $("#GoBackToOrderBtn").click();
+            }
+            window.addEventListener('hashchange', fn, false);
+        }, 200);
+    }
+    </script>
 }
 
 

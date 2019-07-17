@@ -52,26 +52,11 @@
     {
     <script src="~/lib/select2/js/select2.min.js"></script>
     <script>
-        function initializeLeadForm() {
-            if (window.mobileAndTabletcheck() == false) {
-                $('[data-toggle="popover"]').popover()
-            }
-
-            var pricefieldRange = document.getElementsByClassName("lead-field-price_range")[0];
-            if (pricefieldRange) {
-                var priceInput = pricefieldRange.querySelector("select");
-                if (!priceInput.value) {
-                    var defaultOption = priceInput.children[2];
-                    priceInput.value = defaultOption.value;
-                }
-            }
-
-
-            //Detect validation errors and focus on the input
-            LeadGen.ui.navigateToInputValidationError();
-        }
         $(document).ready(function () {
-            initializeLeadForm();
+            //initializeLeadForm is defined in ~/Views/Order/EditorTemplates/LeadItem.cshtml
+            if (typeof (initializeLeadForm) == "function") {
+                initializeLeadForm();
+            }
         });
     </script>
 }

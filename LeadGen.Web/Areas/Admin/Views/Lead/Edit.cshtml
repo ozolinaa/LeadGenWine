@@ -77,22 +77,6 @@
         {
             LeadGen.refreshUnobtrusiveValidation('LeadForm');
 
-            LeadGen.order.initializeCityCountrySwitch({
-                cityInputSelector: ".lead_field_city select",
-                setCountry: "Россия",
-                switchBegining: "Я в: ",
-                countryData: [
-                    { country: 'Россия', display: "России", defaultText: "Москва" },
-                    { country: 'Украина', display: "Украине", defaultText: "Киев" },
-                    { country: 'Белоруссия', display: "Беларуси", defaultText: "Минск" },
-                ],
-                separator: ", ",
-                countrySwitchWrapperID: "countrySwitchWrapper"
-            });
-
-            //Check and hide local business type checkbox
-            $('.lead_field_businessType input[type=checkbox]').first().prop("checked", true).closest('div').hide();
-
             //Togle active item item class after checked
             $('.item input[type=checkbox]').click(function () {
                 if (this.checked) {

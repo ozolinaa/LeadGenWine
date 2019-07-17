@@ -10,22 +10,44 @@
     data_ajax_loading = "#LoadingWindowSplash",
     data_ajax_mode = "replace-with",
     data_ajax_update = "#" + formID,
-    data_ajax_complete = "( function() { LeadGen.onLeadFormSubmit(); } )"
+    data_ajax_success = "onLeadFormSubmit(data, status, xhr)"
 }))
 {
-    @Html.AntiForgeryToken()
-    <h1>Order Wine Cellar</h1>
-    @Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
+@Html.AntiForgeryToken()
+<h1>Order Wine Cellar</h1>
+@Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
 
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Next</button>
-        </div>
+<div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Next</button>
     </div>
-}
-
+</div>
 <script>
-    if (typeof (initializeLeadForm) == "function") {
-        initializeLeadForm();
+    if (window.location.hash) {
+        window.location.hash = "";
     }
+    function initializeLeadForm() {
+        if (window.mobileAndTabletcheck() == false) {
+            $('[data-toggle="popover"]').popover()
+        }
+
+        var pricefieldRange = document.getElementsByClassName("lead-field-price_range")[0];
+        if (pricefieldRange) {
+            var priceInput = pricefieldRange.querySelector("select");
+            if (!priceInput.value) {
+                var defaultOption = priceInput.children[2];
+                priceInput.value = defaultOption.value;
+            }
+        }
+        //Detect validation errors and focus on the input
+        LeadGen.ui.navigateToInputValidationError();
+    }
+    onLeadFormSubmit = function (data, status, xhr) {
+        $form = $($.parseHTML(data.trim()));
+        var errors = $form.find('.input-validation-error,.field-validation-error');
+        if ($form[0].id === 'LeadForm' && errors.length > 0) {
+            initializeLeadForm();
+        }
+    };
 </script>
+}
