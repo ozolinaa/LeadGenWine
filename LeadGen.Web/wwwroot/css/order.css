@@ -341,13 +341,29 @@ h3 {
 
 
 
-input.form-control,
-select.form-control,
-textarea.form-control {
+.lead-container input.form-control,
+.lead-container select.form-control,
+.lead-container textarea.form-control {
     max-width: 100%;
     font-size: 20px;
-    line-height: 20px;
+    line-height: 26px;
     min-height: 45px;
+}
+.lead-container ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    font-size: 20px;
+    line-height: 26px;
+}
+.lead-container ::-moz-placeholder { /* Firefox 19+ */
+    font-size: 20px;
+    line-height: 26px;
+}
+.lead-container :-ms-input-placeholder { /* IE 10+ */
+    font-size: 20px;
+    line-height: 26px;
+}
+.lead-container :-moz-placeholder { /* Firefox 18- */
+    font-size: 20px;
+    line-height: 26px;
 }
 
 .lead-container form .btn,
