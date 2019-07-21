@@ -4,16 +4,16 @@
 }
 
 
-<div class="container">
-    <center>
-        <h2>Ваша заявка сохранена!</h2>
 
+<div class="container single-alert-container">
+    <div class="single-alert-container-content">
+        <h2>Ваша заявка сохранена!</h2>
         <p>
             На Ваш E-mail <strong>@Model.email</strong> <br /><br />
             было отправлено письмо со ссылкой для подтверждения заявки. <br /><br />
             Пожалуйста, подтвердите заявку, перейдя по ссылке <a href="http://@Model.email.Split('@')[1]" target="_blank">в письме</a>.
         </p>
-    </center>
+    </div class="single-alert-container-content">
 </div>
 
 <script>
@@ -26,3 +26,7 @@
         window.addEventListener('hashchange', fn, false);
     }, 200);
 </script>
+
+<style>
+
+</style>

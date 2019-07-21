@@ -414,3 +414,16 @@ footer .btn-login {
 
 
 
+.single-alert-container {
+    display: flex;
+    max-width: 100%;
+    height: calc(100vh - 250px);
+}
+    .single-alert-container .single-alert-container-content {
+        padding: 20px;
+        border: 1px solid #eee;
+        background: #fff;
+        position: relative;
+        text-align: center;
+        margin: auto;
+    }
