@@ -1,0 +1,9 @@
+﻿@model LeadGen.Code.Lead.LeadItem
+@{
+    ViewData.TemplateInfo.HtmlFieldPrefix = "";
+}
+    <div class="lead-field lead-field-email">
+        @Html.LabelFor(x => x.email, "E-mail")
+        <div class="string-value">@Model.email</div>
+        @Html.HiddenFor(x => x.email)
+    </div>

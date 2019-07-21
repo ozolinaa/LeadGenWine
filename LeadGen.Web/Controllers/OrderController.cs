@@ -66,7 +66,7 @@ namespace LeadGen.Web.Controllers
             //If Not AgreeWithSystemTerms, add validation error and show the same page with validation error
             if (!AgreeWithSystemTerms)
             {
-                ModelState.AddModelError("AgreeWithSystemTerms", "Вы должны согласиться с правилами системы");
+                ModelState.AddModelError("AgreeWithSystemTerms", "You must agree with system terms and conditions");
                 return PartialView("DisplayTemplates/LeadItem", leadItem);
             }
 

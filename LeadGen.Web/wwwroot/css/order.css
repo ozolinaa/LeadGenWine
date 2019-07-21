@@ -2,7 +2,7 @@
     max-width: 835px;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5 {
     text-align: center;
 }
 
@@ -11,6 +11,16 @@ h1 {
     font-family: 'Cinzel', serif;
     letter-spacing: 5px;
     color: #eac47d;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+h5 {
+    font-family: 'Cinzel', serif;
+    font-weight: 400;
+    color: #333;
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 h3 {
@@ -18,6 +28,50 @@ h3 {
     font-weight: 800;
 }
 
+.title-group {
+    text-align:center;
+}
+.line-mix {
+    position: relative;
+    display: inline-block;
+    margin: 5px auto;
+    color: #cba55d;
+}
+
+    .line-mix::before, .line-mix::after {
+        position: absolute;
+        top: 45%;
+        content: '';
+        width: 50px;
+        border-bottom: 1px solid #a98a4f;
+    }
+
+    .line-mix::before {
+        left: -55px;
+    }
+
+    .line-mix::after {
+        right: -55px;
+    }
+
+.line-mix-left::before {
+    left: 0px;
+}
+
+.line-mix-left::after {
+    left: 55px;
+}
+
+.star-group i {
+    font-size: 16px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+    .star-group i:first-child, .star-group i:last-child {
+        font-size: 12px;
+        margin: 0px;
+    }
 
 .lead_field_group {
     background-color: white;
@@ -35,25 +89,28 @@ h3 {
     }
 
     .lead_field_group .field-option-list {
-        background: #fafafa;
+        background: #fafafa8c;
         padding: 30px;
         padding-bottom: 15px;
         border: 1px solid #eee;
         display: flex;
         justify-content: space-between;
         align-content: space-between;
+        position: relative;
     }
 
 .field-validation-error {
     color: red;
     font-weight: bold;
     display: inline-block;
-    margin-left: 10px;
+    margin-left: 5px;
 }
 
-        .lead_field_group .field-option-list .field-option {
-            margin-bottom: 15px;
-        }
+.lead_field_group .field-option-list .field-option {
+    width: 33.3%;
+    text-align: center;
+    margin-bottom: 15px;
+}
 
 
         .lead-field.lead-field-display .field-option-list {
@@ -65,9 +122,6 @@ h3 {
     .lead-field.lead-field-display .field-option-list .field-option:not(:last-child) {
         margin-right: 20px;
     }
-    .lead-field.lead-field-display .field-option-list .field-option label {
-        font-weight: normal;
-    }
 
 .lead-field .field-option {
     /*margin-bottom: 20px;*/
@@ -76,7 +130,7 @@ h3 {
 
 
 
-.lead-field.form-group {
+.lead-field {
     margin-bottom: 20px;
 }
 
@@ -107,11 +161,14 @@ h3 {
         margin-bottom: 0;
     }
 
+
         .lead-field .field-option label::before {
+            box-sizing: border-box;
             display: block;
             content: " ";
             height: 150px;
             width: 150px;
+            max-width: 100%;
             border-radius: 50%;
             border-style: solid;
             border-width: 10px;
@@ -125,6 +182,8 @@ h3 {
             background-position-y: 50%;
             box-sizing: content-box;
             transition: border-color 0.5s ease-out, background-size 0.5s ease-out;
+            margin-left: auto;
+            margin-right: auto;
             margin-bottom: 10px;
         }
 
@@ -193,22 +252,32 @@ h3 {
     cursor: pointer;
 }
 
+.lead-field-climate_required .string-value {
+    vertical-align: middle;
+}
+
 .lead-field-cellar_comment textarea {
     padding: 10px 12px !important;
     min-height: 60px;
 }
 
-@media (max-width: 768px) {
+.lead-field.required > label::after {
+    content: "*";
+    color:red;
+    margin-left: 3px;
+}
+
+@media (max-width: 728px) {
     .lead-field .field-option label, .lead-field-climate_required label {
         font-size: 16px;
     }
 
-        .lead-field .field-option label::before {
-            height: 100px;
-            width: 100px;
-            border-width: 6px;
-            margin-bottom: 5px;
-        }
+    .lead-field .field-option label::before {
+        height: 110px;
+        width: 110px;
+        border-width: 6px;
+        margin-bottom: 5px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -220,7 +289,7 @@ h3 {
         border-right: none;
     }
         .lead_field_group h3 {
-            font-size: 30px;
+            font-size: 26px;
         }
 
         .lead_field_group .field-option-list {
@@ -240,16 +309,32 @@ h3 {
     .lead-field .field-option label, .lead-field-climate_required label {
         font-size: 14px;
     }
-    .lead-field .field-option label::before {
-        height: 90px;
-        width: 90px;
-        border-width: 6px;
-        margin-bottom: 5px;
-    }
+        .lead-field .field-option label::before {
+            height: 100px;
+            width: 100px;
+            border-width: 6px;
+            margin-bottom: 5px;
+        }
 
     .lead-field-climate_required input[type="checkbox"] {
         width: 20px;
         height: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    .lead-field .field-option label::before {
+        height: 92px;
+        width: 92px;
+    }
+}
+
+@media (max-width: 360px) {
+    .lead-field .field-option label::before {
+        height: 75px;
+        width: 75px;
+        border-width: 6px;
+        margin-bottom: 5px;
     }
 }
 
@@ -260,18 +345,116 @@ input.form-control,
 select.form-control,
 textarea.form-control {
     max-width: 100%;
-    max-width: 100%;
-    font-size: 16px;
-    line-height: 18px;
+    font-size: 20px;
+    line-height: 20px;
     min-height: 45px;
+}
 
-    border: 1px solid #eee;
-    padding: 0px 15px;
-    background: #fff;
-    outline: none;
-    width: 100%;
-    border-radius: 0px;
-    box-shadow: none;
+.lead-container form .btn,
+.lead-container form .btn-default{
+    min-height: 60px;
+    font-size: 21px;
+    font-weight: 400;
+}
+
+
+.lead-container form .btn-default {
+    border-color: #333;
+    background-color: transparent;
     color: #333;
-    margin-bottom: 15px;
+}
+
+.lead-container form .btn.btn-primary {
+    min-width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    background-color: #222222;
+    border-color: #222222;
+}
+
+
+    .lead-container form .btn.btn-primary:hover {
+        background-color: #444;
+        border-color: #444;
+    }
+
+.lead-container form input[type=number]::-webkit-inner-spin-button,
+.lead-container form input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.lead-container form#LeadConfirationForm .lead-field.blank {
+    display: none;
+}
+
+
+
+.lead-container form#LeadConfirationForm .lead_field_group_contacts h3 {
+    margin-bottom: 20px;
+}
+
+.lead-container form#LeadConfirationForm .lead-field .field-label {
+    margin-bottom: 0;
+}
+.lead-container form#LeadConfirationForm .lead-field .string-value {
+    display: inline;
+    font-weight: bold;
+    margin-left: 10px;
+    font-size: 21px;
+}
+
+
+
+.lead-container form#LeadConfirationForm .lead_field_group_system_terms .form-group {
+    margin-bottom:0;
+}
+.lead-container form#LeadConfirationForm .lead_field_group_system_terms label {
+    line-height: 25px;
+    margin-bottom: 0;
+}
+.lead-container form#LeadConfirationForm .lead_field_group_system_terms input[type="checkbox"] {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+.lead-container form#LeadConfirationForm .lead_field_group_system_terms .field-validation-error {
+    vertical-align: middle;
+}
+
+.lead-container form#LeadConfirationForm .lead-btn-group {
+    position: relative;
+    text-align: center;
+}
+    .lead-container form#LeadConfirationForm .lead-btn-group #GoBackToOrderBtn {
+        position:absolute;
+        left: 0;
+    }
+@media (max-width: 576px) {
+    .lead-container form .btn,
+    .lead-container form .btn-default {
+        min-height: initial;
+        padding: 10px 10px;
+        font-size: 17px;
+        font-weight: 400;
+    }
+    .lead-container form .btn.btn-primary {
+        min-width: 45%;
+    }
+
+    .lead-container h1 {
+        font-size: 18px;
+        margin-top: 0;
+    }
+    .lead-container .line-mix {
+        margin: 0 auto;
+    }
+    .lead-container h1, h5 {
+        font-size: 18px;
+    }
 }

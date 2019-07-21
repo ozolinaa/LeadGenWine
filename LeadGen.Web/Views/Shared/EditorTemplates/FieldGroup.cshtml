@@ -9,10 +9,5 @@
         {
             LeadGen.Code.Lead.LeadItem leadItem = ViewData["leadItem"] as LeadGen.Code.Lead.LeadItem;
             await Html.RenderPartialAsync("EditorTemplates/LeadEmail", leadItem);
-                        //var viewData = new ViewDataDictionary(ViewData);
-            //viewData.TemplateInfo = null;
-            //{
-            //    TemplateInfo = new TemplateInfo { HtmlFieldPrefix = "" }
-            //};
         }
     </div>

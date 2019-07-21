@@ -2,8 +2,8 @@
 @{
     ViewData.TemplateInfo.HtmlFieldPrefix = "";
 }
-    <div class="form-group">
+    <div class="lead-field lead-field-email form-group required form-group">
         @Html.LabelFor(x => x.email, "E-mail")
         @Html.ValidationMessageFor(x => x.email)
-        @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.ru" })
+        @Html.TextBoxFor(x => x.email, new { @class = "form-control", placeholder = "mail@mail.com", type = "email" })
     </div>

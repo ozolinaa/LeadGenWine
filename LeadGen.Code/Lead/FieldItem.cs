@@ -96,8 +96,8 @@ namespace LeadGen.Code.Lead
         {
             get
             {
-                string fieldPrefix = "Please select ";
-                string requiredSuffix = ", it is required field";
+                string fieldPrefix = "";
+                string requiredSuffix = "is required";
 
                 switch (fieldType)
                 {

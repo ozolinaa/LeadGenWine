@@ -1,7 +1,7 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 
 @{
-    string formID = "LeadForm";
+    string formID = "LeadCreationForm";
 }
 @using (Html.BeginForm("Index", null, null, FormMethod.Post, true, new
 {
@@ -13,41 +13,54 @@
     data_ajax_success = "onLeadFormSubmit(data, status, xhr)"
 }))
 {
-@Html.AntiForgeryToken()
-<h1>Order Wine Cellar</h1>
-@Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
+    @Html.AntiForgeryToken()
 
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Next</button>
+    <div class="title-group">
+        <h1>Order Wine Cellar</h1>
+        <p class="line-mix line-mix-f star-group">
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+        </p>
+        <h5>Get best offers from wine cellar professionals</h5>
+
     </div>
-</div>
-<script>
-    if (window.location.hash) {
-        window.location.hash = "";
-    }
-    function initializeLeadForm() {
-        if (window.mobileAndTabletcheck() == false) {
-            $('[data-toggle="popover"]').popover()
-        }
 
-        var pricefieldRange = document.getElementsByClassName("lead-field-price_range")[0];
-        if (pricefieldRange) {
-            var priceInput = pricefieldRange.querySelector("select");
-            if (!priceInput.value) {
-                var defaultOption = priceInput.children[2];
-                priceInput.value = defaultOption.value;
+    @Html.EditorFor(x => x.fieldGroups, new { leadItem = Model })
+
+    <div class="form-group">
+        <div class="col-xs-12">
+            <button type="submit" class="btn btn-primary">Order Wine Cellar</button>
+        </div>
+    </div>
+    <script>
+        if (window.location.hash) {
+            window.location.hash = "";
+        }
+        function initializeLeadForm() {
+            if (window.mobileAndTabletcheck() == false) {
+                $('[data-toggle="popover"]').popover()
             }
+
+            var pricefieldRange = document.getElementsByClassName("lead-field-price_range")[0];
+            if (pricefieldRange) {
+                var priceInput = pricefieldRange.querySelector("select");
+                if (!priceInput.value) {
+                    var defaultOption = priceInput.children[2];
+                    priceInput.value = defaultOption.value;
+                }
+            }
+            //Detect validation errors and focus on the input
+            LeadGen.ui.navigateToInputValidationError();
         }
-        //Detect validation errors and focus on the input
-        LeadGen.ui.navigateToInputValidationError();
-    }
-    onLeadFormSubmit = function (data, status, xhr) {
-        $form = $($.parseHTML(data.trim()));
-        var errors = $form.find('.input-validation-error,.field-validation-error');
-        if ($form[0].id === 'LeadForm' && errors.length > 0) {
-            initializeLeadForm();
-        }
-    };
-</script>
+        onLeadFormSubmit = function (data, status, xhr) {
+            $form = $($.parseHTML(data.trim()));
+            var errors = $form.find('.input-validation-error,.field-validation-error');
+            if ($form[0].id === '@formID' && errors.length > 0) {
+                initializeLeadForm();
+            } else if($form[0].id != '@formID') {
+                LeadGen.ui.window.scrollToOffset(0);
+            }
+        };
+    </script>
 }

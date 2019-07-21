@@ -34,7 +34,11 @@
     string wrapperClass = "form-group";
     if (ViewData.ContainsKey("customWrapperClass"))
     {
-        wrapperClass = ViewData["customWrapperClass"].ToString().Trim();
+        wrapperClass = wrapperClass + " " + ViewData["customWrapperClass"].ToString();
+    }
+    if (Model.isRequired)
+    {
+        wrapperClass = wrapperClass + " required";
     }
 
     string input = "";
@@ -59,7 +63,6 @@
 @if (input.ToLower() != "none")
 {
 <div class="lead-field lead-field-@Model.code @wrapperClass form-group">
-
     @{ string labelClass = "field-label";}
     @switch (Model.fieldType)
     {
@@ -113,7 +116,7 @@
             @Html.TextBoxFor(x => x.fieldDatetime, new { @class = "form-control datetimepicker" })
             break;
         case LeadGen.Code.Lead.FieldType.Number:
-            @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder })
+            @Html.TextBoxFor(x => x.fieldNumber, new { @class = "form-control", placeholder = Model.placeholder, type = "number" })
             break;
         case LeadGen.Code.Lead.FieldType.Dropdown:
             @Html.DropDownListFor(x => x.termIDSelected, new SelectList(Model.fieldTerms, "ID", "nameDashed", Model.fieldTerms.FirstOrDefault(x => x.ID == Model.termIDSelected)), Model.placeholder, new { @class = "form-control" })

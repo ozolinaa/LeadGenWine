@@ -31,6 +31,9 @@
     <Content Update="Areas\Admin\Views\E-mails\Notification.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\Shared\DisplayTemplates\LeadEmail.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\Token\BusinessCRMLeadUnsubscribe\ShowSuccess.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

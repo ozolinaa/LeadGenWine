@@ -58,14 +58,20 @@
                     }
 
 
-                    $('html, body').animate({
-                        scrollTop: offset
-                    }, 700);
+                    LeadGen.ui.window.scrollToOffset(offset);
                     $el.click().focus();
                 }
         
             },
-            window: {
+        window: {
+            scrollToOffset: function (offset) {
+                if (!offset) {
+                    offset = 0;
+                }
+                $('html, body').animate({
+                    scrollTop: offset
+                }, 700);
+            },
                 onResize: function () {
                     LeadGen.ui.window.adjustThumbnailGridItemsHeight();
                 },

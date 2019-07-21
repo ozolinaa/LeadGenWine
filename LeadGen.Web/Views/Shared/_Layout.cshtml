@@ -1,17 +1,19 @@
 ﻿@using LeadGen.Code.Taxonomy
+@using LeadGen.Web.Helpers
 @using LeadGen.Code.CMS
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     @RenderSection("SEO", required: false)
-    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/lib/lightbox2/css/lightbox.min.css" rel="stylesheet" />
-    <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-    <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
+    <link href="~/css/style-public-bundle.min.css?@Html.AssemblyBuildTimeStamp()" rel="stylesheet" />
+    @if (Html.IsDebug())
+    {
     <link href="~/css/site.css" rel="stylesheet" />
+    }
+
+    @{ await Html.RenderPartialAsync("_Fonts"); }
     @RenderSection("CustomCSS", required: false)
 </head>
 <body>
@@ -37,6 +39,8 @@
                 link2Text = link2Text + " " + cmsContext.regionCity.words["region"].genitiveSingular;
             }
         }
+
+        bool isOrderPage = Context.Request.Path.StartsWithSegments("/order");
     }
 
     <nav class="navbar navbar-default navbar-leadgen" role="navigation">
@@ -52,10 +56,13 @@
                 </div>
 
 
+                @if (!isOrderPage)
+                {
+                    <span class="btn-header-order-wrapper">
+                        @Html.ActionLink("Order wine cellar", "Index", "order", new { area = "" }, new { @class = "btn btn-success" })
+                    </span>
+                }
 
-                <span class="btn-header-order-wrapper">
-                    @Html.ActionLink("Order wine cellar", "Index", "order", new { area = "" }, new { @class = "btn btn-success" })
-                </span>
 
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>

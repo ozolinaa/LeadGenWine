@@ -1,8 +1,13 @@
 ﻿@model LeadGen.Code.Lead.FieldGroup
-<div id="fieldGroup-@Model.ID" data-groupID="@Model.ID" data-groupCode="@Model.code" class="lead_field_group_@Model.code">
-    <h3>@Model.title</h3>
-    @Html.HiddenFor(x => x.ID)
-    @Html.HiddenFor(x => x.code)
-    @Html.HiddenFor(x => x.title)
-    @Html.DisplayFor(x => x.fields)
-</div>
+    <div id="fieldGroup-@Model.ID" data-groupID="@Model.ID" data-groupCode="@Model.code" class="lead_field_group lead_field_group_@Model.code">
+        <h3>@Model.title</h3>
+        @Html.HiddenFor(x => x.ID)
+        @Html.HiddenFor(x => x.code)
+        @Html.HiddenFor(x => x.title)
+        @Html.DisplayFor(x => x.fields)
+        @if (Model.code == "contacts")
+        {
+            LeadGen.Code.Lead.LeadItem leadItem = ViewData["leadItem"] as LeadGen.Code.Lead.LeadItem;
+            await Html.RenderPartialAsync("DisplayTemplates/LeadEmail", leadItem);
+        }
+    </div>
