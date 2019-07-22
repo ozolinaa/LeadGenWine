@@ -119,10 +119,10 @@ ul.tagit input[type="text"] {
 {   border-right: 5px solid #ffaf46;
 }
 body {
-    font-size: 13px;
-    font-weight: normal;
+    font-size: 16px;
     font-family: 'Roboto', sans-serif;
-    line-height: 1.42em;
+    line-height: 1.5;
+    font-weight: normal;
     background-color: #fbf9f2;
     color: #333;
 }
@@ -534,7 +534,19 @@ footer .btn-login {
 
 
 
-
+.single-alert-container {
+    display: flex;
+    max-width: 100%;
+    height: calc(100vh - 250px);
+}
+    .single-alert-container .single-alert-container-content {
+        padding: 20px;
+        border: 1px solid #eee;
+        background: #fff;
+        position: relative;
+        text-align: center;
+        margin: auto;
+    }
 body {
     padding-top:50px;
 }

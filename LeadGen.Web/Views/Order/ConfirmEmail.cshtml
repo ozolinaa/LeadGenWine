@@ -7,13 +7,18 @@
 
 <div class="container single-alert-container">
     <div class="single-alert-container-content">
-        <h2>Ваша заявка сохранена!</h2>
+        <h4>Please verify email</h4>
         <p>
-            На Ваш E-mail <strong>@Model.email</strong> <br /><br />
-            было отправлено письмо со ссылкой для подтверждения заявки. <br /><br />
-            Пожалуйста, подтвердите заявку, перейдя по ссылке <a href="http://@Model.email.Split('@')[1]" target="_blank">в письме</a>.
+            To recieve quotes from wine cellar manufacturers <strong>please click on the link that has just been sent to</strong><br />
+            <strong>
+                <a href="http://@Model.email.Split('@')[1]" target="_blank">
+                    @Model.email.Split('@')[1].ToUpper()
+                </a>
+            </strong>
+            <br /><br />
+            A verification link has been sent to <strong>@Model.email</strong> account.
         </p>
-    </div class="single-alert-container-content">
+    </div>
 </div>
 
 <script>
