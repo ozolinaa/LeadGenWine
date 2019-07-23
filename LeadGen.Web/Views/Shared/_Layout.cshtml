@@ -10,10 +10,9 @@
     <link href="~/css/style-public-bundle.min.css?@Html.AssemblyBuildTimeStamp()" rel="stylesheet" />
     @if (Html.IsDebug())
     {
-    <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/site.css" rel="stylesheet" />
     }
-
-    @{ await Html.RenderPartialAsync("_Fonts"); }
+    <partial name="_Fonts" />
     @RenderSection("CustomCSS", required: false)
 </head>
 <body>
