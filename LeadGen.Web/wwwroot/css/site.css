@@ -420,10 +420,19 @@ footer .btn-login {
     height: calc(100vh - 250px);
 }
     .single-alert-container .single-alert-container-content {
-        padding: 20px;
-        border: 1px solid #eee;
+        padding: 30px;
+        border: 2px solid #494949;
         background: #fff;
         position: relative;
         text-align: center;
         margin: auto;
+    }
+
+.btn.btn-default {
+    border-color: #333;
+    background-color: transparent;
+    color: #333;
+}
+    .btn.btn-default:hover {
+        background-color: #00000007;
     }

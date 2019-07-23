@@ -32,8 +32,6 @@ namespace LeadGen.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(LeadItem postedLeadItem)
         {
-            return PartialView("ConfirmEmail", new LeadItem() { ID = 1, email = "anton.ozolin@gmail.com" });
-
             leadItem = new LeadItem();
             leadItem.LoadFieldStructure(DBLGcon, true);
             leadItem.SafeReplaceLeadValuesWith(postedLeadItem);

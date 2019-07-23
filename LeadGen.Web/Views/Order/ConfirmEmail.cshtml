@@ -1,22 +1,24 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 @{
     ViewBag.Title = "Index";
+    string emailDomain = @Model.email.Split('@')[1];
 }
 
 
 
 <div class="container single-alert-container">
     <div class="single-alert-container-content">
-        <h4>Please verify email</h4>
+        <h4>Please verify E-Mail</h4>
         <p>
-            To recieve quotes from wine cellar manufacturers <strong>please click on the link that has just been sent to</strong><br />
-            <strong>
-                <a href="http://@Model.email.Split('@')[1]" target="_blank">
-                    @Model.email.Split('@')[1].ToUpper()
-                </a>
-            </strong>
+            To get offers from wine cellar manufacturers 
+            <br />
+            please click on the link that has just been sent to 
+            <br />
+            <strong>@Model.email</strong>
             <br /><br />
-            A verification link has been sent to <strong>@Model.email</strong> account.
+            <a href="http://@emailDomain" target="_blank" class="btn btn-default">
+                Go to @emailDomain.ToUpper()
+            </a>
         </p>
     </div>
 </div>

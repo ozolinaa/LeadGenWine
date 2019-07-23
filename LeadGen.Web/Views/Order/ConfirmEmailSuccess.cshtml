@@ -5,15 +5,13 @@
     string orderLink = Url.RouteUrl("LeadPublic", new { area = "", id = Model.ID }, Context.Request.Scheme);
 }
 
-<div class="container">
-    <center>
-        <h2>You order has been confirmed!</h2>
-
+<div class="container single-alert-container">
+    <div class="single-alert-container-content">
+        <h4>E-Mail Verified Successfully!</h4>
         <p>
-            Here is a link for your references,
-            <a href="@orderLink" target="_blank" style="font-size: 18px;">@orderLink</a> <br /><br />
-            Businesses will contact you soon with their offers.
+            Thank you for submitting your inqury 
+            <br />
+            Wine cellar profeccianals will now review your order <strong>and respond with they best offers</strong>.
         </p>
-
-    </center>
+    </div>
 </div>
