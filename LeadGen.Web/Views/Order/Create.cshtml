@@ -18,7 +18,10 @@
 <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
 @*<link href="~/Content/jquery.formstyler.css" rel="stylesheet" />*@
 <link href="~/css/select2-bootstrap.css" rel="stylesheet" />
-<link href="~/css/order.css" rel="stylesheet" />
+@if (false && Html.IsDebug())
+    {
+<link href="~/css/site.css" rel="stylesheet" />
+    }
 
 <style>
     select option[disabled] {

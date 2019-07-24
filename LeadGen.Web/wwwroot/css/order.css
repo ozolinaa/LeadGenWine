@@ -1,346 +1,355 @@
+
+
+.title-group {
+    text-align: center;
+}
+
+
+    .title-group h1 {
+        text-transform: uppercase;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 5px;
+        color: #eac47d;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .title-group h5 {
+        font-family: 'Cinzel', serif;
+        font-weight: 400;
+        color: #333;
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .title-group .line-mix {
+        position: relative;
+        display: inline-block;
+        margin: 5px auto;
+        color: #cba55d;
+    }
+
+        .title-group .line-mix::before, .title-group .line-mix::after {
+            position: absolute;
+            top: 45%;
+            content: '';
+            width: 50px;
+            border-bottom: 1px solid #a98a4f;
+        }
+
+        .title-group .line-mix::before {
+            left: -55px;
+        }
+
+        .title-group .line-mix::after {
+            right: -55px;
+        }
+
+    .title-group .line-mix-left::before {
+        left: 0px;
+    }
+
+    .title-group .line-mix-left::after {
+        left: 55px;
+    }
+
+    .title-group .star-group i {
+        font-size: 16px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+        .title-group .star-group i:first-child, .title-group .star-group i:last-child {
+            font-size: 12px;
+            margin: 0px;
+        }
+
 .lead-container {
     max-width: 835px;
 }
 
-h1, h2, h3, h4, h5 {
-    text-align: center;
-}
-
-h1 {
-    text-transform: uppercase;
-    font-family: 'Cinzel', serif;
-    letter-spacing: 5px;
-    color: #eac47d;
-    font-size: 25px;
-    font-weight: bold;
-}
-
-h5 {
-    font-family: 'Cinzel', serif;
-    font-weight: 400;
-    color: #333;
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-h3 {
-    font-size: 40px;
-    font-weight: 800;
-}
-
-h4 {
-    font-size: 35px;
-    font-weight: 800;
-}
-
-.title-group {
-    text-align:center;
-}
-.line-mix {
-    position: relative;
-    display: inline-block;
-    margin: 5px auto;
-    color: #cba55d;
-}
-
-    .line-mix::before, .line-mix::after {
-        position: absolute;
-        top: 45%;
-        content: '';
-        width: 50px;
-        border-bottom: 1px solid #a98a4f;
-    }
-
-    .line-mix::before {
-        left: -55px;
-    }
-
-    .line-mix::after {
-        right: -55px;
-    }
-
-.line-mix-left::before {
-    left: 0px;
-}
-
-.line-mix-left::after {
-    left: 55px;
-}
-
-.star-group i {
-    font-size: 16px;
-    margin-left: 5px;
-    margin-right: 5px;
-}
-
-    .star-group i:first-child, .star-group i:last-child {
-        font-size: 12px;
-        margin: 0px;
-    }
-
-.lead_field_group {
-    background-color: white;
-    padding: 15px 30px;
-    margin-bottom: 30px;
-    border: 1px solid #eee;
-    position: relative;
-}
-
-
-    .lead_field_group h3 {
-        text-align: center;
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-
-    .lead_field_group .field-option-list {
-        background: #fafafa8c;
-        padding: 30px;
-        padding-bottom: 15px;
+    .lead-container .lead_field_group {
+        background-color: white;
+        padding: 15px 30px;
+        margin-bottom: 30px;
         border: 1px solid #eee;
-        display: flex;
-        justify-content: space-between;
-        align-content: space-between;
         position: relative;
     }
 
-.field-validation-error {
-    color: red;
-    font-weight: bold;
-    display: inline-block;
-    margin-left: 5px;
-}
-
-.lead_field_group .field-option-list .field-option {
-    width: 33.3%;
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-
-        .lead-field.lead-field-display .field-option-list {
-            justify-content: flex-start;
-        }
-.lead-field.lead-field-display .field-option-list {
-    justify-content: flex-start;
-}
-    .lead-field.lead-field-display .field-option-list .field-option:not(:last-child) {
-        margin-right: 20px;
-    }
-
-.lead-field .field-option {
-    /*margin-bottom: 20px;*/
-}
-
-
-
-
-.lead-field {
-    margin-bottom: 20px;
-}
-
-    .lead-field .field-option input[type="checkbox"],
-    .lead-field .field-option input[type="radio"] {
-        display: none;
-    }
-
-    .lead-field .field-option input:not(:checked) + label:hover::before {
-        border-color: #9e9e9e2e;
-        transition: border-color 0.25s ease-out, background-size 0.5s ease-out;
-    }
-
-    .lead-field .field-option input:checked + label::before {
-        border-color: #009d0085; /*green*/
-        background-size: 130%;
-        transition: /* border-color 0.2s ease-in, */ background-size 0.5s ease-in;
-    }
-
-    .lead-field .field-option label:hover::before {
-        background-size: 130%;
-    }
-
-    .lead-field .field-option label {
-        text-align: center;
-        cursor: pointer;
-        font-size: 18px;
-        margin-bottom: 0;
-    }
-
-
-        .lead-field .field-option label::before {
-            box-sizing: border-box;
-            display: block;
-            content: " ";
-            height: 150px;
-            width: 150px;
-            max-width: 100%;
-            border-radius: 50%;
-            border-style: solid;
-            border-width: 10px;
-            border-color: #f4f4f485;
-            background-image: url(../images/order/bottles/1.jpg);
-            background-repeat: no-repeat;
-            /*background-size: cover;*/
-            background-size: 115%;
-            background-position: center;
-            background-position-x: 50%;
-            background-position-y: 50%;
-            box-sizing: content-box;
-            transition: border-color 0.25s ease-out, background-size 0.5s ease-out;
-            margin-left: auto;
-            margin-right: auto;
+        .lead-container .lead_field_group h3 {
+            font-size: 40px;
+            font-weight: 800;
+            margin-top: 10px;
             margin-bottom: 10px;
         }
 
-    .lead-field .field-option.field-option-room label::before {
-        background-image: url('../images/order/icons/room.jpg');
-    }
-    .lead-field .field-option.field-option-cabinet label::before {
-        background-image: url('../images/order/icons/cabinet.jpg');
-    }
-    .lead-field .field-option.field-option-rack label::before {
-        background-image: url('../images/order/icons/rack.jpg');
-    }
-    .lead-field .field-option.field-option-wood label::before {
-        background-image: url('../images/order/icons/wood.jpg');
-    }
-    .lead-field .field-option.field-option-glass_metal label::before {
-        background-image: url('../images/order/icons/glass_metal.jpg');
-    }
-    .lead-field .field-option.field-option-iron_wrought label::before {
-        background-image: url('../images/order/icons/iron_wrought.jpg');
-    }
-    .lead-field .field-option.field-option-furniture label::before {
-        background-image: url('../images/order/icons/furniture.jpg');
-    }
-    .lead-field .field-option.field-option-glasses_bottles label::before {
-        background-image: url('../images/order/icons/glasses_bottles.jpg');
-    }
-    .lead-field .field-option.field-option-decor label::before {
-        background-image: url('../images/order/icons/decor.jpg');
-    }
-    .lead-field .field-option.field-option-residential label::before {
-        background-image: url('../images/order/icons/residential.jpg');
-    }
-    .lead-field .field-option.field-option-business label::before {
-        background-image: url('../images/order/icons/business.jpg');
+        .lead-container .lead_field_group h4 {
+            font-size: 35px;
+            font-weight: 800;
+        }
+
+        .lead-container .lead_field_group .field-option-list {
+            background: #fafafa8c;
+            padding: 30px;
+            padding-bottom: 15px;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-content: space-between;
+            position: relative;
+        }
+
+    .lead-container .field-validation-error {
+        color: red;
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 5px;
     }
 
-.lead-field-legal_entity .field-option-list {
-    justify-content: space-around;
-}
+    .lead-container .lead_field_group .field-option-list .field-option {
+        width: 33.3%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
 
 
-.lead-field.lead-field-cellar_type .field-option-list {
-    padding-bottom: 70px;
-}
+    .lead-container .lead_field_group .lead-field {
+        margin-bottom: 20px;
+    }
 
-.lead-field.lead-field-climate_required {
-    margin-top: -65px;
-    text-align: center;
-    position: absolute;
-    width: calc(100% - 60px); /*60px = container paddings left+right*/
-}
-    .lead-field-climate_required label {
+        .lead-container .lead_field_group .lead-field.lead-field-display .field-option-list {
+            justify-content: flex-start;
+        }
+
+        .lead-container .lead_field_group .lead-field.lead-field-display .field-option-list {
+            justify-content: flex-start;
+        }
+
+            .lead-container .lead_field_group .lead-field.lead-field-display .field-option-list .field-option:not(:last-child) {
+                margin-right: 20px;
+            }
+
+
+
+
+        .lead-container .lead_field_group .lead-field .field-option input[type="checkbox"],
+        .lead-container .lead_field_group .lead-field .field-option input[type="radio"] {
+            display: none;
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option input:not(:checked) + label:hover::before {
+            border-color: #9e9e9e2e;
+            transition: border-color 0.25s ease-out, background-size 0.5s ease-out;
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option input:checked + label::before {
+            border-color: #009d0085; /*green*/
+            background-size: 130%;
+            transition: /* border-color 0.2s ease-in, */ background-size 0.5s ease-in;
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option label:hover::before {
+            background-size: 130%;
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option label {
+            text-align: center;
+            cursor: pointer;
+            font-size: 18px;
+            margin-bottom: 0;
+        }
+
+
+            .lead-container .lead_field_group .lead-field .field-option label::before {
+                box-sizing: border-box;
+                display: block;
+                content: " ";
+                height: 150px;
+                width: 150px;
+                max-width: 100%;
+                border-radius: 50%;
+                border-style: solid;
+                border-width: 10px;
+                border-color: #f4f4f485;
+                background-image: url(../images/order/bottles/1.jpg);
+                background-repeat: no-repeat;
+                /*background-size: cover;*/
+                background-size: 115%;
+                background-position: center;
+                background-position-x: 50%;
+                background-position-y: 50%;
+                box-sizing: content-box;
+                transition: border-color 0.25s ease-out, background-size 0.5s ease-out;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 10px;
+            }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-room label::before {
+            background-image: url('../images/order/icons/room.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-cabinet label::before {
+            background-image: url('../images/order/icons/cabinet.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-rack label::before {
+            background-image: url('../images/order/icons/rack.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-wood label::before {
+            background-image: url('../images/order/icons/wood.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-glass_metal label::before {
+            background-image: url('../images/order/icons/glass_metal.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-iron_wrought label::before {
+            background-image: url('../images/order/icons/iron_wrought.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-furniture label::before {
+            background-image: url('../images/order/icons/furniture.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-glasses_bottles label::before {
+            background-image: url('../images/order/icons/glasses_bottles.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-decor label::before {
+            background-image: url('../images/order/icons/decor.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-residential label::before {
+            background-image: url('../images/order/icons/residential.jpg');
+        }
+
+        .lead-container .lead_field_group .lead-field .field-option.field-option-business label::before {
+            background-image: url('../images/order/icons/business.jpg');
+        }
+
+    .lead-container .lead_field_group .lead-field-legal_entity .field-option-list {
+        justify-content: space-around;
+    }
+
+
+    .lead-container .lead_field_group .lead-field.lead-field-cellar_type .field-option-list {
+        padding-bottom: 70px;
+    }
+
+    .lead-container .lead_field_group .lead-field.lead-field-climate_required {
+        margin-top: -65px;
+        text-align: center;
+        position: absolute;
+        width: calc(100% - 60px); /*60px = container paddings left+right*/
+    }
+
+    .lead-container .lead_field_group .lead-field-climate_required label {
         font-size: 18px;
         vertical-align: middle;
         margin: 0;
         margin-right: 7px;
         cursor: pointer;
     }
-.lead-field-climate_required input[type="checkbox"] {
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
-    padding: 0;
-    margin: 0;
-    cursor: pointer;
-}
 
-.lead-field-climate_required .string-value {
-    vertical-align: middle;
-}
+    .lead-container .lead_field_group .lead-field-climate_required input[type="checkbox"] {
+        width: 25px;
+        height: 25px;
+        vertical-align: middle;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+    }
 
-.lead-field-cellar_comment textarea {
-    padding: 10px 12px !important;
-    min-height: 60px;
-}
+    .lead-container .lead_field_group .lead-field-climate_required .string-value {
+        vertical-align: middle;
+    }
+
+    .lead-container .lead_field_group .lead-field-cellar_comment textarea {
+        padding: 10px 12px !important;
+        min-height: 60px;
+    }
 
 
-.lead-field > label {
-    font-size: 14px;
-}
+    .lead-container .lead_field_group .lead-field > label {
+        font-size: 14px;
+    }
 
-.lead-field.required > label::after {
-    content: "*";
-    color: red;
-    margin-left: 3px;
-}
+    .lead-container .lead_field_group .lead-field.required > label::after {
+        content: "*";
+        color: red;
+        margin-left: 3px;
+    }
 
 @media (max-width: 728px) {
-    .lead-field .field-option label, .lead-field-climate_required label {
+    .lead-container .lead_field_group .lead-field .field-option label, .lead-field-climate_required label {
         font-size: 16px;
     }
 
-    .lead-field .field-option label::before {
-        height: 110px;
-        width: 110px;
-        border-width: 6px;
-        margin-bottom: 5px;
-    }
+        .lead-container .lead_field_group .lead-field .field-option label::before {
+            height: 110px;
+            width: 110px;
+            border-width: 6px;
+            margin-bottom: 5px;
+        }
 }
 
 @media (max-width: 576px) {
 
-    .lead_field_group {
+    .lead-container .lead_field_group {
         margin: 0 -15px 15px -15px;
         padding: 15px 15px;
         border-left: none;
         border-right: none;
     }
-        .lead_field_group h3 {
+
+        .lead-container .lead_field_group h3 {
             font-size: 26px;
         }
 
-        .lead_field_group .field-option-list {
+        .lead-container .lead_field_group .field-option-list {
             margin: 0 -15px;
             padding: 15px;
             border-left: none;
             border-right: none;
         }
-        .lead_field_group .lead-field.lead-field-cellar_type .field-option-list {
+
+        .lead-container .lead_field_group .lead-field.lead-field-cellar_type .field-option-list {
             padding-bottom: 50px;
         }
-        .lead_field_group .lead-field.lead-field-climate_required {
+
+        .lead-container .lead_field_group .lead-field.lead-field-climate_required {
             margin-top: -55px;
         }
 
 
-    .lead-field .field-option label, .lead-field-climate_required label {
-        font-size: 14px;
-    }
-        .lead-field .field-option label::before {
-            height: 100px;
-            width: 100px;
-            border-width: 6px;
-            margin-bottom: 5px;
+        .lead-container .lead_field_group .lead-field .field-option label, .lead-field-climate_required label {
+            font-size: 14px;
         }
 
-    .lead-field-climate_required input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-    }
+            .lead-container .lead_field_group .lead-field .field-option label::before {
+                height: 100px;
+                width: 100px;
+                border-width: 6px;
+                margin-bottom: 5px;
+            }
+
+        .lead-container .lead_field_group .lead-field-climate_required input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
 }
 
 @media (max-width: 400px) {
-    .lead-field .field-option label::before {
+    .lead-container .lead_field_group .lead-field .field-option label::before {
         height: 92px;
         width: 92px;
     }
 }
 
 @media (max-width: 360px) {
-    .lead-field .field-option label::before {
+    .lead-container .lead_field_group .lead-field .field-option label::before {
         height: 75px;
         width: 75px;
         border-width: 6px;
@@ -359,44 +368,48 @@ h4 {
     line-height: 26px;
     min-height: 45px;
 }
+
 .lead-container ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
     font-size: 20px;
     line-height: 26px;
 }
+
 .lead-container ::-moz-placeholder { /* Firefox 19+ */
     font-size: 20px;
     line-height: 26px;
 }
+
 .lead-container :-ms-input-placeholder { /* IE 10+ */
     font-size: 20px;
     line-height: 26px;
 }
+
 .lead-container :-moz-placeholder { /* Firefox 18- */
     font-size: 20px;
     line-height: 26px;
 }
 
-.lead-container form .btn{
+.lead-container form .btn {
     min-height: 60px;
     font-size: 21px;
     font-weight: 400;
 }
 
-.lead-container form .btn.btn-primary {
-    min-width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-    display: flex;
-    justify-content: center;
-    background-color: #222222;
-    border-color: #222222;
-}
-
-
-    .lead-container form .btn.btn-primary:hover {
-        background-color: #444;
-        border-color: #444;
+    .lead-container form .btn.btn-primary {
+        min-width: 50%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: center;
+        background-color: #222222;
+        border-color: #222222;
     }
+
+
+        .lead-container form .btn.btn-primary:hover {
+            background-color: #444;
+            border-color: #444;
+        }
 
 .lead-container form input[type=number]::-webkit-inner-spin-button,
 .lead-container form input[type=number]::-webkit-outer-spin-button {
@@ -417,6 +430,7 @@ h4 {
 .lead-container form#LeadConfirationForm .lead-field .field-label {
     margin-bottom: 0;
 }
+
 .lead-container form#LeadConfirationForm .lead-field .string-value {
     display: inline;
     font-weight: bold;
@@ -427,12 +441,14 @@ h4 {
 
 
 .lead-container form#LeadConfirationForm .lead_field_group_system_terms .form-group {
-    margin-bottom:0;
+    margin-bottom: 0;
 }
+
 .lead-container form#LeadConfirationForm .lead_field_group_system_terms label {
     line-height: 25px;
     margin-bottom: 0;
 }
+
 .lead-container form#LeadConfirationForm .lead_field_group_system_terms input[type="checkbox"] {
     width: 25px;
     height: 25px;
@@ -441,6 +457,7 @@ h4 {
     margin: 0;
     cursor: pointer;
 }
+
 .lead-container form#LeadConfirationForm .lead_field_group_system_terms .field-validation-error {
     vertical-align: middle;
 }
@@ -449,10 +466,12 @@ h4 {
     position: relative;
     text-align: center;
 }
+
     .lead-container form#LeadConfirationForm .lead-btn-group #GoBackToOrderBtn {
-        position:absolute;
+        position: absolute;
         left: 0;
     }
+
 @media (max-width: 576px) {
     .lead-container form .btn,
     .lead-container form .btn-default {
@@ -461,17 +480,20 @@ h4 {
         font-size: 17px;
         font-weight: 400;
     }
-    .lead-container form .btn.btn-primary {
-        min-width: 45%;
-    }
+
+        .lead-container form .btn.btn-primary {
+            min-width: 45%;
+        }
 
     .lead-container h1 {
         font-size: 18px;
         margin-top: 0;
     }
+
     .lead-container .line-mix {
         margin: 0 auto;
     }
+
     .lead-container h1, h5 {
         font-size: 18px;
     }

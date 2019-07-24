@@ -23,7 +23,8 @@
       "wwwroot/lib/lightbox2/css/lightbox.min.css",
       "wwwroot/lib/select2/css/select2.min.css",
       "wwwroot/lib/font-awesome/css/all.min.css",
-      "wwwroot/css/site.css"
+      "wwwroot/css/site.css",
+      "wwwroot/css/order.css"
     ]
   },
   {
