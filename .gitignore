@@ -262,3 +262,8 @@ __pycache__/
 /LeadGen.Web/wwwroot/lib/*
 
 /LeadGen.SQL/Scripts/Post-Deployments/Seed_credentials.sql
+
+/LeadGen.Web/wwwroot/css/style-admin-bundle.css
+/LeadGen.Web/wwwroot/css/style-admin-bundle.min.css
+/LeadGen.Web/wwwroot/css/style-public-bundle.css
+/LeadGen.Web/wwwroot/css/style-public-bundle.min.css
