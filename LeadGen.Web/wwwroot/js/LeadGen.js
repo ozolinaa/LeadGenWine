@@ -160,7 +160,7 @@
                     //Check if there are any maps to initialize
                     if (LeadGen.googleMaps) {
                         //Load google maps library if needed
-                        if ((window.google === null || window.google.maps === null)) {
+                        if (!window.google || !window.google.maps) {
                             var apiKey = LeadGen.settings.googleMapsAPIKey;
                             var file = "https://maps.googleapis.com/maps/api/js?key=" + apiKey + "&libraries=places";
                             //pass the same method as a callback this code will not be executed next time as window.google.maps will be initialized

@@ -37,7 +37,7 @@ namespace LeadGen.Web.Controllers
                     return result;
             }
 
-            cmsContext = new CMSContext(DBLGcon, ControllerContext, urlPath, !preview);
+            cmsContext = new CMSContext(ControllerContext, DBLGcon, !preview);
             ViewBag.cmsContext = cmsContext;
             switch (cmsContext.pageType)
             {

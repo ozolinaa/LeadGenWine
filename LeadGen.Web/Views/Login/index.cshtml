@@ -1,7 +1,9 @@
 ﻿@model LeadGen.Code.Login
+@using LeadGen.Code.CMS;
 
 @{
     ViewBag.Title = "Login";
+    ViewBag.cmsContext = new CMSContext(this.ViewContext, CMSContext.PageType.SystemMiniPage);
 }
 
 <div class="container">

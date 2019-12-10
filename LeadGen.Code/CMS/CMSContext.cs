@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using static LeadGen.Code.CMS.CMSManager;
+using Microsoft.AspNetCore.Http;
 
 namespace LeadGen.Code.CMS
 {
@@ -24,7 +25,8 @@ namespace LeadGen.Code.CMS
             TermPost,
             PostType,
             TermPostType,
-            Exclusion
+            Exclusion,
+            SystemMiniPage
         }
 
         private string[] urlPathSegments { get; set; }
@@ -58,17 +60,37 @@ namespace LeadGen.Code.CMS
 
         public Taxonomy.Term term { get; set; }
 
-        private ControllerContext controllerContext = null;
-
         private static string[] exclusionUrls = null;
 
-        public CMSContext(SqlConnection con, ControllerContext controllerContext, string enteredUrlPath, bool publishedOnly)
+
+        public ActionContext _actionContext = null;
+
+        public CMSContext(ActionContext actionContext)
         {
-            urlPath = enteredUrlPath;
+            _actionContext = actionContext;
+            urlPath = _actionContext.HttpContext.Request.Path.Value.Trim('/');
             urlPathSegments = urlPath.Split('/');
             processPageNumber();
-            this.controllerContext = controllerContext;
+        }
 
+        public string AreaName => (_actionContext.RouteData.Values["area"] as string ?? "").ToLower();
+        public string ControllerName => (_actionContext.RouteData.Values["controller"] as string ?? "").ToLower();
+        public string ActionName => (_actionContext.RouteData.Values["action"] as string ?? "").ToLower();
+
+        public string BodyClass
+        {
+            get
+            {
+                return $"page-type-{pageType.ToString().ToLower()} route-{AreaName}-{ControllerName}-{ActionName}";
+            }
+        }
+
+        public CMSContext(ActionContext actionContext, PageType pageType) : this(actionContext)
+        {
+            this.pageType = pageType;
+        }
+        public CMSContext(ActionContext actionContext, SqlConnection con, bool publishedOnly) : this(actionContext)
+        {
             pageType = PageType.NotFond;
 
             if (pageType == PageType.NotFond)
@@ -113,7 +135,7 @@ namespace LeadGen.Code.CMS
             widgets = Post.SelectFromDB(con, typeID: (int)PostTypesBuiltIn.Widget, loadTaxonomySelectedList: true, statusID: 50);
             var layoutWidgets = widgets.Where(x => x.taxonomies.Find(y => y.taxonomy.code == "layout_location").taxonomy.termList.Any());
             foreach (var layoutWidget in layoutWidgets)
-                layoutWidget.processContentTags(con, controllerContext);
+                layoutWidget.processContentTags(con);
         }
 
         private bool tryLoadContextForStartPage(SqlConnection con)
@@ -125,7 +147,7 @@ namespace LeadGen.Code.CMS
                 postType = PostType.SelectFromDB(con, TypeID: (int)PostTypesBuiltIn.Page).FirstOrDefault();
                 postType.LoadStartPost(con, loadTaxonomySelectedList: true, loadFields: true, loadAttachmentList: true);
                 post = postType.startPost;
-                post.processContentTags(con, controllerContext);
+                post.processContentTags(con);
 
                 return true;
             }
@@ -149,7 +171,7 @@ namespace LeadGen.Code.CMS
 
             postType.LoadStartPost(con, loadTaxonomySelectedList: true, loadFields: true, loadAttachmentList: true);
             post = postType.startPost;
-            post.processContentTags(con, controllerContext);
+            post.processContentTags(con);
             postList = Post.SelectFromDB(con, typeID: postType.ID, statusID: 50, page: pageNumber, pageSize: 10, loadAttachmentList: true, loadFields: true, loadTaxonomySelectedList: true, excludeStartPage: true);
 
             return true;
@@ -183,7 +205,7 @@ namespace LeadGen.Code.CMS
             post.LoadAttachments(con);
             post.LoadFields(con);
             post.LoadTaxonomies(con, loadTerms: true, termsCheckedOnly: true);
-            post.processContentTags(con, controllerContext);
+            post.processContentTags(con);
 
 
             if (post.forTermID != null)

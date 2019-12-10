@@ -35,21 +35,17 @@ namespace LeadGen.Web.Controllers
         }
 
         [HttpGet]
-        public ContentResult OrderEmailVerifySuccess()
+        public ActionResult OrderEmailVerifyNotice()
         {
-            string viewPath = "~/Views/Order/ConfirmEmailSuccess.cshtml";
+            LeadItem leadItem = new LeadItem() { ID = 1, email = "anton.ozolin@gmail.com" };
+            return View("~/Views/Token/Order/ConfirmEmailSuccess.cshtml", leadItem);
+        }
 
-            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", 123 } };
-            LeadItem leadItem = new LeadItem() {ID = 1} ;
-
-            string html = ViewHelper.RenderViewToString(viewPath, leadItem, viewDataDictionary);
-
-            return new ContentResult
-            {
-                ContentType = "text/html",
-                StatusCode = (int)HttpStatusCode.OK,
-                Content = html
-            };
+        [HttpGet]
+        public ActionResult OrderEmailVerifySuccess()
+        {
+            LeadItem leadItem = new LeadItem() { ID = 1, email = "anton.ozolin@gmail.com" };
+            return View("~/Views/Token/Order/ConfirmEmailSuccess.cshtml", leadItem);
         }
 
         [HttpGet]

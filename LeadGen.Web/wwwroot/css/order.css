@@ -1,9 +1,6 @@
-
-
 .title-group {
     text-align: center;
 }
-
 
     .title-group h1 {
         text-transform: uppercase;
@@ -31,7 +28,7 @@
 
         .title-group .line-mix::before, .title-group .line-mix::after {
             position: absolute;
-            top: 45%;
+            top: 50%;
             content: '';
             width: 50px;
             border-bottom: 1px solid #a98a4f;
@@ -67,6 +64,15 @@
 .lead-container {
     max-width: 835px;
 }
+
+    .lead-container h1, 
+    .lead-container h2, 
+    .lead-container h3, 
+    .lead-container h4, 
+    .lead-container h5 {
+        clear: both;
+        text-align: center;
+    }
 
     .lead-container .lead_field_group {
         background-color: white;

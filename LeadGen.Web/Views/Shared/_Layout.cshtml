@@ -1,6 +1,9 @@
 ﻿@using LeadGen.Code.Taxonomy
 @using LeadGen.Web.Helpers
 @using LeadGen.Code.CMS
+@{ 
+    CMSContext cmsContext = ViewBag.cmsContext != null ? ViewBag.cmsContext : new CMSContext(this.ViewContext, CMSContext.PageType.SystemMiniPage);
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,11 +14,12 @@
     @if (Html.IsDebug())
     {
         <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/order.css" rel="stylesheet" />
     }
     <partial name="_Fonts" />
     @RenderSection("CustomCSS", required: false)
 </head>
-<body>
+<body class="@cmsContext.BodyClass">
     @{
         string link1URL = Url.Action("Index", "CMS", new { urlPath = "how-to-store-wine", area = "" });
         string link1Text = "How To Store Wine";
@@ -26,18 +30,8 @@
         string link4URL = Url.Action("Index", "CMS", new { urlPath = "order", area = "" });
         string link4Text = "Order wine cellar";
 
-        CMSContext cmsContext = ViewBag.cmsContext;
-        if (cmsContext?.regionCity?.termURL != null)
-        {
-            link1URL = Url.Action("Index", new { urlPath = String.Format("gorod/{0}", cmsContext.regionCity.termURL), area = "" });
-            link2URL = Url.Action("Index", new { urlPath = String.Format("kladbisha/{0}", cmsContext.regionCity.termURL), area = "" });
+        
 
-            if (cmsContext.regionCity.words != null && cmsContext.regionCity.words.Keys.Contains("region"))
-            {
-                link1Text = link1Text + " " + cmsContext.regionCity.words["region"].genitiveSingular;
-                link2Text = link2Text + " " + cmsContext.regionCity.words["region"].genitiveSingular;
-            }
-        }
 
         bool isOrderPage = Context.Request.Path.StartsWithSegments("/order");
     }
@@ -81,13 +75,10 @@
                 </div>
 
             </div>
-
-
-
         </div>
     </nav>
 
-    @if (ViewContext.RouteData.Values["controller"].ToString() == "CMS")
+    @if (cmsContext.ControllerName == "cms")
     {
         <div class="container body-content">
             <div class="row">
@@ -111,21 +102,21 @@
     }
     else
     {
-        @RenderBody()
+        <div class="system-page-container-wrapper">
+            @RenderBody()
+        </div>
     }
 
+
+
+<footer class="container">
+    <hr />
     <div id="LoadingWindowSplash">
         <img id="LoadingWindowSplashImage" src="~/images/spinner-icon.gif" />
     </div>
-
-    <hr />
-
-
-
-    <footer class="container">
-        <p class="copyright">v3 &copy; @DateTime.UtcNow.Year - @Html.ActionLink("WineCellars.pro", "Index", "CMS", new { area = "" }) - smart way of ordering wine cellars. @Html.ActionLink("Submit your wine cellar order", "index", "order", new { area = "" }) now. Receive quotes from wine cellar companies. Choose the best one offer you.</p>
-        @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
-    </footer>
+    <p class="copyright">v4 &copy; @DateTime.UtcNow.Year - @Html.ActionLink("WineCellars.pro", "Index", "CMS", new { area = "" }) - smart way of ordering wine cellars. @Html.ActionLink("Submit your wine cellar order", "index", "order", new { area = "" }) now. Receive quotes from wine cellar companies. Choose the best one offer you.</p>
+    @Html.ActionLink("Login", "Index", "Login", new { area = "" }, new { @class = "btn btn-default btn-login", rel = "nofollow" })
+</footer>
 
     <script src="~/lib/moment/moment.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>

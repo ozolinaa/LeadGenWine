@@ -13,6 +13,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 using LeadGen.Code.Map;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LeadGen.Code.CMS
 {
@@ -630,27 +632,27 @@ namespace LeadGen.Code.CMS
             }
         }
 
-        public void processContentTags(SqlConnection con, ControllerContext controllerContext)
+        public void processContentTags(SqlConnection con)
         {
             if(string.IsNullOrEmpty(contentIntro) == false)
-                contentIntro = processContentStringTags(con, controllerContext, contentIntro);
+                contentIntro = processContentStringTags(con, contentIntro);
             if (string.IsNullOrEmpty(contentPreview) == false)
-                contentPreview = processContentStringTags(con, controllerContext, contentPreview);
+                contentPreview = processContentStringTags(con, contentPreview);
             if (string.IsNullOrEmpty(contentMain) == false)
-                contentMain = processContentStringTags(con, controllerContext, contentMain);
+                contentMain = processContentStringTags(con, contentMain);
             if (string.IsNullOrEmpty(contentEnding) == false)
-                contentEnding = processContentStringTags(con, controllerContext, contentEnding);
+                contentEnding = processContentStringTags(con, contentEnding);
         }
 
-        private string processContentStringTags(SqlConnection con, ControllerContext controllerContext, string contentString)
+        private string processContentStringTags(SqlConnection con, string contentString)
         {
-            string processedContent = processContentStringTagPosts(con, controllerContext, contentString);
-            processedContent = processContentStringTagAudio(con, controllerContext, processedContent);
+            string processedContent = processContentStringTagPosts(con, contentString);
+            processedContent = processContentStringTagAudio(con, processedContent);
 
-            return removeContentStringTags(con, controllerContext, processedContent);
+            return removeContentStringTags(con, processedContent);
         }
 
-        private string processContentStringTagPosts(SqlConnection con, ControllerContext controllerContext, string contentString)
+        private string processContentStringTagPosts(SqlConnection con, string contentString)
         {
             foreach (Match m in Regex.Matches(contentString, @"\[posts (.*?)\]")) //[posts type=xxx taxonomy=yyy term=zzz postUrls=iii,jjj,kkk]
             {
@@ -730,9 +732,10 @@ namespace LeadGen.Code.CMS
                     if (posts.Any())
                     {
                         //Recursively call processContentTags for any of loaded posts
-                        posts.ForEach(x => x.processContentTags(con, controllerContext));
+                        posts.ForEach(x => x.processContentTags(con));
                         posts.ForEach(x => x.LoadAttachments(con));
-                        string renderedHtml = ViewHelper.RenderPartialToString(string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view, posts, controllerContext);
+
+                        string renderedHtml = ViewHelper.RenderViewToString(string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view, posts);
                         contentString = contentString.Replace(m.Groups[0].ToString(), renderedHtml);
                     }
                 }
@@ -745,7 +748,7 @@ namespace LeadGen.Code.CMS
             return contentString;
         }
 
-        private string processContentStringTagAudio(SqlConnection con, ControllerContext controllerContext, string contentString)
+        private string processContentStringTagAudio(SqlConnection con, string contentString)
         {
             foreach (Match m in Regex.Matches(contentString, @"\[audio (.*?)\]")) //[audio mp3=xxx]
             {
@@ -769,14 +772,8 @@ namespace LeadGen.Code.CMS
                 string renderedHtml = "";
                 if (string.IsNullOrEmpty(mp3) == false)
                 {
-                    renderedHtml = ViewHelper.RenderPartialToString("AudioPlayer", mp3, controllerContext);
+                    renderedHtml = ViewHelper.RenderViewToString("AudioPlayer", mp3);
 
-                    //try
-                    //{
-                    //}
-                    //catch (Exception e)
-                    //{
-                    //}
                     contentString = contentString.Replace(m.Groups[0].ToString(), renderedHtml);
                 }
 
@@ -785,7 +782,7 @@ namespace LeadGen.Code.CMS
             return contentString;
         }
 
-        private string removeContentStringTags(SqlConnection con, ControllerContext controllerContext, string contentString)
+        private string removeContentStringTags(SqlConnection con,string contentString)
         {
             //remove any [] tags
             foreach (Match m in Regex.Matches(contentString, @"\[(.*?)\]")) //[xxx]

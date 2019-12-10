@@ -84,7 +84,7 @@ namespace LeadGen.Web.Controllers
 
                 SendMessageToAdmins("New Lead Confirmed", string.Format("New Lead: #{0}", leadItem.ID));
 
-                return View("../Order/ConfirmEmailSuccess", leadItem);
+                return View("Order/ConfirmEmailSuccess", leadItem);
             }
 
             //Error

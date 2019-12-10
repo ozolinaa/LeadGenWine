@@ -1,8 +1,19 @@
 version: '3.4'
 
 services:
+  mssql:
+    image: microsoft/mssql-server-linux:2017-latest
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_PID=Express
+      - SA_PASSWORD=root
+    restart: on-failure
   leadgen.web:
     image: ${DOCKER_REGISTRY}leadgenweb
     build:
       context: .
       dockerfile: LeadGen.Web/Dockerfile
+    depends_on:
+      - mssql
