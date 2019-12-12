@@ -1,0 +1,16 @@
+﻿@model IEnumerable<LeadGen.Code.CMS.Post>
+    <div class="cms-widget-raw-contnet-items">
+        @foreach (LeadGen.Code.CMS.Post post in Model)
+        {
+            await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", post.customCSS);
+            <div class="cms-widget-raw-contnet posturl_@post.postURL">
+                <h3>@post.title</h3>
+                <div class="raw-contnet">
+                    @Html.Raw(post.contentIntro)
+                    @Html.Raw(post.contentPreview)
+                    @Html.Raw(post.contentMain)
+                    @Html.Raw(post.contentEnding)
+                </div>
+            </div>
+        }
+    </div>

@@ -67,3 +67,41 @@ docker-compose up -d
 #update app
 sudo docker-compose up -d --no-deps --build app
 #if errors stopping container - https://stackoverflow.com/questions/49104733/docker-on-ubuntu-16-04-error-when-killing-container
+
+
+____________________________
+
+backup https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container?view=sql-server-ver15
+# init (create folder for backup)
+sudo docker exec -it leadgen_mssql_1 mkdir /var/opt/mssql/backup
+
+dbname='LeadGenDB'
+backupfilepath='/var/opt/mssql/backup/LeadGenDB.bak'
+sqlpassword='*k_U^Jp+PZ6*CDmQ'
+sqldbbackupquery='BACKUP DATABASE ['"$dbname"'] TO DISK = "'"$backupfilepath"'" WITH NOFORMAT, NOINIT, NAME = "'"$dbname"'", SKIP, NOREWIND, NOUNLOAD, STATS = 10'
+
+# db-bakup
+sudo docker exec -it leadgen_mssql_1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$sqlpassword" -Q "$sqldbbackupquery"
+
+# db-restore
+sqldbrestorequery='
+	USE [master]
+	GO
+	-- section below kills all active connections to database
+	DECLARE @kill varchar(8000) = "";
+	SELECT @kill = @kill + "kill " + CONVERT(varchar(5), session_id) + ";"
+	FROM sys.dm_exec_sessions
+	WHERE database_id = db_id("'"$dbname"'")
+	EXEC(@kill);
+	-- section below switches database to single-user mode in order to prevent any connection during restoration
+	ALTER DATABASE ['"$dbname"'] SET Single_User WITH Rollback Immediate
+	GO
+	-- section below restores database from the specified backup file
+	RESTORE DATABASE ['"$dbname"'] FROM DISK = "'"$backupfilepath"'"
+	WITH REPLACE
+	GO
+	-- section below switches database to multi-user mode
+	ALTER DATABASE ['"$dbname"'] SET Multi_User
+	GO
+'
+sudo docker exec -it leadgen_mssql_1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$sqlpassword" -Q "$sqldbrestorequery"

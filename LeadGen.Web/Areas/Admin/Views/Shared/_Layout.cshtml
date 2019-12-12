@@ -7,6 +7,11 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
     <link href="~/css/style-admin-bundle.min.css?@Html.AssemblyBuildTimeStamp()" rel="stylesheet" />
+    @if (Html.IsDebug())
+    {
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link href="~/css/admin.css" rel="stylesheet" />
+    }
 
 </head>
 <body>
@@ -131,11 +136,12 @@
             <img id="LoadingWindowSplashImage" src="~/images/spinner-icon.gif" />
         </div>
         <hr />
-        <footer>
-            <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
-        </footer>
+
     </div>
 
+    <footer>
+        <p>&copy; @DateTime.UtcNow.Year - LeadGen System by Anton Ozolin</p>
+    </footer>
 
     <script src="~/lib/moment/moment.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>

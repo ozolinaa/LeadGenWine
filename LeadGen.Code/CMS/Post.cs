@@ -735,12 +735,15 @@ namespace LeadGen.Code.CMS
                         posts.ForEach(x => x.processContentTags(con));
                         posts.ForEach(x => x.LoadAttachments(con));
 
-                        string renderedHtml = ViewHelper.RenderViewToString(string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view, posts);
+                        view = string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view;
+                        string viewPath = $"~/Views/CMS/{view}.cshtml";
+                        string renderedHtml = ViewHelper.RenderViewToString(viewPath, posts);
                         contentString = contentString.Replace(m.Groups[0].ToString(), renderedHtml);
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    ;
                 }
 
             }
