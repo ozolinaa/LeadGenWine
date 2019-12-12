@@ -105,3 +105,21 @@ sqldbrestorequery='
 	GO
 '
 sudo docker exec -it leadgen_mssql_1 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$sqlpassword" -Q "$sqldbrestorequery"
+
+# db upload to s3
+backupfilepath='/home/anton/leadgen/mssql/backup/LeadGenDB.bak'
+bucket=files.winecellars.pro
+s3filepath=backup/sql/LeadGenDB_s3.bak
+resource="/${bucket}/${s3filepath}"
+contentType="application/binary"
+dateValue=`date -R`
+stringToSign="PUT\n\n${contentType}\n${dateValue}\n${resource}"
+s3Key=s3Keys3Keys3Keys3Keys3Key
+s3Secret=s3Secrets3Secrets3Secrets3Secrets3Secret
+signature=`echo -en ${stringToSign} | openssl sha1 -hmac ${s3Secret} -binary | base64`
+sudo curl -L -X PUT -T "${backupfilepath}" \
+  -H "Host: ${bucket}.s3.amazonaws.com" \
+  -H "Date: ${dateValue}" \
+  -H "Content-Type: ${contentType}" \
+  -H "Authorization: AWS ${s3Key}:${signature}" \
+  http://${bucket}.s3.amazonaws.com/${s3filepath}
