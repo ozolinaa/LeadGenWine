@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set permissions  | chmod +x db_backup_and_upload_to_s3.sh |  chmod +x /opt/leadgen/db_backup_and_upload_to_s3.sh
-# run once        | sudo ./db_backup_and_upload_to_s3.sh | sudo ./opt/leadgen/db_backup_and_upload_to_s3.sh
+# run once        | sudo ./db_backup_and_upload_to_s3.sh | sudo /opt/leadgen/db_backup_and_upload_to_s3.sh
 # schedule part 1 | sudo nano /etc/crontab 
 # schedule part 2 | 25 6 * * * root /opt/leadgen/db_backup_and_upload_to_s3.sh
 # sql backup/restore https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container?view=sql-server-ver15

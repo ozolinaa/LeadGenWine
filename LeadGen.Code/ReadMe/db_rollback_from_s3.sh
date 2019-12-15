@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set permissions | chmod +x db_rollback_from_s3.sh |  chmod +x /opt/leadgen/db_rollback_from_s3.sh
-# run once        | sudo . /db_rollback_from_s3.sh  |  sudo . /opt/leadgen/db_rollback_from_s3.sh
+# run once        | sudo ./db_rollback_from_s3.sh  |  sudo /opt/leadgen/db_rollback_from_s3.sh
 # sql backup/restore https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container?view=sql-server-ver15
 
 echo "Starting rollback..."
