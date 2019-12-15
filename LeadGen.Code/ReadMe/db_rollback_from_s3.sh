@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# set permissions        | chmod +x db_rollback_from_s3.sh |  chmod +x /home/anton/leadgen/db_rollback_from_s3.sh
-# run once        | sudo ./db_rollback_from_s3.sh  |  sudo ./home/anton/leadgen/db_rollback_from_s3.sh
+# set permissions | chmod +x db_rollback_from_s3.sh |  chmod +x /opt/leadgen/db_rollback_from_s3.sh
+# run once        | sudo . /db_rollback_from_s3.sh  |  sudo . /opt/leadgen/db_rollback_from_s3.sh
 # sql backup/restore https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container?view=sql-server-ver15
 
 echo "Starting rollback..."
@@ -12,11 +12,11 @@ s3Key=AKIA5TEQIYORDMDP7ENV
 s3Secret=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
 
 # Getting latest file name
-lastBackupFileName='LeadGenDB_s3_2019_12_13_07_46_36.bak'
+lastBackupFileName='LeadGenDB_s3_2019_12_15_06_25_01.bak'
 
 # DOWNLOAD FROM S3
 echo "Download from AWS S3..."
-restoreFolderAtHost='/home/anton/leadgen/mssql/backup'
+restoreFolderAtHost='/opt/leadgen/mssql/backup'
 restoreFilePathAtHost=''"$restoreFolderAtHost"'/'"$lastBackupFileName"
 sudo rm -r "$restoreFilePathAtHost"
 bucket=files.winecellars.pro

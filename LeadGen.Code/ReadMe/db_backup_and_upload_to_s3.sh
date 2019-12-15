@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# set permissions        | chmod +x db_backup_and_upload_to_s3.sh |  chmod +x /home/anton/leadgen/db_backup_and_upload_to_s3.sh
-# run once        | sudo ./db_backup_and_upload_to_s3.sh | sudo ./home/anton/leadgen/db_backup_and_upload_to_s3.sh
+# set permissions  | chmod +x db_backup_and_upload_to_s3.sh |  chmod +x /opt/leadgen/db_backup_and_upload_to_s3.sh
+# run once        | sudo ./db_backup_and_upload_to_s3.sh | sudo ./opt/leadgen/db_backup_and_upload_to_s3.sh
 # schedule part 1 | sudo nano /etc/crontab 
-# schedule part 2 | 25 6 * * * root /home/anton/leadgen/db_backup_and_upload_to_s3.sh
+# schedule part 2 | 25 6 * * * root /opt/leadgen/db_backup_and_upload_to_s3.sh
 # sql backup/restore https://docs.microsoft.com/en-us/sql/linux/tutorial-restore-backup-in-sql-server-container?view=sql-server-ver15
 
 # BACKUP
@@ -20,7 +20,7 @@ docker exec -it "$dockerContainer" /opt/mssql-tools/bin/sqlcmd -S localhost -U S
 
 # UPLOAD TO S3
 echo "Uploading to AWS S3..."
-backupFolderAtHost='/home/anton/leadgen/mssql/backup'
+backupFolderAtHost='/opt/leadgen/mssql/backup'
 backupFilePathAtHost=''"$backupFolderAtHost"'/'"$dbName"'_latest.bak'
 bucket=files.winecellars.pro
 now=$(date +"%Y_%m_%d_%H_%M_%S")
