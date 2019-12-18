@@ -16,7 +16,7 @@
         <link href="~/css/site.css" rel="stylesheet" />
         <link href="~/css/order.css" rel="stylesheet" />
     }
-    <partial name="_Fonts" />
+    @Html.Raw(LeadGen.Code.Helpers.SysHelper.AppSettings.CMSSettings.HtmlHeadInjection)
     @RenderSection("CustomCSS", required: false)
 </head>
 <body class="@cmsContext.BodyClass">

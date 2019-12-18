@@ -3,9 +3,37 @@
 @section SEO{@{await Html.RenderPartialAsync("DisplayTemplates/SEOFields", Model.post.SEO); }}
 @section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", Model.post.customCSS); }}
 
-<article>
-    @Html.Raw(Model.post.contentIntro)
-    @Html.Raw(Model.post.contentPreview)
-    @Html.Raw(Model.post.contentMain)
-    @Html.Raw(Model.post.contentEnding)
-</article>
+    <article>
+        @if (!string.IsNullOrEmpty(Model.post.contentIntro))
+        {
+            <div class="contentIntro-wrapper">
+                <div class="contentIntro">
+                    @Html.Raw(Model.post.contentIntro)
+                </div>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.post.contentPreview))
+        {
+            <div class="contentPreview-wrapper">
+                <div class="contentPreview">
+                    @Html.Raw(Model.post.contentPreview)
+                </div>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.post.contentMain))
+        {
+            <div class="contentMain-wrapper">
+                <div class="contentMain">
+                    @Html.Raw(Model.post.contentMain)
+                </div>
+            </div>
+        }
+        @if (!string.IsNullOrEmpty(Model.post.contentEnding))
+        {
+            <div class="contentEnding-wrapper">
+                <div class="contentEnding">
+                    @Html.Raw(Model.post.contentEnding)
+                </div>
+            </div>
+        }
+    </article>

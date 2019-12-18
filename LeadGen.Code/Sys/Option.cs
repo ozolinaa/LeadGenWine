@@ -89,7 +89,8 @@ namespace LeadGen.Code.Sys
             LeadFieldMappingLocationZip,
             LeadFieldMappingLocationRadius,
 
-            SystemAccessToken
+            SystemAccessToken,
+            CMSHtmlHeadInjection
         };
 
 

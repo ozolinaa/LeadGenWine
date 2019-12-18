@@ -173,6 +173,7 @@ LeadGen.PostEdit.init = function () {
     tinymce.init({
         /* Конфигурация редактора */
         selector: "textarea.tinymce",
+        //forced_root_block: false, //removed <p></p> wrapping
         plugins: [
             "advlist autolink lists link image charmap print preview anchor",
             "searchreplace visualblocks code fullscreen",
@@ -388,6 +389,17 @@ LeadGen.PostEdit.init = function () {
         }
     });
 
+
+    //css-editor
+    Array.from(document.getElementsByClassName("css-editor")).forEach(
+        function (cssTextarea) {
+            CodeMirror.fromTextArea(cssTextarea, {
+                lineNumbers: true
+            });
+        }
+    );
+
+
     var errorText = $(".validation-summary-errors").html();
     if (errorText) {
         LeadGen.ui.showNotificationLabel(errorText, 'danger');
@@ -395,5 +407,5 @@ LeadGen.PostEdit.init = function () {
         LeadGen.ui.showNotificationLabel();
         LeadGen.ui.googleMapsActions.refreshMapsInSelector();
     }
-    
+
 };

@@ -71,6 +71,10 @@
       "library": "font-awesome@5.8.2",
       "destination": "wwwroot/lib/font-awesome",
       "provider": "cdnjs"
+    },
+    {
+      "library": "codemirror@5.48.4",
+      "destination": "wwwroot/lib/codemirror/"
     }
   ]
 }

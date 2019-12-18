@@ -101,20 +101,20 @@
                 {
 
 
-                <div class='form-group'>
-                    @Html.LabelFor(x => x.datePublished)
-                    <div class="input-group date datetimepicker">
-                        @Html.TextBoxFor(x => x.datePublished, new { @class = "form-control" })
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                    <div class='form-group'>
+                        @Html.LabelFor(x => x.datePublished)
+                        <div class="input-group date datetimepicker">
+                            @Html.TextBoxFor(x => x.datePublished, new { @class = "form-control" })
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
                     </div>
-                </div>
                 }
 
             </div>
             <div class="panel-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" id="LeadGenPostSaveBtn">Save</button>
 
                 <a href="@String.Format("{0}/{1}{2}", ViewBag.siteURL, Model.Url, Model.postStatus.ID == 50 ? "" : "?preview=True")"
                    class="btn btn-default pull-right" target="_blank">
@@ -149,5 +149,3 @@
 
     </div>
 </div>
-
-

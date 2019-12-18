@@ -17,6 +17,7 @@ namespace LeadGen.Code.Settings
         AWSSettings AWSSettings { get; }
         EmailSettings EmailSettings { get;  }
         LeadSettings LeadSettings { get; }
+        CMSSettings CMSSettings { get; }
 
         void ReloadAppSettingsFromDB(SqlConnection con);
     }
@@ -28,6 +29,7 @@ namespace LeadGen.Code.Settings
         private string _systemAccessToken;
         private AzureSettings _azureSettings;
         private AWSSettings _awsSettings;
+        private CMSSettings _cmsSettings;
         private EmailSettings _emailSettings;
         private LeadSettings _leadSettings;
 
@@ -40,6 +42,7 @@ namespace LeadGen.Code.Settings
         public AWSSettings AWSSettings { get { return _awsSettings; } }
         public EmailSettings EmailSettings { get { return _emailSettings; } }
         public LeadSettings LeadSettings { get { return _leadSettings; } }
+        public CMSSettings CMSSettings { get { return _cmsSettings; } }
 
 
         public AppSettings(ICoreSettings coreSettings)
@@ -132,6 +135,12 @@ namespace LeadGen.Code.Settings
                 FieldMappingDateDue = settingOptions[Option.SettingKey.LeadFieldMappingDateDue.ToString()].value,
                 FieldMappingLocationRadius = settingOptions[Option.SettingKey.LeadFieldMappingLocationRadius.ToString()].value,
                 FieldMappingLocationZip = settingOptions[Option.SettingKey.LeadFieldMappingLocationZip.ToString()].value
+            };
+
+            if (settingOptions.TryGetValue(Option.SettingKey.CMSHtmlHeadInjection.ToString(), out tmpOption))
+            _cmsSettings = new CMSSettings()
+            {
+                HtmlHeadInjection = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value
             };
 
         }

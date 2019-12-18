@@ -738,7 +738,12 @@ namespace LeadGen.Code.CMS
                         view = string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view;
                         string viewPath = $"~/Views/CMS/{view}.cshtml";
                         string renderedHtml = ViewHelper.RenderViewToString(viewPath, posts);
-                        contentString = contentString.Replace(m.Groups[0].ToString(), renderedHtml);
+                        string matchedStr = m.Groups[0].ToString();
+                        string matchedStrWithP = $"<p>{matchedStr}</p>";
+                        if (contentString.Contains(matchedStrWithP)) {
+                            matchedStr = matchedStrWithP;
+                        }
+                        contentString = contentString.Replace(matchedStr, renderedHtml);
                     }
                 }
                 catch (Exception e)

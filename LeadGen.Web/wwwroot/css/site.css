@@ -2,17 +2,16 @@
     position: absolute;
     min-height: 100%;
     width: 100%;
-
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     font-size: 16px;
     font-family: 'Roboto', sans-serif;
     line-height: 1.5;
     font-weight: normal;
     background-color: #fbf9f2;
     color: #333;
+    overflow-x: hidden;
 }
 
 
@@ -72,6 +71,7 @@ h4 {
     border: none;
     background-color: black;
     padding-top: 22px;
+    margin-bottom: 0;
 }
     .navbar-leadgen .navbar-header {
         background-color: black;
@@ -88,7 +88,7 @@ h4 {
         }
 
 /*navbar-brand*/
-.navbar-header > .navbar-brand {
+    .navbar-header > .navbar-brand {
     padding: 0;
 }
 .navbar-header > .navbar-brand > a {
@@ -458,6 +458,16 @@ footer .btn-login {
 }
     .btn.btn-default:hover {
         background-color: #00000007;
+    }
+
+.cms-widget-raw-contnet-wrapper {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    clear: both;
+}
+    .cms-widget-raw-contnet-wrapper .cms-widget-raw-contnet {
+        z-index: 100;
     }
 
 

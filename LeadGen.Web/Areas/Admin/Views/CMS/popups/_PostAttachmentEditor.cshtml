@@ -31,14 +31,15 @@
                         @Html.ValidationMessageFor(x => x.description)
                     </div>
 
-                    @if (Model.attachmentType == LeadGen.Code.CMS.Attachment.Type.Image)
-                    {
-                <img src="@Model.GetImageURLBySizeCode("Medium")" style="width:100%;" />
-                    }
-                    else
-                    {
-        @Model.attachmentURL
-                    }
+                    <div>
+                        @Model.attachmentURL
+                        @if (Model.attachmentType == LeadGen.Code.CMS.Attachment.Type.Image)
+                        {
+                            <img src="@Model.GetImageURLBySizeCode("Medium")" style="width:100%;" />
+                        }
+                    </div>
+
+
                 </div>
                 <div class="col-sm-4">
                     @Html.EditorFor(x => x.taxonomies)
