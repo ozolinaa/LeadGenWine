@@ -11,13 +11,13 @@ namespace LeadGen.Code.Settings
     public interface IAppSettings
     {
         string SQLConnectionString { get; }
-        string GoogleMapsAPIKey { get; }
         string SystemAccessToken { get; }
         AzureSettings AzureSettings { get; }
         AWSSettings AWSSettings { get; }
         EmailSettings EmailSettings { get;  }
         LeadSettings LeadSettings { get; }
         CMSSettings CMSSettings { get; }
+        GoogleSettings GoogleSettings { get; }
 
         void ReloadAppSettingsFromDB(SqlConnection con);
     }
@@ -25,16 +25,15 @@ namespace LeadGen.Code.Settings
     public class AppSettings : IAppSettings
     {
         private string _sqlConnectionString;
-        private string _googleMapsAPIKey;
         private string _systemAccessToken;
         private AzureSettings _azureSettings;
         private AWSSettings _awsSettings;
         private CMSSettings _cmsSettings;
         private EmailSettings _emailSettings;
         private LeadSettings _leadSettings;
+        private GoogleSettings _googleSettings;
 
         public string SQLConnectionString { get { return _sqlConnectionString; }  }
-        public string GoogleMapsAPIKey { get { return _googleMapsAPIKey; } }
         public string SystemAccessToken { get { return _systemAccessToken; } }
 
 
@@ -43,6 +42,7 @@ namespace LeadGen.Code.Settings
         public EmailSettings EmailSettings { get { return _emailSettings; } }
         public LeadSettings LeadSettings { get { return _leadSettings; } }
         public CMSSettings CMSSettings { get { return _cmsSettings; } }
+        public GoogleSettings GoogleSettings { get { return _googleSettings; } }
 
 
         public AppSettings(ICoreSettings coreSettings)
@@ -76,9 +76,15 @@ namespace LeadGen.Code.Settings
         {
             Dictionary<string, Option> settingOptions = Option.SelectFromDB(con);
 
+            settingOptions.TryGetValue(Option.SettingKey.GoogleMapsAPIPublicKey.ToString(), out Option googleMapsAPIPublicKeyOption);
+            settingOptions.TryGetValue(Option.SettingKey.GoogleMapsAPIServerKey.ToString(), out Option googleMapsAPIServerKeyOption);
+            _googleSettings = new GoogleSettings()
+            {
+                GoogleMapsAPIPublicKey = googleMapsAPIPublicKeyOption?.value,
+                GoogleMapsAPIServerKey = googleMapsAPIServerKeyOption?.value
+            };
+
             Option tmpOption;
-            if (settingOptions.TryGetValue(Option.SettingKey.GoogleMapsAPIKey.ToString(), out tmpOption))
-                _googleMapsAPIKey = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
             if (settingOptions.TryGetValue(Option.SettingKey.SystemAccessToken.ToString(), out tmpOption))
                 _systemAccessToken = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
 

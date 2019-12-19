@@ -267,3 +267,6 @@ __pycache__/
 /LeadGen.Web/wwwroot/css/style-admin-bundle.min.css
 /LeadGen.Web/wwwroot/css/style-public-bundle.css
 /LeadGen.Web/wwwroot/css/style-public-bundle.min.css
+
+/LeadGen.Web/wwwroot/js/site.min.js
+/LeadGen.Web/wwwroot/js/site.min.js.map

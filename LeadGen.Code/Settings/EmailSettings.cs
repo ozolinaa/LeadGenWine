@@ -4,11 +4,6 @@ using System.Text;
 
 namespace LeadGen.Code.Settings
 {
-    public struct CMSSettings
-    {
-        public string HtmlHeadInjection { get; set; }
-    }
-
     public struct EmailSettings
     {
         public string FromAddress { get; set; }

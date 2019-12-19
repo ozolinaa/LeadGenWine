@@ -303,8 +303,12 @@
 
 @media (max-width: 576px) {
 
+    .lead-container {
+        padding:0;
+    }
+
     .lead-container .lead_field_group {
-        margin: 0 -15px 15px -15px;
+        /*margin: 0 -15px 15px -15px;*/
         padding: 15px 15px;
         border-left: none;
         border-right: none;

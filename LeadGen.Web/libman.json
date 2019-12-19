@@ -74,7 +74,13 @@
     },
     {
       "library": "codemirror@5.48.4",
-      "destination": "wwwroot/lib/codemirror/"
+      "destination": "wwwroot/lib/codemirror/",
+      "provider": "cdnjs"
+    },
+    {
+      "library": "select2-bootstrap-css@1.4.6",
+      "destination": "wwwroot/lib/select2-bootstrap-css/",
+      "provider": "cdnjs"
     }
-  ]
+]
 }

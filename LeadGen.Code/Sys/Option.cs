@@ -79,7 +79,8 @@ namespace LeadGen.Code.Sys
             EmailSmtpEnableSsl,
             EmailSmtpSendIntervalMilliseconds,
 
-            GoogleMapsAPIKey,
+            GoogleMapsAPIPublicKey,
+            GoogleMapsAPIServerKey,
 
             LeadApprovalLocationEnabled,
             LeadApprovalPermissionEnabled,

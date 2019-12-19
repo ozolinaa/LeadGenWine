@@ -74,8 +74,14 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         public ActionResult StartPage()
         {
-            if(cmsContext.post.postType.ID == (int)PostTypesBuiltIn.Page)
+            if (cmsContext.post.postType.ID == (int)PostTypesBuiltIn.Page)
+            {
+                Code.Lead.LeadItem leadItem = new Code.Lead.LeadItem();
+                leadItem.LoadFieldStructure(DBLGcon, true);
+                ViewBag.leadItem = leadItem;
                 return View("Exclusion/pageStartPage", cmsContext);
+            }
+                
             return View("Exclusion/postTypeStartPage", cmsContext);
         }
 

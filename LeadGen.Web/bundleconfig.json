@@ -6,6 +6,7 @@
       "wwwroot/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css",
       "wwwroot/lib/lightbox2/css/lightbox.min.css",
       "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/select2-bootstrap-css/select2-bootstrap.min.css",
       "wwwroot/lib/font-awesome/css/all.min.css",
       "wwwroot/lib/jquery-ui/jquery-ui.min.css",
       "wwwroot/lib/jquery-ui/themes/base/theme.min.css",
@@ -22,6 +23,7 @@
       "wwwroot/lib/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css",
       "wwwroot/lib/lightbox2/css/lightbox.min.css",
       "wwwroot/lib/select2/css/select2.min.css",
+      "wwwroot/lib/select2-bootstrap-css/select2-bootstrap.min.css",
       "wwwroot/lib/font-awesome/css/all.min.css",
       "wwwroot/css/site.css",
       "wwwroot/css/order.css"
@@ -30,7 +32,7 @@
   {
     "outputFileName": "wwwroot/js/site.min.js",
     "inputFiles": [
-      "wwwroot/js/site.js"
+      "wwwroot/lib/select2/js/select2.min.js"
     ],
     "minify": {
       "enabled": true,

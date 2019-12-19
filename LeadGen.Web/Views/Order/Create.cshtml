@@ -15,41 +15,19 @@
         <partial name="DisplayTemplates/SEOFields" model="seo" />
     }
 }
-<link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
-@*<link href="~/Content/jquery.formstyler.css" rel="stylesheet" />*@
-<link href="~/css/select2-bootstrap.css" rel="stylesheet" />
 
-<style>
-    select option[disabled] {
-        display: none;
-    }
-
-    #countrySwitchWrapper span {
-        cursor: pointer;
-        text-decoration: underline;
-    }
-
-        #countrySwitchWrapper span:hover {
-            text-decoration: underline;
-        }
-
-        #countrySwitchWrapper span.active {
-            cursor: initial;
-            text-decoration: none;
-        }
-
-            #countrySwitchWrapper span.active:hover {
-                text-decoration: none;
-            }
-</style>
-
-<div class="container lead-container">
-    @Html.EditorFor(x => x)
+<div class="container body-content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="container lead-container">
+                @Html.EditorFor(x => x)
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts
     {
-    <script src="~/lib/select2/js/select2.min.js"></script>
     <script>
         $(document).ready(function () {
             //initializeLeadForm is defined in ~/Views/Order/EditorTemplates/LeadItem.cshtml

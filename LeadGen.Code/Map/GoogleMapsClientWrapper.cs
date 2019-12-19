@@ -15,7 +15,7 @@ namespace LeadGen.Code.Map
     {
         public static Location GetLocation(string address)
         {
-            string APIKey = SysHelper.AppSettings.GoogleMapsAPIKey;
+            string APIKey = SysHelper.AppSettings.GoogleSettings.GoogleMapsAPIServerKey;
 
             string url = string.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", HttpUtility.UrlEncode(address), APIKey);
             string json = String.Empty;

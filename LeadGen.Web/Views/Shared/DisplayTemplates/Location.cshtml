@@ -1,7 +1,7 @@
 ﻿@model LeadGen.Code.Map.Location
 @using LeadGen.Code.Helpers;
 @{
-    string googleMapsAPIKey = SysHelper.AppSettings.GoogleMapsAPIKey;
+    string googleMapsAPIKey = SysHelper.AppSettings.GoogleSettings.GoogleMapsAPIPublicKey;
     //string mapID = Html.IdForModel().ToString();
     string mapID = Guid.NewGuid().ToString().Replace('-', '_');
 }
