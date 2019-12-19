@@ -63,6 +63,8 @@
 
 .lead-container {
     max-width: 835px;
+    margin-right: -15px;
+    margin-left: -15px;
 }
 
     .lead-container h1, 
