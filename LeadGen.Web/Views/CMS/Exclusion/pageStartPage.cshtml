@@ -41,8 +41,10 @@
         LeadGen.Code.Lead.LeadItem leadItem = ViewBag.leadItem;
         if (leadItem != null)
         {
-            <div class="container lead-container">
-                @await Html.PartialAsync("~/Views/Order/EditorTemplates/LeadItem.cshtml", leadItem)
+            <div class="row">
+                <div class="container lead-container">
+                    @await Html.PartialAsync("~/Views/Order/EditorTemplates/LeadItem.cshtml", leadItem)
+                </div>
             </div>
             @section Scripts
             {
