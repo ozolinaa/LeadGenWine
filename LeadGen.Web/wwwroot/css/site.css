@@ -67,50 +67,45 @@ h4 {
 /* Nav Bar */
 .navbar-leadgen {
     z-index: 10;
-    height: 80px;
+    height: initial;
     border: none;
     background-color: black;
-    padding-top: 22px;
     margin-bottom: 0;
 }
     .navbar-leadgen .navbar-header {
         background-color: black;
+        height: 65px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .navbar-leadgen .navbar-header:before {
+        display: none;
     }
 
     .navbar-leadgen .navbar-collapse > .navbar-nav > li a {
         line-height: 30px;
     }
 
-
-
-        .navbar-leadgen .navbar-header > .btn-header-order-wrapper {
+    /* Nav Bar LOGO */
+    .navbar-leadgen .navbar-header > .navbar-brand {
+        padding: 0;
+        height: 100%;
+    }
+        .navbar-leadgen .navbar-header > .navbar-brand > a {
+            width: 90px;
+            background: url(https://s3.us-west-2.amazonaws.com/files.winecellars.pro/cms/2019/12/wine_cellars_logo.png);
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             display: inline-block;
+            height: 100%;
+            color: transparent;
         }
 
-/*navbar-brand*/
-    .navbar-header > .navbar-brand {
-    padding: 0;
-}
-.navbar-header > .navbar-brand > a {
-    display: inline-block;
-    width: 105px;
-    height: 50px;
-    background-color: bisque;
-}
-@media (max-width: 768px) {
-    .navbar-header > .navbar-brand > a {
-        width: 80px;
-        height: 40px;
-        background-color: blue;
+    .navbar-leadgen .navbar-header:after {
+        display: none;
     }
-}
-@media (max-width: 576px) {
-    .navbar-header > .navbar-brand > a {
-        width: 55px;
-        height: 20px;
-        background-color: red;
-    }
-}
 
 /*nav menu items font*/
 .navbar .navbar-collapse.navbar-collapse-leadgen > .nav-justified > li > a {
@@ -126,6 +121,7 @@ h4 {
     background-color: initial;
 }
 
+/* Descktop Menu */
 @media (min-width: 767px) {
     .navbar-leadgen .navbar-header {
         width: 100%;
@@ -163,33 +159,42 @@ h4 {
     }
 }
 
+/* Mobile Menu */
 @media (max-width: 767px) {
-    ul.nav.nav-pills.nav-justified {
-        text-align: center;
-        margin-top: 50px;
-    }
-
-    .navbar .navbar-collapse.navbar-collapse-leadgen {
-        border-top: none;
-    }
-
-    /*Make Order Button Centered*/
-    .navbar-leadgen .navbar-header .btn-header-order-wrapper {
-        position: absolute;
-        left: calc(50% - 60px);
-        text-align: center;
-    }
-        .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {
-            padding: 8px 15px;
-        }
-
-    .navbar-leadgen {
+    .navbar-leadgen .navbar-header {
         height: 60px;
-        padding-top: 11px;
     }
-        .navbar-leadgen .navbar-toggle {
-            margin-top: 0;
+        .navbar-leadgen .navbar-header > .navbar-brand {
+            margin-left: 15px;
         }
+
+    .navbar-leadgen .navbar-collapse.navbar-collapse-leadgen {
+        border-top: none;
+        align-self: flex-start;
+        width: 100%;
+        position: absolute;
+        top:0;
+        left:0;
+        padding: 0;
+    }
+    .navbar-leadgen .navbar-collapse.navbar-collapse-leadgen ul.nav.nav-pills.nav-justified {
+        background-color: black;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 10px;
+    }
+
+
+    .navbar-leadgen .navbar-header .btn-header-order-wrapper {
+        /*margin-left: -20px;*/
+    }
+    .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {
+        padding: 8px 15px;    
+    }
+    .navbar-leadgen .navbar-toggle {
+        margin: 0 15px;
+    }
 }
 
 
