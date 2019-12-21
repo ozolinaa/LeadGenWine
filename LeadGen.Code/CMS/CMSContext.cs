@@ -68,7 +68,7 @@ namespace LeadGen.Code.CMS
         public CMSContext(ActionContext actionContext)
         {
             _actionContext = actionContext;
-            urlPath = _actionContext.HttpContext.Request.Path.Value.Trim('/');
+            urlPath = _actionContext.HttpContext.Request.Path.Value.ToLower().Trim('/');
             urlPathSegments = urlPath.Split('/');
             processPageNumber();
         }

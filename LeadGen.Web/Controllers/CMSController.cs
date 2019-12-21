@@ -26,10 +26,10 @@ namespace LeadGen.Web.Controllers
         //Cache The Page at the server for 24 hours
         public IActionResult Index(string urlPath = "", bool preview = false)
         {
-            if (urlPath == null)
-                urlPath = "";
-            else
-                urlPath = urlPath.Trim('/');
+            urlPath = urlPath == null ? "" : urlPath.Trim('/').ToLower();
+
+            if (urlPath.StartsWith("robots.txt"))
+                return RobotsTxt();
 
             IActionResult result = null;
             if (false) {
@@ -129,6 +129,12 @@ namespace LeadGen.Web.Controllers
             if (ViewExists("TermTypePostList/" + cmsContext.post.postType.url))
                 return View("TermTypePostList/" + cmsContext.post.postType.url, cmsContext.postList);
             return View("TermTypePostList/Default", cmsContext.postList);
+        }
+
+        [NonAction]
+        public ActionResult RobotsTxt()
+        {
+            return Content(Code.Helpers.SysHelper.AppSettings.CMSSettings.RobotsTXT);
         }
 
     }

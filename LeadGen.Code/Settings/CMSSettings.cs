@@ -7,5 +7,6 @@ namespace LeadGen.Code.Settings
     public struct CMSSettings
     {
         public string HtmlHeadInjection { get; set; }
+        public string RobotsTXT { get; set; }
     }
 }

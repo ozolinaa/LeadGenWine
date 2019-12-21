@@ -143,10 +143,13 @@ namespace LeadGen.Code.Settings
                 FieldMappingLocationZip = settingOptions[Option.SettingKey.LeadFieldMappingLocationZip.ToString()].value
             };
 
-            if (settingOptions.TryGetValue(Option.SettingKey.CMSHtmlHeadInjection.ToString(), out tmpOption))
+            settingOptions.TryGetValue(Option.SettingKey.CMSHtmlHeadInjection.ToString(), out Option cmsHtmlHeadInjectionOption);
+            settingOptions.TryGetValue(Option.SettingKey.CMSRobotsTXT.ToString(), out Option cmsRobotsTXTOption);
+
             _cmsSettings = new CMSSettings()
             {
-                HtmlHeadInjection = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value
+                HtmlHeadInjection = cmsHtmlHeadInjectionOption?.value?.ToString(),
+                RobotsTXT = cmsRobotsTXTOption?.value?.ToString()
             };
 
         }
