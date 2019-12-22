@@ -2,6 +2,8 @@ name: Publish Docker
 on: [push]
 jobs:
   build:
+    env:
+      working-directory: ./LeadGen.Web  
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
