@@ -11,4 +11,4 @@ jobs:
         name: xtonyx/leadgenweb
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        workdir: ./LeadGen.Web  
+        workdir: /github/workspace/LeadGen.Web/
