@@ -10,7 +10,7 @@
     line-height: 1.5;
     font-weight: normal;
     background-color: #fbf9f2;
-    color: #333;
+    color: #332;
     overflow-x: hidden;
 }
 
@@ -21,7 +21,7 @@ body.mce-fullscreen > nav {
 
 h1, h2, h3, h4, h5 {
     font-family: 'Montserrat', sans-serif;
-    color: #000;
+    color: #332;
 }
 
 h1 {
@@ -164,8 +164,9 @@ h4 {
     .navbar-leadgen .navbar-header {
         height: 60px;
     }
+        /*Logo*/
         .navbar-leadgen .navbar-header > .navbar-brand {
-            margin-left: 15px;
+            margin: 0 15px;
         }
 
     .navbar-leadgen .navbar-collapse.navbar-collapse-leadgen {
@@ -185,22 +186,31 @@ h4 {
         padding-top: 10px;
     }
 
-
-    .navbar-leadgen .navbar-header .btn-header-order-wrapper {
-        /*margin-left: -20px;*/
-    }
     .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {
         padding: 8px 15px;    
     }
     .navbar-leadgen .navbar-toggle {
+        width: 45px;
         margin: 0 15px;
+        margin-left: 60px;
     }
 }
 
-
-.container-fluid {
-    width: 100%;
+/*Small Phone*/
+@media (max-width: 420px) {
+    /*Logo*/
+    .navbar-leadgen .navbar-header > .navbar-brand > a {
+        width: 65px;
+    }
+    .navbar-leadgen .navbar-header .btn-header-order-wrapper > a {
+        padding: 8px 5px;
+    }
+    .navbar-leadgen .navbar-toggle {
+        width: 45px;
+        margin-left: calc(15px + 20px);
+    }
 }
+
 
 footer .copyright {
     float: left;
@@ -217,6 +227,9 @@ footer .btn-login {
         padding-left: 15px;
         padding-right: 15px;
     }
+        .body-content.container-fluid {
+            width: 100%;
+        }
 
     /* Set width on the form input elements since they're 100% wide by default */
     input,
@@ -457,9 +470,9 @@ footer .btn-login {
     }
 
 .btn.btn-default {
-    border-color: #333;
+    border-color: #332;
     background-color: transparent;
-    color: #333;
+    color: #332;
 }
     .btn.btn-default:hover {
         background-color: #00000007;

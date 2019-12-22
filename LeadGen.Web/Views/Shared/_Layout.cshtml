@@ -33,7 +33,7 @@
         
 
 
-        bool isOrderPage = Context.Request.Path.StartsWithSegments("/order");
+        bool showOrderButtonInHeader = !(string.IsNullOrEmpty(cmsContext.urlPath) || Context.Request.Path.StartsWithSegments("/order"));
     }
 
     <nav class="navbar navbar-default navbar-leadgen" role="navigation">
@@ -49,7 +49,7 @@
                 </div>
 
 
-                @if (!isOrderPage)
+                @if (showOrderButtonInHeader)
                 {
                     <span class="btn-header-order-wrapper">
                         @Html.ActionLink("Order wine cellar", "Index", "order", new { area = "" }, new { @class = "btn btn-success" })
