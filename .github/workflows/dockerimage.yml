@@ -9,12 +9,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 2.2.108
-    - name: Build with dotnet
-      run: dotnet build LeadGen.Web/LeadGen.Web.csproj --configuration Release
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build . --file LeadGen.Web/Dockerfile --tag my-image-name:$(date +%s)
