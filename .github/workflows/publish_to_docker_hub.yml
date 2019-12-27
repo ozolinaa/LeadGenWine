@@ -5,7 +5,7 @@ on:
     branches:
       - master
 jobs:
-  build:
+  publish_image:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -15,3 +15,8 @@ jobs:
       run: docker build . --file LeadGen.Web/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/leadgenweb:latest
     - name: Publish the Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:latest
+  deploy:
+    needs: publish_image
+    runs-on: ubuntu-latest
+    - name: Deploy to Web Server
+      run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
