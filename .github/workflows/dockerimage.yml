@@ -15,4 +15,4 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file LeadGen.Web/Dockerfile --tag leadgenweb:latest
     - name: Publish the Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:latest
+      run: docker push xtonyx/leadgenweb:latest
