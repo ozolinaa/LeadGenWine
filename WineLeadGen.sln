@@ -13,7 +13,12 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LeadGen.SQL", "LeadGen.SQL\LeadGen.SQL.sqlproj", "{C2D17BA9-E7DF-4D67-8E38-CB9008BE3047}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeadGen.Test", "LeadGen.Test\LeadGen.Test.csproj", "{EF0947D8-BFB2-4921-BEF1-49FFC1B3E2B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadGen.Test", "LeadGen.Test\LeadGen.Test.csproj", "{EF0947D8-BFB2-4921-BEF1-49FFC1B3E2B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AFD1D02F-8D6E-41C0-BDED-2C7EB86BEA40}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\publish_to_docker_hub.yml = .github\workflows\publish_to_docker_hub.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
