@@ -17,5 +17,4 @@ jobs:
         password: ${{ secrets.HOME_SSH_PASSWORD }}
         port: ${{ secrets.HOME_SSH_PORT }}
         script: |
-          whoami
-          sudo /opt/leadgen/docker_compose_update_leadgenweb.sh
+         /opt/leadgen/docker_compose_update_leadgenweb.sh
