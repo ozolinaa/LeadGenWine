@@ -15,3 +15,13 @@ jobs:
       run: docker build . --file LeadGen.Web/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/leadgenweb:latest
     - name: Publish the Docker image
       run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:latest
+    - name: Update Web Server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOME_SSH_HOST }}
+        username: ${{ secrets.HOME_SSH_USERNAME }}
+        password: ${{ secrets.HOME_SSH_PASSWORD }}
+        port: ${{ secrets.HOME_SSH_PORT }}
+        script: |
+          whoami
+          ls -al
