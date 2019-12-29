@@ -12,15 +12,16 @@ s3Key=AKIA5TEQIYORDMDP7ENV
 s3Secret=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
 
 # Getting latest file name
-lastBackupFileName='LeadGenDB_s3_2019_12_15_06_25_01.bak'
+lastBackupArchiveFileName='LeadGenDB_s3_2019_12_29_13_33_58.bak.zip'
 
 # DOWNLOAD FROM S3
 echo "Download from AWS S3..."
-restoreFolderAtHost='/opt/leadgen/mssql/backup'
-restoreFilePathAtHost=''"$restoreFolderAtHost"'/'"$lastBackupFileName"
-sudo rm -r "$restoreFilePathAtHost"
+restoreFolderAtHost='/opt/leadgen/mssql/restore'
+restoreArchivePathAtHost=''"$restoreFolderAtHost"'/'"$lastBackupArchiveFileName"
+mkdir -p "$restoreFolderAtHost"
+sudo rm -r "$restoreArchivePathAtHost"
 bucket=files.winecellars.pro
-s3filepath='backup/sql/'"$lastBackupFileName"
+s3filepath='backup/sql/'"$lastBackupArchiveFileName"
 resource="/${bucket}/${s3filepath}"
 contentType="application/binary"
 dateValue=`date -R`
@@ -30,10 +31,15 @@ sudo curl -H "Host: ${bucket}.s3.amazonaws.com" \
  -H "Date: ${dateValue}" \
  -H "Content-Type: ${contentType}" \
  -H "Authorization: AWS ${s3Key}:${signature}" \
- http://${bucket}.s3.amazonaws.com/${s3filepath} -o "$restoreFilePathAtHost"
+ http://${bucket}.s3.amazonaws.com/${s3filepath} -o "$restoreArchivePathAtHost"
+
+ sudo rm -r ''"$restoreFolderAtHost"'/LeadGenDB.bak'
+ unzip "$restoreArchivePathAtHost" -d "$restoreFolderAtHost"
+ sudo rm -r "$restoreArchivePathAtHost"
 
 # DB RESTORE
-restoreFolder='/var/opt/mssql/backup'
+lastBackupFileName='LeadGenDB.bak'
+restoreFolder='/var/opt/mssql/restore'
 restoreFilePath=''"$restoreFolder"'/'"$lastBackupFileName"
 sqlDBRestoreQuery='
 	USE [master]
@@ -56,7 +62,3 @@ sqlDBRestoreQuery='
 	GO
 '
 docker exec -it "$dockerContainer" /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "$sqlPassword" -Q "$sqlDBRestoreQuery"
-
-# DB RESTORE
-echo "Deleteting local restore file."
-sudo rm -r "$restoreFilePathAtHost"
