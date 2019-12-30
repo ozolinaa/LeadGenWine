@@ -51,7 +51,7 @@
                 }
             }
             //Detect validation errors and focus on the input
-            LeadGen.ui.navigateToInputValidationError();
+            LeadGen.ui.scrollToInputValidationError();
         }
         onLeadFormSubmit = function (data, status, xhr) {
             $form = $($.parseHTML(data.trim()));

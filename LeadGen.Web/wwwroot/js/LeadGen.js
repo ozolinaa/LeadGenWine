@@ -36,7 +36,12 @@
 
                 $('.NotificationLabel').delay(fadeOutDelay).fadeOut(function () { $(this).remove(); });
             },
-            navigateToInputValidationError: function() {
+            scrollToLeadForm: function () {
+                var $el = $('.lead-container form');
+                var elOffset = $el.offset().top;
+                LeadGen.ui.window.scrollToOffset(elOffset);
+            },
+            scrollToInputValidationError: function() {
                 //Detect validation errors and focus on the input
                 var invalidInputs = $('.input-validation-error,.field-validation-error');
                 if (invalidInputs.length > 0)
@@ -326,7 +331,11 @@ $(document).ready(LeadGen.ui.window.onResize);
 
 window.onload = function () { 
     // page is fully loaded, including all frames, objects and images
-    LeadGen.ui.window.onResize()
+    LeadGen.ui.window.onResize();
+
+    $(".scrollToLeadForm").click(function () {
+        LeadGen.ui.scrollToLeadForm();
+    });
 };
 
 function makeRadiosDeselectableInClass(className) {
