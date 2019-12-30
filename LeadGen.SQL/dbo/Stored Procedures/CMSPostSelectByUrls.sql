@@ -87,7 +87,7 @@ BEGIN
 						@Order = [Order], 
 						@DatePublished = ISNULL([DatePublished],[DateCreated]) 
 					FROM [dbo].[CMSPost] 
-					WHERE @PostTypeID = @PostTypeID AND PostParentID = @PostID
+					WHERE @PostTypeID = @PostTypeID AND PostParentID = @PostID AND PostURL = @PostURLPart
 
 				SET @isFirstAfterPostTypeUrlPart = 0
 			END
