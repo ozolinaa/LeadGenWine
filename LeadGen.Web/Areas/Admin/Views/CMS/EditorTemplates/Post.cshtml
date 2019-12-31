@@ -114,12 +114,14 @@
 
             </div>
             <div class="panel-footer">
-                <button type="submit" class="btn btn-primary" id="LeadGenPostSaveBtn">Save</button>
-
                 <a href="@String.Format("{0}/{1}{2}", ViewBag.siteURL, Model.Url, Model.postStatus.ID == 50 ? "" : "?preview=True")"
-                   class="btn btn-default pull-right" target="_blank">
+                   class="btn btn-default" target="_blank">
                     @(Model.postStatus.ID == 50 ? "Open Post" : "Preview Post")
                 </a>
+
+                <button type="submit" class="btn btn-primary pull-right" id="LeadGenPostSaveBtn">Save</button>
+
+
             </div>
         </div>
 
