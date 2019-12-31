@@ -113,6 +113,12 @@ namespace LeadGen.Web
                 );
 
                 routes.MapRoute(
+                    name: "Sitemap",
+                    template: "sitemap_{siteMapName}.xml",
+                    defaults: new { controller = "Sitemap", action = "SitemapXml", siteMapName= "siteMapName" }
+                );
+
+                routes.MapRoute(
                     name: "CMS",
                     template: "{*urlPath}",
                     defaults: new { controller = "CMS", action = "Index" }

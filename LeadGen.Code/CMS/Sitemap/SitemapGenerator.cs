@@ -56,7 +56,7 @@ namespace LeadGen.Code.CMS.Sitemap
 
             var sitemap = new XDocument(
                 new XDeclaration("1.0", "utf-8", "yes"),
-                    new XProcessingInstruction("xml-stylesheet", "type='text/xsl' href='/content/XML-Sitemap-Style.xsl'"),
+                    new XProcessingInstruction("xml-stylesheet", "type='text/xsl' href='/css/XML-Sitemap-Style.xsl'"),
                     new XElement(xmlns + "urlset",
                       new XAttribute("xmlns", xmlns),
                       new XAttribute(XNamespace.Xmlns + "xsi", xsi),

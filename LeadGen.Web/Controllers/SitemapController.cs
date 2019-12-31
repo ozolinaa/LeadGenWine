@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using X.PagedList;
+using Microsoft.AspNetCore.Http;
 
 namespace LeadGen.Web.Controllers
 {
@@ -117,14 +118,16 @@ namespace LeadGen.Web.Controllers
                 Formatting = Formatting.None;
             }
 
-            
+
             public override void ExecuteResult(ActionContext context)
             {
-                throw new NotImplementedException();
-                //context.HttpContext.Response.Clear();
-                //context.HttpContext.Response.ContentType = MimeType;
-                //using (var writer = new XmlTextWriter(context.HttpContext.Response.OutputStream, System.Text.Encoding.UTF8) { Formatting = Formatting })
-                //    _document.WriteTo(writer);
+                HttpResponse response = context.HttpContext.Response;
+                response.ContentType = MimeType;
+                response.Body.Flush();
+                using (var writer = new XmlTextWriter(response.Body, System.Text.Encoding.UTF8) { Formatting = Formatting }) 
+                {
+                    _document.WriteTo(writer);
+                }
             }
         }
     }
