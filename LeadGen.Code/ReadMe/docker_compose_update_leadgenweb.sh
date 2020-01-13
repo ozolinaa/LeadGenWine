@@ -7,9 +7,9 @@
 echo "Starting leadgen update..."
 
 cd /opt/leadgen
-docker-compose pull web_app
+docker-compose pull leadgen_web
 # aa-remove-unknown
-docker-compose up -d --no-deps --build web_app
+docker-compose up -d --no-deps --build leadgen_web
 docker rmi $(docker images -a -q)
 
 echo "Finished leadgen update"
