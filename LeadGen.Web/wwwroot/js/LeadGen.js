@@ -39,6 +39,7 @@
             scrollToLeadForm: function () {
                 var $el = $('.lead-container form');
                 var elOffset = $el.offset().top;
+                elOffset = elOffset + 20;
                 LeadGen.ui.window.scrollToOffset(elOffset);
             },
             scrollToInputValidationError: function() {
