@@ -2,7 +2,7 @@
 # Configure NGINX /etc/nginx/sites-available/default
 ____________________________
 server {
-	server_name wine.lalala.space;
+	server_name winecellars.pro;
 	location / {
 		proxy_set_header HOST $host;
 		proxy_set_header X-Forwarded-Proto $scheme;
@@ -12,7 +12,8 @@ server {
 	}
 }
 server {
-	server_name lalala.space www.lalala.space;
+	server_name crm.winecellars.pro;
+	client_max_body_size 50M;
 	location / {
 		proxy_set_header HOST $host;
 		proxy_set_header X-Forwarded-Proto $scheme;

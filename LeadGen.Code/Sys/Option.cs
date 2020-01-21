@@ -92,7 +92,9 @@ namespace LeadGen.Code.Sys
 
             SystemAccessToken,
             CMSHtmlHeadInjection,
-            CMSRobotsTXT
+            CMSRobotsTXT,
+
+            CRMDBConnectionString
         };
 
 

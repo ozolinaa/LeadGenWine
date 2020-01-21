@@ -32,6 +32,7 @@ namespace LeadGen.Code.Settings
         private EmailSettings _emailSettings;
         private LeadSettings _leadSettings;
         private GoogleSettings _googleSettings;
+        private CRMSettings _crmSettings;
 
         public string SQLConnectionString { get { return _sqlConnectionString; }  }
         public string SystemAccessToken { get { return _systemAccessToken; } }
@@ -43,6 +44,7 @@ namespace LeadGen.Code.Settings
         public LeadSettings LeadSettings { get { return _leadSettings; } }
         public CMSSettings CMSSettings { get { return _cmsSettings; } }
         public GoogleSettings GoogleSettings { get { return _googleSettings; } }
+        public CRMSettings CRMSettings { get { return _crmSettings; } }
 
 
         public AppSettings(ICoreSettings coreSettings)
@@ -152,6 +154,11 @@ namespace LeadGen.Code.Settings
                 RobotsTXT = cmsRobotsTXTOption?.value?.ToString()
             };
 
+            settingOptions.TryGetValue(Option.SettingKey.CRMDBConnectionString.ToString(), out Option crmDBConnectionStringOption);
+            _crmSettings = new CRMSettings()
+            {
+                DBConnectionString = crmDBConnectionStringOption?.value
+            };
         }
     }
 

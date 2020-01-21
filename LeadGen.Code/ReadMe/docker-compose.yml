@@ -18,12 +18,12 @@ services:
     networks:
       - leadgen
     restart: always
-  crm:
-    image: leen15/espocrm
+  espocrm:
+    image: leen15/espocrm:v5.7.0
     depends_on:
       - mysql
     volumes:
-      - ./crm:/var/www/data:rw
+      - ./espocrm:/var/www/data:rw
     ports:
       - "8081:80"
     networks:
