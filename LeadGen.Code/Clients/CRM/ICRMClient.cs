@@ -8,7 +8,7 @@ namespace LeadGen.Code.Clients.CRM
     {
         List<Organization> GetOrganizations();
         Organization GetOrganizationByID(string OrgID);
-        void SetPostAndBusinessID(string OrgID, long? PostID);
+        void SetPostID(string OrgID, long? PostID);
         void SetBusinessID(string OrgID, long? BusinessID);
         void OptOutEmailLeadNotifications(string OrgID, bool optOut);
 

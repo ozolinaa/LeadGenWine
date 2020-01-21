@@ -124,8 +124,8 @@ namespace LeadGen.Code.Clients.CRM
                             Name = reader["name"].ToString(),
                             Email = reader["email"].ToString(),
                             Website = reader["website"].ToString(),
-                            LeadGenBusinessID = reader["lg_business_i_d"] == DBNull.Value ? null : (long?)reader["lg_business_i_d"],
-                            LeadGenPostID = reader["lg_post_i_d"] == DBNull.Value ? null : (long?)reader["lg_post_i_d"],
+                            LeadGenBusinessID = reader["lg_business_i_d"] == DBNull.Value ? null : (int?)reader["lg_business_i_d"],
+                            LeadGenPostID = reader["lg_post_i_d"] == DBNull.Value ? null : (int?)reader["lg_post_i_d"],
                             Phone = reader["phone"].ToString(),
                             OptOutEmailPromoNotifications = Convert.ToBoolean(reader["crm_email_opt_out"]),
                             OptOutEmailLeadNotifications = Convert.ToBoolean(reader["lg_opt_out_lead_notifications"]),
@@ -148,9 +148,9 @@ namespace LeadGen.Code.Clients.CRM
             return _getOrganizations("where a.id == " + OrgID).FirstOrDefault();
         }
 
-        public void SetPostAndBusinessID(string OrgID, long? PostID)
+        public void SetPostID(string OrgID, long? PostID)
         {
-            string query = string.Format("UPDATE account SET lg_post_i_d = {0} WEHRE id = {1}",
+            string query = string.Format("UPDATE account SET lg_post_i_d = {0} WHERE id = '{1}'",
                 PostID.HasValue ? PostID.ToString() : "NULL",
                 OrgID
                 );
@@ -162,7 +162,7 @@ namespace LeadGen.Code.Clients.CRM
 
         public void SetBusinessID(string OrgID, long? BusinessID)
         {
-            string query = string.Format("UPDATE account SET lg_business_i_d = {0} WEHRE id = {1}",
+            string query = string.Format("UPDATE account SET lg_business_i_d = {0} WHERE id = '{1}'",
                 BusinessID.HasValue ? BusinessID.ToString() : "NULL",
                 OrgID
                 );
@@ -172,7 +172,7 @@ namespace LeadGen.Code.Clients.CRM
 
         public void OptOutEmailLeadNotifications(string OrgID, bool optOut)
         {
-            string query = string.Format("UPDATE account SET lg_opt_out_lead_notifications = {0} WEHRE id = {1}",
+            string query = string.Format("UPDATE account SET lg_opt_out_lead_notifications = {0} WHERE id = '{1}'",
                 optOut ? "1" : "0",
                 OrgID
                 );
