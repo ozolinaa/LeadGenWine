@@ -13,7 +13,7 @@ using System.Web;
 
 namespace LeadGen.Web.Areas.Admin.Controllers
 {
-    public class LeadSettingsController : AdminBaseController
+    public class SystemSettingsController : AdminBaseController
     {
         public List<FieldGroup> fieldGroups { get; set; }
         public IEnumerable<Option> leadSettingOptions { get; set; }

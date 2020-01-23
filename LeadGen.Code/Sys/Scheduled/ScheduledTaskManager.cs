@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace LeadGen.Code.Sys.Scheduled
 {
@@ -27,6 +28,26 @@ namespace LeadGen.Code.Sys.Scheduled
             }
 
             return scheduledTask;
+        }
+
+        public static IPagedList<DataRow> SystemScheduledTaskLogSelect(SqlConnection con, int page = 1, int pageSize = Int32.MaxValue)
+        {
+            using (SqlCommand cmd = new SqlCommand("[dbo].[SystemScheduledTaskLogSelect]", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Offset", pageSize * (page - 1));
+                cmd.Parameters.AddWithValue("@Fetch", pageSize);
+
+                SqlParameter totalCountParameter = new SqlParameter();
+                totalCountParameter.ParameterName = "@TotalCount";
+                totalCountParameter.SqlDbType = SqlDbType.Int;
+                totalCountParameter.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(totalCountParameter);
+
+                DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
+                return new StaticPagedList<DataRow>(dt.Rows.Cast<DataRow>(), page, pageSize, (int)totalCountParameter.Value);
+            }
         }
 
 

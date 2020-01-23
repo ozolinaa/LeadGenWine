@@ -314,6 +314,7 @@
     <None Include="Scripts\Post-Deployments\Seed_basic.sql" />
     <None Include="Scripts\Post-Deployments\Seed_wine_settings.sql" />
     <Build Include="dbo\Tables\LeadFieldMetaTextarea.sql" />
+    <Build Include="dbo\Stored Procedures\SystemScheduledTaskLogSelect.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployments\_PostDeployment.sql" />

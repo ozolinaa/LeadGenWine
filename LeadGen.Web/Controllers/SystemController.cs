@@ -28,11 +28,10 @@ namespace LeadGen.Web.Controllers
 
         private bool RequestHasValidAccessToken()
         {
-            ControllerContext.RouteData.DataTokens.TryGetValue("accessToken", out object accessTokenObj);
-            string accessToken = accessTokenObj as string;
-            if (string.IsNullOrEmpty(accessToken))
+            if (!Request.Query.ContainsKey("accessToken"))
                 return false;
 
+            string accessToken = Request.Query["accessToken"];
             string validAccessToken = SysHelper.AppSettings.SystemAccessToken;
             if (validAccessToken == accessToken)
                 return true;
@@ -40,6 +39,7 @@ namespace LeadGen.Web.Controllers
             return false;
         }
 
+        // /system/ProcessTasks?accessToken=XXXXXX&tasks=QueueMailMessagesForBusinessesAboutNewLeadsDaily,SendQueuedMail
         [HttpPost]
         public ActionResult ProcessTasks(string tasks = "")
         {
@@ -59,11 +59,12 @@ namespace LeadGen.Web.Controllers
                     return BadRequest(e.Message);
                 }
 
+            string response = "";
             foreach (string taskName in taskNames)
             {
-                ScheduledTaskManager.GetScheduledTaskByName(taskName).Run();
+                response += ScheduledTaskManager.GetScheduledTaskByName(taskName).Run() + Environment.NewLine;
             }
-            return Ok();
+            return Ok(response);
         }
     }
 }

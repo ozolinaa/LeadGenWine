@@ -1,0 +1,64 @@
+﻿@model X.PagedList.IPagedList<System.Data.DataRow>
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+
+@{
+    ViewBag.Title = "Settings";
+    string accessToken = LeadGen.Code.Helpers.SysHelper.AppSettings.SystemAccessToken;
+
+    Type type = typeof(LeadGen.Code.Sys.Scheduled.ScheduledTask);
+    IEnumerable<string> taskNames = AppDomain.CurrentDomain.GetAssemblies()
+    .SelectMany(s => s.GetTypes())
+    .Where(p => type.IsAssignableFrom(p) && p != type)
+    .Select(x => x.Name);
+}
+
+<h2 style="display:inline-block">System Tasks </h2>
+<span class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Run new Task
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @{ foreach (string taskName in taskNames)
+            {
+                <li>
+                    @Html.ActionLink(taskName, "ProcessTasks", "System", new { accessToken = accessToken, tasks = taskName }, new
+                    {
+                data_ajax = "true",
+                data_ajax_confirm = "Execute " + taskName + " ?",
+                data_ajax_method = "POST",
+                data_ajax_loading = "#LoadingWindowSplash",
+                data_ajax_success = "ProcessTasksHandleAjaxSuccess(data, status, xhr)",
+                data_ajax_failure = "ProcessTasksHandleAjaxFailure(xhr, status, error)"
+            })
+                </li>
+            }
+        }
+    </ul>
+</span>
+
+<hr />
+
+@Html.Raw(LeadGen.Code.Helpers.ViewHelper.ConvertDataTableToHTML(Model.FirstOrDefault()?.Table))
+
+@Html.PagedListPager(Model,
+    page => Url.Action("Index", new
+    {
+        page
+    }),
+    new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
+   )
+
+
+<script>
+    var ProcessTasksHandleAjaxSuccess = function (data, status, xhr) {
+        LeadGen.ui.showNotificationLabel(data.trim());
+        setTimeout(function () { window.location.reload(); }, 1250);
+    };
+    var ProcessTasksHandleAjaxFailure = function (xhr, status, error) {
+        LeadGen.ui.showNotificationLabel(xhr.responseText || error, 'danger')
+    };
+</script>
+
+

@@ -14,6 +14,5 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         {
             return View(login);
         }
-
     }
 }

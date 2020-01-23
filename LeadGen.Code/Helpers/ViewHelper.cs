@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -78,6 +79,29 @@ namespace LeadGen.Code.Helpers
                 return integral + "." + fraction;
             else
                 return integral.ToString();
+        }
+
+        public static string ConvertDataTableToHTML(DataTable dt)
+        {
+            if (dt == null || dt.Rows.Count == 0)
+                return null;
+
+            string html = "<table>";
+            //add header row
+            html += "<th>";
+            for (int i = 0; i < dt.Columns.Count; i++)
+                html += "<td>" + dt.Columns[i].ColumnName + "</td>";
+            html += "</th>";
+            //add rows
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                html += "<tr>";
+                for (int j = 0; j < dt.Columns.Count; j++)
+                    html += "<td>" + dt.Rows[i][j].ToString() + "</td>";
+                html += "</tr>";
+            }
+            html += "</table>";
+            return html;
         }
 
     }

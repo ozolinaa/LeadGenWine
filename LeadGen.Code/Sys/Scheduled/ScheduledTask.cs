@@ -48,7 +48,7 @@ namespace LeadGen.Code.Sys.Scheduled
             throw new NotImplementedException(string.Format("Task '{0}' was not processed (RunInternal is not overriden)", TaskName.ToString()));
         }
 
-        public void Run()
+        public string Run()
         {
             using (SqlConnection con = new SqlConnection(_DBLGconString))
             {
@@ -77,7 +77,9 @@ namespace LeadGen.Code.Sys.Scheduled
                 catch (Exception)
                 {
                     //Can not start the task (probably because it is already running)
-                } 
+                }
+
+                return message;
             }
         }
     }

@@ -18,6 +18,7 @@ namespace LeadGen.Code.Settings
         LeadSettings LeadSettings { get; }
         CMSSettings CMSSettings { get; }
         GoogleSettings GoogleSettings { get; }
+        CRMSettings CRMSettings { get; }
 
         void ReloadAppSettingsFromDB(SqlConnection con);
     }
