@@ -228,7 +228,7 @@ namespace LeadGen.Code.Business.Notification
             DataTable distinctBusinessPostsIDs = leadNotificationView.ToTable(true, "PostID");
             foreach (DataRow PostsIDRow in distinctBusinessPostsIDs.Rows)
             {
-                Post businessPost = Post.SelectFromDB(connection, postID: (long)PostsIDRow["PostID"]).First();
+                Post businessPost = Post.SelectFromDB<Post>(connection, postID: (long)PostsIDRow["PostID"]).First();
                 businessPost.LoadFields(connection);
                 businessPost.LoadTaxonomies(connection, loadTerms: true);
 

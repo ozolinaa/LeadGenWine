@@ -132,7 +132,7 @@ namespace LeadGen.Code.CMS
 
         private void LoadWidgets(SqlConnection con)
         {
-            widgets = Post.SelectFromDB(con, typeID: (int)PostTypesBuiltIn.Widget, loadTaxonomySelectedList: true, statusID: 50);
+            widgets = Post.SelectFromDB<Post>(con, typeID: (int)PostTypesBuiltIn.Widget, loadTaxonomySelectedList: true, statusID: 50);
             var layoutWidgets = widgets.Where(x => x.taxonomies.Find(y => y.taxonomy.code == "layout_location").taxonomy.termList.Any());
             foreach (var layoutWidget in layoutWidgets)
                 layoutWidget.processContentTags(con);
@@ -172,7 +172,7 @@ namespace LeadGen.Code.CMS
             postType.LoadStartPost(con, loadTaxonomySelectedList: true, loadFields: true, loadAttachmentList: true);
             post = postType.startPost;
             post.processContentTags(con);
-            postList = Post.SelectFromDB(con, typeID: postType.ID, statusID: 50, page: pageNumber, pageSize: 10, loadAttachmentList: true, loadFields: true, loadTaxonomySelectedList: true, excludeStartPage: true);
+            postList = Post.SelectFromDB<Post>(con, typeID: postType.ID, statusID: 50, page: pageNumber, pageSize: 10, loadAttachmentList: true, loadFields: true, loadTaxonomySelectedList: true, excludeStartPage: true);
 
             return true;
         }
@@ -211,7 +211,7 @@ namespace LeadGen.Code.CMS
             if (post.forTermID != null)
             {
                 pageType = PageType.TermPost;
-                postList = Post.SelectFromDB(con, typeID: post.postType.forPostTypeID, termID: post.forTermID, statusID:50, loadAttachmentList: true, loadFields:true, loadTaxonomySelectedList:true, excludeStartPage:true).AsQueryable().ToPagedList(pageNumber, 10);
+                postList = Post.SelectFromDB<Post>(con, typeID: post.postType.forPostTypeID, termID: post.forTermID, statusID:50, loadAttachmentList: true, loadFields:true, loadTaxonomySelectedList:true, excludeStartPage:true).AsQueryable().ToPagedList(pageNumber, 10);
                 postTypeTaxonomy = PostTypeTaxonomy.SelectFromDB(con, ForPostTypeID: post.postType.forPostTypeID, ForTaxonomyID: postType.forTaxonomyID, EnabledOnly: true).First();
 
                 term = Taxonomy.Term.SelectFromDB(con, TermID: post.forTermID).First();
@@ -234,7 +234,7 @@ namespace LeadGen.Code.CMS
             // In first iteration PostParentID is NULL then Select only top level posts
             foreach (string postURL in postURLPath)
             {
-                post = Post.SelectFromDB(con, typeID: postTypeID, postURL: postURL, postParentID: postParentID, statusID: postStatusId).FirstOrDefault();
+                post = Post.SelectFromDB<Post>(con, typeID: postTypeID, postURL: postURL, postParentID: postParentID, statusID: postStatusId).FirstOrDefault();
                 if (post == null)
                     return null;
 

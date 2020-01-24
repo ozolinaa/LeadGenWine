@@ -328,7 +328,7 @@ namespace LeadGen.Code.CMS
 
                 return true;
             }
-               
+
             else
             {
                 errorMessage = DBresult;
@@ -379,14 +379,14 @@ namespace LeadGen.Code.CMS
             }
             else if (loadTerms = true && termsCheckedOnly == false)
             {
-                taxonomies.ForEach(x=>x.taxonomy.LoadTerms(con));
+                taxonomies.ForEach(x => x.taxonomy.LoadTerms(con));
                 List<Taxonomy.Term> selectedTerms = CMSterm.SelectFromDB(con, PostID: ID);
 
                 foreach (PostTypeTaxonomy ptt in taxonomies)
                     foreach (Taxonomy.Term term in ptt.taxonomy.termList)
                         if (selectedTerms.Exists(x => x.ID == term.ID))
                             term.isChecked = true;
-            }          
+            }
         }
 
 
@@ -404,7 +404,7 @@ namespace LeadGen.Code.CMS
                 cmd.ExecuteNonQuery();
             }
 
-            foreach (Taxonomy.Term tax in taxonomies.Where(x=>x.taxonomy.termList != null).SelectMany(x => x.taxonomy.termList).Where(x => x.isChecked == true))
+            foreach (Taxonomy.Term tax in taxonomies.Where(x => x.taxonomy.termList != null).SelectMany(x => x.taxonomy.termList).Where(x => x.isChecked == true))
             {
                 using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostTermAdd]", con))
                 {
@@ -421,7 +421,7 @@ namespace LeadGen.Code.CMS
 
 
 
-        public static IPagedList<Post> SelectFromDB(SqlConnection con, 
+        public static IPagedList<T> SelectFromDB<T>(SqlConnection con,
             long? postID = null, 
             string postURL = null, 
             long? postParentID = 0, 
@@ -438,13 +438,13 @@ namespace LeadGen.Code.CMS
             bool loadTaxonomySelectedList = false, 
             bool loadAttachmentList = false,
             bool loadFields = false
-            )
+            ) where T : Post, new()
         {
 
             if (query != null && String.IsNullOrEmpty(query.Trim()))
                 query = null;
 
-            List<Post> postList = new List<Post>();
+            List<T> postList = new List<T>();
             int totalCount = 0;
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelect]", con))
             {
@@ -477,7 +477,7 @@ namespace LeadGen.Code.CMS
                     totalCount = (int)totalCountParameter.Value;
                     foreach (DataRow row in dt.Rows)
                     {
-                        Post loadedPost = new Post(row);
+                        T loadedPost = (T)Activator.CreateInstance(typeof(T), row);
 
                         if (loadTaxonomySelectedList == true)
                             loadedPost.LoadTaxonomies(con, loadTerms: true, termsCheckedOnly: true);
@@ -492,11 +492,11 @@ namespace LeadGen.Code.CMS
 
             }
 
-            return new StaticPagedList<Post>(postList, page, pageSize, totalCount);
+            return new StaticPagedList<T>(postList, page, pageSize, totalCount);
         }
 
 
-        public static IPagedList<Post> SelectFromDB(SqlConnection con,
+        public static IPagedList<T> SelectFromDB<T>(SqlConnection con,
             string fieldCode,
             string textValue = null,
             DateTime? datetimeValue = null,
@@ -507,10 +507,10 @@ namespace LeadGen.Code.CMS
             bool loadTaxonomySelectedList = false,
             bool loadAttachmentList = false,
             bool loadFields = false
-            )
+            ) where T : Post
         {
 
-            List<Post> PostList = new List<Post>();
+            List<T> PostList = new List<T>();
 
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelectByScalarField]", con))
             {
@@ -525,7 +525,7 @@ namespace LeadGen.Code.CMS
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
                 foreach (DataRow row in dt.Rows)
                 {
-                    Post loadedPost = new Post(row);
+                    T loadedPost = (T)Activator.CreateInstance(typeof(T), row);
 
                     if (loadTaxonomySelectedList == true)
                         loadedPost.LoadTaxonomies(con, loadTerms: true, termsCheckedOnly: true);
@@ -543,16 +543,16 @@ namespace LeadGen.Code.CMS
         }
 
 
-        public static IPagedList<Post> SelectFromDB(SqlConnection con,
+        public static IPagedList<T> SelectFromDB<T>(SqlConnection con,
             List<string> postUrls,
             int page = 1,
             int pageSize = Int32.MaxValue,
             bool loadTaxonomySelectedList = false,
             bool loadAttachmentList = false,
             bool loadFields = false
-            )
+            ) where T : Post
         {
-            List<Post> PostList = new List<Post>();
+            List<T> PostList = new List<T>();
 
             postUrls.ForEach(x => x.Trim('/'));
             using (SqlCommand cmd = new SqlCommand("[dbo].[CMSPostSelectByUrls]", con))
@@ -563,7 +563,7 @@ namespace LeadGen.Code.CMS
                 DataTable dt = DBHelper.ExecuteCommandToDataTable(cmd);
                 foreach (DataRow row in dt.Rows)
                 {
-                    Post loadedPost = new Post(row);
+                    T loadedPost = (T)Activator.CreateInstance(typeof(T), row);
 
                     if (loadTaxonomySelectedList == true)
                         loadedPost.LoadTaxonomies(con, loadTerms: true, termsCheckedOnly: true);
@@ -701,7 +701,7 @@ namespace LeadGen.Code.CMS
                             Taxonomy.Term term = Taxonomy.Term.SelectFromDB(con, TaxonomyCode: taxonomyCode, TermURL: termUrl.Trim()).FirstOrDefault();
                             if (term != null)
                             {
-                                List<Post> termPosts = Post.SelectFromDB(con, typeID: postType.ID, termID: term.ID, statusID: 50).ToList();
+                                List<Post> termPosts = Post.SelectFromDB<Post>(con, typeID: postType.ID, termID: term.ID, statusID: 50).ToList();
                                 posts.AddRange(termPosts.Where(p => !posts.Any(p2 => p2.ID == p.ID)));
                             }
                         }
@@ -720,7 +720,7 @@ namespace LeadGen.Code.CMS
                     {
                         List<string> postUrlList = postUrls.Split(',').ToList();
                         postUrlList.ForEach(x => x.Trim());
-                        posts.AddRange(Post.SelectFromDB(con, postUrlList));
+                        posts.AddRange(Post.SelectFromDB<Post>(con, postUrlList));
                     }
                     catch (Exception)
                     {

@@ -72,7 +72,7 @@ namespace LeadGen.Web.Controllers
         {
             SitemapGenerator sg = new SitemapGenerator();
 
-            IPagedList<Post> postItems = Post.SelectFromDB(DBLGcon, statusID: 50, typeID: postType.ID, page:page, pageSize:pageSize );
+            IPagedList<Post> postItems = Post.SelectFromDB<Post>(DBLGcon, statusID: 50, typeID: postType.ID, page:page, pageSize:pageSize );
 
             foreach (Post post in postItems)
                 post.httpHost = requestedHttpHostUrl;

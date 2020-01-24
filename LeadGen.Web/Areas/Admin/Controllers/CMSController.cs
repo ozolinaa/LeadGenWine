@@ -80,7 +80,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         // Show list of posts
         public ActionResult PostList(int typeID, int statusID = 50, string query = "", int page = 1)
         {
-            IPagedList<Post> posts = Post.SelectFromDB(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 5, excludeStartPage: true);
+            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 5, excludeStartPage: true);
 
             foreach (Post post in posts)
                 post.LoadTaxonomies(DBLGcon);
@@ -103,14 +103,14 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
         public IEnumerable<Post> SearchPostsJson(int typeID, int? statusID = null, string query = "", int page = 1)
         {
-            IPagedList<Post> posts = Post.SelectFromDB(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 20);
+            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 20);
             return posts;
         }
 
         // Display Post for Edit
         public ActionResult PostEdit(int ID)
         {
-            Post postItem = Post.SelectFromDB(DBLGcon, postID: ID, loadAttachmentList: true, loadFields: true).First();
+            Post postItem = Post.SelectFromDB<Post>(DBLGcon, postID: ID, loadAttachmentList: true, loadFields: true).First();
             postItem.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
             //Set activePostType
@@ -119,7 +119,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             ViewBag.siteURL = requestedHttpHostUrl;
             ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
             if (postItem.postParentID != null)
-                ViewBag.postParentUrl = Post.SelectFromDB(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
+                ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
 
             return View(postItem);
         }
@@ -131,7 +131,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         public ActionResult PostEdit(Post postedPostItem)
         {
             //Load Original Post
-            Post postToUpdate = Post.SelectFromDB(DBLGcon, postID: postedPostItem.ID, loadAttachmentList: true, loadFields: true).FirstOrDefault();
+            Post postToUpdate = Post.SelectFromDB<Post>(DBLGcon, postID: postedPostItem.ID, loadAttachmentList: true, loadFields: true).FirstOrDefault();
             postToUpdate.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
             //Check if forTermID is not null, means the post is a "term" post
@@ -190,14 +190,14 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                 _cache.Remove(cacheUrl);
 
                 //Need to reload post data because DB logic may had changed some fields after the update
-                Post postItem = Post.SelectFromDB(DBLGcon, postID: postToUpdate.ID, loadAttachmentList: true, loadFields: true).First();
+                Post postItem = Post.SelectFromDB<Post>(DBLGcon, postID: postToUpdate.ID, loadAttachmentList: true, loadFields: true).First();
                 postItem.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
                 ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
                 ViewBag.NofificationStatus = true;
                 if (postItem.postParentID != null)
-                    ViewBag.postParentUrl = Post.SelectFromDB(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
+                    ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
 
                 return PartialView("EditorTemplates/Post", postItem);
 
@@ -209,7 +209,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                 ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
                 if (postToUpdate.postParentID != null)
-                    ViewBag.postParentUrl = Post.SelectFromDB(DBLGcon, postID: postToUpdate.postParentID).First().postURLHierarchical;
+                    ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postToUpdate.postParentID).First().postURLHierarchical;
             
                 ViewBag.NofificationStatus = false;
                 return PartialView("EditorTemplates/Post", postToUpdate);
@@ -219,7 +219,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         // Display Term Post for Edit
         public ActionResult TermPostEdit(int forTypeID, long forTermID)
         {
-            Post post = Post.SelectFromDB(DBLGcon, forTypeID: forTypeID, forTermID: forTermID, loadFields: true).First();
+            Post post = Post.SelectFromDB<Post>(DBLGcon, forTypeID: forTypeID, forTermID: forTermID, loadFields: true).First();
             post.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
 
@@ -233,7 +233,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         // Display Term Type StartPage for Edit
         public ActionResult PostTypeTaxStartPostEdit(int typeID)
         {
-            Post post = Post.SelectFromDB(DBLGcon, typeID: typeID, postURL:"", loadFields: true).First();
+            Post post = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, postURL:"", loadFields: true).First();
             post.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
             ViewBag.siteURL = requestedHttpHostUrl;
@@ -246,7 +246,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         public ActionResult TermPostEdit(Post postedPostItem)
         {
             //Load Original Post
-            Post postToUpdate = Post.SelectFromDB(DBLGcon, postID: postedPostItem.ID, loadFields: true).First();
+            Post postToUpdate = Post.SelectFromDB<Post>(DBLGcon, postID: postedPostItem.ID, loadFields: true).First();
             postToUpdate.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
             //Set activePostType
@@ -372,7 +372,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
             if (PostID != null)
             {
-                Post post = Post.SelectFromDB(DBLGcon, postID: PostID, loadAttachmentList: true).FirstOrDefault();
+                Post post = Post.SelectFromDB<Post>(DBLGcon, postID: PostID, loadAttachmentList: true).FirstOrDefault();
                 return PartialView("_PostAttahments", post);
             }
             else
@@ -404,7 +404,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         // Show Post Type Attachment Taxonomies
         public PartialViewResult ShowPostAttachmentEditor(int postID, long attachmnetID)
         {
-            Post post = Post.SelectFromDB(DBLGcon, postID: postID, loadAttachmentList: true).First();
+            Post post = Post.SelectFromDB<Post>(DBLGcon, postID: postID, loadAttachmentList: true).First();
             Attachment attachment = post.attachmentList.First(x => x.attachmentID == attachmnetID);
             attachment.LoadTaxonomies(DBLGcon, post.postType.ID, loadTerms: true, termsCheckedOnly: false);
 

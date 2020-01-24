@@ -27,7 +27,7 @@ namespace LeadGen.Code.Tokens
 
         public void LoadBusinessPost(SqlConnection con)
         {
-            _businessPost = Post.SelectFromDB(con, postID: BusinessPostID).First();
+            _businessPost = Post.SelectFromDB<Post>(con, postID: BusinessPostID).First();
             _businessPost.LoadFields(con);
         }
 

@@ -31,7 +31,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         {
             Code.Business.Business business = Code.Business.Business.SelectFromDB(DBLGcon, businessID: ID).FirstOrDefault();
             business.notification.LoadEmailList(DBLGcon, business.ID);
-            Code.CMS.Post businessPost = Code.CMS.Post.SelectFromDB(DBLGcon, "master_businessID", numberValue: business.ID).FirstOrDefault();
+            Code.CMS.Post businessPost = Code.CMS.Post.SelectFromDB<Code.CMS.Post>(DBLGcon, "master_businessID", numberValue: business.ID).FirstOrDefault();
 
             ViewBag.businessPost = businessPost;
             return View(business);

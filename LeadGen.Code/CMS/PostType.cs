@@ -13,6 +13,12 @@ namespace LeadGen.Code.CMS
 {
     public class PostType
     {
+        public static class BuiltIn
+        {
+            public static int Page => 1;
+            public static int Widget => 2;
+            public static int Company => 3;
+        }
 
         public int ID { get; set; }
         public string code { get; set; }
@@ -193,7 +199,7 @@ namespace LeadGen.Code.CMS
             bool loadAttachmentList = false,
             bool loadFields = false)
         {
-            startPost = Post.SelectFromDB(con, typeID: ID, postURL: "").FirstOrDefault();
+            startPost = Post.SelectFromDB<Post>(con, typeID: ID, postURL: "").FirstOrDefault();
 
             if (startPost == null)
                 CreateStartPost(con);
@@ -207,7 +213,7 @@ namespace LeadGen.Code.CMS
         }
 
         private void CreateStartPost(SqlConnection con) {
-            startPost = Post.SelectFromDB(con, postID: Post.CreateNew(con, 1, ID)).First();
+            startPost = Post.SelectFromDB<Post>(con, postID: Post.CreateNew(con, 1, ID)).First();
             startPost.postStatus.ID = 50;//Set Published
             startPost.postURL = "";
             string errorMessage = "";
