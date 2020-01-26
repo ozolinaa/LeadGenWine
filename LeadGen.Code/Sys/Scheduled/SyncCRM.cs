@@ -12,54 +12,58 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     public class SyncCRM : ScheduledTask
     {
-        private List<Post> companyPosts = null;
-        private List<Organization> crmOrgs = null;
+        private CompanyPost getCompanyPostForOrganization(SqlConnection con, Organization org)
+        {
+            CompanyPost companyPost;
+            if (org.LeadGenPostID != null)
+            {
+                companyPost = Post.SelectFromDB<CompanyPost>(con, postID: org.LeadGenPostID.Value).FirstOrDefault();
+                if (companyPost == null || companyPost.postType.ID != PostType.BuiltIn.Company)
+                    throw new Exception($"Error in sync CRM: CompanyPost with ID {org.LeadGenPostID.Value} not found");
+            }
+            else
+            {
+                companyPost = Post.SelectFromDB<CompanyPost>(con, fieldCode: "company_crmId", textValue: org.ID).FirstOrDefault();
+                if (companyPost == null)
+                {
+                    long postId = Post.CreateNew(con, 1, PostType.BuiltIn.Company);
+                    companyPost = Post.SelectFromDB<CompanyPost>(con, postID: postId).First();
+                    companyPost.postStatus = new Post.Status() { ID = 30 }; // Pending
+                }
+            }
 
+            companyPost.LoadFields(con);
+
+            return companyPost;
+        }
         protected override string RunInternal(SqlConnection con)
         {
-            //string mysqlString = Helpers.SysHelper.AppSettings.CRMSettings.DBConnectionString;
-            //ESPOClient client = new ESPOClient(mysqlString);
-            //crmOrgs = client.GetOrganizations();
+            string mysqlString = Helpers.SysHelper.AppSettings.CRMSettings.DBConnectionString;
+            ESPOClient client = new ESPOClient(mysqlString);
 
-            string orgId = "5e216391071e53d68";
-            string orgName = "XTONYX";
-
-            CompanyPost companyPost = Post.SelectFromDB<CompanyPost>(con, fieldCode: "company_crmId", textValue: orgId).FirstOrDefault();
-            if (companyPost == null)
+            int processedCount = 0;
+            foreach (Organization org in client.GetOrganizations())
             {
-                long postId = 10011; // Post.CreateNew(con, 1, PostType.BuiltIn.Company);
-                companyPost = Post.SelectFromDB<CompanyPost>(con, postID: postId).First();
-                companyPost.postStatus = new Post.Status() { ID = 30 }; // Pending
+                CompanyPost companyPost = getCompanyPostForOrganization(con, org);
+
+                companyPost.title = org.Name;
+                companyPost.company_crmId = org.ID;
+                companyPost.company_businessId = org.LeadGenBusinessID;
+
+                string errorMessage = null;
+                companyPost.Update(con, ref errorMessage);
+                if (!string.IsNullOrEmpty(errorMessage))
+                    throw new Exception("Error updating company post during sync CRM");
+
+
+                client.SetPostID(org.ID, companyPost.ID);
+                client.SetBusinessID(org.ID, companyPost.company_businessId);
+                client.SetOptOutEmailLeadNotifications(org.ID, companyPost.company_notification_do_not_send_leads);
+
+                processedCount++;
             }
-            companyPost.LoadFields(con);
-            companyPost.company_crmId = orgId;
-            companyPost.title = orgName;
 
-            string errorMessage = null;
-            companyPost.Update(con, ref errorMessage);
-            if (!string.IsNullOrEmpty(errorMessage))
-                throw new Exception("Error updating company post during sync CRM");
-
-            //companyPosts = Post.SelectFromDB<Post>(con, fieldCode: "ff", po).ToList();
-
-            //foreach (Organization org in client.GetOrganizations())
-            //{
-            //    total++;
-
-            //    if (org.LeadGenPostID == null)
-            //    {
-            //        if(CMS.Post.SelectFromDB<Post>(con,)
-            //    }
-            //        CMS.Post.CreateNew(con, 1, CMS.PostType.BuiltIn.Company)
-
-            //}
-
-            //Organization org = orgs.FirstOrDefault(x => x.Name == "XtonyX Rambler TEST");
-            //client.SetBusinessID(org.ID, null);
-            //client.SetPostID(org.ID, null);
-            //client.OptOutEmailLeadNotifications(org.ID, false);
-
-            return string.Format("Companies Synced With CRM: {0}", 3);
+            return string.Format("Companies Synced With CRM: {0}", processedCount);
         }
     }
 }
