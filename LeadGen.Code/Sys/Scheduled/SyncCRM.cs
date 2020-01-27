@@ -29,6 +29,7 @@ namespace LeadGen.Code.Sys.Scheduled
                 {
                     long postId = Post.CreateNew(con, 1, PostType.BuiltIn.Company);
                     companyPost = Post.SelectFromDB<CompanyPost>(con, postID: postId).First();
+                    companyPost.postURL = org.Name;
                     companyPost.postStatus = new Post.Status() { ID = 30 }; // Pending
                 }
             }
