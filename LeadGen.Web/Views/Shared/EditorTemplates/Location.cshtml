@@ -7,6 +7,7 @@
 
 <div class="row location-meta-fiels">
     <div class="col-sm-6">
+        @Html.HiddenFor(x => x.ID)
         @Html.HiddenFor(x => x.Lat, new { data_lat = mapID })
         @Html.HiddenFor(x => x.Lng, new { data_lng = mapID })
         @Html.HiddenFor(x => x.Zoom, new { data_zoom = mapID })

@@ -47,15 +47,15 @@ namespace LeadGen.Code.Clients.CRM
                         int radius_meters = (int)reader["radius_meters"];
 
 
-                        result.Add(id, 
-                            new ESPOLocation() { 
-                                ID = id, 
-                                Name = name, 
-                                ParentID = location_parent_id, 
+                        result.Add(id,
+                            new ESPOLocation() {
+                                ID = id,
+                                Name = name,
+                                ParentID = location_parent_id,
                                 Lat = lat,
                                 Lng = lng,
                                 RadiusMeters = radius_meters,
-                                Active = !deleted}
+                                Active = !deleted }
                         );
                     }
                 }
@@ -90,17 +90,18 @@ namespace LeadGen.Code.Clients.CRM
             return result;
         }
 
-        private IEnumerable<Location> getLocationsByOrgId(string orgId)
+        private List<Location> getLocationsByOrgId(string orgId)
         {
             if (!organizationLocationMap.ContainsKey(orgId))
                 return new List<Location>();
-            return organizationLocationMap[orgId].Select(x => locations[x].GetLocation());
+            return organizationLocationMap[orgId].Select(x => locations[x].GetLocation()).ToList();
         }
 
-        private IEnumerable<Organization> _getOrganizations (string where = null)
+        private IEnumerable<Organization> _getOrganizations(string where = null)
         {
-            string query = @"SELECT a.id, a.deleted, a.`name`, a.website, p.`name` as phone, a.lg_post_i_d, a.lg_business_i_d, 
-                e.`name` as email, IFNULL(e.opt_out,0) as crm_email_opt_out, a.lg_opt_out_lead_notifications
+            string query = @"SELECT a.id, a.deleted, a.`name`, 
+                a.website, a.website_public, p.`name` as phone_number, phone_number_public, a.lg_post_i_d, a.lg_business_i_d, 
+                e.`name` as email, a.email_public, IFNULL(e.opt_out,0) as crm_email_opt_out, a.lg_opt_out_lead_notifications
                 FROM account a
                 LEFT OUTER JOIN entity_email_address eea ON eea.entity_id = a.id AND eea.entity_type = 'account'
                 LEFT OUTER JOIN email_address e ON e.id = eea.email_address_id
@@ -118,26 +119,42 @@ namespace LeadGen.Code.Clients.CRM
                     {
                         while (reader.Read())
                         {
-                            string id = reader["id"].ToString();
-                            yield return new Organization()
-                            {
-                                ID = id,
-                                isActive = !Convert.ToBoolean(reader["deleted"]),
-                                Name = reader["name"].ToString(),
-                                Email = reader["email"].ToString(),
-                                Website = reader["website"].ToString(),
-                                LeadGenBusinessID = reader["lg_business_i_d"] == DBNull.Value ? null : (int?)reader["lg_business_i_d"],
-                                LeadGenPostID = reader["lg_post_i_d"] == DBNull.Value ? null : (int?)reader["lg_post_i_d"],
-                                Phone = reader["phone"].ToString(),
-                                OptOutEmailPromoNotifications = Convert.ToBoolean(reader["crm_email_opt_out"]),
-                                OptOutEmailLeadNotifications = Convert.ToBoolean(reader["lg_opt_out_lead_notifications"]),
-                                Locations = getLocationsByOrgId(id)
-                            };
+                            yield return _createOrganization(reader);
                         }
                     }
                 }
 
             }
+        }
+
+        private string _sanitizeURL(string url)
+        {
+            if (string.IsNullOrEmpty(url))
+                return null;
+            if (url.ToLower().StartsWith("http://") || url.ToLower().StartsWith("https://"))
+                return url;
+            return "http://" + url;
+        }
+
+        private Organization _createOrganization(MySqlDataReader reader)
+        {
+            return new Organization()
+            {
+                ID = reader["id"].ToString(),
+                isActive = !Convert.ToBoolean(reader["deleted"]),
+                Name = reader["name"].ToString(),
+                EmailNotification = reader["email"].ToString(),
+                EmailPublic = reader["email_public"].ToString(),
+                PhoneNotification = reader["phone_number"].ToString(),
+                PhonePublic = reader["phone_number_public"].ToString(),
+                WebsiteOfficial = _sanitizeURL(reader["website_public"].ToString()),
+                WebsiteOther = _sanitizeURL(reader["website"].ToString()),
+                OptOutEmailPromoNotifications = Convert.ToBoolean(reader["crm_email_opt_out"]),
+                OptOutEmailLeadNotifications = Convert.ToBoolean(reader["lg_opt_out_lead_notifications"]),
+                LeadGenBusinessID = reader["lg_business_i_d"] == DBNull.Value ? null : (int?)reader["lg_business_i_d"],
+                LeadGenPostID = reader["lg_post_i_d"] == DBNull.Value ? null : (int?)reader["lg_post_i_d"],
+                Locations = getLocationsByOrgId(reader["id"].ToString())
+            };
         }
 
         public IEnumerable<Organization> GetOrganizations()

@@ -8,9 +8,14 @@ namespace LeadGen.Code.Clients.CRM
     {
         public string ID { get; set; }
         public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string Website { get; set; }
+        public string PhoneNotification { get; set; }
+        public string EmailNotification { get; set; }
+
+        public string PhonePublic { get; set; }
+        public string EmailPublic { get; set; }
+
+        public string WebsiteOfficial { get; set; }
+        public string WebsiteOther { get; set; }
 
         public bool isActive { get; set; }
 
@@ -20,6 +25,6 @@ namespace LeadGen.Code.Clients.CRM
         public long? LeadGenPostID { get; set; }
         public long? LeadGenBusinessID { get; set; }
 
-        public IEnumerable<Location> Locations { get; set; }
+        public List<Location> Locations { get; set; }
     }
 }

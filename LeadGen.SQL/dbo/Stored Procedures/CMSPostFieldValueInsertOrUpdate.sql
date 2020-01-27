@@ -34,7 +34,10 @@ BEGIN
 		[LocationID] = @LocationID
 		WHERE [PostID] = @PostID AND [FieldID] = @FieldID
 
-		EXEC [dbo].[LocationDelete] @OldLocationID
+		IF (@LocationID <> @OldLocationID)
+		BEGIN
+			EXEC [dbo].[LocationDelete] @OldLocationID
+		END
 
 		RETURN @@ROWCOUNT
 
