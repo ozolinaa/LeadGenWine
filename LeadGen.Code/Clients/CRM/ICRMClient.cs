@@ -7,6 +7,7 @@ namespace LeadGen.Code.Clients.CRM
 {
     public interface ICRMClient : IDisposable
     {
+        IEnumerable<Location> GetLocations();
         IEnumerable<Organization> GetOrganizations();
         Organization GetOrganizationByID(string OrgID);
         void SetPostID(string OrgID, long? PostID);

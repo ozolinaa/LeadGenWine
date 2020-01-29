@@ -23,10 +23,12 @@ BEGIN
 
 
 	DECLARE @TaxonomyPostTypeID INT = NULL
+	DECLARE @IsBrowsable bit = 0
+	SELECT @IsBrowsable = [IsBrowsable] FROM [dbo].[CMSPostType] WHERE [TypeID] = @ForPostTypeID
 
 	IF NOT EXISTS (SELECT * FROM [dbo].[CMSPostTypeTaxonomy] WHERE [ForPostTypeID] = @ForPostTypeID AND [ForTaxonomyID] = @ForTaxonomyID)
 	BEGIN
-		
+
 		BEGIN TRAN T1  
 			BEGIN TRY
 			
@@ -35,9 +37,9 @@ BEGIN
 
 				--Add new post type for the taxonomy
 				INSERT INTO [dbo].[CMSPostType] 
-				([TypeCode], [TypeName], [TypeURL], [SeoTitle], [SeoMetaDescription], [SeoMetaKeywords], [SeoPriority], [SeoChangeFrequencyID])
+				([TypeCode], [TypeName], [TypeURL], [SeoTitle], [SeoMetaDescription], [SeoMetaKeywords], [SeoPriority], [SeoChangeFrequencyID], [IsBrowsable])
 				VALUES 
-				(@TypeCode, @PostTypeName, @URL, @SeoTitle, @SeoMetaDescription, @SeoMetaKeywords, @SeoPriority, @SeoChangeFrequencyID) 
+				(@TypeCode, @PostTypeName, @URL, @SeoTitle, @SeoMetaDescription, @SeoMetaKeywords, @SeoPriority, @SeoChangeFrequencyID, @IsBrowsable) 
 
 				SELECT @TaxonomyPostTypeID = @@IDENTITY;  
 
@@ -89,7 +91,8 @@ BEGIN
 		[SeoMetaDescription] = @SeoMetaDescription,
 		[SeoMetaKeywords] = @SeoMetaKeywords,
 		[SeoPriority] = @SeoPriority,
-		[SeoChangeFrequencyID] = @SeoChangeFrequencyID
+		[SeoChangeFrequencyID] = @SeoChangeFrequencyID,
+		[IsBrowsable] = @IsBrowsable
 		WHERE [ForTaxonomyID] = @ForTaxonomyID AND [ForPostTypeID] = @ForPostTypeID
 
 		SET @Result = @@ROWCOUNT

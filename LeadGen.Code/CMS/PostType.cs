@@ -15,9 +15,10 @@ namespace LeadGen.Code.CMS
     {
         public static class BuiltIn
         {
-            public static int Page => 1;
-            public static int Widget => 2;
-            public static int Company => 3;
+            public static readonly int PageTypeId = 1;
+            public static readonly int WidgetTypeId = 2;
+            public static readonly int CompanyTypeId = 3;
+            public static readonly int CompanyCityTypeId = 4;
         }
 
         public int ID { get; set; }

@@ -255,10 +255,10 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             //Need to clear the old Nullable Values because if NULL was recieved it will not be updated
             postToUpdate.thumbnailAttachmentID = null;
 
-            //Update postToUpdate from the httpContext but exclude the AttachmentList property
-            //ANTON TODO
-            throw new NotImplementedException();
-            //TryUpdateModel(postToUpdate, null, null, new string[] { "attachmentList", "postParentID", "postURL", "forTermID" });
+            //Update postToUpdate from the httpContext but exclude some properties that should not be changed
+            List<string> termPostEditPropsToPreventChangeWhenUpdateModel = postEditPropsToPreventChangeWhenUpdateModel.ToList();
+            termPostEditPropsToPreventChangeWhenUpdateModel.AddRange( new string[] { "postParentID", "postURL" });
+            TryUpdateModelAsync(postToUpdate, "", x => termPostEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
 
             if (ModelState.IsValid)
             {

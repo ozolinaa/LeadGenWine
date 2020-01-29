@@ -31,7 +31,7 @@ namespace LeadGen.Code.Clients.CRM
         {
             Dictionary<string, ESPOLocation> result = new Dictionary<string, ESPOLocation>();
 
-            string query = @"select id, `name`, location_parent_id, lat, lng, radius_meters, deleted FROM location";
+            string query = @"select id, `name`, location_parent_id, lat, lng, radius_meters, term_u_r_l, deleted FROM location";
             using (MySqlCommand cmd = new MySqlCommand(query, conn))
             {
                 using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -45,7 +45,7 @@ namespace LeadGen.Code.Clients.CRM
                         double lat = (double)reader["lat"];
                         double lng = (double)reader["lng"];
                         int radius_meters = (int)reader["radius_meters"];
-
+                        string term_url = reader["term_u_r_l"].ToString();
 
                         result.Add(id,
                             new ESPOLocation() {
@@ -55,8 +55,10 @@ namespace LeadGen.Code.Clients.CRM
                                 Lat = lat,
                                 Lng = lng,
                                 RadiusMeters = radius_meters,
-                                Active = !deleted }
-                        );
+                                TermURL = term_url,
+                                Active = !deleted
+                            }
+                        ); ;
                     }
                 }
             }
@@ -94,7 +96,7 @@ namespace LeadGen.Code.Clients.CRM
         {
             if (!organizationLocationMap.ContainsKey(orgId))
                 return new List<Location>();
-            return organizationLocationMap[orgId].Select(x => locations[x].GetLocation()).ToList();
+            return organizationLocationMap[orgId].Select(x => locations[x].GetLocation(locations)).ToList();
         }
 
         private IEnumerable<Organization> _getOrganizations(string where = null)
@@ -155,6 +157,11 @@ namespace LeadGen.Code.Clients.CRM
                 LeadGenPostID = reader["lg_post_i_d"] == DBNull.Value ? null : (int?)reader["lg_post_i_d"],
                 Locations = getLocationsByOrgId(reader["id"].ToString())
             };
+        }
+
+        public IEnumerable<Location> GetLocations()
+        {
+            return locations.Values.Select(x => x.GetLocation(locations));
         }
 
         public IEnumerable<Organization> GetOrganizations()
@@ -218,10 +225,17 @@ namespace LeadGen.Code.Clients.CRM
             public double Lat { get; set; }
             public double Lng { get; set; }
             public int RadiusMeters { get; set; }
+            public string TermURL { get; set; }
 
-            public Location GetLocation()
+            public Location GetLocation(Dictionary<string, ESPOLocation> locations)
             {
-                return new Location() { Lat = Lat, Lng = Lng, RadiusMeters = RadiusMeters, Name = Name, Zoom = 8 };
+                return new Location() { Lat = Lat,
+                    Lng = Lng,
+                    RadiusMeters = RadiusMeters,
+                    Name = Name,
+                    TermURL = TermURL,
+                    Parent = string.IsNullOrEmpty(ParentID) ? null : locations[ParentID].GetLocation(locations),
+                    Zoom = 8 };
             }
         }
     }

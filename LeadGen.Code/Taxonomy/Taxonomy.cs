@@ -13,6 +13,13 @@ namespace LeadGen.Code.Taxonomy
 {
     public class Taxonomy
     {
+        public static class BuiltIn
+        {
+            public static readonly int CategoryTaxId = 1;
+            public static readonly int TagTaxId = 2;
+            public static readonly int CityTaxId = 3;
+        }
+
         public int ID { get; set; }
         public string code { get; set; }
         public string name { get; set; }

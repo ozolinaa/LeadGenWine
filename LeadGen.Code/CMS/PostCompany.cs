@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-
 namespace LeadGen.Code.CMS
 {
-	public class CompanyPost : Post
+	public class PostCompany : Post
 	{
-		public CompanyPost() : base() { }
-		public CompanyPost(DataRow row) : base(row) { }
+		public PostCompany() : base() { }
+		public PostCompany(DataRow row) : base(row) { }
 
 		public string company_web_site_official { 
 			get { return getFieldByCode("company_web_site_official").fieldText; } 
