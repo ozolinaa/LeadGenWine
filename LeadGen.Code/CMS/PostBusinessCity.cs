@@ -6,10 +6,10 @@ using System.Text;
 
 namespace LeadGen.Code.CMS
 {
-	public class PostCompanyCity : Post
+	public class PostBusinessCity : Post
 	{
-		public PostCompanyCity() : base() { }
-		public PostCompanyCity(DataRow row) : base(row) { }
+		public PostBusinessCity() : base() { }
+		public PostBusinessCity(DataRow row) : base(row) { }
 
 		public Location company_city_location
 		{

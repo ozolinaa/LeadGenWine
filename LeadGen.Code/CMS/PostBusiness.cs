@@ -2,14 +2,15 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 
 namespace LeadGen.Code.CMS
 {
-	public class PostCompany : Post
+	public class PostBusiness : Post
 	{
-		public PostCompany() : base() { }
-		public PostCompany(DataRow row) : base(row) { }
+		public PostBusiness() : base() { }
+		public PostBusiness(DataRow row) : base(row) { }
 
 		public string company_web_site_official { 
 			get { return getFieldByCode("company_web_site_official").fieldText; } 
@@ -61,6 +62,30 @@ namespace LeadGen.Code.CMS
 		{
 			get { return getFieldByCode("company_crmId").fieldText; }
 			set { getFieldByCode("company_crmId").fieldText = value; }
+		}
+
+		public void UnsubscribeFromNewLeads(SqlConnection con)
+		{
+			LoadFields(con);
+			PostField field = getFieldByCode("company_notification_do_not_send_leads");
+			field.fieldBool = true; //TRUE means DO NOT send
+			field.SaveToDB(con, ID);
+
+			if (!string.IsNullOrEmpty(company_crmId))
+			{
+				try
+				{
+					using (Clients.CRM.ICRMClient crmClient = Clients.CRM.CRMClient.GetClient())
+					{
+						crmClient.SetOptOutEmailLeadNotifications(company_crmId, field.fieldBool);
+					}
+				}
+				catch (Exception e)
+				{
+					Sys.Log.Insert(e.ToString());
+				}
+			}
+
 		}
 	}
 }

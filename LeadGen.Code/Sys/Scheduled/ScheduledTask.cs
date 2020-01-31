@@ -67,7 +67,7 @@ namespace LeadGen.Code.Sys.Scheduled
                     catch (Exception ex)
                     {
                         status = "Error";
-                        message = ex.Message;
+                        message = ex.ToString();
                     }
                     finally
                     {

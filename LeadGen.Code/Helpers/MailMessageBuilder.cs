@@ -75,19 +75,19 @@ namespace LeadGen.Code.Helpers
             return result;
         }
 
-        public static List<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(SqlConnection con, Dictionary<Post, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
+        public static List<MailMessageLeadGen> BuildLeadNotificationForCRMBusiness(SqlConnection con, Dictionary<PostBusiness, List<LeadItem>> businessPostsWithLeadsToNotifyAbout)
         {
             List<MailMessageLeadGen> messages = new List<MailMessageLeadGen>();
 
             string viewPath = "~/Areas/Business/Views/E-mails/_CRMBusinessLeadNotification.cshtml";
 
-            foreach (KeyValuePair<Post, List<LeadItem>> businessPostLeads in businessPostsWithLeadsToNotifyAbout)
+            foreach (KeyValuePair<PostBusiness, List<LeadItem>> businessPostLeads in businessPostsWithLeadsToNotifyAbout)
             {
                 try
                 {
-                    Post businessPost = businessPostLeads.Key;
-                    string businessLocation = businessPost.getFieldByCode("company_notification_location").location.Name;
-                    string businessEmail = businessPost.getFieldByCode("company_notification_email").fieldText;
+                    PostBusiness businessPost = businessPostLeads.Key;
+                    string businessLocation = businessPost.company_notification_location?.Name;
+                    string businessEmail = businessPost.company_notification_email;
 
                     string mailSubject = string.Format("Wine cellar order for {0}, please review", businessPost.title);
                     if (!string.IsNullOrEmpty(businessLocation))

@@ -127,8 +127,8 @@ namespace LeadGen.Web.Controllers
         public ActionResult BusinessCRMLeadUnsubscribeSubmitConfirmation(BusinessCRMLeadUnsubscribeToken token)
         {
             token = (BusinessCRMLeadUnsubscribeToken)Token.LoadFromDB(DBLGcon, token.Key);
-            token.UnsubscribeBusinessPost(DBLGcon);
-            token.DeleteFromDB(DBLGcon);
+            token.LoadBusinessPost(DBLGcon);
+            token.BusinessPost.UnsubscribeFromNewLeads(DBLGcon);
 
             SendMessageToAdmins("CRM Business unsubscribed", string.Format("CRM business post: #{0}", token.BusinessPost.ID));
 

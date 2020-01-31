@@ -1,18 +1,18 @@
-﻿@model KeyValuePair<Post, List<LeadItem>>
+﻿@model KeyValuePair<PostBusiness, List<LeadItem>>
 @using LeadGen.Code.CMS;
 @using LeadGen.Code.Lead;
 
 @{
     Layout = "~/Views/Shared/Email/_Layout.cshtml";
 
-    Post businessPost = Model.Key;
+    PostBusiness businessPost = Model.Key;
     List<LeadItem> leads = Model.Value;
     string systemName = Context.Request.Host.Host.ToUpper();
-    string businessLocationName = businessPost.getFieldByCode("company_notification_location")?.location?.Name;
-    string businessWebSite = businessPost.getFieldByCode("company_web_site_official")?.fieldText;
+    string businessLocationName = businessPost.company_notification_location?.Name;
+    string businessWebSite = businessPost.company_web_site_official;
     if (string.IsNullOrEmpty(businessWebSite))
     {
-        businessWebSite = businessPost.getFieldByCode("company_web_site_other")?.fieldText;
+        businessWebSite = businessPost.company_web_site_other;
     }
 
     string unsubscribeTokenKey = ViewData["unsubscribeTokenKey"].ToString();
@@ -53,7 +53,7 @@
     }
 </ul>
 
-<p><strong>If you don`t want</strong>to recieve info from new potential customers please <a href="@unsubscribeUrl" target="_blank">click here</a>, you won't hear from us anymore, we promise.</p>
+<p><strong>If you don`t want</strong> to recieve info from new potential customers please <a href="@unsubscribeUrl" target="_blank">click here</a>, you won't hear from us anymore, we promise.</p>
 
 <p>But if you are interested in getting contacts of customers who are interested in wine cellars, go ahead and</p>
 

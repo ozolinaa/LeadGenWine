@@ -48,13 +48,13 @@ namespace LeadGen.Code.Business.Notification
             DateTime now = DateTime.UtcNow;
 
             //CRM Businesses (Posts) Process and Queue Messages
-            Dictionary<Post, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
+            Dictionary<PostBusiness, List<LeadItem>> crmBusinessesWithLeadsToNotifyAbout = GetCompanyPostsWithLeadsToNotifyAbout(connection, now.AddDays(-7));
             List<MailMessageLeadGen> postMessages = MailMessageBuilder.BuildLeadNotificationForCRMBusiness(connection, crmBusinessesWithLeadsToNotifyAbout);
 
             if(isDebugMode)
                 return postMessages;
 
-            foreach (Post businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
+            foreach (PostBusiness businessPost in crmBusinessesWithLeadsToNotifyAbout.Keys)
                 foreach (LeadItem lead in crmBusinessesWithLeadsToNotifyAbout[businessPost])
                     PostNotifiedAboutLeadSet(connection, businessPost.ID, lead.ID, now);
 
@@ -191,15 +191,15 @@ namespace LeadGen.Code.Business.Notification
         }
 
 
-        private static Dictionary<Post, List<LeadItem>> GetCompanyPostsWithLeadsToNotifyAbout(SqlConnection connection, DateTime publishedAfter)
+        private static Dictionary<PostBusiness, List<LeadItem>> GetCompanyPostsWithLeadsToNotifyAbout(SqlConnection connection, DateTime publishedAfter)
         {
-            Dictionary<Post, List<LeadItem>> businessPostsWithLeads = new Dictionary<Post, List<LeadItem>>();
+            Dictionary<PostBusiness, List<LeadItem>> businessPostsWithLeads = new Dictionary<PostBusiness, List<LeadItem>>();
 
             DataView leadNotificationData = GetLeadCompanyPostNotificationDataView(connection, publishedAfter);
             List<LeadItem> leadsToSend = LoadLeadsFromTheNotificationView(connection, leadNotificationData);
-            List<Post> businessesSendTo = LoadBusinessesPostsFromTheNotificationView(connection, leadNotificationData);
+            List<PostBusiness> businessesSendTo = LoadBusinessesPostsFromTheNotificationView(connection, leadNotificationData);
 
-            foreach (Post post in businessesSendTo)
+            foreach (PostBusiness post in businessesSendTo)
             {
                 List<LeadItem> businessLeads = new List<LeadItem>();
                 DataRow[] businessLeadRows = leadNotificationData.ToTable().Select(string.Format("PostID = {0}", post.ID));
@@ -222,13 +222,13 @@ namespace LeadGen.Code.Business.Notification
             return businessPostsWithLeads;
         }
 
-        private static List<Post> LoadBusinessesPostsFromTheNotificationView(SqlConnection connection, DataView leadNotificationView)
+        private static List<PostBusiness> LoadBusinessesPostsFromTheNotificationView(SqlConnection connection, DataView leadNotificationView)
         {
-            List<Post> businessPostsSendTo = new List<Post>();
+            List<PostBusiness> businessPostsSendTo = new List<PostBusiness>();
             DataTable distinctBusinessPostsIDs = leadNotificationView.ToTable(true, "PostID");
             foreach (DataRow PostsIDRow in distinctBusinessPostsIDs.Rows)
             {
-                Post businessPost = Post.SelectFromDB<Post>(connection, postID: (long)PostsIDRow["PostID"]).First();
+                PostBusiness businessPost = Post.SelectFromDB<PostBusiness>(connection, postID: (long)PostsIDRow["PostID"]).First();
                 businessPost.LoadFields(connection);
                 businessPost.LoadTaxonomies(connection, loadTerms: true);
 

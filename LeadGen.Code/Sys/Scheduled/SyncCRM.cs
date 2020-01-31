@@ -14,22 +14,22 @@ namespace LeadGen.Code.Sys.Scheduled
 {
     public class SyncCRM : ScheduledTask
     {
-        private PostCompany getCompanyPostForOrganization(SqlConnection con, Organization org)
+        private PostBusiness getCompanyPostForOrganization(SqlConnection con, Organization org)
         {
-            PostCompany companyPost;
+            PostBusiness companyPost;
             if (org.LeadGenPostID != null)
             {
-                companyPost = Post.SelectFromDB<PostCompany>(con, postID: org.LeadGenPostID.Value).FirstOrDefault();
+                companyPost = Post.SelectFromDB<PostBusiness>(con, postID: org.LeadGenPostID.Value).FirstOrDefault();
                 if (companyPost == null || companyPost.postType.ID != PostType.BuiltIn.CompanyTypeId)
                     throw new Exception($"Error in sync CRM: CompanyPost with ID {org.LeadGenPostID.Value} not found");
             }
             else
             {
-                companyPost = Post.SelectFromDB<PostCompany>(con, fieldCode: "company_crmId", textValue: org.ID).FirstOrDefault();
+                companyPost = Post.SelectFromDB<PostBusiness>(con, fieldCode: "company_crmId", textValue: org.ID).FirstOrDefault();
                 if (companyPost == null)
                 {
                     long postId = Post.CreateNew(con, 1, PostType.BuiltIn.CompanyTypeId);
-                    companyPost = Post.SelectFromDB<PostCompany>(con, postID: postId).First();
+                    companyPost = Post.SelectFromDB<PostBusiness>(con, postID: postId).First();
                     companyPost.postURL = org.Name;
                     companyPost.postStatus = new Post.Status() { ID = 30 }; // Pending
                 }
@@ -40,48 +40,45 @@ namespace LeadGen.Code.Sys.Scheduled
             return companyPost;
         }
 
-        private ICRMClient getCRMClient()
-        {
-            string mysqlString = Helpers.SysHelper.AppSettings.CRMSettings.DBConnectionString;
-            return new ESPOClient(mysqlString);
-        }
-
         protected override string RunInternal(SqlConnection con)
         {
-            ICRMClient client = getCRMClient();
-
-            foreach (Location crmLocation in client.GetLocations())
-            {
-                PostCompanyCity post = getCompanyCityPostForLocation(con, crmLocation);
-                if (crmLocation.Lat == 0 && crmLocation.Lng == 0)
-                    continue;
-                if (post.company_city_location == null)
-                    post.company_city_location = new Map.Location();
-                Map.Location postLocation = post.company_city_location;
-                _updatePostLocation(ref postLocation, crmLocation);
-                string errorMessage = null;
-                post.Update(con, ref errorMessage);
-                if (!string.IsNullOrEmpty(errorMessage))
-                    throw new Exception("Error updating PostCompanyCity post during sync CRM");
-            }
-
-
             int processedCount = 0;
-            foreach (Organization org in client.GetOrganizations())
+
+            using (ICRMClient client = CRMClient.GetClient())
             {
-                PostCompany post = getCompanyPostForOrganization(con, org);
+                foreach (Location crmLocation in client.GetLocations())
+                {
+                    PostBusinessCity post = getCompanyCityPostForLocation(con, crmLocation);
+                    if (crmLocation.Lat == 0 && crmLocation.Lng == 0)
+                        continue;
+                    if (post.company_city_location == null)
+                        post.company_city_location = new Map.Location();
+                    Map.Location postLocation = post.company_city_location;
+                    _updatePostLocation(ref postLocation, crmLocation);
+                    string errorMessage = null;
+                    post.Update(con, ref errorMessage);
+                    if (!string.IsNullOrEmpty(errorMessage))
+                        throw new Exception("Error updating PostCompanyCity post during sync CRM");
+                }
 
-                syncCompanyByOrganization(con, post, org);
+                foreach (Organization org in client.GetOrganizations())
+                {
+                    PostBusiness post = getCompanyPostForOrganization(con, org);
 
-                if (org.LeadGenPostID != post.ID)
-                    client.SetPostID(org.ID, post.ID);
-                if (org.LeadGenBusinessID != post.company_businessId)
-                    client.SetBusinessID(org.ID, post.company_businessId);
-                if (org.OptOutEmailLeadNotifications != post.company_notification_do_not_send_leads)
-                    client.SetOptOutEmailLeadNotifications(org.ID, post.company_notification_do_not_send_leads);
+                    syncCompanyByOrganization(con, post, org);
 
-                processedCount++;
-            }
+                    if (org.LeadGenPostID != post.ID)
+                        client.SetPostID(org.ID, post.ID);
+                    if (org.LeadGenBusinessID != post.company_businessId)
+                        client.SetBusinessID(org.ID, post.company_businessId);
+                    if (org.OptOutEmailLeadNotifications != post.company_notification_do_not_send_leads)
+                        client.SetOptOutEmailLeadNotifications(org.ID, post.company_notification_do_not_send_leads);
+
+                    processedCount++;
+                }
+            };
+
+
 
             return string.Format("Companies Synced With CRM: {0}", processedCount);
         }
@@ -102,16 +99,16 @@ namespace LeadGen.Code.Sys.Scheduled
             }
             return cityTerm;
         }
-        private PostCompanyCity getCompanyCityPostForLocation(SqlConnection con, Location loc)
+        private PostBusinessCity getCompanyCityPostForLocation(SqlConnection con, Location loc)
         {
             Term term = getTermForLocation(con, loc);
             //PostCompanyCity must exists in DB if term exists, should be created by SQL triggers
-            PostCompanyCity post = Post.SelectFromDB<PostCompanyCity>(con, forTermID: term.ID, forTypeID: PostType.BuiltIn.CompanyTypeId).First();
+            PostBusinessCity post = Post.SelectFromDB<PostBusinessCity>(con, forTermID: term.ID, forTypeID: PostType.BuiltIn.CompanyTypeId).First();
             post.LoadFields(con);
             return post;
         }
 
-        private void syncCompanyByOrganization(SqlConnection con, PostCompany post, Organization org)
+        private void syncCompanyByOrganization(SqlConnection con, PostBusiness post, Organization org)
         {
             post.title = org.Name;
             post.company_notification_email = org.EmailNotification;
@@ -136,7 +133,7 @@ namespace LeadGen.Code.Sys.Scheduled
                 throw new Exception("Error updating company post during sync CRM");
         }
 
-        private void _syncLocation(PostCompany post, Organization org)
+        private void _syncLocation(PostBusiness post, Organization org)
         {
             //remove company_notification_location
             post.company_notification_location = null;
@@ -158,7 +155,7 @@ namespace LeadGen.Code.Sys.Scheduled
             _updatePostLocation(ref postLocation, crmLocation);
         }
 
-        private void _syncCityTerms(SqlConnection con, PostCompany post, List<Location> locations)
+        private void _syncCityTerms(SqlConnection con, PostBusiness post, List<Location> locations)
         {
             post.LoadTaxonomies(con, loadTerms: true, termsCheckedOnly: false);
             PostTypeTaxonomy cityPostTax = post.taxonomies.Find(x => x.taxonomy.ID == Taxonomy.Taxonomy.BuiltIn.CityTaxId);
