@@ -232,6 +232,8 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             Post post = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, postURL:"", loadFields: true).First();
             post.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
+            ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
+
             return View("TermPostEdit", post);
         }
 
