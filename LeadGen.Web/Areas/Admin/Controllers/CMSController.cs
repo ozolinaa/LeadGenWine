@@ -221,6 +221,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
             //Set activePostType
             ViewBag.activePostTypeID = forTypeID;
+            ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
 
             return View(post);
         }
