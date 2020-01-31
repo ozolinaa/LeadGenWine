@@ -124,8 +124,6 @@ namespace LeadGen.Code.CMS
         {
             return fields.FirstOrDefault(x => x.code == code);
         }
-
-        public string httpHost;
         #endregion
 
 
@@ -134,7 +132,8 @@ namespace LeadGen.Code.CMS
         {
             get
             {
-                return string.Format("{0}{1}{2}{3}", String.IsNullOrEmpty(httpHost) ? "" : httpHost + "/", String.IsNullOrEmpty(postType.url) ? "" : postType.url + "/", postURLParentPath, postURL);
+                string main = ((postType.url ?? "") + "/" + postURLParentPath + postURL).Replace("//", "/").Trim('/');
+                return string.Format("{0}/{1}/", SysHelper.AppSettings.SiteUrl, main);
             }
         }
 

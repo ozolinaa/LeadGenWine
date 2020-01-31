@@ -1,8 +1,9 @@
 ﻿@model LeadGen.Code.CMS.Post
 @using LeadGen.Code.CMS;
 
-
 @Html.ValidationSummary()
+
+
 
 
 <div class="row">
@@ -17,7 +18,7 @@
         <div class="form-group">
             @Html.LabelFor(x => x.postURL)
             <div class="input-group">
-                <div class="input-group-addon">@String.Format("{0}/{1}{2}", ViewBag.siteURL, String.IsNullOrEmpty(Model.postType.url) ? "" : Model.postType.url + "/", Model.postURLParentPath)</div>
+                <div class="input-group-addon">@String.Format("{0}/{1}{2}", LeadGen.Code.Helpers.SysHelper.AppSettings.SiteUrl, string.IsNullOrEmpty(Model.postType.url) ? "" : Model.postType.url + "/", Model.postURLParentPath)</div>
                 @Html.TextBoxFor(x => x.postURL, new { @class = "form-control", placeholder = "Post URL", style = "max-width:none;" })
             </div>
             @Html.ValidationMessageFor(x => x.postURL)
@@ -114,7 +115,7 @@
 
             </div>
             <div class="panel-footer">
-                <a href="@String.Format("{0}/{1}{2}", ViewBag.siteURL, Model.Url, Model.postStatus.ID == 50 ? "" : "?preview=True")"
+                <a href="@String.Format("{0}{1}", Model.Url, Model.postStatus.ID == 50 ? "" : "?preview=True")"
                    class="btn btn-default" target="_blank">
                     @(Model.postStatus.ID == 50 ? "Open Post" : "Preview Post")
                 </a>

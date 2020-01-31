@@ -60,8 +60,8 @@ namespace LeadGen.Web.Controllers
 
         private XmlActionResult Index()
         {
-            List<SitemapItem> siteMapItems = CMSManager.SelecItemsForSiteMapIndexPage(DBLGcon, requestedHttpHostUrl + "/sitemap_{0}_{1}.xml", pageSize);
-            siteMapItems.AddRange(LeadItem.SelectItemsForSiteMapIndexPage(DBLGcon, requestedHttpHostUrl + "/sitemap_zakaz_{0}.xml", pageSize));
+            List<SitemapItem> siteMapItems = CMSManager.SelecItemsForSiteMapIndexPage(DBLGcon, RequestedSiteUrl + "/sitemap_{0}_{1}.xml", pageSize);
+            siteMapItems.AddRange(LeadItem.SelectItemsForSiteMapIndexPage(DBLGcon, RequestedSiteUrl + "/sitemap_zakaz_{0}.xml", pageSize));
 
             SitemapGenerator sg = new SitemapGenerator();
             XDocument xml = sg.GenerateSiteMap(siteMapItems);
@@ -73,9 +73,6 @@ namespace LeadGen.Web.Controllers
             SitemapGenerator sg = new SitemapGenerator();
 
             IPagedList<Post> postItems = Post.SelectFromDB<Post>(DBLGcon, statusID: 50, typeID: postType.ID, page:page, pageSize:pageSize );
-
-            foreach (Post post in postItems)
-                post.httpHost = requestedHttpHostUrl;
 
             return new XmlActionResult(sg.GenerateSiteMap(postItems));
         }

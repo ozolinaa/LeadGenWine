@@ -48,7 +48,7 @@
 
             <div class="form-group">
                 <div class="input-group">
-                    <div class="input-group-addon">@String.Format("{0}/{1}/", ViewBag.siteURL, Model.postType.url)</div>
+                    <div class="input-group-addon">@String.Format("{0}/{1}/", LeadGen.Code.Helpers.SysHelper.AppSettings.SiteUrl, Model.postType.url)</div>
                     @Html.TextBoxFor(x => x.postURL, new { @class = "form-control", placeholder = "Post URL", style = "max-width:none;", @readonly = "readonly" })
                 </div>
             </div>

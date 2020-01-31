@@ -115,8 +115,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
             //Set activePostType
             ViewBag.activePostTypeID = postItem.postType.ID;
-
-            ViewBag.siteURL = requestedHttpHostUrl;
             ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
             if (postItem.postParentID != null)
                 ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
@@ -193,7 +191,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
                 Post postItem = Post.SelectFromDB<Post>(DBLGcon, postID: postToUpdate.ID, loadAttachmentList: true, loadFields: true).First();
                 postItem.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
-                ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
                 ViewBag.NofificationStatus = true;
                 if (postItem.postParentID != null)
@@ -206,7 +203,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             {
                 postToUpdate.LoadTaxonomies(DBLGcon,true,false);
 
-                ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
                 if (postToUpdate.postParentID != null)
                     ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postToUpdate.postParentID).First().postURLHierarchical;
@@ -226,7 +222,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             //Set activePostType
             ViewBag.activePostTypeID = forTypeID;
 
-            ViewBag.siteURL = requestedHttpHostUrl;
             return View(post);
         }
 
@@ -236,7 +231,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             Post post = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, postURL:"", loadFields: true).First();
             post.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
-            ViewBag.siteURL = requestedHttpHostUrl;
             return View("TermPostEdit", post);
         }
 
@@ -280,7 +274,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             }
             else
             {
-                ViewBag.siteURL = requestedHttpHostUrl;
                 ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
 
                 return View(postToUpdate);
@@ -422,7 +415,6 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
         public ActionResult Cache()
         {
-            ViewBag.siteURL = requestedHttpHostUrl;
             return View();
         }
 
@@ -432,7 +424,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             if (string.IsNullOrEmpty(url))
                 return BadRequest("url is required");
 
-            url = url.Replace(requestedHttpHostUrl, "");
+            url = url.Replace(RequestedSiteUrl, "");
             url = url.Trim('/');
 
             _cache.Remove(url);

@@ -2,17 +2,17 @@
 @using LeadGen.Code.CMS
 @using LeadGen.Code.Taxonomy
 <div class="item col-xs-6 col-sm-4 @*col-md-3*@">
-    <h3>@Html.ActionLink(Model.title, "Index", new { urlPath = String.Format("{0}/", Model.Url) })</h3>
+    <h3><a href="@Model.Url">@Model.title</a></h3>
     @{
         if (Model.thumbnailAttachmentID != null)
         {
-            <a href='@Url.Action("Index", "CMS", new { area = "", urlPath = String.Format("{0}/", Model.Url) })'>
+            <a href='@Model.Url'>
                 <img src="@Model.thumbnailUrl" class="img-responsive img-thumbnail" />
             </a>
         }
         else
         {
-            <a href='@Url.Action("Index", "CMS", new { area = "", urlPath = String.Format("{0}/", Model.Url) })'>
+            <a href='@Model.Url'>
                 <img src="~/Content/themes/izgpam/empty_thumbnail.png"  class="img-responsive img-thumbnail" />
             </a>
         }

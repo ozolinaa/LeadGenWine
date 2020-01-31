@@ -1,5 +1,6 @@
 ﻿using LeadGen.Code.Helpers;
 using LeadGen.Code.Sys;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -11,6 +12,7 @@ namespace LeadGen.Code.Settings
     public interface IAppSettings
     {
         string SQLConnectionString { get; }
+        string SiteUrl { get; }
         string SystemAccessToken { get; }
         AzureSettings AzureSettings { get; }
         AWSSettings AWSSettings { get; }
@@ -25,7 +27,9 @@ namespace LeadGen.Code.Settings
 
     public class AppSettings : IAppSettings
     {
+        private HttpContextAccessor _httpContextAccessor;
         private string _sqlConnectionString;
+        private string _siteUrl;
         private string _systemAccessToken;
         private AzureSettings _azureSettings;
         private AWSSettings _awsSettings;
@@ -35,8 +39,16 @@ namespace LeadGen.Code.Settings
         private GoogleSettings _googleSettings;
         private CRMSettings _crmSettings;
 
-        public string SQLConnectionString { get { return _sqlConnectionString; }  }
-        public string SystemAccessToken { get { return _systemAccessToken; } }
+        public string SQLConnectionString => _sqlConnectionString;
+        public string SiteUrl { 
+            get {
+                if(_httpContextAccessor.HttpContext == null)
+                    return _siteUrl != null ? _siteUrl.Trim('/') : "";
+                return string.Format("{0}://{1}", _httpContextAccessor.HttpContext.Request.Scheme, _httpContextAccessor.HttpContext.Request.Host);
+            } 
+        }
+        
+        public string SystemAccessToken => _systemAccessToken;
 
 
         public AzureSettings AzureSettings { get { return _azureSettings; } }
@@ -50,6 +62,7 @@ namespace LeadGen.Code.Settings
 
         public AppSettings(ICoreSettings coreSettings)
         {
+            _httpContextAccessor = new HttpContextAccessor();
             _sqlConnectionString = Environment.GetEnvironmentVariable("sqlConnectionString");
             if (string.IsNullOrEmpty(_sqlConnectionString))
                 _sqlConnectionString = coreSettings.SQLConnectionString;
@@ -90,6 +103,9 @@ namespace LeadGen.Code.Settings
             Option tmpOption;
             if (settingOptions.TryGetValue(Option.SettingKey.SystemAccessToken.ToString(), out tmpOption))
                 _systemAccessToken = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
+
+            if (settingOptions.TryGetValue(Option.SettingKey.SiteUrl.ToString(), out tmpOption))
+                _siteUrl = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
 
             if (settingOptions.ContainsKey(Option.SettingKey.AzureStorageHostName.ToString()) && settingOptions.ContainsKey(Option.SettingKey.AzureStorageConnectionString.ToString())) {
                 _azureSettings = new AzureSettings()

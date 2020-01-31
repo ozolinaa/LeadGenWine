@@ -20,7 +20,7 @@ namespace LeadGen.Code.Sys
         };
 
 
-        public string requestedHttpHostUrl
+        public string RequestedSiteUrl
         {
             get {                
                 return string.Format("{0}://{1}", Request.Scheme, Request.Host);

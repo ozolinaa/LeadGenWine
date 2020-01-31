@@ -11,7 +11,7 @@
         }
     </div>
     <div class="col-sm-8">
-        <h2>@Html.ActionLink(Model.title, "Index", new { urlPath = String.Format("{0}/", Model.Url) })</h2>
+        <h2><a href='@Model.Url'></h2>
         @Html.Raw(Model.contentPreview)
     </div>
 </div>

@@ -90,6 +90,7 @@ namespace LeadGen.Code.Sys
             LeadFieldMappingLocationZip,
             LeadFieldMappingLocationRadius,
 
+            SiteUrl,
             SystemAccessToken,
             CMSHtmlHeadInjection,
             CMSRobotsTXT,
