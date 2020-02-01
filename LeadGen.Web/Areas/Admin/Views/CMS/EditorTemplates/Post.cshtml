@@ -3,6 +3,9 @@
 
 @Html.ValidationSummary()
 
+@Html.HiddenFor(x => x.ID)
+@Html.HiddenFor(x => x.forTermID)
+@Html.HiddenFor(x => x.forTaxonomyID)
 
 
 
@@ -19,7 +22,11 @@
             @Html.LabelFor(x => x.postURL)
             <div class="input-group">
                 <div class="input-group-addon">@String.Format("{0}/{1}{2}", LeadGen.Code.Helpers.SysHelper.AppSettings.SiteUrl, string.IsNullOrEmpty(Model.postType.url) ? "" : Model.postType.url + "/", Model.postURLParentPath)</div>
-                @Html.TextBoxFor(x => x.postURL, new { @class = "form-control", placeholder = "Post URL", style = "max-width:none;" })
+                @{ 
+                    var postUrlHtmlAttributes = new { @class = "form-control", placeholder = "Post URL"};
+                    var termPostUrlHtmlAttributes = new { @class = "form-control", @readonly = "readonly"};
+                }
+                @Html.TextBoxFor(x => x.postURL, null, (Model.forTermID == null ? (object)postUrlHtmlAttributes : (object)termPostUrlHtmlAttributes))
             </div>
             @Html.ValidationMessageFor(x => x.postURL)
         </div>
@@ -132,16 +139,20 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Parent</div>
-            <div class="panel-body">
-                <div class="ui-widget">
-                    <input type="text" value="@ViewBag.postParentUrl" id="postParentUrl" class="form-control">
+        @if (Model.forTermID == null)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">Parent</div>
+                <div class="panel-body">
+                    <div class="ui-widget">
+                        <input type="text" value="@ViewBag.postParentUrl" id="postParentUrl" class="form-control">
+                    </div>
+                    @Html.HiddenFor(x => x.postParentID, new { id = "postParentID" })
+                    @Html.ValidationMessageFor(x => x.postParentID)
                 </div>
-                @Html.HiddenFor(x => x.postParentID, new { id = "postParentID" })
-                @Html.ValidationMessageFor(x => x.postParentID)
             </div>
-        </div>
+        }
+
 
         @for (int i = 0; i < Model.taxonomies.Count(); i++)
         {

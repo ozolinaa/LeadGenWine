@@ -108,7 +108,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         }
 
         // Display Post for Edit
-        public ActionResult PostEdit(int ID)
+        public ActionResult PostEdit(long ID)
         {
             Post postItem = Post.SelectFromDB<Post>(DBLGcon, postID: ID, loadAttachmentList: true, loadFields: true).First();
             postItem.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
@@ -119,12 +119,17 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             if (postItem.postParentID != null)
                 ViewBag.postParentUrl = Post.SelectFromDB<Post>(DBLGcon, postID: postItem.postParentID).First().postURLHierarchical;
 
-            return View(postItem);
+            return View("PostEdit", postItem);
+        }
+
+        // Display Term Post for Edit
+        public ActionResult TermPostEdit(int forTypeID, long forTermID)
+        {
+            Post post = Post.SelectFromDB<Post>(DBLGcon, forTypeID: forTypeID, forTermID: forTermID, loadFields: true).First();
+            return PostEdit(post.ID);
         }
 
 
-        // Save Updated Post
-        private static readonly string[] postEditPropsToPreventChangeWhenUpdateModel = { "attachmentList", "forTermId", "taxonomies" };
         [HttpPost]
         public ActionResult PostEdit(Post postedPostItem)
         {
@@ -132,9 +137,9 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             Post postToUpdate = Post.SelectFromDB<Post>(DBLGcon, postID: postedPostItem.ID, loadAttachmentList: true, loadFields: true).FirstOrDefault();
             postToUpdate.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
-            //Check if forTermID is not null, means the post is a "term" post
-            if (postToUpdate.forTermID != null)
-                return TermPostEdit(postedPostItem);
+            ////Check if forTermID is not null, means the post is a "term" post
+            //if (postToUpdate.forTermID != null)
+            //    return TermPostEdit(postedPostItem);
 
             //Set activePostType
             ViewBag.activePostTypeID = postToUpdate.postType.ID;
@@ -142,6 +147,11 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             //Need to clear the old Nullable Values because if NULL was recieved it will not be updated
             postToUpdate.thumbnailAttachmentID = null;
 
+            List<string> postEditPropsToPreventChangeWhenUpdateModel = new List<string>() { "attachmentList", "forTermId", "taxonomies" };
+            if (postToUpdate.forTermID != null)
+            {
+                postEditPropsToPreventChangeWhenUpdateModel.AddRange(new string[] { "postParentID", "postURL" });
+            }
             //Update postToUpdate from the httpContext but exclude some properties that should not be changed
             TryUpdateModelAsync(postToUpdate,"", x=> postEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
 
@@ -184,7 +194,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 //Clear the cache for this post
-                string cacheUrl = Url.Action("Index", "CMS", new { area = "", urlPath = postToUpdate.Url }).Trim('/');
+                string cacheUrl = postToUpdate.Url.Trim('/');
                 _cache.Remove(cacheUrl);
 
                 //Need to reload post data because DB logic may had changed some fields after the update
@@ -212,19 +222,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             }
         }
 
-        // Display Term Post for Edit
-        public ActionResult TermPostEdit(int forTypeID, long forTermID)
-        {
-            Post post = Post.SelectFromDB<Post>(DBLGcon, forTypeID: forTypeID, forTermID: forTermID, loadFields: true).First();
-            post.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
-
-            //Set activePostType
-            ViewBag.activePostTypeID = forTypeID;
-            ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
-
-            return View(post);
-        }
 
         // Display Term Type StartPage for Edit
         public ActionResult PostTypeTaxStartPostEdit(int typeID)
@@ -238,50 +236,50 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         }
 
 
-        // Save Updated Term Post
-        [HttpPost]
-        public ActionResult TermPostEdit(Post postedPostItem)
-        {
-            //Load Original Post
-            Post postToUpdate = Post.SelectFromDB<Post>(DBLGcon, postID: postedPostItem.ID, loadFields: true).First();
-            postToUpdate.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
+        //// Save Updated Term Post
+        //[HttpPost]
+        //public ActionResult TermPostEdit(Post postedPostItem)
+        //{
+        //    //Load Original Post
+        //    Post postToUpdate = Post.SelectFromDB<Post>(DBLGcon, postID: postedPostItem.ID, loadFields: true).First();
+        //    postToUpdate.LoadTaxonomies(DBLGcon, loadTerms: true, termsCheckedOnly: false);
 
-            //Set activePostType
-            ViewBag.activePostTypeID = postToUpdate.postType.forPostTypeID;
+        //    //Set activePostType
+        //    ViewBag.activePostTypeID = postToUpdate.postType.forPostTypeID;
 
-            //Need to clear the old Nullable Values because if NULL was recieved it will not be updated
-            postToUpdate.thumbnailAttachmentID = null;
+        //    //Need to clear the old Nullable Values because if NULL was recieved it will not be updated
+        //    postToUpdate.thumbnailAttachmentID = null;
 
-            //Update postToUpdate from the httpContext but exclude some properties that should not be changed
-            List<string> termPostEditPropsToPreventChangeWhenUpdateModel = postEditPropsToPreventChangeWhenUpdateModel.ToList();
-            termPostEditPropsToPreventChangeWhenUpdateModel.AddRange( new string[] { "postParentID", "postURL" });
-            TryUpdateModelAsync(postToUpdate, "", x => termPostEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
+        //    //Update postToUpdate from the httpContext but exclude some properties that should not be changed
+        //    List<string> termPostEditPropsToPreventChangeWhenUpdateModel = postEditPropsToPreventChangeWhenUpdateModel.ToList();
+        //    termPostEditPropsToPreventChangeWhenUpdateModel.AddRange( new string[] { "postParentID", "postURL" });
+        //    TryUpdateModelAsync(postToUpdate, "", x => termPostEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
 
-            if (ModelState.IsValid)
-            {
-                string updateErrorMessage = null;
-                bool wasUpdated = postToUpdate.Update(DBLGcon, ref updateErrorMessage);
-                if (wasUpdated == false)
-                    ModelState.AddModelError(String.Empty, "Something is wrong");
-            }
+        //    if (ModelState.IsValid)
+        //    {
+        //        string updateErrorMessage = null;
+        //        bool wasUpdated = postToUpdate.Update(DBLGcon, ref updateErrorMessage);
+        //        if (wasUpdated == false)
+        //            ModelState.AddModelError(String.Empty, "Something is wrong");
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                //Need to reload post data because DB logic may had changed some fields after update
-                if(string.IsNullOrEmpty(postToUpdate.postURL))
-                    //redirect to the post type start page
-                    return RedirectToAction("PostTypeTaxStartPostEdit", new { typeID = postToUpdate.postType.ID });
-                else
-                    //redirect to the term post edit
-                    return RedirectToAction("TermPostEdit", new { forTypeID = postToUpdate.postType.forPostTypeID, forTermID = postToUpdate.forTermID });
-            }
-            else
-            {
-                ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
+        //    if (ModelState.IsValid)
+        //    {
+        //        //Need to reload post data because DB logic may had changed some fields after update
+        //        if(string.IsNullOrEmpty(postToUpdate.postURL))
+        //            //redirect to the post type start page
+        //            return RedirectToAction("PostTypeTaxStartPostEdit", new { typeID = postToUpdate.postType.ID });
+        //        else
+        //            //redirect to the term post edit
+        //            return RedirectToAction("TermPostEdit", new { forTypeID = postToUpdate.postType.forPostTypeID, forTermID = postToUpdate.forTermID });
+        //    }
+        //    else
+        //    {
+        //        ViewBag.statusList = Post.Status.SelectFromDB(DBLGcon);
 
-                return View(postToUpdate);
-            }
-        }
+        //        return View(postToUpdate);
+        //    }
+        //}
 
         // Show Post Type Selected Taxonomy
         public PartialViewResult ShowPostTypeTaxonomyEditor(int postTypeID)
