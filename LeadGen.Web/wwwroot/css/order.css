@@ -178,7 +178,7 @@
                 border-style: solid;
                 border-width: 10px;
                 border-color: #f4f4f485;
-                background-image: url(../images/order/bottles/1.jpg);
+                background-image: url(../images/order/furniture.jpg);
                 background-repeat: no-repeat;
                 /*background-size: cover;*/
                 background-size: 115%;
@@ -193,47 +193,47 @@
             }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-room label::before {
-            background-image: url('../images/order/icons/room.jpg');
+            background-image: url('../images/order/room.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-cabinet label::before {
-            background-image: url('../images/order/icons/cabinet.jpg');
+            background-image: url('../images/order/cabinet.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-rack label::before {
-            background-image: url('../images/order/icons/rack.jpg');
+            background-image: url('../images/order/rack.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-wood label::before {
-            background-image: url('../images/order/icons/wood.jpg');
+            background-image: url('../images/order/wood.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-glass_metal label::before {
-            background-image: url('../images/order/icons/glass_metal.jpg');
+            background-image: url('../images/order/glass_metal.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-iron_wrought label::before {
-            background-image: url('../images/order/icons/iron_wrought.jpg');
+            background-image: url('../images/order/iron_wrought.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-furniture label::before {
-            background-image: url('../images/order/icons/furniture.jpg');
+            background-image: url('../images/order/furniture.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-glasses_bottles label::before {
-            background-image: url('../images/order/icons/glasses_bottles.jpg');
+            background-image: url('../images/order/glasses_bottles.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-decor label::before {
-            background-image: url('../images/order/icons/decor.jpg');
+            background-image: url('../images/order/decor.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-residential label::before {
-            background-image: url('../images/order/icons/residential.jpg');
+            background-image: url('../images/order/residential.jpg');
         }
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-business label::before {
-            background-image: url('../images/order/icons/business.jpg');
+            background-image: url('../images/order/business.jpg');
         }
 
     .lead-container .lead_field_group .lead-field-legal_entity .field-option-list {

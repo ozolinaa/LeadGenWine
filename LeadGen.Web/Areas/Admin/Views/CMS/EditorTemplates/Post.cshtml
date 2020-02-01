@@ -23,10 +23,10 @@
             <div class="input-group">
                 <div class="input-group-addon">@String.Format("{0}/{1}{2}", LeadGen.Code.Helpers.SysHelper.AppSettings.SiteUrl, string.IsNullOrEmpty(Model.postType.url) ? "" : Model.postType.url + "/", Model.postURLParentPath)</div>
                 @{ 
-                    var postUrlHtmlAttributes = new { @class = "form-control", placeholder = "Post URL"};
-                    var termPostUrlHtmlAttributes = new { @class = "form-control", @readonly = "readonly"};
+                    var postUrlHtmlAttributes = (object) new { @class = "form-control", placeholder = "Post URL"};
+                    var termPostUrlHtmlAttributes = (object) new { @class = "form-control", @readonly = "readonly"};
                 }
-                @Html.TextBoxFor(x => x.postURL, null, (Model.forTermID == null ? (object)postUrlHtmlAttributes : (object)termPostUrlHtmlAttributes))
+                @Html.TextBoxFor(x => x.postURL, null, (Model.forTermID == null ? postUrlHtmlAttributes : termPostUrlHtmlAttributes))
             </div>
             @Html.ValidationMessageFor(x => x.postURL)
         </div>
