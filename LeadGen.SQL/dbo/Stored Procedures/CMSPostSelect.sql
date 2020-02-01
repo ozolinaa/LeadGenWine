@@ -91,6 +91,6 @@ BEGIN
 
 	-- Call the function and pass the table variable
 	SELECT * FROM [dbo].[CMSPostSelectByIDs] (@PostIDs) 
-	ORDER BY [Order] DESC, [DatePublished] DESC
+	ORDER BY [Order] ASC, [DatePublished] DESC
 
 END

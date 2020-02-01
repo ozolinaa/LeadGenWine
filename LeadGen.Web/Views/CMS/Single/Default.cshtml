@@ -6,13 +6,22 @@
     CMSContext cmsContext = ViewBag.CMSContext;
 }
 
-<article>
-    <h1>@Model.title</h1>
-    @Html.Raw(Model.contentIntro)
-    @Html.Raw(Model.contentPreview)
-    @Html.Raw(Model.contentMain)
-    @Html.Raw(Model.contentEnding)
-</article>
+    <article class="box">
+        <div class="title-group">
+            <h5>WineCellars.PRO</h5>
+            <h1>@Model.title</h1>
+            <p class="line-mix star-group">
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+            </p>
+        </div>
+        
+        @Html.Raw(Model.contentIntro)
+        @Html.Raw(Model.contentPreview)
+        @Html.Raw(Model.contentMain)
+        @Html.Raw(Model.contentEnding)
+    </article>
 
 @{ await Html.RenderPartialAsync("_UnderArticleContent");}
 

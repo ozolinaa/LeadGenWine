@@ -44,11 +44,14 @@ namespace LeadGen.Code.CMS
 
         public enum PostTypesBuiltIn {
             Page = 1,
-            Widget = 8
+            Widget = 2,
+            Company = 3,
         };
 
         public enum TaxonomiesBuiltIn
         {
+            Category = 1,
+            Tag = 2,
             City = 3
         };
 

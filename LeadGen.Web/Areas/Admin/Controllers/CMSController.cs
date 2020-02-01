@@ -80,7 +80,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         // Show list of posts
         public ActionResult PostList(int typeID, int statusID = 50, string query = "", int page = 1)
         {
-            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 5, excludeStartPage: true);
+            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 25, excludeStartPage: true);
 
             foreach (Post post in posts)
                 post.LoadTaxonomies(DBLGcon);
@@ -103,7 +103,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
 
         public IEnumerable<Post> SearchPostsJson(int typeID, int? statusID = null, string query = "", int page = 1)
         {
-            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 20);
+            IPagedList<Post> posts = Post.SelectFromDB<Post>(DBLGcon, typeID: typeID, statusID: statusID, query: query, page: page, pageSize: 25);
             return posts;
         }
 

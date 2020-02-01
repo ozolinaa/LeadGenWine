@@ -49,7 +49,7 @@ namespace LeadGen.Code.CMS
         public List<Taxonomy.Term> cities { get; set; }
 
 
-        public IEnumerable<Post> widgets;
+        public List<Post> widgets;
         public IEnumerable<Post> widgetsLayoutSidebarRight
         {
             get {
@@ -132,10 +132,52 @@ namespace LeadGen.Code.CMS
 
         private void LoadWidgets(SqlConnection con)
         {
-            widgets = Post.SelectFromDB<Post>(con, typeID: (int)PostTypesBuiltIn.Widget, loadTaxonomySelectedList: true, statusID: 50);
+            widgets = Post.SelectFromDB<Post>(con, typeID: (int)PostTypesBuiltIn.Widget, loadTaxonomySelectedList: true, loadFields: true, statusID: 50).ToList();
+            widgets.RemoveAll(x => CurrentUrlMatchMultiPattern(x.getFieldByCode("widget_exclude_render_at_url")?.fieldText));
             var layoutWidgets = widgets.Where(x => x.taxonomies.Find(y => y.taxonomy.code == "layout_location").taxonomy.termList.Any());
             foreach (var layoutWidget in layoutWidgets)
                 layoutWidget.processContentTags(con);
+        }
+
+
+        private bool CurrentUrlMatchMultiPattern(string widget_exclude_render_at_url)
+        {
+            if (string.IsNullOrEmpty(widget_exclude_render_at_url))
+                return false;
+            foreach (string urlPattern in widget_exclude_render_at_url.ToLower().Split(new[] { ' ', ',' }))
+            {
+                if (string.IsNullOrEmpty(urlPattern))
+                    continue;
+                if (CurrentUrlMatchPattern(urlPattern.TrimStart('/')))
+                    return true;
+            }
+            return false;
+        }
+
+        private bool CurrentUrlMatchPattern(string pattern)
+        {
+            if (pattern.Trim('/') == urlPath)
+                return true;
+            if (!pattern.Contains('*'))
+                return false;
+
+            string[] patternSegments = pattern.Split('/');
+            bool patternEndsWithStar = patternSegments[patternSegments.Length - 1] == "*";
+
+            if (!patternEndsWithStar && patternSegments.Length != urlPathSegments.Length)
+                return false;
+            if (patternEndsWithStar && urlPathSegments.Length < patternSegments.Length)
+                return false;
+
+            for (int i = 0; i < urlPathSegments.Length; i++)
+            {
+                if (urlPathSegments[i] == "*")
+                    continue;
+                if (urlPathSegments[i] != urlPathSegments[i])
+                    return false;
+            }
+
+            return true;
         }
 
         private bool tryLoadContextForStartPage(SqlConnection con)
