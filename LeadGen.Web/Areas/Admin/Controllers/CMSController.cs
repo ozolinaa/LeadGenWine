@@ -150,7 +150,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
             List<string> postEditPropsToPreventChangeWhenUpdateModel = new List<string>() { "attachmentList", "forTermId", "taxonomies" };
             if (postToUpdate.forTermID != null)
             {
-                postEditPropsToPreventChangeWhenUpdateModel.AddRange(new string[] { "postParentID", "postURL" });
+                postEditPropsToPreventChangeWhenUpdateModel.AddRange(new string[] { "postParentID", "postURL", "title" });
             }
             //Update postToUpdate from the httpContext but exclude some properties that should not be changed
             TryUpdateModelAsync(postToUpdate,"", x=> postEditPropsToPreventChangeWhenUpdateModel.Contains(x.PropertyName.ToLower(), StringComparer.OrdinalIgnoreCase) == false).Wait();
