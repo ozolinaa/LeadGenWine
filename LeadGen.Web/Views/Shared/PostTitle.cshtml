@@ -1,14 +1,20 @@
-﻿@model LeadGen.Code.CMS.PostTitle
-    <div class="title-group @(Model.ShowBorder ? "line-double" : "")">
-        @if (Model.ShowSiteName)
-        {
-            <h5>WineCellars.PRO</h5>
-        }
-        <h1>@Model.Title</h1>
-        <p class="line-mix star-group">
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-            <i class="fa fa-star"></i>
-        </p>
-        @Html.Raw(@Model.Content)
-    </div>
+﻿@model LeadGen.Code.CMS.Post
+@{
+    bool showBorder = true;
+    bool showSiteName = true;
+    string content = null;
+    string title = Model.title;
+}
+<div class="title-group @(showBorder ? "line-double" : "")">
+    @if (showSiteName)
+    {
+        <h5>WineCellars.PRO</h5>
+    }
+    <h1>@title</h1>
+    <p class="line-mix star-group">
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+    </p>
+    @Html.Raw(content)
+</div>
