@@ -105,6 +105,9 @@ namespace LeadGen.Code.CMS
             if (pageType == PageType.NotFond)
                 tryLoadContextForPost(con, publishedOnly);
 
+            if (pageType == PageType.NotFond)
+                return;
+
             InitializeAdditionalData(con);
             LoadWidgets(con);
         }
@@ -166,14 +169,14 @@ namespace LeadGen.Code.CMS
 
             if (!patternEndsWithStar && patternSegments.Length != urlPathSegments.Length)
                 return false;
-            if (patternEndsWithStar && urlPathSegments.Length < patternSegments.Length)
+            if (patternEndsWithStar && urlPathSegments.Length < patternSegments.Length - 1) // - 1 for ending *
                 return false;
 
-            for (int i = 0; i < urlPathSegments.Length; i++)
+            for (int i = 0; i < patternSegments.Length; i++)
             {
-                if (urlPathSegments[i] == "*")
+                if (patternSegments[i] == "*")
                     continue;
-                if (urlPathSegments[i] != urlPathSegments[i])
+                if (patternSegments[i] != urlPathSegments[i])
                     return false;
             }
 

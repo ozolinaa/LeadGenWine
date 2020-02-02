@@ -98,7 +98,7 @@ namespace LeadGen.Code.CMS
         public SEOFields SEO { get; set; }
 
         public long? thumbnailAttachmentID { get; set; }
-        public Uri thumbnailUrl
+        public string thumbnailUrl
         {
             get
             {
@@ -106,7 +106,7 @@ namespace LeadGen.Code.CMS
                 {
                     var thumbnailAttachment = attachmentList.FirstOrDefault(x => x.attachmentID == thumbnailAttachmentID);
                     if (thumbnailAttachment != null)
-                        return thumbnailAttachment.GetImageURLBySizeCode("Thumbnail");
+                        return thumbnailAttachment.GetImageURLBySizeCode("Thumbnail").ToString();
                 }
                 return null;
             }

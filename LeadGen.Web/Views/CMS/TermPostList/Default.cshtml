@@ -10,18 +10,18 @@
 
 @*@Html.ActionLink("<= "+ cmsContext.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", cmsContext.postType.typeURL) })*@
 
-<h1>@cmsContext.post.title</h1>
+@{ await Html.RenderPartialAsync("PostTitle", cmsContext.post); }
+
 @Html.Raw(cmsContext.post.contentIntro)
 @Html.Raw(cmsContext.post.contentPreview)
 @Html.Raw(cmsContext.post.contentMain)
 @Html.Raw(cmsContext.post.contentEnding)
 
 
-@*@Html.DisplayFor(x => x)*@
-<div class="row ThumbnailGrid">
+<div class="row list">
     @for (int i = 0; i < Model.Count(); i++)
     {
-        @Html.DisplayFor(x => x[i], "Post_Thumbnail_Grid")
+        @Html.DisplayFor(x => x[i], "PostPreview")
     }
 </div>
 
@@ -41,7 +41,7 @@
     }
 </nav>
 
-@if (cmsContext.widgetsLayoutSidebarRight != null && cmsContext.widgetsLayoutSidebarRight.Any())
+@if (cmsContext.widgetsLayoutSidebarRight?.Any() == true)
 {
     @section Sidebar{
         @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)

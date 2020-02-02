@@ -1,69 +1,6 @@
-.title-group {
-    text-align: center;
-}
-
-    .title-group h1 {
-        text-transform: uppercase;
-        font-family: 'Cinzel', serif;
-        letter-spacing: 5px;
-        color: #eac47d;
-        font-size: 25px;
-        font-weight: bold;
-    }
-
-    .title-group h5 {
-        font-family: 'Cinzel', serif;
-        font-weight: 400;
-        color: #333;
-        font-size: 20px;
-        margin-bottom: 15px;
-    }
-
-    .title-group .line-mix {
-        position: relative;
-        display: inline-block;
-        margin: 5px auto;
-        color: #cba55d;
-    }
-
-        .title-group .line-mix::before, .title-group .line-mix::after {
-            position: absolute;
-            top: 50%;
-            content: '';
-            width: 50px;
-            border-bottom: 1px solid #a98a4f;
-        }
-
-        .title-group .line-mix::before {
-            left: -55px;
-        }
-
-        .title-group .line-mix::after {
-            right: -55px;
-        }
-
-    .title-group .line-mix-left::before {
-        left: 0px;
-    }
-
-    .title-group .line-mix-left::after {
-        left: 55px;
-    }
-
-    .title-group .star-group i {
-        font-size: 16px;
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-
-        .title-group .star-group i:first-child, .title-group .star-group i:last-child {
-            font-size: 12px;
-            margin: 0px;
-        }
 
 .lead-container {
     max-width: 835px;
-    margin-top: 20px;
 }
 
     .lead-container h1, 
@@ -73,6 +10,24 @@
     .lead-container h5 {
         clear: both;
         text-align: center;
+    }
+
+
+    .lead-container .title-group h1 {
+        text-transform: uppercase;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 5px;
+        color: #eac47d;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .lead-container .title-group h5 {
+        font-family: 'Cinzel', serif;
+        font-weight: 400;
+        color: #333;
+        font-size: 20px;
+        margin-bottom: 15px;
     }
 
     .lead-container .lead_field_group {
@@ -406,21 +361,12 @@
     font-weight: 400;
 }
 
-    .lead-container form .btn.btn-primary {
+    .lead-container form .btn.btn-black {
         min-width: 50%;
         margin-left: auto;
         margin-right: auto;
-        display: flex;
-        justify-content: center;
-        background-color: #222222;
-        border-color: #222222;
     }
 
-
-        .lead-container form .btn.btn-primary:hover {
-            background-color: #444;
-            border-color: #444;
-        }
 
 .lead-container form input[type=number]::-webkit-inner-spin-button,
 .lead-container form input[type=number]::-webkit-outer-spin-button {
@@ -492,7 +438,7 @@
         font-weight: 400;
     }
 
-        .lead-container form .btn.btn-primary {
+        .lead-container form .btn.btn-black {
             min-width: 45%;
         }
 

@@ -247,6 +247,23 @@ footer .btn-login {
         padding-bottom: 10px;
     }
 
+.border-double {
+    border: 4px double #998;
+}
+
+img.img-thumbnail {
+    background-color: transparent;
+}
+
+img.img-responsive {
+    width: 100%;
+}
+
+.list > .item {
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
 
 .line-default {
     position: relative;
@@ -261,6 +278,22 @@ footer .btn-login {
         margin-left: 0px;
         border-bottom: 2px solid #333;
         width: 70px;
+    }
+
+.line-double {
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+
+    .line-double:after {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        content: '';
+        margin-left: 0px;
+        border-bottom: 4px double #a5a5a5;
+        width: 100%;
     }
 
 
@@ -319,10 +352,6 @@ footer .btn-login {
     .ThumbnailGrid {
         margin-top: 10px;
     }
-
-        .ThumbnailGrid img.img-responsive {
-            width: 100%;
-        }
 
     .borderless td, .borderless th .borderless tbody .borderless thead .borderless tfoot {
         border: none !important;
@@ -524,20 +553,83 @@ body.page-type-systemminipage {
     }
 
 
+.btn.btn-black {
+    display: inline-flex;
+    justify-content: center;
+    background-color: #222222;
+    border-color: #222222;
+    color: #fff;
+}
+    .btn.btn-black:hover {
+        background-color: #444;
+        border-color: #444;
+    }
+
 /* POST  */
 
-body.page-type-post .navbar-leadgen {
+body:not(.page-type-startpage) .navbar-leadgen {
     margin-bottom: 20px;
 }
 
-    body.page-type-post .title-group h5 {
-        color: #cba55d;
+
+.title-group {
+    text-align:center;
+}
+
+    .title-group h5 {
+        font-weight: 400;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-family: 'Cinzel', serif;
+        letter-spacing: 3px;
+        color: #eac47d;
     }
-    body.page-type-post .title-group h1 {
+    .title-group h1 {
         font-weight: 800;
         font-size: 35px;
         font-family: 'Montserrat', sans-serif;
         color: #332;
-        letter-spacing: 2px;
+        letter-spacing: 1px;
     }
 
+    .title-group .line-mix {
+        position: relative;
+        display: inline-block;
+        margin: 5px auto;
+        color: #cba55d;
+    }
+
+        .title-group .line-mix::before, .title-group .line-mix::after {
+            position: absolute;
+            top: 50%;
+            content: '';
+            width: 50px;
+            border-bottom: 1px solid #a98a4f;
+        }
+
+        .title-group .line-mix::before {
+            left: -55px;
+        }
+
+        .title-group .line-mix::after {
+            right: -55px;
+        }
+
+    .title-group .line-mix-left::before {
+        left: 0px;
+    }
+
+    .title-group .line-mix-left::after {
+        left: 55px;
+    }
+
+    .title-group .star-group i {
+        font-size: 16px;
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+
+        .title-group .star-group i:first-child, .title-group .star-group i:last-child {
+            font-size: 12px;
+            margin: 0px;
+        }

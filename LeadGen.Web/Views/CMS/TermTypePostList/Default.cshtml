@@ -9,18 +9,17 @@
     @section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", cmsContext.post.customCSS);}}
 }
 
-<h1>@cmsContext.post.title</h1>
+@{ await Html.RenderPartialAsync("PostTitle", cmsContext.post); }
 @Html.Raw(cmsContext.post.contentIntro)
 @Html.Raw(cmsContext.post.contentPreview)
 @Html.Raw(cmsContext.post.contentMain)
 @Html.Raw(cmsContext.post.contentEnding)
 
 
-@*@Html.DisplayFor(x => x)*@
-<div class="row ThumbnailGrid">
+<div class="row list">
     @for (int i = 0; i < Model.Count(); i++)
     {
-        @Html.DisplayFor(x => x[i], "Post_Thumbnail_Grid")
+        @Html.DisplayFor(x => x[i], "PostTermPreview")
     }
 </div>
 
@@ -29,3 +28,13 @@
     page => Url.Action("Index", new { urlPath = String.Format("{0}/page/{1}", cmsContext.urlPath, page) }),
     new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded, ContainerDivClasses = new string[] { "text-center" } }
 )
+
+@if (cmsContext.widgetsLayoutSidebarRight?.Any() == true)
+{
+    @section Sidebar{
+        @foreach (Post widget in cmsContext.widgetsLayoutSidebarRight)
+        {
+            await Html.RenderPartialAsync("Widgets/_WidgetLayout", widget);
+        }
+    }
+}
