@@ -554,7 +554,6 @@ body.page-type-systemminipage {
 
 
 .btn.btn-black {
-    display: inline-flex;
     justify-content: center;
     background-color: #222222;
     border-color: #222222;

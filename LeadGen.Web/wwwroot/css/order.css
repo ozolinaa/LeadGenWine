@@ -362,6 +362,7 @@
 }
 
     .lead-container form .btn.btn-black {
+        display: block;
         min-width: 50%;
         margin-left: auto;
         margin-right: auto;

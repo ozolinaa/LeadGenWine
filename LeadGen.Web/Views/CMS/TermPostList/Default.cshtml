@@ -10,13 +10,7 @@
 
 @*@Html.ActionLink("<= "+ cmsContext.postTypeTaxonomy.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", cmsContext.postType.typeURL) })*@
 
-@{ await Html.RenderPartialAsync("PostTitle", cmsContext.post); }
-
-@Html.Raw(cmsContext.post.contentIntro)
-@Html.Raw(cmsContext.post.contentPreview)
-@Html.Raw(cmsContext.post.contentMain)
-@Html.Raw(cmsContext.post.contentEnding)
-
+@{ await Html.RenderPartialAsync("PostTitle", new PostTitle(cmsContext.post)); }
 
 <div class="row list">
     @for (int i = 0; i < Model.Count(); i++)

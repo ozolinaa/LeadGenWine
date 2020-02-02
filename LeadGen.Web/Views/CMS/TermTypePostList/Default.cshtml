@@ -9,7 +9,7 @@
     @section CustomCSS{@{await Html.RenderPartialAsync("DisplayTemplates/CustomCSS", cmsContext.post.customCSS);}}
 }
 
-@{ await Html.RenderPartialAsync("PostTitle", cmsContext.post); }
+@{ await Html.RenderPartialAsync("PostTitle", new PostTitle(cmsContext.post)); }
 @Html.Raw(cmsContext.post.contentIntro)
 @Html.Raw(cmsContext.post.contentPreview)
 @Html.Raw(cmsContext.post.contentMain)
