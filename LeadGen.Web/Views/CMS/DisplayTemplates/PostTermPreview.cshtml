@@ -1,15 +1,19 @@
 ﻿@model LeadGen.Code.CMS.Post
 @using LeadGen.Code.CMS
 @using LeadGen.Code.Taxonomy
+@{ 
+    string readModeText = "Read more";
+    if (Model.postType.url == "companies")
+    {
+        readModeText = "See companies in " + Model.title;
+    }
+}
     <div class="item border-double col-xs-12">
         <div class="row">
             <div class="col-xs-6 col-sm-7 col-md-8" >
                 <h2><a href="@Model.Url">@Model.title</a></h2>
                 @Html.Raw(Model.contentPreview)
-                @if (!string.IsNullOrEmpty(Model.contentPreview))
-                {
-                    <a href="@Model.Url" class="btn btn-black">Read more</a>
-                }
+                <a href="@Model.Url" class="btn btn-black">@readModeText</a>
             </div>
             <div class="col-xs-6 col-sm-5 col-md-4">
                 <a href='@Model.Url' style="display:block;">

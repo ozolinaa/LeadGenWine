@@ -1,16 +1,21 @@
 ﻿@model LeadGen.Code.CMS.Post
 @{
-    bool showBorder = true;
+    bool showBorder = false;
     bool showSiteName = true;
     string content = null;
     string title = Model.title;
 
-    //if (Model.postType.url == "companies")
-    //{
-    //    title = "";
-    //}
+    if (Model.postType.forTaxonomyID != null)
+    {
+        showBorder =  Model.forTermID == null ? false : true;
+    }
+
+    if (Model.postType.url == "companies" && Model.forTermID != null)
+    {
+        title = "Companies in " + Model.title;
+    }
 }
-<div class="title-group @(showBorder ? "line-double" : "")">
+<div class="title-group row @(showBorder ? "line-double" : "")">
     @if (showSiteName)
     {
         <h5>WineCellars.PRO</h5>
