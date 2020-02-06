@@ -30,7 +30,7 @@ namespace LeadGen.Code.Clients
 
         public List<Organization> ParseOrganizations(Uri parseUrl)
         {
-            //string source = File.ReadAllText(@"D:\text.txt");
+            //string fakesource = File.ReadAllText(@"D:\text.txt");
             string source = GetLikeBrowserAsync(httpClient, parseUrl).Result;
 
             var html = new HtmlDocument();
@@ -80,7 +80,7 @@ namespace LeadGen.Code.Clients
                 ParseEmail(actualSiteContent, orgSite, ref email);
                 ParsePhone(actualSiteContent, ref phone);
 
-                string contactUrl = "";
+                string contactUrl = null;
                 if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
                 {
                     contactUrl = GetContactUrl(actualSiteContent, actualWebSite);
@@ -91,13 +91,13 @@ namespace LeadGen.Code.Clients
                         ParsePhone(actualSiteContent, ref phone);
                     }
                 }
-                if (!sameUrls(contactUrl, new Uri(actualWebSite + "/contact").ToString()) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
+                if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
                 {
                     actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contact")).Result;
                     ParseEmail(actualSiteContent, orgSite, ref email);
                     ParsePhone(actualSiteContent, ref phone);
                 }
-                if (!sameUrls(contactUrl, new Uri(actualWebSite + "/contacts").ToString()) && string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
+                if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
                 {
                     actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contacts")).Result;
                     ParseEmail(actualSiteContent, orgSite, ref email);
@@ -113,13 +113,6 @@ namespace LeadGen.Code.Clients
                 EmailNotification = email, 
                 EmailPublic = email
             };
-        }
-
-        private bool sameUrls(string str1, string str2)
-        {
-            if (string.IsNullOrEmpty(str1) || string.IsNullOrEmpty(str2))
-                return false;
-            return str1.Replace("https://", "http://").ToLower().Trim('/') == str2.Replace("https://", "http://").ToLower().Trim('/');
         }
 
         private void ParseEmail(string siteContent, Uri uri, ref string emailRef)
@@ -152,7 +145,7 @@ namespace LeadGen.Code.Clients
             }
 
             int begin = pos;
-            char[] beginChars = new char[] { ' ', ':', '<', '>', '"', '\'' };
+            char[] beginChars = new char[] { ' ', ':', '<', '>', '"', '\'', '\n', '\r' };
             while (begin > 0)
             {
                 if (beginChars.Contains(source[begin]))

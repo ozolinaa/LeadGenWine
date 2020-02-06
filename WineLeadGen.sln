@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadGen.Web", "LeadGen.Web\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadGen.Code", "LeadGen.Code\LeadGen.Code.csproj", "{9170D275-6FB0-4517-A6D6-D3BDD70EFA73}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadGen.Debugger", "..\LeadGen.Debugger\LeadGen.Debugger.csproj", "{252D2CB1-1DF9-4A1F-9C76-D99F0C98E129}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeadGen.Debugger", "LeadGen.Debugger\LeadGen.Debugger.csproj", "{252D2CB1-1DF9-4A1F-9C76-D99F0C98E129}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{E0E689BD-8A46-4B24-AB3C-15EA422BF859}"
 EndProject
