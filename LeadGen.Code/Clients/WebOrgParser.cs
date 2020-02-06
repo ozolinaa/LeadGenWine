@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace LeadGen.Code.Clients
@@ -27,8 +28,9 @@ namespace LeadGen.Code.Clients
             httpClient.Dispose();
         }
 
-        public IEnumerable<Organization> ParseOrganizations(Uri parseUrl)
+        public List<Organization> ParseOrganizations(Uri parseUrl)
         {
+            //string source = File.ReadAllText(@"D:\text.txt");
             string source = GetLikeBrowserAsync(httpClient, parseUrl).Result;
 
             var html = new HtmlDocument();
@@ -36,19 +38,18 @@ namespace LeadGen.Code.Clients
 
             HtmlNode doc = html.DocumentNode;
 
+            List<Organization> result = new List<Organization>();
             foreach (HtmlNode item in doc.QuerySelectorAll(".hz-pro-search-results .hz-pro-search-results__item"))
             {
 
                 HtmlNode link = item.QuerySelector("a[itemprop='url']");
                 string url = link.Attributes["href"].Value;
-                var rrr =  ParseOrganization(new Uri(url));
-                ;
+                result.Add(ParseHouzzOrganization(new Uri(url)));
             }
-
-            return null;
+            return result;
         }
 
-        private Organization ParseOrganization(Uri orgUri)
+        private Organization ParseHouzzOrganization(Uri orgUri)
         {
             string source = GetLikeBrowserAsync(httpClient, orgUri).Result;
 
@@ -58,7 +59,7 @@ namespace LeadGen.Code.Clients
             HtmlNode doc = html.DocumentNode;
 
             string name = doc.QuerySelector(".hz-profile-header__name")?.InnerText;
-            string phone = doc.QuerySelector("[data-compid='Profile_Phone']")?.InnerText;
+            string phone = null;
             string proxyWebSite = doc.QuerySelector("[data-compid='Profile_Website']")?.Attributes["href"].Value;
             string actualWebSite = null;
             string email = null;
@@ -68,13 +69,40 @@ namespace LeadGen.Code.Clients
                 HttpResponseMessage proxyWebSiteResponse = httpClient.GetAsync(proxyWebSite).Result;
                 if (proxyWebSiteResponse.StatusCode == HttpStatusCode.Found)
                 {
-                    actualWebSite = proxyWebSiteResponse.Headers.Location.ToString();
+                    actualWebSite = proxyWebSiteResponse.Headers.Location.ToString().Trim('/');
                 }
             }
 
             if (!string.IsNullOrEmpty(actualWebSite))
             {
-                email = ParseEmail(new Uri(actualWebSite));
+                Uri orgSite = new Uri(actualWebSite);
+                string actualSiteContent = GetLikeBrowserAsync(httpClient, orgSite).Result;
+                ParseEmail(actualSiteContent, orgSite, ref email);
+                ParsePhone(actualSiteContent, ref phone);
+
+                string contactUrl = "";
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
+                {
+                    contactUrl = GetContactUrl(actualSiteContent, actualWebSite);
+                    if (!string.IsNullOrEmpty(contactUrl))
+                    {
+                        actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(contactUrl)).Result;
+                        ParseEmail(actualSiteContent, orgSite, ref email);
+                        ParsePhone(actualSiteContent, ref phone);
+                    }
+                }
+                if (!sameUrls(contactUrl, new Uri(actualWebSite + "/contact").ToString()) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
+                {
+                    actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contact")).Result;
+                    ParseEmail(actualSiteContent, orgSite, ref email);
+                    ParsePhone(actualSiteContent, ref phone);
+                }
+                if (!sameUrls(contactUrl, new Uri(actualWebSite + "/contacts").ToString()) && string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
+                {
+                    actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contacts")).Result;
+                    ParseEmail(actualSiteContent, orgSite, ref email);
+                    ParsePhone(actualSiteContent, ref phone);
+                }
             }
 
             return new Organization() { Name = name, 
@@ -87,16 +115,35 @@ namespace LeadGen.Code.Clients
             };
         }
 
-        private string ParseEmail(Uri orgUri)
+        private bool sameUrls(string str1, string str2)
         {
-            byte[] bytes = httpClient.GetByteArrayAsync(orgUri).Result;
-            string source = Encoding.GetEncoding("utf-8").GetString(bytes, 0, bytes.Length - 1);
-            source = WebUtility.HtmlDecode(source);
+            if (string.IsNullOrEmpty(str1) || string.IsNullOrEmpty(str2))
+                return false;
+            return str1.Replace("https://", "http://").ToLower().Trim('/') == str2.Replace("https://", "http://").ToLower().Trim('/');
+        }
 
-            string[] hostParts = orgUri.Host.Split('.');
+        private void ParseEmail(string siteContent, Uri uri, ref string emailRef)
+        {
+            if (!string.IsNullOrEmpty(emailRef))
+                return;
+
+            string[] hostParts = uri.Host.Split('.');
             string host = string.Join(".", hostParts.Reverse().Take(2).Reverse().ToArray());
+            string emailSuffix = "@" + host;
 
-            string emailSuffix = "@"+ host;
+            emailRef = GetEmail(siteContent, emailSuffix);
+
+            if (string.IsNullOrEmpty(emailRef))
+                emailRef = GetEmail(siteContent, "@gmail.com");
+            if (string.IsNullOrEmpty(emailRef))
+                emailRef = GetEmail(siteContent, "@yahoo.com");
+        }
+
+        private string GetEmail(string source, string emailSuffix)
+        {
+            if (string.IsNullOrEmpty(source))
+                return null;
+
             int pos = source.IndexOf(emailSuffix);
 
             if (pos == -1)
@@ -129,35 +176,140 @@ namespace LeadGen.Code.Clients
         }
 
 
-        private static async Task<string> GetLikeBrowserAsync(HttpClient httpClient, Uri url)
+        private void ParsePhone(string siteContent, ref string phoneRef)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            if (!string.IsNullOrEmpty(phoneRef))
+                return;
+            phoneRef = GetPhone(siteContent);
+        }
+
+        private string GetPhone(string source)
+        {
+            if (string.IsNullOrEmpty(source))
+                return null;
+            HtmlDocument html = new HtmlDocument();
+            html.LoadHtml(source);
+            return GetPhoneRecur(html.DocumentNode); ;
+        }
+
+        private string GetPhoneRecur(HtmlNode node)
+        {
+            if (node.OuterHtml.StartsWith("<style") || node.OuterHtml.StartsWith("<script"))
             {
-                request.Headers.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1");
-                request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
-                request.Headers.TryAddWithoutValidation("Sec-Fetch-User", "?1");
-                request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+                return null;
+            }
+            string phone = FindPhone(node.GetDirectInnerText());
+            if (!string.IsNullOrEmpty(phone))
+                return phone;
 
-                request.Headers.TryAddWithoutValidation("Cookie", "hZ8g4S9i=AjBvThZwAQAAYo-YgpUlkcdQPSrMocut4AgJr7QjZE10ljgRrQAAAXAWTm8wAe4H_RU=");
-
-                request.Headers.TryAddWithoutValidation("Accept-Charset", "ISO-8859-1");
-                //request.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip, deflate");
-                using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
+            if (node.HasChildNodes)
+            {
+                foreach (HtmlNode n in node.ChildNodes)
                 {
-                    response.EnsureSuccessStatusCode();
-                    using (var responseStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(false))
-                    //using (var decompressedStream = new GZipStream(responseStream, CompressionMode.Decompress))
-                    using (var streamReader = new StreamReader(responseStream))
-                    {
-                        return await streamReader.ReadToEndAsync().ConfigureAwait(false);
-                    }
+                    phone = GetPhoneRecur(n);
+                    if (!string.IsNullOrEmpty(phone))
+                        return phone;
                 }
             }
+
+            return null;
+        }
+
+        string FindPhone(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+                return null;
+            string number = string.Join("", Regex.Split(str, @"[^\d]"));
+
+            if (number.Length == 11)
+                number = number.TrimStart('1');
+
+            if (number.Length == 10)
+            {
+                return number;
+            }
+                
+            return null;
         }
 
 
+        private string GetContactUrl(string source, string siteUrl)
+        {
+            if (string.IsNullOrEmpty(source))
+                return null;
+            HtmlDocument html = new HtmlDocument();
+            html.LoadHtml(source);
+            HtmlNode contactLink = GetContactLinkRecur(html.DocumentNode);
+            if(contactLink == null)
+            {
+                return null;
+            }
+            string contactLinkHref = contactLink.Attributes["href"].Value;
+
+
+            if (contactLinkHref.StartsWith("http"))
+                return contactLinkHref;
+            return siteUrl.TrimEnd('/') + "/" + contactLinkHref.TrimStart('/');
+        }
+
+        private HtmlNode GetContactLinkRecur(HtmlNode node)
+        {
+            if (isContactLink(node))
+                return node;
+
+            if (node.HasChildNodes)
+            {
+                foreach (HtmlNode n in node.ChildNodes)
+                {
+                    HtmlNode found = GetContactLinkRecur(n);
+                    if (found != null)
+                        return found;
+                }
+            }
+
+            return null;
+        }
+
+        private bool isContactLink(HtmlNode node)
+        {
+            if (!node.OuterHtml.StartsWith("<a"))
+                return false;
+            if (node.GetDirectInnerText().ToLower().Contains("contact"))
+                return true;
+            return false;
+        }
+
+
+
+        private static async Task<string> GetLikeBrowserAsync(HttpClient httpClient, Uri url)
+        {
+            Console.WriteLine(url.ToString());
+            try
+            {
+                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                {
+                    request.Headers.TryAddWithoutValidation("Upgrade-Insecure-Requests", "1");
+                    request.Headers.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36");
+                    request.Headers.TryAddWithoutValidation("Sec-Fetch-User", "?1");
+                    request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+                    request.Headers.TryAddWithoutValidation("Accept-Charset", "utf-8, iso-8859-1;q=0.5");
+
+                    request.Headers.TryAddWithoutValidation("Cookie", "hZ8g4S9i=AjBvThZwAQAAYo-YgpUlkcdQPSrMocut4AgJr7QjZE10ljgRrQAAAXAWTm8wAe4H_RU=");
+                    using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
+                    {
+                        response.EnsureSuccessStatusCode();
+                        byte[] byteArray = await response.Content.ReadAsByteArrayAsync();
+                        var responseString = Encoding.UTF8.GetString(byteArray, 0, byteArray.Length);
+                        return responseString;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
     }
-
-
-
 }
