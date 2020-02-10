@@ -7,12 +7,12 @@ namespace LeadGen.Code.Clients.CRM
 {
     public interface ICRMClient : IDisposable
     {
+        string InsertOrganization(Organization organization);
         IEnumerable<Location> GetLocations();
         IEnumerable<Organization> GetOrganizations();
-        Organization GetOrganizationByID(string OrgID);
-        void SetPostID(string OrgID, long? PostID);
-        void SetBusinessID(string OrgID, long? BusinessID);
-        void SetOptOutEmailLeadNotifications(string OrgID, bool optOut);
-
+        Organization GetOrganizationByID(string orgID);
+        void SetPostID(string orgID, long? postID);
+        void SetBusinessID(string orgID, long? businessID);
+        void SetOptOutEmailLeadNotifications(string orgID, bool optOut);
     }
 }

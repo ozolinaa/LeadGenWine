@@ -6,6 +6,7 @@ namespace LeadGen.Code.Clients.CRM
 {
     public class Location
     {
+        public string ID { get; set; }
         public string Name { get; set; }
         public string TermURL { get; set; }
         public double Lat { get; set; }

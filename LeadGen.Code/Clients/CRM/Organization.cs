@@ -14,7 +14,7 @@ namespace LeadGen.Code.Clients.CRM
         public string PhonePublic { get; set; }
         public string EmailPublic { get; set; }
 
-        public string WebsiteOfficial { get; set; }
+        public string WebsitePublic { get; set; }
         public string WebsiteOther { get; set; }
 
         public bool isActive { get; set; }

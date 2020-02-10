@@ -30,6 +30,8 @@ namespace LeadGen.Code.Clients
 
         public List<Organization> ParseOrganizations(Uri parseUrl)
         {
+            //string ggg = "";
+            //ParseEmail(GetLikeBrowserAsync(httpClient, new Uri("http://glrwinecellars.com")).Result, new Uri("http://glrwinecellars.com"), ref ggg);
             //string fakesource = File.ReadAllText(@"D:\text.txt");
             string source = GetLikeBrowserAsync(httpClient, parseUrl).Result;
 
@@ -108,7 +110,7 @@ namespace LeadGen.Code.Clients
             return new Organization() { Name = name, 
                 PhonePublic = phone, 
                 PhoneNotification = phone, 
-                WebsiteOfficial = actualWebSite, 
+                WebsitePublic = actualWebSite, 
                 WebsiteOther = orgUri.ToString(), 
                 EmailNotification = email, 
                 EmailPublic = email
@@ -132,12 +134,42 @@ namespace LeadGen.Code.Clients
                 emailRef = GetEmail(siteContent, "@yahoo.com");
         }
 
-        private string GetEmail(string source, string emailSuffix)
-        {
+        private string GetEmail(string source, string emailSuffix) {
             if (string.IsNullOrEmpty(source))
                 return null;
+            HtmlDocument html = new HtmlDocument();
+            html.LoadHtml(source);
+            return GetEmailRecur(html.DocumentNode, emailSuffix);
+        }
 
-            int pos = source.IndexOf(emailSuffix);
+        private string GetEmailRecur(HtmlNode node, string emailSuffix)
+        {
+            if (node.OuterHtml.StartsWith("<style") || node.OuterHtml.StartsWith("<script"))
+            {
+                return null;
+            }
+
+            string email = FindEmail(node.GetDirectInnerText(), emailSuffix);
+            if (!string.IsNullOrEmpty(email))
+                return email;
+
+            if (node.HasChildNodes)
+            {
+                foreach (HtmlNode n in node.ChildNodes)
+                {
+                    email = GetEmailRecur(n, emailSuffix);
+                    if (!string.IsNullOrEmpty(email))
+                        return email;
+                }
+            }
+
+            return null;
+        }
+
+
+        private string FindEmail(string str, string emailSuffix)
+        {
+            int pos = str.IndexOf(emailSuffix);
 
             if (pos == -1)
             {
@@ -146,15 +178,13 @@ namespace LeadGen.Code.Clients
 
             int begin = pos;
             char[] beginChars = new char[] { ' ', ':', '<', '>', '"', '\'', '\n', '\r' };
-            while (begin > 0)
+            while (begin >= 0)
             {
-                if (beginChars.Contains(source[begin]))
+                if (beginChars.Contains(str[begin]))
                     break;
                 begin--;
             };
-            if (begin == 0)
-                return null;
-            string email = source.Substring(begin + 1, pos - begin + emailSuffix.Length - 1);
+            string email = str.Substring(begin + 1, pos - begin + emailSuffix.Length - 1);
             try
             {
                 MailAddress addr = new MailAddress(email);
@@ -182,7 +212,7 @@ namespace LeadGen.Code.Clients
                 return null;
             HtmlDocument html = new HtmlDocument();
             html.LoadHtml(source);
-            return GetPhoneRecur(html.DocumentNode); ;
+            return GetPhoneRecur(html.DocumentNode);
         }
 
         private string GetPhoneRecur(HtmlNode node)
@@ -265,9 +295,9 @@ namespace LeadGen.Code.Clients
 
         private bool isContactLink(HtmlNode node)
         {
-            if (!node.OuterHtml.StartsWith("<a"))
+            if (!node.OuterHtml.StartsWith("<a "))
                 return false;
-            if (node.GetDirectInnerText().ToLower().Contains("contact"))
+            if (node.InnerHtml.ToLower().Contains("contact"))
                 return true;
             return false;
         }
@@ -276,6 +306,8 @@ namespace LeadGen.Code.Clients
 
         private static async Task<string> GetLikeBrowserAsync(HttpClient httpClient, Uri url)
         {
+            string cookieName = "hZ8g4S9i";
+            string cookieValue = "AgG6MS1wAQAAa6j9tgmwReyKelbWtAdEQKBZ_OqN_KlUlxHKQAAAAXAtMboBAQcrCJs=";
             Console.WriteLine(url.ToString());
             try
             {
@@ -287,7 +319,7 @@ namespace LeadGen.Code.Clients
                     request.Headers.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
                     request.Headers.TryAddWithoutValidation("Accept-Charset", "utf-8, iso-8859-1;q=0.5");
 
-                    request.Headers.TryAddWithoutValidation("Cookie", "hZ8g4S9i=AjBvThZwAQAAYo-YgpUlkcdQPSrMocut4AgJr7QjZE10ljgRrQAAAXAWTm8wAe4H_RU=");
+                    request.Headers.TryAddWithoutValidation("Cookie", cookieName + "=" + cookieValue);
                     using (var response = await httpClient.SendAsync(request).ConfigureAwait(false))
                     {
                         response.EnsureSuccessStatusCode();

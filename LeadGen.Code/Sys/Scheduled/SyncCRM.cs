@@ -113,7 +113,7 @@ namespace LeadGen.Code.Sys.Scheduled
             post.title = org.Name;
             post.company_notification_email = org.EmailNotification;
             post.company_public_email = org.EmailPublic;
-            post.company_web_site_official = org.WebsiteOfficial;
+            post.company_web_site_official = org.WebsitePublic;
             post.company_web_site_other = org.WebsiteOther;
 
             Int64.TryParse(Regex.Match(org.PhoneNotification, @"\d+").Value, out long parcedPhoneNotification);
