@@ -125,14 +125,30 @@ namespace LeadGen.Code.Clients.CRM
             List<Organization> results = new List<Organization>();
             foreach (Organization org in orgs)
             {
-                if (getExistingOrgFromDict(org) != null)
+                Organization existingOrg = getExistingOrgFromDict(org);
+                if (existingOrg != null)
+                {
+                    ProcessExistingOrganization(org, existingOrg);
                     continue;
+                }
+                    
 
                 crmClient.InsertOrganization(org);
                 addToDict(org);
                 results.Add(org);
             }
             return results;
+        }
+
+        private void ProcessExistingOrganization(Organization importing, Organization existing)
+        {
+            string[] existingLocations = existing.Locations.Select(x => x.ID).ToArray();
+            IEnumerable<Location> newLocations = importing.Locations.FindAll(x => existingLocations.Contains(x.ID) == false);
+            foreach (Location newLocation in newLocations)
+            {
+                crmClient.LinkOrgIdWithLocationId(existing.ID, newLocation.ID);
+                existing.Locations.Add(newLocation);
+            }
         }
 
         private Organization getExistingOrgFromDict(Organization org)

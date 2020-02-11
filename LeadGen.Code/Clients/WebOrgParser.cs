@@ -31,8 +31,9 @@ namespace LeadGen.Code.Clients
         public List<Organization> ParseOrganizations(Uri parseUrl)
         {
             //string ggg = "";
-            //ParseEmail(GetLikeBrowserAsync(httpClient, new Uri("http://glrwinecellars.com")).Result, new Uri("http://glrwinecellars.com"), ref ggg);
+            //ParsePhone (GetLikeBrowserAsync(httpClient, new Uri("https://www.winecellarrefrigerationsystems.com")).Result, ref ggg);
             //string fakesource = File.ReadAllText(@"D:\text.txt");
+
             string source = GetLikeBrowserAsync(httpClient, parseUrl).Result;
 
             var html = new HtmlDocument();
@@ -43,11 +44,19 @@ namespace LeadGen.Code.Clients
             List<Organization> result = new List<Organization>();
             foreach (HtmlNode item in doc.QuerySelectorAll(".hz-pro-search-results .hz-pro-search-results__item"))
             {
-
+                if (!item.InnerHtml.Contains("A Wine Advisory Company"))
+                {
+                    //continue;
+                }
+                    
                 HtmlNode link = item.QuerySelector("a[itemprop='url']");
                 string url = link.Attributes["href"].Value;
                 result.Add(ParseHouzzOrganization(new Uri(url)));
             }
+            result = result.FindAll(x=>x != null);
+            if (result.Count() == 0)
+                throw new Exception("Can not parse Organizations at " + parseUrl.ToString());
+
             return result;
         }
 
@@ -61,6 +70,9 @@ namespace LeadGen.Code.Clients
             HtmlNode doc = html.DocumentNode;
 
             string name = doc.QuerySelector(".hz-profile-header__name")?.InnerText;
+            if (string.IsNullOrEmpty(name))
+                return null;
+
             string phone = null;
             string proxyWebSite = doc.QuerySelector("[data-compid='Profile_Website']")?.Attributes["href"].Value;
             string actualWebSite = null;
@@ -307,7 +319,7 @@ namespace LeadGen.Code.Clients
         private static async Task<string> GetLikeBrowserAsync(HttpClient httpClient, Uri url)
         {
             string cookieName = "hZ8g4S9i";
-            string cookieValue = "AgG6MS1wAQAAa6j9tgmwReyKelbWtAdEQKBZ_OqN_KlUlxHKQAAAAXAtMboBAQcrCJs=";
+            string cookieValue = "AhGbVjJwAQAA-K_XT_2E2ooBjroPrvEb7faw9Zp6TExYMfcBgwAAAXAyVpsRAV-7W78=";
             Console.WriteLine(url.ToString());
             try
             {

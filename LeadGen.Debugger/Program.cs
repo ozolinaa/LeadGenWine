@@ -32,8 +32,8 @@ namespace LeadGen.Debugger
 
         private static void RunCRMImport()
         {
-            Uri parseUrl = new Uri("https://www.houzz.com/professionals/wine-cellars/los-angeles");
-            string termUrl = "los-angeles";
+            Uri parseUrl = new Uri("https://www.houzz.com/professionals/wine-cellars/c/Santa-Barbara--CA/p/7");
+            string termUrl = "santa-barbara";
 
             List<Organization> orgsToImport = null;
             using (WebOrgParser parser = new WebOrgParser())

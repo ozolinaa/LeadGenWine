@@ -14,5 +14,6 @@ namespace LeadGen.Code.Clients.CRM
         void SetPostID(string orgID, long? postID);
         void SetBusinessID(string orgID, long? businessID);
         void SetOptOutEmailLeadNotifications(string orgID, bool optOut);
+        void LinkOrgIdWithLocationId(string orgId, string LocationId);
     }
 }

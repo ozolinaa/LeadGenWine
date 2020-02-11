@@ -250,6 +250,8 @@ namespace LeadGen.Code.Clients.CRM
 
         public string InsertOrganization(Organization org)
         {
+            if (string.IsNullOrEmpty(org.Name))
+                throw new Exception("Org name is empty");
             string emailId = InsertEmail(org.EmailNotification);
             string phoneId = InsertPhone(org.PhoneNotification);
             string orgId = InsertOrganizationRow(org);
@@ -385,7 +387,7 @@ namespace LeadGen.Code.Clients.CRM
             }
         }
 
-        private void LinkOrgIdWithLocationId(string orgId, string LocationId)
+        public void LinkOrgIdWithLocationId(string orgId, string LocationId)
         {
             string query = string.Format("INSERT INTO location_account SET `account_id` = '{0}', `location_id` = '{1}', `deleted` = 0",
                 orgId,
