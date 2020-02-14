@@ -633,3 +633,18 @@ body:not(.page-type-startpage) .navbar-leadgen {
             font-size: 12px;
             margin: 0px;
         }
+
+
+.single_post_thumbnail_container {
+    float: left;
+    width: 50%;
+    margin: 0 20px 20px 0;
+}
+
+/*Mobile*/
+@media (max-width: 540px) {
+    .single_post_thumbnail_container {
+        width: 100%;
+        clear: both;
+    }
+}

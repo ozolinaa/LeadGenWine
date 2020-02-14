@@ -11,6 +11,7 @@ BEGIN
 
 	DECLARE @BusinessLeadRelationTaxonomyID bigint = 0
 
+	DECLARE @BusinessPostFieldIDAllowSendEmails int = 13
 	DECLARE @BusinessPostFieldIDDoNotSendEmails int = 8
 	DECLARE @BusinessPostFieldIDBusiness int = 9
 	DECLARE @BusinessPostFieldIDLocation int = 7
@@ -112,6 +113,7 @@ BEGIN
 
 	DELETE R FROM @ResultMatches R
 		LEFT OUTER JOIN [dbo].[CMSPost] P ON P.PostID = R.PostID
+		LEFT OUTER JOIN [dbo].[CMSPostFieldValue] FVSA ON FVSA.PostID = R.PostID AND FVSA.FieldID = @BusinessPostFieldIDAllowSendEmails
 		LEFT OUTER JOIN [dbo].[CMSPostFieldValue] FVS ON FVS.PostID = R.PostID AND FVS.FieldID = @BusinessPostFieldIDDoNotSendEmails
 		LEFT OUTER JOIN [dbo].[BusinessLeadNotifiedPost] BLN on BLN.BusinessPostID = R.PostID AND BLN.LeadID = R.LeadID
 		LEFT OUTER JOIN [dbo].[CMSPostFieldValue] FVB ON FVB.PostID = R.PostID AND FVB.FieldID = @BusinessPostFieldIDBusiness
@@ -120,6 +122,7 @@ BEGIN
 	WHERE 
 		P.StatusID < 30 -- Status is below "Pending"
 		OR BLN.NotifiedDateTime IS NOT NULL -- Has already been Notified
+		OR ISNULL(FVSA.BoolValue,0) = 0  -- AllowSendEmails = FALSE
 		OR FVS.BoolValue = 1  -- DoNotSendEmails = TRUE
 		OR B.BusinessID IS NOT NULL  -- Post is linked to Business
 		OR LE.UserCanceledDateTime IS NOT NULL -- User Cancelled Publishing

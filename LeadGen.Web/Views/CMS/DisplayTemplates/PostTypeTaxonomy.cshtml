@@ -9,9 +9,8 @@
     }
     if (ViewData["termsOnly"] == null || (bool)ViewData["termsOnly"] == false)
     {
-        <span>
-            @Html.ActionLink(Model.taxonomy.name, "Index", new { urlPath = String.Format("{0}/", Model.postType.url) }):
-        </span>
+        string taxonomyUrl = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = String.Format("{0}/", Model.postType.url) , area = "" }));
+        <a href="@taxonomyUrl">@Model.taxonomy.name</a><text>: </text>
     }
     int i = 0;
     foreach (Term term in Model.taxonomy.termList)

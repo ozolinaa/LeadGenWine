@@ -6,11 +6,25 @@
     CMSContext cmsContext = ViewBag.CMSContext;
 }
 
-    <article class="box">
-        @{ await Html.RenderPartialAsync("PostTitle", cmsContext.post); }
-        @Html.Raw(Model.contentMain)
-        @Html.Raw(Model.contentEnding)
-    </article>
+<article class="box">
+    <partial name="PostTitle" model="cmsContext.post" />
+    @if (!string.IsNullOrEmpty(Model.thumbnailUrl))
+    {
+        <div class="single_post_thumbnail_container">
+            <img src="@Model.thumbnailUrl" class="img-responsive img-thumbnail" />
+        </div>
+    }
+    @Html.Raw(Model.contentIntro)
+    @Html.Raw(Model.contentPreview)
+    @Html.Raw(Model.contentMain)
+    @Html.Raw(Model.contentEnding)
+
+    <div class="meta">
+        @Html.DisplayFor(x => x.taxonomies, new { termsOnly = false })
+    </div>
+</article>
+
+
 
 @{ await Html.RenderPartialAsync("_UnderArticleContent");}
 

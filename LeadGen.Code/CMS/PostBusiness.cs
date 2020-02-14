@@ -53,6 +53,13 @@ namespace LeadGen.Code.CMS
 			get { return getFieldByCode("company_notification_do_not_send_leads").fieldBool; }
 			set { getFieldByCode("company_notification_do_not_send_leads").fieldBool = value; }
 		}
+
+		public bool company_notification_allow_send_leads
+		{
+			get { return getFieldByCode("company_notification_allow_send_leads").fieldBool; }
+			set { getFieldByCode("company_notification_allow_send_leads").fieldBool = value; }
+		}
+
 		public long? company_businessId
 		{
 			get { return getFieldByCode("company_businessId").fieldNumber; }
