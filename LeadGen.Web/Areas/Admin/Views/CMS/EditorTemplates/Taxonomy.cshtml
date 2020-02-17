@@ -8,7 +8,7 @@
         @Html.HiddenFor(x=>x.isTag)
         @if (@Model.isTag)
         {
-            <ul class="TagItEditor" data-taxonomyID="@Model.ID" data-tagCreateUrl="@Url.Action("CreateTag", "Taxonomy")" data-tagSourceUrl="@Url.Action("GetTaxonomyTerms", "Taxonomy")" data-termListHtmlName="@Html.NameFor(x => x.termList)" >
+            <ul class="TagItEditor" data-taxonomyID="@Model.ID" data-tagCreateUrl="@HttpUtility.UrlDecode(@Url.Action("CreateTag", "Taxonomy"))" data-tagSourceUrl="@HttpUtility.UrlDecode(Url.Action("GetTaxonomyTerms", "Taxonomy"))" data-termListHtmlName="@Html.NameFor(x => x.termList)" >
                 @foreach (var tag in Model.termList.Where(x => x.isChecked))
                 {
                     <li>@Html.Raw(Json.Serialize(tag))</li>

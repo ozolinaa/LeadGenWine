@@ -4,83 +4,69 @@
   "libraries": [
     {
       "library": "moment.js@2.24.0",
-      "destination": "wwwroot/lib/moment",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/moment"
     },
     {
       "library": "jquery@3.4.1",
-      "destination": "wwwroot/lib/jquery",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/jquery"
     },
     {
       "library": "jqueryui@1.12.1",
-      "destination": "wwwroot/lib/jquery-ui",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/jquery-ui"
     },
     {
       "library": "jquery-validate@1.19.1",
-      "destination": "wwwroot/lib/jquery-validation",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/jquery-validation"
     },
     {
       "library": "jquery-validation-unobtrusive@3.2.11",
-      "destination": "wwwroot/lib/jquery-validation-unobtrusive",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive"
     },
     {
+      "provider": "jsdelivr",
       "library": "jquery-ajax-unobtrusive@3.2.6",
-      "destination": "wwwroot/lib/jquery-ajax-unobtrusive",
-      "provider": "jsdelivr"
-    },
-    {
-      "library": "tag-it@2.0",
-      "destination": "wwwroot/lib/tag-it",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/jquery-ajax-unobtrusive"
     },
     {
       "library": "select2@4.0.7",
-      "destination": "wwwroot/lib/select2",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/select2"
     },
     {
       "library": "twitter-bootstrap@3.4.1",
-      "destination": "wwwroot/lib/bootstrap",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/bootstrap"
     },
     {
       "library": "bootbox.js@4.4.0",
-      "destination": "wwwroot/lib/bootbox",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/bootbox"
     },
     {
       "library": "bootstrap-datetimepicker@4.17.47",
-      "destination": "wwwroot/lib/bootstrap-datetimepicker",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/bootstrap-datetimepicker"
     },
     {
       "library": "lightbox2@2.11.0",
-      "destination": "wwwroot/lib/lightbox2",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/lightbox2"
     },
     {
       "library": "tinymce@4.9.4",
-      "destination": "wwwroot/lib/tinymce",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/tinymce"
     },
     {
       "library": "font-awesome@5.8.2",
-      "destination": "wwwroot/lib/font-awesome",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/font-awesome"
     },
     {
       "library": "codemirror@5.48.4",
-      "destination": "wwwroot/lib/codemirror/",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/codemirror/"
     },
     {
       "library": "select2-bootstrap-css@1.4.6",
-      "destination": "wwwroot/lib/select2-bootstrap-css/",
-      "provider": "cdnjs"
+      "destination": "wwwroot/lib/select2-bootstrap-css/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "tag-it@2.0.0",
+      "destination": "wwwroot/lib/tag-it/"
     }
-]
+  ]
 }

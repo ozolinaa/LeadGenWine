@@ -132,8 +132,8 @@ namespace LeadGen.Code.CMS
         {
             get
             {
-                string main = ((postType.url ?? "") + "/" + postURLParentPath + postURL).Replace("//", "/").Trim('/');
-                return string.Format("{0}/{1}/", SysHelper.AppSettings.SiteUrl, main);
+                string relative = ((postType.url ?? "") + "/" + postURLParentPath + postURL).Replace("//", "/").Trim('/');
+                return string.Format("{0}/{1}/", SysHelper.AppSettings.SiteUrl, relative);
             }
         }
 
@@ -734,7 +734,7 @@ namespace LeadGen.Code.CMS
                         posts.ForEach(x => x.processContentTags(con));
                         posts.ForEach(x => x.LoadAttachments(con));
 
-                        view = string.IsNullOrEmpty(view) ? "_PostListThumbnail" : view;
+                        view = string.IsNullOrEmpty(view) ? "PostMiniList" : view;
                         string viewPath = $"~/Views/CMS/{view}.cshtml";
                         string renderedHtml = ViewHelper.RenderViewToString(viewPath, posts);
                         string matchedStr = m.Groups[0].ToString();

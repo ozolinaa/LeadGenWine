@@ -21,13 +21,13 @@
 </head>
 <body class="@cmsContext.BodyClass">
     @{
-        string link1URL = Url.Action("Index", "CMS", new { urlPath = "how-to-store-wine", area = "" });
+        string link1URL = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = "blog/how-to-store-wine", area = "" }));
         string link1Text = "How To Store Wine";
-        string link2URL = Url.Action("Index", "CMS", new { urlPath = "wine-cellars", area = "" });
+        string link2URL = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = "blog/wine-cellars", area = "" }));
         string link2Text = "Wine Cellars";
-        string link3URL = Url.Action("Index", "CMS", new { urlPath = "companies", area = "" });
+        string link3URL = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = "companies", area = "" }));
         string link3Text = "Companies";
-        string link4URL = Url.Action("Index", "CMS", new { urlPath = "order", area = "" });
+        string link4URL = HttpUtility.UrlDecode(Url.Action("Index", "CMS", new { urlPath = "order", area = "" }));
         string link4Text = "Order wine cellar";
 
         

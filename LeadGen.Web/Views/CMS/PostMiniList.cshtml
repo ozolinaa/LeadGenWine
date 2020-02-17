@@ -1,0 +1,9 @@
+﻿@model IEnumerable<LeadGen.Code.CMS.Post>
+    <ul>
+        @foreach (LeadGen.Code.CMS.Post post in Model)
+        {
+        <li>
+            <a href="@post.Url" title="@post.title">@post.title</a>
+        </li>
+         }
+    </ul>

@@ -201,7 +201,7 @@ LeadGen.PostEdit.init = function () {
                 allowSpaces: true,
                 afterTagRemoved: function (event, ui) {
 
-                    var $tagitElement = $(event.target);
+                    var $tagitElement = $(event.target).closest("ul");
                     var termListHtmlNameStart = $tagitElement.attr("data-termListHtmlName") + "[";
                     var $tagsLeft = $tagitElement.find("li.tagit-choice");
 
@@ -230,7 +230,7 @@ LeadGen.PostEdit.init = function () {
                     catch (e) {
                         //Tag is not a JSON, means it is a new tag (name), create new tag
 
-                        $tagitElement = $(event.target);
+                        $tagitElement = $(event.target).closest("ul");
 
                         var tagCreateUrl = $tagitElement.attr("data-tagCreateUrl");
                         var taxonomyID = $tagitElement.attr("data-taxonomyID");
@@ -272,10 +272,11 @@ LeadGen.PostEdit.init = function () {
                     $(ui.tag).append(inputChecked).append(inputID).append(inputName).append(inputUrl).append(inputTermURL);
                 },
                 tagSource: function (request, response) {
+                    var $tagitElement = $(this.element).closest("ul");
                     $.ajax({
-                        url: $(this.element).attr("data-tagSourceUrl"),
+                        url: $tagitElement.attr("data-tagSourceUrl"),
                         data: {
-                            taxonomyID: $(this.element).attr("data-taxonomyID"),
+                            taxonomyID: $tagitElement.attr("data-taxonomyID"),
                             termSearch: request.term
                         },
                         dataType: "json",

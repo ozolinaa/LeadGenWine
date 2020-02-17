@@ -100,14 +100,25 @@
         }
 
         .lead-container .lead_field_group .lead-field .field-option input:not(:checked) + label:hover::before {
-            border-color: #9e9e9e2e;
-            transition: border-color 0.25s ease-out, background-size 0.5s ease-out;
+            border-color: rgba(158, 158, 158, 0.18);
+            transition-property: border-color, background-size;
+            transition-duration: 0.25s, 0.5s;
+            transition-timing-function: ease-out, ease-out;
         }
-
+        /*circle*/
         .lead-container .lead_field_group .lead-field .field-option input:checked + label::before {
-            border-color: #009d0085; /*green*/
+            border-color: rgba(0, 157, 0, 0.52); /*green*/
             background-size: 130%;
-            transition: /* border-color 0.2s ease-in, */ background-size 0.5s ease-in;
+            transition-property: background-size;
+            transition-duration: 0.5s;
+            transition-timing-function: ease-in;
+        }
+        /*checkbox*/
+        .lead-container .lead_field_group .lead-field .field-option input:checked + label::after {
+            color: rgba(0, 157, 0, 0.52); /*green*/
+            transition-property: color;
+            transition-duration: 0.5s;
+            transition-timing-function: ease-in;
         }
 
         .lead-container .lead_field_group .lead-field .field-option label:hover::before {
@@ -119,6 +130,7 @@
             cursor: pointer;
             font-size: 18px;
             margin-bottom: 0;
+            position: relative;
         }
 
 
@@ -132,7 +144,7 @@
                 border-radius: 50%;
                 border-style: solid;
                 border-width: 10px;
-                border-color: #f4f4f485;
+                border-color: rgba(244, 244, 244, 0.52);
                 background-image: url(../images/order/furniture.jpg);
                 background-repeat: no-repeat;
                 /*background-size: cover;*/
@@ -147,9 +159,21 @@
                 margin-bottom: 10px;
             }
 
-        .lead-container .lead_field_group .lead-field .field-option.field-option-room label::before {
-            background-image: url('../images/order/room.jpg');
-        }
+            .lead-container .lead_field_group .lead-field .field-option label::after {
+                line-height: normal;
+                color: #d9d9d9;
+                font-size: 21px;
+                position: absolute;
+                top: 2px;
+                right: 0;
+                content: "\f058";
+                font-family: "Font Awesome 5 Free";
+                font-weight: 900;
+            }
+
+.lead-container .lead_field_group .lead-field .field-option.field-option-room label::before {
+    background-image: url('../images/order/room.jpg');
+}
 
         .lead-container .lead_field_group .lead-field .field-option.field-option-cabinet label::before {
             background-image: url('../images/order/cabinet.jpg');
@@ -255,6 +279,10 @@
             border-width: 6px;
             margin-bottom: 5px;
         }
+        .lead-container .lead_field_group .lead-field .field-option label::after {
+            top: 0;
+            font-size: 18px;
+        }
 }
 
 @media (max-width: 576px) {
@@ -305,6 +333,8 @@
             width: 20px;
             height: 20px;
         }
+
+
 }
 
 @media (max-width: 400px) {
