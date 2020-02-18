@@ -1,0 +1,109 @@
+﻿@model LeadGen.Code.Clients.CRM.Organization
+
+@{
+    ViewData["Title"] = "CreateOrganization";
+}
+
+<h4>CreateOrganization</h4>
+<hr />
+@{
+    IEnumerable<SelectListItem> locations = ((Dictionary<string, string>)ViewBag.locationDict).Select(x => new SelectListItem(x.Value, x.Key, x.Key == ViewBag.locationDictSelected));
+    string importedID = ViewBag.importedID;
+    string crmUrl = string.Format("https://crm.winecellars.pro/#Account/view/{0}", importedID ?? "");
+}
+
+@if (!string.IsNullOrEmpty(importedID))
+{ 
+    <div>
+        Created - <a href="@crmUrl" target="_blank">@crmUrl</a>
+    </div>
+}
+
+<div class="container">
+    <div class="row">
+
+        <form id="CreateOrgForm" asp-action="CreateOrganization">
+            <div class="col-sm-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="parseUrl" value="false" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WebsitePublic" class="control-label"></label>
+                    <input asp-for="WebsitePublic" class="form-control" />
+                    <span asp-validation-for="WebsitePublic" class="text-danger"></span>
+                    <input type="submit" value="Parse URL" class="btn btn-default" id="parseBtn" />
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <select asp-items="locations" name="locationUrl" id="locationUrl" class="form-control">
+                        <option value="">Select location</option>
+                    </select>
+                </div>
+
+                <hr />
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="WebsiteOther" class="control-label"></label>
+                    <input asp-for="WebsiteOther" class="form-control" />
+                    <span asp-validation-for="WebsiteOther" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNotification" class="control-label"></label>
+                    <input asp-for="PhoneNotification" class="form-control" />
+                    <span asp-validation-for="PhoneNotification" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhonePublic" class="control-label"></label>
+                    <input asp-for="PhonePublic" class="form-control" />
+                    <span asp-validation-for="PhonePublic" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EmailNotification" class="control-label"></label>
+                    <input asp-for="EmailNotification" class="form-control" />
+                    <span asp-validation-for="EmailNotification" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EmailPublic" class="control-label"></label>
+                    <input asp-for="EmailPublic" class="form-control" />
+                    <span asp-validation-for="EmailPublic" class="text-danger"></span>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        $("#parseBtn").click(function () {
+            $("input[name='parseUrl']").val("true");
+        });
+        $("#CreateOrgForm").submit(function () {
+            if (!$("#locationUrl").val()) {
+                alert("Select location");
+                return false;
+            }
+            $("#LoadingWindowSplash").show();
+        });
+
+        @if (!string.IsNullOrEmpty(importedID))
+        { 
+            <text>LeadGen.ui.showNotificationLabel("Created");</text>
+        }
+        
+    </script>
+}
+
+

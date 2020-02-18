@@ -20,19 +20,21 @@ namespace LeadGen.Web.Areas.Business.Controllers
     {
         public RegistrationController() {
             publicOnlyActionNames.Add("Registration");
+            publicOnlyActionNames.Add("Index");
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
         }
 
-        public ActionResult Registration()
+        public override ActionResult Index()
         {
             Term country = Term.SelectFromDB(DBLGcon, TaxonomyCode: "city", TermURL: "usa").First();
 
             Login login = new Login
             {
-                business = new Code.Business.Business() {
+                business = new Code.Business.Business()
+                {
                     country = country,
                     locations = new List<BusinessLocation>() {
                         new BusinessLocation() {
@@ -43,7 +45,7 @@ namespace LeadGen.Web.Areas.Business.Controllers
                                 RadiusMeters = 220*1000,
                                 StreetAddress = "Southern California",
                                 Name = "Southern California" }
-                        } 
+                        }
                     }
                 }
             };
@@ -51,9 +53,11 @@ namespace LeadGen.Web.Areas.Business.Controllers
         }
 
         // POST: Business/Register
+        // Method name is "Authorize" because need to override method with same signature in the base class
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Registration(Login postedLogin)
+        [ActionName("Index")]
+        public override ActionResult Authorize(Login postedLogin)
         {
             Login newLogin = null;
             string tempPassword = null;

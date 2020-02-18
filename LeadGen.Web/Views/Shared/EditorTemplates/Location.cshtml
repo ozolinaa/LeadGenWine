@@ -115,11 +115,12 @@
                     var ne = place.geometry.viewport.getNorthEast();
                     var radiusInMeeters = google.maps.geometry.spherical.computeDistanceBetween(center, ne);
                     circle.setRadius(radiusInMeeters);
+                    map.setZoom(map.getZoom() - 1);
                 } else {
-                    map.setCenter(place.geometry.location);
                     map.setZoom(16);
                     circle.setRadius(5000);
                 }
+                map.setCenter(place.geometry.location);
 
                 marker.setPosition(place.geometry.location);
 
@@ -156,6 +157,14 @@
                 $('[data-lng="' + googleMap.id + '"]').val(marker.getPosition().lng());
                 $('[data-radius="' + googleMap.id + '"]').val(parseInt(circle.getRadius()));
             }
+
+            //prevent form submission on enter
+            $("#pac-input_" + googleMap.id).keypress(function (e) {
+                if(e.keyCode == 13) // enter
+                {
+                    e.preventDefault();
+                }
+            });
 
         }
 

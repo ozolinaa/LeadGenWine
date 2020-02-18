@@ -6,23 +6,36 @@
     ViewBag.cmsContext = new CMSContext(this.ViewContext, CMSContext.PageType.SystemMiniPage);
 }
 
-<div class="container">
+    <div class="container single-alert-container container-login">
+        <div class="single-alert-container-content">
+            <div class="tab-content">
 
-    <div class="tab-content">
+                <div id="section-login" class="tab-pane active">
+                    @{await Html.RenderPartialAsync("FormLogin", Model);}
+                    <div>
+                        @Html.ActionLink("Business registration", "Index", "Registration", new { Area = "Business" }, new { })
+                        |
+                        <a data-toggle="tab" href="#section-forgot-password" aria-expanded="false">Forgot password?</a>
+                    </div>
+                </div>
 
-        <div id="section-login" class="tab-pane active">
-            @{await Html.RenderPartialAsync("FormLogin", Model);}
-            <div>
-                @Html.ActionLink("Business registration", "Registration", "Registration", new { Area = "Business" }, new { })
-                |
-                <a data-toggle="tab" href="#section-forgot-password" aria-expanded="false">Forgot password?</a>
+                <div id="section-forgot-password" class="tab-pane">
+                    @{await Html.RenderPartialAsync("FormForgotPassword", Model);}
+                    <a data-toggle="tab" href="#section-login" aria-expanded="false">Back to Login</a>
+                </div>
+
             </div>
         </div>
-
-        <div id="section-forgot-password" class="tab-pane">
-            @{await Html.RenderPartialAsync("FormForgotPassword", Model);}
-            <a data-toggle="tab" href="#section-login" aria-expanded="false">Login</a>
-        </div>
-
     </div>
-</div>
+
+<style>
+    .container-login .single-alert-container-content .form-group
+     {
+      text-align: left;
+    }
+    .container-login .single-alert-container-content .form-group input
+     {
+      width:100%;
+      max-width: 100%;
+    }
+</style>

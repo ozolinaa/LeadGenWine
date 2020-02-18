@@ -334,6 +334,32 @@ img.img-responsive {
         min-width: 400px;
     }
 
+/*Mobile*/
+@media (max-width: 540px) {
+    .lg-map {
+        min-width: initial;
+    }
+}
+/*Map Transition size*/
+@media (max-width: 620px) {
+    .lg-map {
+        overflow: visible !important;
+        margin-top: 50px;
+    }
+        .lg-map .pac-input {
+            top: -60px !important;
+            left: 0 !important;
+            margin-left: 0 !important;
+        }
+        .lg-map .gm-style > *:first-child {
+            overflow: hidden;
+        }
+
+    
+
+    
+}
+
 
 
 
@@ -482,6 +508,7 @@ img.img-responsive {
     padding: 0 11px 0 13px;
     text-overflow: ellipsis;
     width: 300px;
+    max-width: 100%;
 }
 
         .lg-map-wrapper .pac-input:focus {

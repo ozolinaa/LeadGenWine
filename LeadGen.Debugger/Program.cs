@@ -25,20 +25,20 @@ namespace LeadGen.Debugger
         {
             using (WebOrgParser parser = new WebOrgParser())
             {
-                var rrr = parser.ParseOrganizations(new Uri("https://www.houzz.com/professionals/wine-cellars/los-angeles"));
+                var rrr = parser.ParseHouzzOrganizations(new Uri("https://www.houzz.com/professionals/wine-cellars/los-angeles"));
                 ;
             }
         }
 
         private static void RunCRMImport()
         {
-            Uri parseUrl = new Uri("https://www.houzz.com/professionals/wine-cellars/c/Santa-Barbara--CA/p/7");
-            string termUrl = "santa-barbara";
+            Uri parseUrl = new Uri("https://www.houzz.com/professionals/searchDirectory?topicId=11841&query=Wine+Cellars&location=San+Diego%2C+CA&distance=50&sort=4");
+            string termUrl = "san-diego";
 
             List<Organization> orgsToImport = null;
             using (WebOrgParser parser = new WebOrgParser())
             {
-                orgsToImport = parser.ParseOrganizations(parseUrl);
+                orgsToImport = parser.ParseHouzzOrganizations(parseUrl);
             }
 
             using (ESPOClient client = new ESPOClient(@"server=crm.winecellars.pro;user=espocrm;database=espocrm;port=3306;password=h!!?F:_-O^Jp+TB4B*HYt3;"))

@@ -131,9 +131,9 @@ namespace LeadGen.Code.Clients.CRM
                     ProcessExistingOrganization(org, existingOrg);
                     continue;
                 }
-                    
 
-                crmClient.InsertOrganization(org);
+
+                org.ID = crmClient.InsertOrganization(org);
                 addToDict(org);
                 results.Add(org);
             }
@@ -149,6 +149,9 @@ namespace LeadGen.Code.Clients.CRM
                 crmClient.LinkOrgIdWithLocationId(existing.ID, newLocation.ID);
                 existing.Locations.Add(newLocation);
             }
+            importing.ID = existing.ID;
+            importing.LeadGenBusinessID = existing.LeadGenBusinessID;
+            importing.LeadGenPostID = existing.LeadGenPostID;
         }
 
         private Organization getExistingOrgFromDict(Organization org)

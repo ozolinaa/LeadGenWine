@@ -28,7 +28,7 @@ namespace LeadGen.Code.Clients
             httpClient.Dispose();
         }
 
-        public List<Organization> ParseOrganizations(Uri parseUrl)
+        public List<Organization> ParseHouzzOrganizations(Uri parseUrl)
         {
             //string ggg = "";
             //ParsePhone (GetLikeBrowserAsync(httpClient, new Uri("https://www.winecellarrefrigerationsystems.com")).Result, ref ggg);
@@ -51,7 +51,19 @@ namespace LeadGen.Code.Clients
                     
                 HtmlNode link = item.QuerySelector("a[itemprop='url']");
                 string url = link.Attributes["href"].Value;
-                result.Add(ParseHouzzOrganization(new Uri(url)));
+                Organization parsedOrg = ParseHouzzOrganization(new Uri(url));
+                if (string.IsNullOrEmpty(parsedOrg.PhonePublic))
+                {
+                    HtmlNode phone = item.QuerySelector("[data-compid='Profile_Phone']");
+                    parsedOrg.PhonePublic = phone?.InnerText;
+                }
+                if (string.IsNullOrEmpty(parsedOrg.PhoneNotification))
+                {
+                    HtmlNode phone = item.QuerySelector("[data-compid='Profile_Phone']");
+                    parsedOrg.PhoneNotification = phone?.InnerText;
+                }
+
+                result.Add(parsedOrg);
             }
             result = result.FindAll(x=>x != null);
             if (result.Count() == 0)
@@ -60,23 +72,20 @@ namespace LeadGen.Code.Clients
             return result;
         }
 
-        private Organization ParseHouzzOrganization(Uri orgUri)
+        private Organization ParseHouzzOrganization(Uri houzzOrgUri)
         {
-            string source = GetLikeBrowserAsync(httpClient, orgUri).Result;
-
+            string source = GetLikeBrowserAsync(httpClient, houzzOrgUri).Result;
             HtmlDocument html = new HtmlDocument();
             html.LoadHtml(source);
-
             HtmlNode doc = html.DocumentNode;
 
             string name = doc.QuerySelector(".hz-profile-header__name")?.InnerText;
             if (string.IsNullOrEmpty(name))
                 return null;
 
-            string phone = null;
+
             string proxyWebSite = doc.QuerySelector("[data-compid='Profile_Website']")?.Attributes["href"].Value;
             string actualWebSite = null;
-            string email = null;
 
             if (!string.IsNullOrEmpty(proxyWebSite))
             {
@@ -84,47 +93,64 @@ namespace LeadGen.Code.Clients
                 if (proxyWebSiteResponse.StatusCode == HttpStatusCode.Found)
                 {
                     actualWebSite = proxyWebSiteResponse.Headers.Location.ToString().Trim('/');
+                } else if (proxyWebSiteResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    actualWebSite = proxyWebSiteResponse.RequestMessage.RequestUri.ToString();
+                    ;
                 }
             }
 
+            Organization result;
             if (!string.IsNullOrEmpty(actualWebSite))
-            {
-                Uri orgSite = new Uri(actualWebSite);
-                string actualSiteContent = GetLikeBrowserAsync(httpClient, orgSite).Result;
-                ParseEmail(actualSiteContent, orgSite, ref email);
-                ParsePhone(actualSiteContent, ref phone);
+                result = ParseOrganization(new Uri(actualWebSite), name);
+            else
+                result = new Organization() { Name = name };
+            result.WebsiteOther = houzzOrgUri.ToString();
+            return result;
+        }
 
-                string contactUrl = null;
-                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
+        public Organization ParseOrganization(Uri orgSite, string name = "")
+        {
+            string host = orgSite.Host.Split('.').Reverse().Take(2).Reverse().ToArray()[0];
+            name = string.IsNullOrEmpty(name) ? host : name;
+            string email = null;
+            string phone = null;
+
+            string html = GetLikeBrowserAsync(httpClient, orgSite).Result;
+            ParseEmail(html, orgSite, ref email);
+            ParsePhone(html, ref phone);
+
+            string contactUrl = null;
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone))
+            {
+                contactUrl = GetContactUrl(html, orgSite);
+                if (!string.IsNullOrEmpty(contactUrl))
                 {
-                    contactUrl = GetContactUrl(actualSiteContent, actualWebSite);
-                    if (!string.IsNullOrEmpty(contactUrl))
-                    {
-                        actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(contactUrl)).Result;
-                        ParseEmail(actualSiteContent, orgSite, ref email);
-                        ParsePhone(actualSiteContent, ref phone);
-                    }
-                }
-                if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
-                {
-                    actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contact")).Result;
-                    ParseEmail(actualSiteContent, orgSite, ref email);
-                    ParsePhone(actualSiteContent, ref phone);
-                }
-                if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
-                {
-                    actualSiteContent = GetLikeBrowserAsync(httpClient, new Uri(actualWebSite + "/contacts")).Result;
-                    ParseEmail(actualSiteContent, orgSite, ref email);
-                    ParsePhone(actualSiteContent, ref phone);
+                    html = GetLikeBrowserAsync(httpClient, new Uri(contactUrl)).Result;
+                    ParseEmail(html, orgSite, ref email);
+                    ParsePhone(html, ref phone);
                 }
             }
+            if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
+            {
+                html = GetLikeBrowserAsync(httpClient, new Uri(orgSite.ToString().TrimEnd('/') + "/contact")).Result;
+                ParseEmail(html, orgSite, ref email);
+                ParsePhone(html, ref phone);
+            }
+            if (string.IsNullOrEmpty(contactUrl) && (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(phone)))
+            {
+                html = GetLikeBrowserAsync(httpClient, new Uri(orgSite.ToString().TrimEnd('/') + "/contacts")).Result;
+                ParseEmail(html, orgSite, ref email);
+                ParsePhone(html, ref phone);
+            }
 
-            return new Organization() { Name = name, 
-                PhonePublic = phone, 
-                PhoneNotification = phone, 
-                WebsitePublic = actualWebSite, 
-                WebsiteOther = orgUri.ToString(), 
-                EmailNotification = email, 
+            return new Organization()
+            {
+                Name = name,
+                PhonePublic = phone,
+                PhoneNotification = phone,
+                WebsitePublic = orgSite.ToString().ToLower().TrimEnd('/'),
+                EmailNotification = email,
                 EmailPublic = email
             };
         }
@@ -268,7 +294,7 @@ namespace LeadGen.Code.Clients
         }
 
 
-        private string GetContactUrl(string source, string siteUrl)
+        private string GetContactUrl(string source, Uri siteUrl)
         {
             if (string.IsNullOrEmpty(source))
                 return null;
@@ -284,7 +310,7 @@ namespace LeadGen.Code.Clients
 
             if (contactLinkHref.StartsWith("http"))
                 return contactLinkHref;
-            return siteUrl.TrimEnd('/') + "/" + contactLinkHref.TrimStart('/');
+            return siteUrl.ToString().ToLower().TrimEnd('/') + "/" + contactLinkHref.TrimStart('/');
         }
 
         private HtmlNode GetContactLinkRecur(HtmlNode node)
@@ -319,7 +345,7 @@ namespace LeadGen.Code.Clients
         private static async Task<string> GetLikeBrowserAsync(HttpClient httpClient, Uri url)
         {
             string cookieName = "hZ8g4S9i";
-            string cookieValue = "AhGbVjJwAQAA-K_XT_2E2ooBjroPrvEb7faw9Zp6TExYMfcBgwAAAXAyVpsRAV-7W78=";
+            string cookieValue = "AlmewlVwAQAA3wgFPFlg0AQUIAe4wX9pPjshNfFmEvRi-dJ6rAAAAXBVwp5ZAX-pEHA=";
             Console.WriteLine(url.ToString());
             try
             {
