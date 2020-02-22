@@ -174,12 +174,9 @@
             google.maps.event.addListener(marker, 'dragend', function () { updateMarkerLocationFields(marker, circle); });
             google.maps.event.addListener(circle, 'radius_changed', function () { updateMarkerLocationFields(marker, circle); });
 
-
-
             map.addListener('zoom_changed', function() {
                 $('[data-zoom="'+googleMap.id+'"]').val(map.getZoom());
             });
-
 
             function updateMarkerLocationFields(marker, circle) {
                 $('[data-lat="'+googleMap.id+'"]').val(marker.getPosition().lat());

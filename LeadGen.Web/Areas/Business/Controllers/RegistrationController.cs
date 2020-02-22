@@ -62,9 +62,16 @@ namespace LeadGen.Web.Areas.Business.Controllers
             Login newLogin = null;
             string tempPassword = null;
 
-            
-            //Anton
-            if (!ModelState["email"].Errors.Any() && !ModelState["business.webSite"].Errors.Any() && !ModelState["business.name"].Errors.Any())
+            bool AgreeWithSystemTerms = HttpContext.Request.Form["AgreeWithSystemTerms"][0].ToLower() == "true";
+
+            //If Not AgreeWithSystemTerms, add validation error and show the same page with validation error
+            if (!AgreeWithSystemTerms)
+            {
+                ModelState.AddModelError("AgreeWithSystemTerms", "You must agree with system terms and conditions");
+            }
+
+            // TODO - this validation looks bad, but works
+            if (!ModelState.ContainsKey("AgreeWithSystemTerms") && !ModelState["email"].Errors.Any() && !ModelState["business.webSite"].Errors.Any() && !ModelState["business.name"].Errors.Any())
             {
                 tempPassword = SysHelper.GenerateRandomString();
                 newLogin = Login.Create(DBLGcon, Login.UserRoles.business_admin, postedLogin.email, tempPassword);
