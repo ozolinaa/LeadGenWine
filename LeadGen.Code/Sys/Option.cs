@@ -92,6 +92,7 @@ namespace LeadGen.Code.Sys
 
             SiteUrl,
             SystemAccessToken,
+            AdminEmails,
             CMSHtmlHeadInjection,
             CMSRobotsTXT,
 

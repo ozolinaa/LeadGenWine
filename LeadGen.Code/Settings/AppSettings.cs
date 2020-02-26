@@ -14,6 +14,7 @@ namespace LeadGen.Code.Settings
         string SQLConnectionString { get; }
         string SiteUrl { get; }
         string SystemAccessToken { get; }
+        string[] AdminEmails { get; }
         AzureSettings AzureSettings { get; }
         AWSSettings AWSSettings { get; }
         EmailSettings EmailSettings { get;  }
@@ -31,6 +32,7 @@ namespace LeadGen.Code.Settings
         private string _sqlConnectionString;
         private string _siteUrl;
         private string _systemAccessToken;
+        private string[] _adminEmails;
         private AzureSettings _azureSettings;
         private AWSSettings _awsSettings;
         private CMSSettings _cmsSettings;
@@ -49,7 +51,7 @@ namespace LeadGen.Code.Settings
         }
         
         public string SystemAccessToken => _systemAccessToken;
-
+        public string[] AdminEmails => _adminEmails;
 
         public AzureSettings AzureSettings { get { return _azureSettings; } }
         public AWSSettings AWSSettings { get { return _awsSettings; } }
@@ -58,6 +60,7 @@ namespace LeadGen.Code.Settings
         public CMSSettings CMSSettings { get { return _cmsSettings; } }
         public GoogleSettings GoogleSettings { get { return _googleSettings; } }
         public CRMSettings CRMSettings { get { return _crmSettings; } }
+
 
 
         public AppSettings(ICoreSettings coreSettings)
@@ -101,6 +104,10 @@ namespace LeadGen.Code.Settings
             };
 
             Option tmpOption;
+
+            if (settingOptions.TryGetValue(Option.SettingKey.AdminEmails.ToString(), out tmpOption))
+                _adminEmails = string.IsNullOrEmpty(tmpOption.value) ? new string[0] : tmpOption.value.Split(',').Select(x => x.Trim()).ToArray();
+
             if (settingOptions.TryGetValue(Option.SettingKey.SystemAccessToken.ToString(), out tmpOption))
                 _systemAccessToken = string.IsNullOrEmpty(tmpOption.value) ? null : tmpOption.value;
 

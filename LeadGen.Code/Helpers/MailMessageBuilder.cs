@@ -56,7 +56,7 @@ namespace LeadGen.Code.Helpers
         {
             List<MailMessageLeadGen> result = new List<MailMessageLeadGen>();
 
-            string[] adminEmails = new string[] { "anton.ozolin@gmail.com" };
+            string[] adminEmails = SysHelper.AppSettings.AdminEmails;
             string mailSubject = "Admin Notification: " + notificationSubject;
             string viewPath = "~/Areas/Admin/Views/E-mails/Notification.cshtml";
 
