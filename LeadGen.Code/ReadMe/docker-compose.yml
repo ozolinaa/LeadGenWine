@@ -1,34 +1,6 @@
 version: '3.3'
 
 services:
-  mysql:
-    image: mysql:5.7
-    depends_on:
-      - leadgen_web
-    volumes:
-      - ./mysql:/var/lib/mysql:rw
-    environment:
-      - MYSQL_USER=espocrm
-      - MYSQL_DATABASE=espocrm
-      - MYSQL_PASSWORD=h!!?F:_-O^Jp+TB4B*HYt3
-      - MYSQL_ROOT_PASSWORD=k**:-_U^Jp+TY4B*EFbE
-    ports:
-      - "33060:33060"
-      - "3306:3306"
-    networks:
-      - leadgen
-    restart: always
-  espocrm:
-    image: leen15/espocrm:v5.7.0
-    depends_on:
-      - mysql
-    volumes:
-      - ./espocrm:/var/www/data:rw
-    ports:
-      - "8081:80"
-    networks:
-      - leadgen
-    restart: always
   mssql:
     image: microsoft/mssql-server-linux:2017-latest
     ports:
