@@ -2,8 +2,6 @@ name: Publish To Docker Hub and Deploy to Web Server
 
 on:
   push:
-    branches:
-      - master
     tags:
       - 'v*'
 jobs:
