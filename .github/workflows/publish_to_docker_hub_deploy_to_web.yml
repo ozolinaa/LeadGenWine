@@ -3,7 +3,7 @@ name: Publish To Docker Hub and Deploy to Web Server
 on:
   push:
     tags:
-      - 'v*'
+      - '*'
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,4 +25,4 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-         /opt/leadgen/docker_compose_update_leadgenweb.sh -tag ${{ steps.tagName.outputs.tag }}
+         /opt/leadgen/docker_compose_update_leadgenweb.sh --tag ${{ steps.tagName.outputs.tag }}
