@@ -23,7 +23,7 @@ jobs:
         host: ${{ secrets.WEB_SSH_HOST }}
         username: ${{ secrets.WEB_SSH_USERNAME }}
         password: ${{ secrets.WEB_SSH_PASSWORD }}
-        port: ${{ secrets.WEB_SSH_PASSWORD }}
+        port: ${{ secrets.WEB_SSH_PORT }}
         script: |
          docker pull {{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
          docker rm -f leadgenweb
