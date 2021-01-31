@@ -7,16 +7,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GIT_TAG: ${{ GITHUB_REF/refs\/tags\// }}
     steps:
     - uses: actions/checkout@v1
-    - uses: olegtarasov/get-tag@v2
-      id: tagName
     - name: Login to Docker
       run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
     - name: Build the Docker image
-      run: docker build . --file LeadGen.Web/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{ steps.tagName.outputs.tag }}
+      run: docker build . --file LeadGen.Web/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
     - name: Publish the Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{ steps.tagName.outputs.tag }}
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
     - name: Update Web Server
       uses: appleboy/ssh-action@master
       with:
@@ -25,7 +25,7 @@ jobs:
         password: ${{ secrets.WEB_SSH_PASSWORD }}
         port: ${{ secrets.WEB_SSH_PASSWORD }}
         script: |
-         docker pull {{ secrets.DOCKER_USERNAME }}/leadgenweb:${{ steps.tagName.outputs.tag }}
+         docker pull {{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
          docker rm -f leadgenweb
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='{{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{ steps.tagName.outputs.tag }}
+         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='{{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
          docker rmi $(docker images -a -q)
