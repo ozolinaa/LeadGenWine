@@ -11,10 +11,10 @@ BEGIN
 
 	DECLARE @BusinessLeadRelationTaxonomyID bigint = 0
 
-	DECLARE @BusinessPostFieldIDAllowSendEmails int = 13
-	DECLARE @BusinessPostFieldIDDoNotSendEmails int = 8
-	DECLARE @BusinessPostFieldIDBusiness int = 9
-	DECLARE @BusinessPostFieldIDLocation int = 7
+	DECLARE @BusinessPostFieldIDAllowSendEmails int = 13 --company_notification_allow_send_leads
+	DECLARE @BusinessPostFieldIDDoNotSendEmails int = 8 --company_notification_do_not_send_leads
+	DECLARE @BusinessPostFieldIDBusiness int = 9 --company_businessId
+	DECLARE @BusinessPostFieldIDLocation int = 7 --company_notification_location
 
 	DECLARE @BusinessCityPostTypeID int = 4
 	DECLARE @BusinessCityFieldIDLocation int = 11

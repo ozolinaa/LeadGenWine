@@ -42,20 +42,19 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update
 sudo apt-get install docker-ce
 
-docker network create --driver bridge isolated_network
-
-docker run -d --net=isolated_network --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=pass@word1' -v /var/opt/docker/mssql:/var/opt/mssql --name mssql -d microsoft/mssql-server-linux:2017-latest
+mkdir mssql
+chown 10001:0 /opt/docker/mssql
+docker run -d --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=Express' -e 'SA_PASSWORD=pass@word1' -v /opt/docker/mssql:/var/opt/mssql:rw --name mssql mcr.microsoft.com/mssql/server:2019-latest
 # docker stop mssql
 # docker rm mssql
-
-docker run --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=Express' -e 'SA_PASSWORD=pass@word1' -v /opt/leadgen/mssql:/var/opt/mssql --name mssql -d microsoft/mssql-server-linux:2017-latest
 
 
 
 leadgenweb:latest
 
 # https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-16-04
-docker run -d --net=isolated_network --restart=unless-stopped -p 8080:80 -e sqlConnectionString='Data Source=mssql;Initial Catalog=WineLeadGen;User ID=sa;Password=pass@word1;' --name leadgenweb xtonyx/leadgenweb:20180828070953
+docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='Data Source=DBHOST;Initial Catalog=DBNAME;Persist Security Info=True;User ID=USERNAME;Password=PASSWORD;' --name leadgenweb xtonyx/leadgenweb:v14
+/var/lib/docker/overlay2
 # docker stop leadgenweb
 # docker rm leadgenweb
 # docker rmi $(docker images -a -q)

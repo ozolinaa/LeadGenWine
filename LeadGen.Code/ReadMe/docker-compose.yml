@@ -23,7 +23,7 @@ services:
     networks:
       - leadgen
     environment:
-      - sqlConnectionString=Data Source=mssql;Initial Catalog=LeadGenDB;User ID=sa;Password=*k_U^Jp+PZ6*CDmQ;
+      - sqlConnectionString=Data Source=db.winecellars.pro;Initial Catalog=LeadGenDB_prod;User ID=LeadGenDB_prod;Password=*k_U^Jp+PZ6*CDmQ;
     restart: always
 networks:
   leadgen:
