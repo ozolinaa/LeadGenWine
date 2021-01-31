@@ -25,7 +25,7 @@ jobs:
         password: ${{ secrets.WEB_SSH_PASSWORD }}
         port: ${{ secrets.WEB_SSH_PORT }}
         script: |
-         docker pull {{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
+         docker pull ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
          docker rm -f leadgenweb
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='{{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
+         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='${{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
          docker rmi $(docker images -a -q)
