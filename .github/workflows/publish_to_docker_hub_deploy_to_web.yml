@@ -19,13 +19,17 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
     - name: Update Web Server
       uses: appleboy/ssh-action@master
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        GIT_TAG: ${{ env.GIT_TAG }}
       with:
         host: ${{ secrets.WEB_SSH_HOST }}
         username: ${{ secrets.WEB_SSH_USERNAME }}
         password: ${{ secrets.WEB_SSH_PASSWORD }}
         port: ${{ secrets.WEB_SSH_PORT }}
+        envs: DOCKER_USERNAME,GIT_TAG
         script: |
-         docker pull ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
+         docker pull ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
          docker rm -f leadgenweb
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='${{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
+         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='${{ secrets.LEADGEN_DB_CONNECTION_STRING }}' --name leadgenweb ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
          docker rmi $(docker images -a -q)
