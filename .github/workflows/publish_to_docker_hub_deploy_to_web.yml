@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      GIT_TAG: ${{GITHUB_REF/refs\/tags\//}}
+      GIT_TAG: ${GITHUB_REF/refs\/tags\//}
     steps:
     - uses: actions/checkout@v1
     - name: Login to Docker
