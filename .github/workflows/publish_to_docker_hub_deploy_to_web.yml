@@ -21,7 +21,7 @@ jobs:
       uses: appleboy/ssh-action@master
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        GIT_TAG: ${{ env.GIT_TAG }}
+        GIT_TAG: ${GITHUB_REF/refs\/tags\//}
         LEADGEN_DB_CONNECTION_STRING: ${{ secrets.LEADGEN_DB_CONNECTION_STRING }}
       with:
         host: ${{ secrets.WEB_SSH_HOST }}
@@ -31,6 +31,6 @@ jobs:
         envs: DOCKER_USERNAME,GIT_TAG,LEADGEN_DB_CONNECTION_STRING
         script: |
          docker pull $DOCKER_USERNAME/leadgenweb:v15.8.1
-         docker rm -f leadgenweb
+         docker stop leadgenweb || true && docker rm leadgenweb || true
          docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='$LEADGEN_DB_CONNECTION_STRING' --name leadgenweb $DOCKER_USERNAME/leadgenweb:v15.8.1
          docker rmi $(docker images -a -q)
