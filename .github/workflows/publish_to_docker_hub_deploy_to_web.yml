@@ -30,8 +30,7 @@ jobs:
         port: ${{ secrets.WEB_SSH_PORT }}
         envs: DOCKER_USERNAME,GIT_TAG,LEADGEN_DB_CONNECTION_STRING
         script: |
-         printenv
-         docker pull $DOCKER_USERNAME/leadgenweb:$GIT_TAG
+         docker pull $DOCKER_USERNAME/leadgenweb:v15.8.1
          docker rm -f leadgenweb
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='$LEADGEN_DB_CONNECTION_STRING' --name leadgenweb $DOCKER_USERNAME/leadgenweb:$GIT_TAG
+         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='$LEADGEN_DB_CONNECTION_STRING' --name leadgenweb $DOCKER_USERNAME/leadgenweb:v15.8.1
          docker rmi $(docker images -a -q)
