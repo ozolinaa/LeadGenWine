@@ -32,5 +32,5 @@ jobs:
          GIT_TAG=${GITHUB_REF/refs\/tags\//}
          docker pull ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
          docker stop leadgenweb || true && docker rm leadgenweb || true
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString='${LEADGEN_DB_CONNECTION_STRING}' --name leadgenweb ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
+         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString=${LEADGEN_DB_CONNECTION_STRING} --name leadgenweb ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
          docker rmi $(docker images -a -q) || true
