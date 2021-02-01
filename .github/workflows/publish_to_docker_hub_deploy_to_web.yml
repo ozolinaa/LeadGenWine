@@ -11,12 +11,6 @@ jobs:
       GIT_TAG: ${GITHUB_REF/refs\/tags\//}
     steps:
     - uses: actions/checkout@v1
-    - name: Login to Docker
-      run: docker login --username=${{ secrets.DOCKER_USERNAME }} --password=${{ secrets.DOCKER_PASSWORD }}
-    - name: Build the Docker image
-      run: docker build . --file LeadGen.Web/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
-    - name: Publish the Docker image
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/leadgenweb:${{env.GIT_TAG}}
     - name: Update Web Server
       uses: appleboy/ssh-action@master
       env:
@@ -30,7 +24,7 @@ jobs:
         envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING
         script: |
          GIT_TAG=${GITHUB_REF/refs\/tags\//}
-         docker pull ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
-         docker stop leadgenweb || true && docker rm leadgenweb || true
-         docker run -d --restart=unless-stopped -p 8080:80 -e sqlConnectionString=${LEADGEN_DB_CONNECTION_STRING} --name leadgenweb ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}
-         docker rmi $(docker images -a -q) || true
+         cd /opt/leadgen
+         echo $GIT_TAG >> logfile.txt
+         echo $DOCKER_USERNAME >> logfile.txt
+         echo $LEADGEN_DB_CONNECTION_STRING >> logfile.txt
