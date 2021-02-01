@@ -24,7 +24,7 @@ jobs:
         envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING,GITHUB_REF,GIT_TAG
         script: |
          cd /opt/leadgen
-         GIT_TAG='${GIT_TAG}'
+         GIT_TAG=${GIT_TAG}
          echo "docker pull ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}" >> logfile.txt
          echo $GITHUB_REF >> logfile.txt
          echo $GIT_TAG >> logfile.txt
