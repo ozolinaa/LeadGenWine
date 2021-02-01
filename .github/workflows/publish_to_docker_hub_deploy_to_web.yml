@@ -21,10 +21,10 @@ jobs:
         username: ${{ secrets.WEB_SSH_USERNAME }}
         password: ${{ secrets.WEB_SSH_PASSWORD }}
         port: ${{ secrets.WEB_SSH_PORT }}
-        envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING,GITHUB_REF
+        envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING,GITHUB_REF,GIT_TAG
         script: |
          cd /opt/leadgen
-         GIT_TAG=${GITHUB_REF/refs\/tags\//}
+         GIT_TAG=${{GIT_TAG}}
          echo "docker pull ${DOCKER_USERNAME}/leadgenweb:${GIT_TAG}" >> logfile.txt
          echo $GITHUB_REF >> logfile.txt
          echo $GIT_TAG >> logfile.txt
