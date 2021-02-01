@@ -21,7 +21,7 @@ jobs:
       uses: appleboy/ssh-action@master
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-        GIT_TAG: ${GITHUB_REF/refs\/tags\//}
+        GIT_TAG: v15.8.4
         LEADGEN_DB_CONNECTION_STRING: ${{ secrets.LEADGEN_DB_CONNECTION_STRING }}
       with:
         host: ${{ secrets.WEB_SSH_HOST }}
