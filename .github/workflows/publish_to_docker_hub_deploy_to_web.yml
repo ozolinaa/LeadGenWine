@@ -21,7 +21,7 @@ jobs:
         username: ${{ secrets.WEB_SSH_USERNAME }}
         password: ${{ secrets.WEB_SSH_PASSWORD }}
         port: ${{ secrets.WEB_SSH_PORT }}
-        envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING
+        envs: DOCKER_USERNAME,LEADGEN_DB_CONNECTION_STRING,GITHUB_REF
         script: |
          GIT_TAG=${GITHUB_REF/refs\/tags\//}
          cd /opt/leadgen
