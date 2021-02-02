@@ -36,6 +36,7 @@
     <script>
         if (window.location.hash) {
             window.location.hash = "";
+            LeadGen.ui.scrollToLeadForm();
         }
         function initializeLeadForm() {
             if (window.mobileAndTabletcheck() == false) {
@@ -57,9 +58,11 @@
             $form = $($.parseHTML(data.trim()));
             var errors = $form.find('.input-validation-error,.field-validation-error');
             if ($form[0].id === '@formID' && errors.length > 0) {
+                // has validation errors, initialize again
                 initializeLeadForm();
-            } else if($form[0].id != '@formID') {
-                LeadGen.ui.window.scrollToOffset(10000);
+            } else if ($form[0].id != '@formID') {
+                // navigating from revire back to lead creation
+                LeadGen.ui.scrollToLeadForm();
             }
         };
     </script>
