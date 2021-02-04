@@ -3,10 +3,21 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Thank you for registration.";
+    string emailDomain = Model.email.Split('@')[1];
 }
 
-<h2>Thank you for registration!</h2>
-<h3>Please confirm your email</h3>
-
-<p>The confirmation E-Mail was sent to: <strong>@Model.email</strong></p>
-<p>Please check <a href="http://@Model.email.Split('@')[1]" target="_blank">your mailbox</a> and click the conformation link.</p>
+<div class="container single-alert-container">
+    <div class="single-alert-container-content">
+        <h4>Thank you for registration!</h4>
+        <h3>Please confirm your email</h3>
+        <p>
+            Click on the link that has just been sent to
+            <br />
+            <strong>@Model.email</strong>
+            <br /><br />
+            <a href="http://@emailDomain" target="_blank" class="btn btn-default">
+                Go to @emailDomain.ToUpper()
+            </a>
+        </p>
+    </div>
+</div>
