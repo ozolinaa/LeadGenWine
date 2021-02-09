@@ -3,8 +3,8 @@
 # INSTALL ZIP     | sudo apt-get install zip
 # set permissions | chmod +x LeadGenDB_prod_backup.sh |  chmod +x /opt/scripts/LeadGenDB_prod_backup.sh
 # run once        | ./LeadGenDB_prod_backup.sh | ./opt/scripts/LeadGenDB_prod_backup.sh
-# schedule part 1 | sudo nano /etc/crontab 
-# schedule part 2 | 25 5 * * * root /opt/scripts/LeadGenDB_prod_backup.sh
+# schedule part 1 | crontab -e
+# schedule part 2 | 0 4 * * * cd /opt/scripts && ./LeadGenDB_prod_backup.sh > /opt/scripts/cron.log 2>&1
 
 # SET LeadGenDB_prod credentials will set $LeadGenDB_prod_dbName $LeadGenDB_prod_sqlUser $LeadGenDB_prod_sqlPassword
 . set_LeadGenDB_prod_credentials.sh
