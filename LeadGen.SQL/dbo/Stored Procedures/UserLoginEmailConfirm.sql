@@ -13,7 +13,7 @@ BEGIN
 	SET NOCOUNT ON;
 
 	UPDATE [dbo].[UserLogin]
-	SET [EmailConfirmationDate] = GETUTCDATE() 
+	SET [EmailConfirmationDate] = ISNULL([EmailConfirmationDate], GETUTCDATE()) 
 	WHERE [LoginID] = @loginID
 
 	RETURN @@ROWCOUNT

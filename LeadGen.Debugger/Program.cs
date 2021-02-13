@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using LeadGen.Code.Tokens;
 
 namespace LeadGen.Debugger
 {
@@ -16,9 +17,22 @@ namespace LeadGen.Debugger
     {
         static void Main(string[] args)
         {
-            //RunParce();
-            RunCRMImport();
-            Console.ReadLine();
+            using (SqlConnection con = new SqlConnection(""))
+            {
+                con.Open();
+                BusinessRegistrationEmaiConfirmationToken t1 = new BusinessRegistrationEmaiConfirmationToken(1234);
+                t1.CreateInDB(con);
+
+                Token t = Token.LoadFromDB(con, t1.Key);
+                if (t is BusinessRegistrationEmaiConfirmationToken) 
+                {
+                    Console.WriteLine("t1 is BusinessRegistrationEmaiConfirmationToken");
+                }
+                if (t is LoginRecoverPasswordToken)
+                {
+                    Console.WriteLine("t1 is LoginRecoverPasswordToken");
+                }
+            }
         }
 
         private static void RunParce()

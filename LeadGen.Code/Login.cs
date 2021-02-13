@@ -139,10 +139,13 @@ namespace LeadGen.Code
 
         private static string GeneratePasswordHash (string password)
         {
-            return password;
+            if (String.IsNullOrEmpty(password)) {
+                return null;
+            }
+            return password; // TODO Generate HASH
         }
 
-        public static Login Create(SqlConnection con, UserRoles role, string email, string password)
+        public static Login Create(SqlConnection con, UserRoles role, string email, string password = null)
         {
             long loginID;
             string passwordHash = GeneratePasswordHash(password);
@@ -153,7 +156,7 @@ namespace LeadGen.Code
 
             cmd.Parameters.AddWithValue("@roleID", (int)role);
             cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@passwordHash", passwordHash);
+            cmd.Parameters.AddWithValue("@passwordHash", String.IsNullOrEmpty(passwordHash) ? (object)DBNull.Value : passwordHash);
 
             SqlParameter outputParameter = new SqlParameter();
             outputParameter.ParameterName = "@loginID";

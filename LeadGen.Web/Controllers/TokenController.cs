@@ -41,21 +41,27 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         private ActionResult LoginEmailConfirm(BusinessRegistrationEmaiConfirmationToken token)
         {
-            Login confirmLogin = Login.SelectOne(DBLGcon, loginID: token.LoginID);
+            Login login = Login.SelectOne(DBLGcon, loginID: token.LoginID);
 
-            if (confirmLogin != null)
+            if (login != null)
             {
-                Login.EmailConfirm(DBLGcon, confirmLogin.ID);
-                string sessionID = LoginController.SetLoginSessionCookie(DBLGcon, HttpContext, confirmLogin.ID);
+                Login.EmailConfirm(DBLGcon, login.ID);
+                string sessionID = LoginController.SetLoginSessionCookie(DBLGcon, HttpContext, login.ID);
+                if (String.IsNullOrEmpty(sessionID)) {
+                    // sessionId will be empty if the password was not set  
+                    // return view to set password
+                    ViewData["token"] = token;
+                    return View("../Login/SetPassword", login);
+                }
+
                 token.DeleteFromDB(DBLGcon);
+                login = LeadGen.Code.Session.GetLoginBySessionID(DBLGcon, sessionID);
 
-                confirmLogin = LeadGen.Code.Session.GetLoginBySessionID(DBLGcon, sessionID);
-
-                if (confirmLogin.business != null)
+                if (login.business != null)
                 {
-                    Code.Business.NotificationSettings.EmailAdd(DBLGcon, confirmLogin.business.ID, confirmLogin.email);
+                    Code.Business.NotificationSettings.EmailAdd(DBLGcon, login.business.ID, login.email);
 
-                    SendMessageToAdmins("New Business Registered", string.Format("New business: #{0} {1}", confirmLogin.business.ID, confirmLogin.business.name));
+                    SendMessageToAdmins("New Business Registered", string.Format("New business: #{0} {1}", login.business.ID, login.business.name));
 
                     return RedirectToAction("Index", "Account", new { area = "Business" });
                 }
@@ -68,10 +74,10 @@ namespace LeadGen.Web.Controllers
         [NonAction]
         private ActionResult LoginRecoverPassword(LoginRecoverPasswordToken token)
         {
-            Login recoverLogin = Login.SelectOne(DBLGcon, loginID: token.LoginID);
+            Login login = Login.SelectOne(DBLGcon, loginID: token.LoginID);
 
-            ViewData["tokenKey"] = token.Key;
-            return View("../Login/RecoverPassword", recoverLogin);
+            ViewData["token"] = token;
+            return View("../Login/SetPassword", login);
         }
 
         [NonAction]

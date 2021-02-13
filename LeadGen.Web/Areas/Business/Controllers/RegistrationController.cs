@@ -60,7 +60,8 @@ namespace LeadGen.Web.Areas.Business.Controllers
         public override ActionResult Authorize(Login postedLogin)
         {
             Login newLogin = null;
-            string tempPassword = null;
+            string password = null;
+            bool generateTempPassword = false;
 
             bool AgreeWithSystemTerms = HttpContext.Request.Form["AgreeWithSystemTerms"][0].ToLower() == "true";
 
@@ -73,8 +74,11 @@ namespace LeadGen.Web.Areas.Business.Controllers
             // TODO - this validation looks bad, but works
             if (!ModelState.ContainsKey("AgreeWithSystemTerms") && !ModelState["email"].Errors.Any() && !ModelState["business.webSite"].Errors.Any() && !ModelState["business.name"].Errors.Any())
             {
-                tempPassword = SysHelper.GenerateRandomString();
-                newLogin = Login.Create(DBLGcon, Login.UserRoles.business_admin, postedLogin.email, tempPassword);
+                if (generateTempPassword) 
+                {
+                    password = SysHelper.GenerateRandomString();
+                }
+                newLogin = Login.Create(DBLGcon, Login.UserRoles.business_admin, postedLogin.email, password);
             }
             else
             {

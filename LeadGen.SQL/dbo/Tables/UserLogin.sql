@@ -2,7 +2,7 @@
 	[LoginID] [bigint] IDENTITY(1,1) NOT NULL,
 	[RoleID] [int] NOT NULL,
 	[Email] [nvarchar](100) NOT NULL,
-	[PasswordHash] [nvarchar](255) NOT NULL,
+	[PasswordHash] [nvarchar](255) NULL,
 	[RegistrationDate] [datetime] NOT NULL,
 	[EmailConfirmationDate] [datetime] NULL,
  CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED 

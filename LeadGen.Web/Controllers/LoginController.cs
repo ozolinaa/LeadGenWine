@@ -156,9 +156,21 @@ namespace LeadGen.Web.Controllers
         public ActionResult SetNewPassword(Login postedLogin, string tokenKey)
         {
             bool status = false;
+            Token token = Token.LoadFromDB(DBLGcon, tokenKey);
+            long? loginID = null;
+            if (token != null)
+            {
+                if (token is BusinessRegistrationEmaiConfirmationToken)
+                {
+                    loginID = ((BusinessRegistrationEmaiConfirmationToken)token).LoginID;
+                }
+                else if (token is LoginRecoverPasswordToken)
+                {
+                    loginID = ((LoginRecoverPasswordToken)token).LoginID;
+                }
+            }
 
-            LoginRecoverPasswordToken token = Token.LoadFromDB(DBLGcon, tokenKey) as LoginRecoverPasswordToken;
-            if(token == null)
+            if (loginID == null)
                 return RedirectToAction("index", "Home"); //Error   
 
             if (!ModelState["newPassword.password"].Errors.Any() && !ModelState["newPassword.passwordConfirmation"].Errors.Any())
@@ -166,18 +178,18 @@ namespace LeadGen.Web.Controllers
                 if (postedLogin.newPassword.password != postedLogin.newPassword.passwordConfirmation)
                     ModelState.AddModelError("newPassword.passwordConfirmation", "Confirmation password does not match new password");
                 else
-                    status = Login.SetNewPassword(DBLGcon, token.LoginID, "", postedLogin.newPassword);
+                    status = Login.SetNewPassword(DBLGcon, loginID.Value, "", postedLogin.newPassword);
             }
 
             if (status == false)
             {
-                ViewData["tokenKey"] = tokenKey;
-                return View("RecoverPassword", postedLogin);
+                ViewData["token"] = token;
+                return View("SetPassword", postedLogin);
             }
 
             //success
             token.DeleteFromDB(DBLGcon);
-            SetLoginSessionCookie(DBLGcon, HttpContext, token.LoginID);
+            SetLoginSessionCookie(DBLGcon, HttpContext, loginID.Value);
             return RedirectToAction(loginActionName, "Login", new { area = "" });
         }
 
