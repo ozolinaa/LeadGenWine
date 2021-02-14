@@ -18,10 +18,10 @@ namespace LeadGen.Web.Areas.Business.Controllers
 
         public override ActionResult Index()
         {
-            return RedirectToAction("Orders");
+            return RedirectToAction("Leads");
         }
 
-        public ActionResult Orders(BusinessDetails.Status status = BusinessDetails.Status.NewForBusiness, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
+        public ActionResult Leads(BusinessDetails.Status status = BusinessDetails.Status.NewForBusiness, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
         {
             if (searchInit && string.IsNullOrEmpty(query) == false)
                 status = BusinessDetails.Status.All;

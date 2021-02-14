@@ -4,7 +4,7 @@
 @using LeadGen.Code.Lead
 
 @{
-    ViewBag.Title = "Заявки";
+    ViewBag.Title = "Leads";
     BusinessDetails.Status status = ViewBag.status;
     long? leadID = ViewBag.leadID;
     DateTime? publishedFrom = ViewBag.publishedFrom;
@@ -14,27 +14,25 @@
 }
 
 <style>
-    .leadActions {
-        text-align: center;
-        min-width: 245px;
+    td.leadIdentity {
+        width: 180px;
     }
-
-        .leadActions .contacts {
+    td.leadActions {
+        text-align: center;
+        width: 245px;
+    }
+        td.leadActions .contacts {
             text-align: left;
         }
-
-        .leadActions .action {
+        td.leadActions .action {
             margin-bottom: 10px;
         }
-
-            .leadActions .action.set_interested, .action.set_not_interested {
+            td.leadActions .action.set_interested, .action.set_not_interested {
                 text-align: right;
             }
 
 
-    td.field-group-Terms {
-        width: 275px;
-    }
+
 
     .lead_field {
         margin-bottom: 5px;
@@ -45,34 +43,34 @@
         }
 </style>
 
-<h2>Заявки</h2>
+<h2>Leads</h2>
 <hr />
 
 
 <div class="row search-orders" style="margin-top:10px;">
-    @using (Html.BeginForm("Orders", "Account", FormMethod.Get, null))
+    @using (Html.BeginForm("Leads", "Account", FormMethod.Get, null))
     {
         @Html.Hidden("status", status)
         @Html.Hidden("searchInit", true);
         <div class="col-sm-1 form-group">
-            @Html.Label("leadID", "Заявка")
-            @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "№" })
+            @Html.Label("leadID", "Lead #")
+            @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "#" })
         </div>
         <div class="col-sm-3  form-group">
-            @Html.Label("publishedFrom", "Поступившие с")
+            @Html.Label("publishedFrom", "Recieved since")
             @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
         </div>
         <div class="col-sm-3  form-group">
-            @Html.Label("publishedTo", "Поступившие до")
+            @Html.Label("publishedTo", "Recieved till")
             @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
         </div>
         <div class="col-sm-4  form-group">
-            @Html.Label("query", "Текст")
-            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "ФИО, Email..." })
+            @Html.Label("query", "Search")
+            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "Material, Comment, Email ..." })
         </div>
         <div class="col-sm-1  form-group">
             @Html.Label("", "submit", new { style = "visibility: hidden;" })
-            <button type="submit" class="btn btn-primary">Поиск</button>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
     }
 </div>
@@ -80,7 +78,7 @@
 <ul class="nav nav-tabs nav-orders" style="margin-top:10px;">
     @{ isActive = (status == BusinessDetails.Status.NewForBusiness || status == BusinessDetails.Status.NotInterested) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Orders", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Leads", new
         {
             status = BusinessDetails.Status.NewForBusiness,
             leadID = leadID,
@@ -91,7 +89,7 @@
     </li>
     @{ isActive = (status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Orders", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Leads", new
         {
             status = BusinessDetails.Status.ContactReceived,
             leadID = leadID,
@@ -102,7 +100,7 @@
     </li>
     @{ isActive = (status == BusinessDetails.Status.Completed) ? "active" : "";}
     <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Orders", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Leads", new
         {
             status = BusinessDetails.Status.Completed,
             leadID = leadID,
@@ -113,7 +111,7 @@
     </li>
     @{ isActive = (status == BusinessDetails.Status.All) ? "active" : "";}
     <li role='presentation' class='@isActive pull-right'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Orders", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Leads", new
         {
             status = BusinessDetails.Status.All,
             leadID = leadID,
@@ -145,7 +143,7 @@
 }
 
 @Html.PagedListPager(Model,
-    page => Url.Action("Orders", "Account", new
+    page => Url.Action("Leads", "Account", new
     {
         page,
         status = status,

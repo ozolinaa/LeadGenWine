@@ -42,7 +42,7 @@
                 <div>Company: <strong>@Model.name</strong></div>
                 <div>webSite: <strong><a href="@Model.webSite" target="_blank">@Model.webSite</a></strong></div>
                 <div>Notification: <strong>@Model.notification.frequency.ToString()</strong></div>
-                <div>Notification emails: <strong>@String.Join(", ", Model.notification.emailList.Select(x=>x.address))</strong></div>
+                <div>Notification emails: <strong>@String.Join(", ", Model.notification.emailList.Select(x => x.address))</strong></div>
             </div>
         </div>
     </div>

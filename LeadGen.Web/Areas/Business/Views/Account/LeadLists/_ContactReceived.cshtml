@@ -10,11 +10,11 @@
     <ul class="nav nav-pills">
         @{ isActive = (status == BusinessDetails.Status.ContactReceived) ? "active" : "";}
         <li role='presentation' class='@isActive'>
-            @Html.ActionLink("Все", "Orders", new { status = BusinessDetails.Status.ContactReceived })
+            @Html.ActionLink("All", "Leads", new { status = BusinessDetails.Status.ContactReceived })
         </li>
         @{ isActive = (status == BusinessDetails.Status.Important) ? "active" : "";}
         <li role='presentation' class='@isActive'>
-            @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Important], "Orders", new { status = BusinessDetails.Status.Important })
+            @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Important], "Leads", new { status = BusinessDetails.Status.Important })
         </li>
     </ul>
 </div>

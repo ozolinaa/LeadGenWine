@@ -1,6 +1,17 @@
 ﻿@model LeadGen.Code.Lead.LeadItem
 <tr id="LeadID-@Model.ID">
-    @Html.DisplayFor(x => x.fieldGroups, new {lead = Model } )
+    <td class="leadIdentity">
+        <div class="lead_field lead_field_id">
+            <span class="grey">Lead #:</span> @Model.ID
+        </div>
+        <div class="lead_field lead_field_createdDateTime">
+            <span class="grey">Submitted at:</span><br />
+            @Model.adminDetails.createdDateTime.Value.ToShortDateString() 
+            @Model.adminDetails.createdDateTime.Value.ToShortTimeString() 
+            (published at @Model.adminDetails.publishedDateTime.Value.ToShortTimeString())
+        </div>
+    </td>
+    @Html.DisplayFor(x => x.fieldGroups, new { lead = Model })
     <td class="leadActions" id="ActionsForLeadID-@Model.ID">
         @await Html.PartialAsync("_LeadAction", Model)
     </td>

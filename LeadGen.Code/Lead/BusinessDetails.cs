@@ -56,13 +56,13 @@ namespace LeadGen.Code.Lead
             }
         }
         public static Dictionary<Status, string> statusDictionary = new Dictionary<Status, string>() {
-            { Status.All, "Все" },
-            { Status.Completed, "Состоявшиеся" },
-            { Status.NewForBusiness, "Новые" },
-            { Status.WaitingApproval, "Ожидают подтверждения" },
-            { Status.ContactReceived, "В работе" },
-            { Status.NotInterested, "Неинтересные" },
-            { Status.Important, "Важные" }
+            { Status.All, "All" },
+            { Status.Completed, "Completed" },
+            { Status.NewForBusiness, "New" },
+            { Status.WaitingApproval, "Waiting for approval" },
+            { Status.ContactReceived, "In progress" },
+            { Status.NotInterested, "Not interested" },
+            { Status.Important, "Important" }
         };
 
         public BusinessDetails() {
