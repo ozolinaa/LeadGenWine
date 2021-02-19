@@ -12,7 +12,7 @@ sqlPassword="${LeadGenDB_prod_sqlPassword}"
 
 dockerContainer='mssql'
 mssqlVolumePath='/opt/docker/mssql'
-restoreArchiveFileName='LeadGenDB_prod.bak_2021_02_08_22_06_25.zip'
+restoreArchiveFileName='LeadGenDB_prod.bak_2021_02_18_04_00_01.zip'
 s3FilePath="db/leadgen/prod/${restoreArchiveFileName}"
 
 mssqlRestoreFolderName='restore'

@@ -44,7 +44,8 @@ sudo apt-get install docker-ce
 
 mkdir mssql
 chown 10001:0 /opt/docker/mssql
-docker run -d --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=Express' -e 'SA_PASSWORD=pass@word1' -v /opt/docker/mssql:/var/opt/mssql:rw --name mssql mcr.microsoft.com/mssql/server:2019-latest
+docker build -t mssql:2019 -f SQLServerDockerfile .
+docker run -d --restart=unless-stopped -p 1433:1433 -e 'ACCEPT_EULA=Y' -e 'MSSQL_PID=Express' -e 'SA_PASSWORD=pass@word1' -v /opt/docker/mssql:/var/opt/mssql:rw --name mssql mssql:2019
 # docker stop mssql
 # docker rm mssql
 
