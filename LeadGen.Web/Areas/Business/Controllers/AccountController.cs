@@ -21,23 +21,11 @@ namespace LeadGen.Web.Areas.Business.Controllers
             return RedirectToAction("Leads");
         }
 
-        public ActionResult Leads(BusinessDetails.Status status = BusinessDetails.Status.NewForBusiness, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
+        public ActionResult Leads(BusinessDetails.Status status = BusinessDetails.Status.All, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
         {
-            if (searchInit && string.IsNullOrEmpty(query) == false)
-                status = BusinessDetails.Status.All;
-
             if (publishedFrom == null)
             {
-                DateTime pastDate = DateTime.Now.AddMonths(-1);
-                if (status == BusinessDetails.Status.NewForBusiness)
-                {
-                    publishedFrom = new DateTime(pastDate.Year, pastDate.Month, pastDate.Day);
-                }
-                else if (status == BusinessDetails.Status.NewForBusiness)
-                {
-                    pastDate = pastDate.AddMonths(-1);
-                    publishedFrom = new DateTime(pastDate.Year, pastDate.Month, pastDate.Day);
-                }
+                publishedFrom = DateTime.Now.AddYears(-1);
             }
 
             IPagedList<LeadItem> leads = login.business.SelectLeadsFromDB(DBLGcon,

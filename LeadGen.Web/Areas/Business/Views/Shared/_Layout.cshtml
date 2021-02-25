@@ -15,7 +15,7 @@
     <link href="~/lib/jquery-ui/themes/base/theme.min.css" rel="stylesheet" />
     <link href="~/lib/tag-it/css/jquery.tagit.css" rel="stylesheet" />
     <link href="~/lib/tinymce/skins/lightgray/skin.min.css" rel="stylesheet" />
-    <link href="~/css/site.min.css" rel="stylesheet" />
+    <link href="~/css/business.css" rel="stylesheet" />
 
 </head>
 <body>
@@ -38,8 +38,8 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Заявки", "Leads", "Account")</li>
-                    <li>@Html.ActionLink("Счета", "List", "Invoice")</li>
+                    <li>@Html.ActionLink("Leads", "Leads", "Account")</li>
+                    <li>@Html.ActionLink("Invoices", "List", "Invoice")</li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
@@ -62,7 +62,7 @@
         @RenderBody()
 
         <div id="LoadingWindowSplash">
-            <img id="LoadingWindowSplashImage" src="~/Content/images/spinner-icon.gif" />
+            <img id="LoadingWindowSplashImage" src="~/images/spinner-icon.gif" />
         </div>
         <hr />
     </div>
@@ -73,7 +73,7 @@
 
     <script src="~/lib/moment/moment.min.js"></script>
     <script src="~/lib/jquery/jquery.min.js"></script>
-    <script src="~/lib/jquery-ui-/jquery-ui.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="~/lib/jquery-validation/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/lib/jquery-ajax-unobtrusive/dist/jquery.unobtrusive-ajax.min.js"></script>

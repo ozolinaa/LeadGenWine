@@ -117,7 +117,7 @@ BEGIN
 	IF (@Query IS NOT NULL)
 	BEGIN
 
-		DECLARE @ContainsQuery NVARCHAR(53) = '"'+ @Query + '*"'
+		DECLARE @ContainsQuery NVARCHAR(53) = '"'+ REPLACE(@Query, '"', '')  + '*"'
 		DECLARE @LikeQuery NVARCHAR(53) = '%'+ @Query + '%'
 		--@QueryNumber would contain only numbers from the @Query
 		DECLARE @QueryNumber NVARCHAR(50) = dbo.ExtractNumberFromString(@Query)
@@ -135,27 +135,31 @@ BEGIN
 			SELECT
 				t.LeadID
 			FROM @Leads t
-				INNER JOIN [dbo].[Lead] L ON L.LeadID = t.LeadID
-				LEFT OUTER JOIN [dbo].[BusinessLeadContactsRecieved] LCR ON LCR.LeadID = t.LeadID AND LCR.BusinessID = @BusinessID
-				LEFT OUTER JOIN [dbo].[LeadFieldValueScalar] s ON s.LeadID = t.LeadID
-				LEFT OUTER JOIN [dbo].[LeadFieldStructure] ls ON ls.FieldID = s.FieldID
-				LEFT OUTER JOIN [dbo].[LeadFieldValueTaxonomy] lt ON lt.LeadID = t.LeadID
-				LEFT OUTER JOIN [dbo].[TaxonomyTerm] tt ON tt.TermID = lt.TermID
-				--LEFT OUTER JOIN CONTAINSTABLE([dbo].[LeadFieldValueScalar], TextValue, @ContainsQuery ) ft ON ft.[Key] = s.ID
-			WHERE 
-				--((LCR.GetContactsDateTime IS NOT NULL OR ls.IsContact = 0) AND ft.[Key] IS NOT NULL) -OR
-				((LCR.GetContactsDateTime IS NOT NULL OR ls.IsContact = 0) AND s.TextValue like @LikeQuery) OR
-				(LCR.GetContactsDateTime IS NOT NULL AND L.Email like @LikeQuery) OR
-				(tt.TermName like @Query) OR
-				(@QueryNumber IS NOT NULL AND (
-					(LCR.GetContactsDateTime IS NOT NULL AND L.NumberFromEmail like @QueryNumber)
-					OR ((LCR.GetContactsDateTime IS NOT NULL OR ls.IsContact = 0) AND s.NubmerValueFromText like @QueryNumber)
-					OR ((LCR.GetContactsDateTime IS NOT NULL OR ls.IsContact = 0) AND s.NumberValue like @QueryNumber)
-					OR dbo.ExtractNumberFromString(tt.TermName) like @QueryNumber
-					)
-				)
-			GROUP BY
-				t.LeadID
+			LEFT OUTER JOIN [dbo].[BusinessLeadContactsRecieved] LCR ON LCR.LeadID = t.LeadID AND LCR.BusinessID = @BusinessID
+			LEFT OUTER JOIN (
+				SELECT t.[LeadID], v.[IsContact], ft.[RANK] FROM @Leads t
+				INNER JOIN [dbo].[LeadScalarTextView] v ON v.LeadID = t.LeadID
+				INNER JOIN CONTAINSTABLE([dbo].[LeadScalarTextView], [FieldText], @ContainsQuery ) ft ON ft.[Key] = v.ID
+			) scalarText on scalarText.LeadID = t.LeadID
+			LEFT OUTER JOIN (
+				SELECT t.[LeadID], v.[IsContact], ft.[RANK] FROM @Leads t
+				INNER JOIN [dbo].[LeadTaxonomyTextView] v ON v.LeadID = t.LeadID
+				INNER JOIN CONTAINSTABLE([dbo].[LeadTaxonomyTextView], [FieldText], @ContainsQuery ) ft ON ft.[Key] = v.ID
+			) taxonomyText on taxonomyText.LeadID = t.LeadID
+			LEFT OUTER JOIN (
+				SELECT t.[LeadID], v.[IsContact], ft.[RANK] FROM @Leads t
+				INNER JOIN [dbo].[LeadLocationTextView] v ON v.LeadID = t.LeadID
+				INNER JOIN CONTAINSTABLE([dbo].[LeadLocationTextView], [FieldText], @ContainsQuery ) ft ON ft.[Key] = v.ID
+			) locationText on locationText.LeadID = t.LeadID
+			LEFT OUTER JOIN (
+				SELECT t.[LeadID], v.[IsContact], ft.[RANK] FROM @Leads t
+				INNER JOIN [dbo].[LeadEmailTextView] v ON v.LeadID = t.LeadID
+				INNER JOIN CONTAINSTABLE([dbo].[LeadEmailTextView], [FieldText], @ContainsQuery ) ft ON ft.[Key] = v.ID
+			) emailText on emailText.LeadID = t.LeadID
+			WHERE ((LCR.GetContactsDateTime IS NOT NULL OR scalarText.IsContact = 0) AND ISNULL(scalarText.[RANK], 0) > 0)
+			OR ((LCR.GetContactsDateTime IS NOT NULL OR taxonomyText.IsContact = 0) AND ISNULL(taxonomyText.[RANK], 0) > 0)
+			OR ((LCR.GetContactsDateTime IS NOT NULL OR locationText.IsContact = 0) AND ISNULL(locationText.[RANK], 0) > 0)
+			OR ((LCR.GetContactsDateTime IS NOT NULL OR emailText.IsContact = 0) AND ISNULL(emailText.[RANK], 0) > 0)
 		) s ON s.LeadID = li.[LeadID]
 		WHERE s.LeadID IS NULL
 

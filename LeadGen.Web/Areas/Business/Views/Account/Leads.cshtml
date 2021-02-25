@@ -57,11 +57,11 @@
             @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "#" })
         </div>
         <div class="col-sm-3  form-group">
-            @Html.Label("publishedFrom", "Recieved since")
+            @Html.Label("publishedFrom", "From")
             @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
         </div>
         <div class="col-sm-3  form-group">
-            @Html.Label("publishedTo", "Recieved till")
+            @Html.Label("publishedTo", "To")
             @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
         </div>
         <div class="col-sm-4  form-group">
@@ -76,8 +76,17 @@
 </div>
 
 <ul class="nav nav-tabs nav-orders" style="margin-top:10px;">
-    @{ isActive = (status == BusinessDetails.Status.NewForBusiness || status == BusinessDetails.Status.NotInterested) ? "active" : "";}
-    <li role='presentation' class='@isActive'>
+    <li role='presentation' class='@(status == BusinessDetails.Status.All ? "active" : "")'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Leads", new
+        {
+            status = BusinessDetails.Status.All,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
+    </li>
+    <li role='presentation' class='@(status == BusinessDetails.Status.NewForBusiness ? "active" : "")'>
         @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Leads", new
         {
             status = BusinessDetails.Status.NewForBusiness,
@@ -87,8 +96,7 @@
             query = query
         })
     </li>
-    @{ isActive = (status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "";}
-    <li role='presentation' class='@isActive'>
+    <li role='presentation' class='@((status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "")'>
         @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Leads", new
         {
             status = BusinessDetails.Status.ContactReceived,
@@ -109,11 +117,11 @@
             query = query
         })
     </li>
-    @{ isActive = (status == BusinessDetails.Status.All) ? "active" : "";}
+    @{ isActive = (status == BusinessDetails.Status.NotInterested) ? "active" : "";}
     <li role='presentation' class='@isActive pull-right'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Leads", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NotInterested], "Leads", new
         {
-            status = BusinessDetails.Status.All,
+            status = BusinessDetails.Status.NotInterested,
             leadID = leadID,
             publishedFrom = publishedFrom.ToString(),
             publishedTo = publishedTo.ToString(),

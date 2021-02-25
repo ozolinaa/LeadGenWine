@@ -1,0 +1,23 @@
+﻿CREATE VIEW [dbo].[LeadEmailTextView]
+   WITH SCHEMABINDING
+   AS  
+	SELECT
+			l.LeadID as ID, 
+			l.LeadID, '_system_email' as FieldCode, 1 as IsContact, l.Email as FieldText
+		FROM [dbo].[Lead] l
+GO
+CREATE UNIQUE CLUSTERED INDEX [PK_ID] ON [dbo].[LeadEmailTextView]
+(  
+    [ID] ASC  
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]  
+GO  
+CREATE NONCLUSTERED INDEX [IX_LeadEmailTextView_LeadID] ON [dbo].[LeadEmailTextView]
+(
+	[LeadID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+CREATE FULLTEXT INDEX ON [dbo].[LeadEmailTextView]
+    ([FieldText] LANGUAGE 1033)  
+    KEY INDEX [PK_ID]  
+    ON [LeadFieldTextCatalog];  
+GO
