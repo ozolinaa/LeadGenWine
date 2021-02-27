@@ -13,15 +13,15 @@ using System.Web;
 
 namespace LeadGen.Web.Areas.Business.Controllers
 {
-    public class AccountController : BusinessBaseController
+    public class LeadsController : BusinessBaseController
     {
 
         public override ActionResult Index()
         {
-            return RedirectToAction("Leads");
+            return RedirectToAction("List");
         }
 
-        public ActionResult Leads(BusinessDetails.Status status = BusinessDetails.Status.All, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
+        public ActionResult List(BusinessDetails.Status status = BusinessDetails.Status.All, long? leadID = null, DateTime? publishedFrom = null, DateTime? publishedTo = null, string query = "", int page = 1, bool searchInit = false)
         {
             if (publishedFrom == null)
             {

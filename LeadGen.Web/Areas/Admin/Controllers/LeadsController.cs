@@ -12,7 +12,7 @@ using LeadGen.Code.Sys.Scheduled;
 
 namespace LeadGen.Web.Areas.Admin.Controllers
 {
-    public class LeadController : AdminBaseController
+    public class LeadsController : AdminBaseController
     {
         // GET: Admin/Orders
         public override ActionResult Index()
@@ -72,7 +72,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         {
             LeadItem leadItem = LeadItem.SelectFromDB(DBLGcon, leadID: leadID).FirstOrDefault();
             if (leadItem == null)
-                return RedirectToAction("List", "Lead", new { area = "Admin" });
+                return RedirectToAction("List", "Leads", new { area = "Admin" });
 
             leadItem.LoadFieldStructure(DBLGcon, ActiveOnly: false);
             leadItem.LoadFieldValues(DBLGcon);

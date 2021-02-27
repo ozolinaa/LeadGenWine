@@ -67,14 +67,14 @@ namespace LeadGen.Web.Controllers
                 if (login.role == Login.UserRoles.system_admin)
                     filterContext.Result = RedirectToAction("index", "Home", new { area = "Admin" });
                 else if (login.role == Login.UserRoles.business_admin)
-                    filterContext.Result = RedirectToAction("index", "Account", new { area = "Business" });
+                    filterContext.Result = RedirectToAction("index", "Leads", new { area = "Business" });
                 else
                     filterContext.Result = RedirectToAction(loginSuccessRedirectActionName);
             }
             else if (login != null)
             {
                 if (login.role == Login.UserRoles.business_admin && new string[] { "", "business" }.Contains(areaName) == false)
-                    filterContext.Result = RedirectToAction("index", "Account", new { area = "Business" });
+                    filterContext.Result = RedirectToAction("index", "Leads", new { area = "Business" });
             }
         }
 

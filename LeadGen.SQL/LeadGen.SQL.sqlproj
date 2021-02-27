@@ -133,7 +133,6 @@
     <Build Include="dbo\Tables\UserSession.sql" />
     <Build Include="dbo\Views\BusinessLeadWorked.sql" />
     <Build Include="dbo\Views\BusinessRegionCountry.sql" />
-    <Build Include="dbo\Views\LeadFieldText.sql" />
     <Build Include="dbo\Functions\Business.Lead.Completed.GetCompletedTotalFeeSumBeforeDateForInvoice.sql" />
     <Build Include="dbo\Functions\BusinessLeadGetLastNotifiedDate.sql" />
     <Build Include="dbo\Functions\BusinessLeadGetNextAllowedNotificationDateTime.sql" />
@@ -315,7 +314,10 @@
     <Build Include="dbo\Tables\LeadFieldMetaTextarea.sql" />
     <Build Include="dbo\Stored Procedures\SystemScheduledTaskLogSelect.sql" />
     <Build Include="Storage\LeadFieldTextCatalog.sql" />
-    <Build Include="dbo\Views\LeadFieldScalarTextView.sql" />
+    <Build Include="dbo\Views\LeadScalarTextView.sql" />
+    <Build Include="dbo\Views\LeadTaxonomyTextView.sql" />
+    <Build Include="dbo\Views\LeadLocationTextView.sql" />
+    <Build Include="dbo\Views\LeadEmailTextView.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployments\_PostDeployment.sql" />

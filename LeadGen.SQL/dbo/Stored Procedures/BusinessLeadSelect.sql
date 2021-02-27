@@ -43,6 +43,20 @@ BEGIN
 			AND (@LeadID IS NULL OR L.LeadID = @LeadID)
 			AND (@DateFrom IS NULL OR @DateFrom < CreatedDateTime)
 			AND (@DateTo IS NULL OR @DateTo >= CreatedDateTime)
+	ELSE IF (@Status = 'AllInterested')
+		INSERT INTO @Leads
+		SELECT 
+			L.[LeadID], L.[CreatedDateTime]
+		FROM 
+			[dbo].[Lead] L 
+			LEFT OUTER JOIN @RequestedLeads R ON R.LeadID = L.LeadID
+			LEFT OUTER JOIN [dbo].[BusinessLeadNotInterested] LNR ON LNR.LeadID = L.LeadID AND LNR.BusinessID = @BusinessID
+			LEFT OUTER JOIN [dbo].[BusinessLeadContactsRecieved] LCR ON LCR.LeadID = L.LeadID AND LCR.BusinessID = @BusinessID
+		WHERE LNR.NotInterestedDateTime IS NULL 
+		    AND (R.LeadID IS NOT NULL OR LCR.LeadID IS NOT NULL)
+			AND (@LeadID IS NULL OR L.LeadID = @LeadID)
+			AND (@DateFrom IS NULL OR @DateFrom < CreatedDateTime)
+			AND (@DateTo IS NULL OR @DateTo >= CreatedDateTime)
 	ELSE IF (@Status = 'NewForBusiness')
 		INSERT INTO @Leads
 		SELECT 

@@ -64,7 +64,7 @@
             <td>
                 @foreach (var lead in invoice.leadCompleatedData)
                 {
-                    @Html.ActionLink(lead.leadID.ToString(), "List", "Account", new { leadID = lead.leadID }, null)
+                    @Html.ActionLink(lead.leadID.ToString(), "List", "Leads", new { leadID = lead.leadID }, null)
                     <span>(@lead.leadFee.ToString("F"))</span>
                 }
             </td>

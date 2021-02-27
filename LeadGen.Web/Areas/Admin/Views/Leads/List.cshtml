@@ -36,7 +36,7 @@ AdminDetails.Status.Completed
 </ul>
 
 <div class="row" style="margin-top:10px;">
-    @using (Html.BeginForm("List", "Lead", FormMethod.Get, null))
+    @using (Html.BeginForm("List", "Leads", FormMethod.Get, null))
     {
         @Html.Hidden("status", currentStatus)
         <div class="col-sm-1 form-group">

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<LeadGen.Code.Lead.LeadItem>
+@using LeadGen.Code.Lead
+
+@{
+    BusinessDetails.Status status = ViewBag.status;
+    long? leadID = ViewBag.leadID;
+    DateTime? publishedFrom = ViewBag.publishedFrom;
+    DateTime? publishedTo = ViewBag.publishedTo;
+    string query = ViewBag.query;
+}
+
+<div style="margin:10px 0 10px 0">
+    <ul class="nav nav-pills">
+        <li role='presentation' class='@(status == BusinessDetails.Status.ContactReceived ? "active" : "")'>
+            @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "List", new {
+            status = BusinessDetails.Status.ContactReceived,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
+        </li>
+        <li role='presentation' class='@(status == BusinessDetails.Status.Important ? "active" : "")'>
+            @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Important], "List", new {
+            status = BusinessDetails.Status.Important,
+            leadID = leadID,
+            publishedFrom = publishedFrom.ToString(),
+            publishedTo = publishedTo.ToString(),
+            query = query
+        })
+        </li>
+    </ul>
+</div>
+
+
+<table class="table">
+    @Html.DisplayFor(x => x)
+</table>

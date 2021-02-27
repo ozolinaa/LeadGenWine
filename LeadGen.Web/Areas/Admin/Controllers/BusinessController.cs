@@ -112,7 +112,7 @@ namespace LeadGen.Web.Areas.Admin.Controllers
         {
             Code.Business.Business business = Code.Business.Business.SelectFromDB(DBLGcon, businessID: businessID).First();
             string sessionID = LoginController.SetLoginSessionCookie(DBLGcon, HttpContext, business.adminLoginID);
-            return RedirectToAction("Index", "Account", new { area = "Business" });
+            return RedirectToAction("Index", "Leads", new { area = "Business" });
         }
 
     }

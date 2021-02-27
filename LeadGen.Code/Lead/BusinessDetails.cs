@@ -19,7 +19,8 @@ namespace LeadGen.Code.Lead
             NotInterested,
             Important,
             NextInvoice,
-            All
+            All,
+            AllInterested
         }
 
 
@@ -57,6 +58,7 @@ namespace LeadGen.Code.Lead
         }
         public static Dictionary<Status, string> statusDictionary = new Dictionary<Status, string>() {
             { Status.All, "All" },
+            { Status.AllInterested, "All" },
             { Status.Completed, "Completed" },
             { Status.NewForBusiness, "New" },
             { Status.WaitingApproval, "Waiting for approval" },

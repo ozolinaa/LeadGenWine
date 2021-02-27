@@ -10,7 +10,6 @@
     DateTime? publishedFrom = ViewBag.publishedFrom;
     DateTime? publishedTo = ViewBag.publishedTo;
     string query = ViewBag.query;
-    string isActive;
 }
 
 <style>
@@ -48,36 +47,36 @@
 
 
 <div class="row search-orders" style="margin-top:10px;">
-    @using (Html.BeginForm("Leads", "Account", FormMethod.Get, null))
+    @using (Html.BeginForm("List", "Leads", FormMethod.Get, null))
     {
         @Html.Hidden("status", status)
         @Html.Hidden("searchInit", true);
         <div class="col-sm-1 form-group">
             @Html.Label("leadID", "Lead #")
-            @Html.TextBox("leadID", leadID, new { @class = "form-control", placeholder = "#" })
+            @Html.TextBox("leadID", leadID, new { data_val = "false", @class = "form-control", placeholder = "#" })
         </div>
         <div class="col-sm-3  form-group">
             @Html.Label("publishedFrom", "From")
-            @Html.TextBox("publishedFrom", publishedFrom, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
+            @Html.TextBox("publishedFrom", publishedFrom, new { data_val = "false", @class = "form-control datetimepicker", placeholder = DateTime.Today.AddYears(-1).ToShortDateString() })
         </div>
         <div class="col-sm-3  form-group">
             @Html.Label("publishedTo", "To")
-            @Html.TextBox("publishedTo", publishedTo, new { @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
+            @Html.TextBox("publishedTo", publishedTo, new { data_val = "false", @class = "form-control datetimepicker", placeholder = DateTime.Today.ToShortDateString() })
         </div>
         <div class="col-sm-4  form-group">
             @Html.Label("query", "Search")
-            @Html.TextBox("query", query, new { @class = "form-control", placeholder = "Material, Comment, Email ..." })
+            @Html.TextBox("query", query, new { data_val = "false", @class = "form-control", placeholder = "Material, Comment, Email ..." })
         </div>
         <div class="col-sm-1  form-group">
             @Html.Label("", "submit", new { style = "visibility: hidden;" })
-            <button type="submit" class="btn btn-primary">Search</button>
+            <input type="submit" class="btn btn-primary" value="Search">
         </div>
     }
 </div>
 
 <ul class="nav nav-tabs nav-orders" style="margin-top:10px;">
     <li role='presentation' class='@(status == BusinessDetails.Status.All ? "active" : "")'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "Leads", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.All], "List", new
         {
             status = BusinessDetails.Status.All,
             leadID = leadID,
@@ -87,7 +86,7 @@
         })
     </li>
     <li role='presentation' class='@(status == BusinessDetails.Status.NewForBusiness ? "active" : "")'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "Leads", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NewForBusiness], "List", new
         {
             status = BusinessDetails.Status.NewForBusiness,
             leadID = leadID,
@@ -97,7 +96,7 @@
         })
     </li>
     <li role='presentation' class='@((status == BusinessDetails.Status.ContactReceived || status == BusinessDetails.Status.Important) ? "active" : "")'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "Leads", new
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.ContactReceived], "List", new
         {
             status = BusinessDetails.Status.ContactReceived,
             leadID = leadID,
@@ -106,9 +105,8 @@
             query = query
         })
     </li>
-    @{ isActive = (status == BusinessDetails.Status.Completed) ? "active" : "";}
-    <li role='presentation' class='@isActive'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "Leads", new
+    <li role='presentation' class='@(status == BusinessDetails.Status.Completed ? "active" : "")'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.Completed], "List", new
         {
             status = BusinessDetails.Status.Completed,
             leadID = leadID,
@@ -117,9 +115,8 @@
             query = query
         })
     </li>
-    @{ isActive = (status == BusinessDetails.Status.NotInterested) ? "active" : "";}
-    <li role='presentation' class='@isActive pull-right'>
-        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NotInterested], "Leads", new
+    <li role='presentation' class='@(status == BusinessDetails.Status.NotInterested ? "active" : "") pull-right'>
+        @Html.ActionLink(BusinessDetails.statusDictionary[BusinessDetails.Status.NotInterested], "List", new
         {
             status = BusinessDetails.Status.NotInterested,
             leadID = leadID,
@@ -136,22 +133,22 @@
     case BusinessDetails.Status.NewForBusiness:
         await Html.RenderPartialAsync("LeadLists/_NewForBusiness", Model);
         break;
-    case BusinessDetails.Status.NotInterested:
-        await Html.RenderPartialAsync("LeadLists/_NewForBusiness", Model);
-        break;
     case BusinessDetails.Status.Completed:
         await Html.RenderPartialAsync("LeadLists/_Completed", Model);
         break;
-    case BusinessDetails.Status.All:
-        await Html.RenderPartialAsync("LeadLists/_All", Model);
+    case BusinessDetails.Status.Important:
+        await Html.RenderPartialAsync("LeadLists/_ContactReceived", Model);
+        break;
+    case BusinessDetails.Status.ContactReceived:
+        await Html.RenderPartialAsync("LeadLists/_ContactReceived", Model);
         break;
     default:
-        await Html.RenderPartialAsync("LeadLists/_ContactReceived", Model);
+        await Html.RenderPartialAsync("LeadLists/_All", Model);
         break;
 }
 
 @Html.PagedListPager(Model,
-    page => Url.Action("Leads", "Account", new
+    page => Url.Action("List", new
     {
         page,
         status = status,

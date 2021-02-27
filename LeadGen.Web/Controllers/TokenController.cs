@@ -63,7 +63,7 @@ namespace LeadGen.Web.Controllers
 
                     SendMessageToAdmins("New Business Registered", string.Format("New business: #{0} {1}", login.business.ID, login.business.name));
 
-                    return RedirectToAction("Index", "Account", new { area = "Business" });
+                    return RedirectToAction("Index", "Leads", new { area = "Business" });
                 }
             }
 
