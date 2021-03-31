@@ -50,6 +50,10 @@ p {
     margin-bottom: 11px;
 }
 
+input[type=checkbox].form-control {
+    box-shadow: none;
+}
+
 #LoadingWindowSplash {
     display: none;
     height: 100%;

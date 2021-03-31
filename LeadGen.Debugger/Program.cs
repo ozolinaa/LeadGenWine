@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using LeadGen.Code.Tokens;
+using LeadGen.Code.Business;
 
 namespace LeadGen.Debugger
 {
@@ -17,21 +18,20 @@ namespace LeadGen.Debugger
     {
         static void Main(string[] args)
         {
-            using (SqlConnection con = new SqlConnection(""))
+            using (SqlConnection con = new SqlConnection("Data Source=db.winecellars.pro;Initial Catalog=LeadGenDB_dev;Persist Security Info=True;User ID=LeadGenDB_dev;Password=Pass@word1!;"))
             {
                 con.Open();
-                BusinessRegistrationEmaiConfirmationToken t1 = new BusinessRegistrationEmaiConfirmationToken(1234);
-                t1.CreateInDB(con);
 
-                Token t = Token.LoadFromDB(con, t1.Key);
-                if (t is BusinessRegistrationEmaiConfirmationToken) 
-                {
-                    Console.WriteLine("t1 is BusinessRegistrationEmaiConfirmationToken");
-                }
-                if (t is LoginRecoverPasswordToken)
-                {
-                    Console.WriteLine("t1 is LoginRecoverPasswordToken");
-                }
+                Login login = Login.SelectOne(con, email: "anton.ozolin+bizaaa@gmail.com");
+                login.business = Business.SelectFromDB(con, businessID: 1)[0];
+
+
+                LoginManager lm = new LoginManager(con, login);
+
+                lm.EmailAdd("anton.ozolin+linkedStuff1", false);
+
+                List<BusinessLogin> logins = lm.SelectLogins();
+                ;
             }
         }
 

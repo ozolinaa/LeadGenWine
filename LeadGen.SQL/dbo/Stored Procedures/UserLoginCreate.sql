@@ -5,7 +5,6 @@
 -- =============================================
 CREATE PROCEDURE [dbo].[UserLoginCreate]
 	-- Add the parameters for the stored procedure here
-	@roleID int,
 	@email nvarchar(100),
 	@passwordHash nvarchar(255),
 	@loginID bigint OUTPUT
@@ -17,13 +16,11 @@ BEGIN
 
 	BEGIN TRY
 		INSERT INTO [dbo].[UserLogin] (
-			[RoleID],
 			[Email],
 			[PasswordHash],
 			[RegistrationDate]
 			)
 		VALUES(
-			@roleID,
 			@email,
 			@passwordHash,
 			GETUTCDATE()

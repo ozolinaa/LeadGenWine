@@ -49,6 +49,8 @@ namespace LeadGen.Code.Business
         
         public List<Lead.Review> reviews { get; set; }
 
+        public List<BusinessLogin> logins { get; set; }
+
         public List<BusinessLocation> locations { get; set; }
 
         public Dictionary<Lead.Review.Measure, short> rating {
@@ -115,6 +117,9 @@ namespace LeadGen.Code.Business
 
             if (Colums.Contains("BillingName") && Colums.Contains("BillingCode1") && Colums.Contains("BillingCode2") && Colums.Contains("BillingAddress"))
                 billing = new Billing(row);
+
+            if (Colums.Contains("LoginID"))
+                logins = new List<BusinessLogin>() { new BusinessLogin(row) };
         }
 
 
@@ -145,15 +150,15 @@ namespace LeadGen.Code.Business
             return null;
         }
 
-        public bool LinkLogin(SqlConnection con, Login newLogin)
+        public bool LoginLink(SqlConnection con, Login newLogin, bool isAdmin)
         {
-            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessAddLogin]", con))
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLoginAdd]", con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@businessID", ID);
                 cmd.Parameters.AddWithValue("@loginID", newLogin.ID);
-                cmd.Parameters.AddWithValue("@roleID", (int)Login.UserRoles.business_admin);
+                cmd.Parameters.AddWithValue("@roleID", (int)(isAdmin ? Login.UserRole.business_admin : Login.UserRole.business_staff));
 
                 SqlParameter outputParameter = new SqlParameter();
                 outputParameter.ParameterName = "@result";
@@ -164,6 +169,28 @@ namespace LeadGen.Code.Business
                 cmd.ExecuteNonQuery();
 
                 return Boolean.Parse(outputParameter.Value.ToString());
+            }
+        }
+
+        public bool LoginDelete(SqlConnection con, long currentLoginID, long deleteLoginID)
+        {
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLoginRemove]", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@byLoginID", currentLoginID);
+                cmd.Parameters.AddWithValue("@businessID", ID);
+                cmd.Parameters.AddWithValue("@loginIdToRemove", deleteLoginID);
+
+                SqlParameter returnParameter = new SqlParameter();
+                returnParameter.ParameterName = "@result";
+                returnParameter.SqlDbType = SqlDbType.Bit;
+                returnParameter.Direction = ParameterDirection.ReturnValue;
+                cmd.Parameters.Add(returnParameter);
+
+                cmd.ExecuteNonQuery();
+
+                return Boolean.Parse(returnParameter.Value.ToString());
             }
         }
 
@@ -349,6 +376,32 @@ namespace LeadGen.Code.Business
         public void LoadLocations(SqlConnection con)
         {
             locations = BusinessLocation.SelectFromDbForBusinessID(con, ID);
+        }
+
+        public void LoadLogins(SqlConnection con)
+        {
+            logins = new List<BusinessLogin>();
+
+            using (SqlCommand cmd = new SqlCommand("[dbo].[BusinessLoginSelect]", con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@BusinessID", ID);
+
+                foreach (DataRow row in DBHelper.ExecuteCommandToDataTable(cmd).Rows)
+                {
+                    logins.Add(new BusinessLogin(row));
+                }
+            }
+        }
+
+        public bool IsLoginBusinessAdmin(long loginID)
+        {
+            if (logins == null || logins.Count == 0)
+            {
+                throw new Exception("business logins are not loaded");
+            }
+            return logins.Find(x => x.LoginID == loginID && x.Role == Login.UserRole.business_admin) != null;
         }
 
     }

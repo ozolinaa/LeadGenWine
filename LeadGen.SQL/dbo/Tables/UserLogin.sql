@@ -1,22 +1,17 @@
 ﻿CREATE TABLE [dbo].[UserLogin](
 	[LoginID] [bigint] IDENTITY(1,1) NOT NULL,
-	[RoleID] [int] NOT NULL,
 	[Email] [nvarchar](100) NOT NULL,
 	[PasswordHash] [nvarchar](255) NULL,
 	[RegistrationDate] [datetime] NOT NULL,
 	[EmailConfirmationDate] [datetime] NULL,
- CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED 
+ [DeletedDate] DATETIME NULL, 
+    CONSTRAINT [PK_UserLogin] PRIMARY KEY CLUSTERED 
 (
 	[LoginID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[UserLogin]  WITH CHECK ADD  CONSTRAINT [FK_User.Login_User.Role] FOREIGN KEY([RoleID])
-REFERENCES [dbo].[UserRole] ([RoleID])
-GO
 
-ALTER TABLE [dbo].[UserLogin] CHECK CONSTRAINT [FK_User.Login_User.Role]
-GO
 ALTER TABLE [dbo].[UserLogin] ADD  CONSTRAINT [DF_User.Login_RegistrationDate]  DEFAULT (getutcdate()) FOR [RegistrationDate]
 GO
 /****** Object:  Index [IX_UserLogin]    Script Date: 5/9/2017 10:43:55 PM ******/
@@ -25,13 +20,7 @@ CREATE UNIQUE NONCLUSTERED INDEX [IX_UserLogin] ON [dbo].[UserLogin]
 	[Email] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_UserLogin_1]    Script Date: 5/9/2017 10:43:55 PM ******/
-CREATE UNIQUE NONCLUSTERED INDEX [IX_UserLogin_1] ON [dbo].[UserLogin]
-(
-	[LoginID] ASC,
-	[RoleID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
+
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>

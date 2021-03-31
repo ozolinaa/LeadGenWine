@@ -15,15 +15,11 @@ BEGIN
 
 	SELECT	
 		L.[LoginID],
-		R.[RoleID],
-		R.[RoleName],
-		R.[RoleCode],
 		L.[Email],
 		L.[RegistrationDate],
 		L.[EmailConfirmationDate]
 	FROM	
-		[dbo].[UserLogin] L INNER JOIN
-		[dbo].[UserRole] R ON R.[RoleID] = L.[RoleID]
+		[dbo].[UserLogin] L
 	WHERE	
 		[Email] = @email 
 		AND [PasswordHash] = @passwordHash

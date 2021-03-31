@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using LeadGen.Code;
 using LeadGen.Code.Helpers;
 using LeadGen.Code.Settings;
 using LeadGen.Web.Helpers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -60,12 +62,28 @@ namespace LeadGen.Web
             if (env.IsDevelopment())
             {
                 app.UseBrowserLink();
-                app.UseDeveloperExceptionPage();
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
+                    if (exceptionHandlerPathFeature?.Error is Exception)
+                    {
+                        context.Response.StatusCode = 500;
+                        context.Response.ContentType = "application/json";
+                        string errorMessage = HttpUtility.JavaScriptStringEncode(exceptionHandlerPathFeature.Error.Message);
+                        string errorDetails = env.IsDevelopment() ? HttpUtility.JavaScriptStringEncode( exceptionHandlerPathFeature.Error.ToString()) : "";
+                        await context.Response.WriteAsync($"{{\"errorMessage\": \"{errorMessage}\", \"errorDetails\": \"{errorDetails}\"}}");
+                    }
+                });
+            });
+            app.UseHsts();
 
             app.UseStaticFiles();
 

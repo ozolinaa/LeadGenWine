@@ -5,10 +5,10 @@ using System.Text;
 
 namespace LeadGen.Code.Tokens
 {
-    public class BusinessRegistrationEmaiConfirmationToken : Token
+    public class NewLoginEmailVerificationToken : Token
     {
-        public BusinessRegistrationEmaiConfirmationToken() { }
-        public BusinessRegistrationEmaiConfirmationToken(long loginID)
+        public NewLoginEmailVerificationToken() { }
+        public NewLoginEmailVerificationToken(long loginID)
         {
             LoginID = loginID;
         }

@@ -1,0 +1,72 @@
+﻿@model LeadGen.Code.Login
+
+@using LeadGen.Code.Business
+
+
+<div class="well well-sm">
+    Manage your company logins
+</div>
+
+<button id="BusinessLoginCreateOpener" type="button" class="btn btn-primary btn-lg">Add Login</button>
+
+<div id="BusinessLoginCreateModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        @using (Html.BeginForm("BusinessLoginCreate", null, null, FormMethod.Post, true, new
+        {
+            @class = "form-horizontal",
+            id = "BusinessLoginCreateForm",
+            data_ajax = "true",
+            data_ajax_update = "#BusinessLoginListWrapper",
+            data_ajax_mode = "replace",
+            data_ajax_loading = "#LoadingWindowSplash",
+            data_ajax_failure = "businessLoginCreateErrorHandler",
+            data_ajax_success = "businessLoginCreateSuccessHandler"
+        }))
+        {
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add new Login</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("email", "E-Mail")
+                                @Html.TextBox("email", "", new { @class = "form-control", placeholder = "manager@yourcompany.com" })
+                                @Html.ValidationMessage("email")
+                            </div>
+                            <div class="col-sm-6 form-group">
+                                @Html.Label("isAdmin", "Business Administrator")
+                                @Html.CheckBox("isAdmin", new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Add Login" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    var businessLoginCreateSuccessHandler = function () {
+        $('#BusinessLoginCreateModal').modal('hide');
+        LeadGen.ui.showNotificationLabel();
+    }
+    var businessLoginCreateErrorHandler = function (xhr, status, error) {
+        $('#BusinessLoginCreateForm').find("[data-valmsg-for='email']")[0].innerHTML = "<span>" + xhr.responseJSON.errorMessage + "</span>"
+    }
+</script>
+
+<!-- Map Edit Existing Modal -->
+<div id="BusinessEditEditModalWrapper"></div>
+
+<div id="BusinessLoginListWrapper">
+    @await Html.PartialAsync("_LoginsList", Model.business.logins)
+</div>
+
+

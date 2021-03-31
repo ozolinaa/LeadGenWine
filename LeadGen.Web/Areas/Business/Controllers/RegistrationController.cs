@@ -78,7 +78,7 @@ namespace LeadGen.Web.Areas.Business.Controllers
                 {
                     password = SysHelper.GenerateRandomString();
                 }
-                newLogin = Login.Create(DBLGcon, Login.UserRoles.business_admin, postedLogin.email, password);
+                newLogin = Login.Create(DBLGcon, postedLogin.email, password);
             }
             else
             {
@@ -104,7 +104,7 @@ namespace LeadGen.Web.Areas.Business.Controllers
             }
 
 
-            newLogin.business.LinkLogin(DBLGcon, newLogin); //Link login to business
+            newLogin.business.LoginLink(DBLGcon, newLogin, true); //Link login to business
 
             List<long[]> requestedTermIDs = new List<long[]>();
             newLogin.business.UpdateRequestedPermissions(DBLGcon, requestedTermIDs, new List<LeadPermittion>());

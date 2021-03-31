@@ -16,10 +16,9 @@ GO
 
 ALTER TABLE [dbo].[BusinessLogin] CHECK CONSTRAINT [FK_Business.Login_Business]
 GO
-ALTER TABLE [dbo].[BusinessLogin]  WITH CHECK ADD  CONSTRAINT [FK_Business.Login_User.Login1] FOREIGN KEY([LoginID], [RoleID])
-REFERENCES [dbo].[UserLogin] ([LoginID], [RoleID])
+ALTER TABLE [dbo].[BusinessLogin]  WITH CHECK ADD  CONSTRAINT [FK_Business.Login_Role] FOREIGN KEY([RoleID])
+REFERENCES [dbo].[UserRole] ([RoleID])
 GO
 
-ALTER TABLE [dbo].[BusinessLogin] CHECK CONSTRAINT [FK_Business.Login_User.Login1]
-GO
 ALTER TABLE [dbo].[BusinessLogin] ADD  CONSTRAINT [DF_Business.Login_LinkDate]  DEFAULT (getutcdate()) FOR [LinkDate]
+GO

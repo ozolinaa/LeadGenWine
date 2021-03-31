@@ -19,10 +19,8 @@ namespace LeadGen.Web.Controllers
 
         private const string loginSessionCookieName = "LeadGenLoginSessionID";
 
-        private const string loginActionName = "Index";
-        private const string logoutActionName = "Logout";
-
-        protected const string loginSuccessRedirectActionName = "afterLogin";
+        private const string loginActionName = "index";
+        private const string logoutActionName = "logout";
 
         protected List<string> publicActionNames = new List<string>();
         protected List<string> publicOnlyActionNames = new List<string>();
@@ -51,30 +49,40 @@ namespace LeadGen.Web.Controllers
             {
                 publicActionNames.Add(loginActionName);
                 publicActionNames.Add(logoutActionName);
-                publicActionNames.Add("SendPasswordRestoreEmail");
-                publicActionNames.Add("SetNewPassword");
-
+                publicActionNames.Add("sendpasswordrestoreemail");
+                publicActionNames.Add("setnewpassword");
             }
+
+            IActionResult redirectToLogin = RedirectToAction(loginActionName, "Login", new { area = "" });
+            IActionResult redirectToAdminHome = RedirectToAction("index", "Home", new { area = "Admin" });
+            IActionResult redirectToBusinessHome = RedirectToAction("index", "Leads", new { area = "Business" });
 
             //Redirect user if needed
-            if (login == null && !publicActionNames.Contains(actionName, StringComparer.OrdinalIgnoreCase))
-                filterContext.Result = RedirectToAction(logoutActionName, "Login", new { area = "" });
-            else if (login != null && publicOnlyActionNames.Contains(actionName, StringComparer.OrdinalIgnoreCase))
-                filterContext.Result = RedirectToAction(loginActionName, "Login", new { area = "" });
-            else if (login != null && controllerName == "login" && string.Equals(actionName, loginActionName, StringComparison.CurrentCultureIgnoreCase))
+            if (login == null)
             {
-                //Redirect authorized user from login page to his area
-                if (login.role == Login.UserRoles.system_admin)
-                    filterContext.Result = RedirectToAction("index", "Home", new { area = "Admin" });
-                else if (login.role == Login.UserRoles.business_admin)
-                    filterContext.Result = RedirectToAction("index", "Leads", new { area = "Business" });
-                else
-                    filterContext.Result = RedirectToAction(loginSuccessRedirectActionName);
+                if (!publicActionNames.Contains(actionName))
+                {
+                    // Redirect unauthorized to login
+                    filterContext.Result = redirectToLogin;
+                }
             }
-            else if (login != null)
+            else
             {
-                if (login.role == Login.UserRoles.business_admin && new string[] { "", "business" }.Contains(areaName) == false)
-                    filterContext.Result = RedirectToAction("index", "Leads", new { area = "Business" });
+                if (areaName == "admin" && login.business != null)
+                {
+                    //Redirect business away from admin to business home
+                    filterContext.Result = redirectToBusinessHome;
+                }
+                else if (string.IsNullOrEmpty(areaName) && controllerName == "login" && string.Equals(actionName, loginActionName))
+                {
+                    //Redirect authorized user from login page to his area
+                    filterContext.Result = login.business == null ? redirectToAdminHome : redirectToBusinessHome;
+                }
+                else if(publicOnlyActionNames.Contains(actionName))
+                {
+                    //Redirect authorized user to login page from registration page
+                    filterContext.Result = redirectToLogin;
+                }
             }
         }
 
@@ -160,9 +168,9 @@ namespace LeadGen.Web.Controllers
             long? loginID = null;
             if (token != null)
             {
-                if (token is BusinessRegistrationEmaiConfirmationToken)
+                if (token is NewLoginEmailVerificationToken)
                 {
-                    loginID = ((BusinessRegistrationEmaiConfirmationToken)token).LoginID;
+                    loginID = ((NewLoginEmailVerificationToken)token).LoginID;
                 }
                 else if (token is LoginRecoverPasswordToken)
                 {

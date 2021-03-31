@@ -24,8 +24,8 @@ namespace LeadGen.Web.Controllers
             if (token == null)
                 return View("error");
 
-            if (token is BusinessRegistrationEmaiConfirmationToken)
-                return LoginEmailConfirm(token as BusinessRegistrationEmaiConfirmationToken);
+            if (token is NewLoginEmailVerificationToken)
+                return LoginEmailConfirm(token as NewLoginEmailVerificationToken);
             else if (token is LoginRecoverPasswordToken)
                 return LoginRecoverPassword(token as LoginRecoverPasswordToken);
             else if (token is LeadEmailConfirmationToken)
@@ -39,7 +39,7 @@ namespace LeadGen.Web.Controllers
         }
 
         [NonAction]
-        private ActionResult LoginEmailConfirm(BusinessRegistrationEmaiConfirmationToken token)
+        private ActionResult LoginEmailConfirm(NewLoginEmailVerificationToken token)
         {
             Login login = Login.SelectOne(DBLGcon, loginID: token.LoginID);
 

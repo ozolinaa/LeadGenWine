@@ -1,5 +1,4 @@
 ﻿@model LeadGen.Code.Login
-
 @{
     Layout = "~/Views/Shared/Email/_Layout.cshtml";
     string tokenKey = ViewData["tokenKey"].ToString();
@@ -7,9 +6,9 @@
 }
 
 @section Title {
-    Welcome, @Model.business.name!
+    Join @Model.business.name at WineCellars.PRO!
 }
 
-<p>Please click the button below to confirm your resgistration</p>
+<p>Please click the button below to verify your email</p>
 
 @await Html.PartialAsync("Email/ButtonPrimary", null, new ViewDataDictionary(this.ViewData) { { "url", confirmationUrl }, { "value", "Click here" } })

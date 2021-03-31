@@ -10,9 +10,10 @@
 <ul class="nav nav-tabs" style="margin-top:20px;">
     <li class="active"><a data-toggle="tab" href="#section-LoginBusinessMain" aria-expanded="true"><i class="fa fa-list-alt"></i> Company</a></li>
     <li><a data-toggle="tab" href="#section-contact" aria-expanded="false"><i class="fa fa-phone"></i> Cantacts</a></li>
+    <li><a data-toggle="tab" href="#section-logins" aria-expanded="false"><i class="fa fa-user"></i> Logins</a></li>
     <li><a data-toggle="tab" href="#section-locations" aria-expanded="false"><i class="fa fa-map-marker"></i> Locations</a></li>
-    <li><a data-toggle="tab" href="#section-notification" aria-expanded="false"><i class="fa fa-envelope-o"></i> Notification</a></li>
-    <li><a data-toggle="tab" href="#section-billing" aria-expanded="false"><i class="fa fa-money"></i> Billing Details</a></li>
+    <li><a data-toggle="tab" href="#section-notification" aria-expanded="false"><i class="fa fa-envelope"></i> Notification</a></li>
+    <li><a data-toggle="tab" href="#section-billing" aria-expanded="false"><i class="fa fa-coins"></i> Billing Details</a></li>
     <li><a data-toggle="tab" href="#section-password" aria-expanded="false"><i class="fa fa-asterisk"></i> Password</a></li>
 </ul>
 
@@ -25,6 +26,10 @@
 
     <div id="section-contact" class="tab-pane fade">
         @Html.EditorFor(x => x.business.contact)
+    </div>
+
+    <div id="section-logins" class="tab-pane fade">
+        @Html.EditorFor(x => x, "Logins")
     </div>
 
     <div id="section-notification" class="tab-pane fade">
@@ -70,6 +75,12 @@
             var modalSelector = '#BusinessLocationCreateModal';
             $(modalSelector).modal('show').on('shown.bs.modal', function (e) {
                 LeadGen.ui.googleMapsActions.refreshMapsInSelector(modalSelector);
+            })
+        });
+
+        $('#BusinessLoginCreateOpener').click(function () {
+            var modalSelector = '#BusinessLoginCreateModal';
+            $(modalSelector).modal('show').on('shown.bs.modal', function (e) {
             })
         });
 

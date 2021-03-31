@@ -39,7 +39,25 @@ namespace LeadGen.Code.Helpers
             string mailSubject = "Confirm business E-mail address";
             string viewPath = "~/Areas/Business/Views/Registration/E-mails/RegistrationEmailVerify.cshtml";
 
-            BusinessRegistrationEmaiConfirmationToken token = new BusinessRegistrationEmaiConfirmationToken(login.ID);
+            NewLoginEmailVerificationToken token = new NewLoginEmailVerificationToken(login.ID);
+            token.CreateInDB(con);
+
+            ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.Key } };
+
+            MailMessageLeadGen message = new MailMessageLeadGen(login.email);
+
+            message.Subject = mailSubject;
+            message.Body = ViewHelper.RenderViewToString(viewPath, login, viewDataDictionary);
+
+            return message;
+        }
+
+        public static MailMessageLeadGen BuildCompanyLoginLinkVerifyMailMessage(Login login, SqlConnection con)
+        {
+            string mailSubject = $"You are invited to {login.business.name}";
+            string viewPath = "~/Areas/Business/Views/Registration/E-mails/LoginLinkEmailVerify.cshtml";
+
+            NewLoginEmailVerificationToken token = new NewLoginEmailVerificationToken(login.ID);
             token.CreateInDB(con);
 
             ViewDataDictionary viewDataDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary()) { { "tokenKey", token.Key } };

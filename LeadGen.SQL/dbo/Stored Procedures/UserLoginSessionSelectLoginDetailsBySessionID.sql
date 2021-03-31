@@ -15,6 +15,7 @@ BEGIN
 	SELECT 
 		L.[LoginID],
 		L.[Email],
+		BL.[LinkDate],
 		R.[RoleID],
 		R.[RoleName],
 		R.[RoleCode],
@@ -23,13 +24,11 @@ BEGIN
 		B.[Name] as BusinessName,
 		B.[RegistrationDate] as BusinessRegistrationDate,
 		L.[EmailConfirmationDate]
-	FROM 
-		[dbo].[UserSession] S INNER JOIN
-		[dbo].[UserLogin] L ON L.[LoginID] = S.[LoginID] AND L.[EmailConfirmationDate] IS NOT NULL INNER JOIN
-		[dbo].[UserRole] R ON R.[RoleID] = L.[RoleID] LEFT OUTER JOIN
-		[dbo].[BusinessLogin] BL ON BL.[LoginID] = L.LoginID LEFT OUTER JOIN
-		[dbo].[Business] B ON B.[BusinessID] = BL.[BusinessID]
-
+	FROM [dbo].[UserSession] S
+	INNER JOIN [dbo].[UserLogin] L ON L.[LoginID] = S.[LoginID] AND L.[EmailConfirmationDate] IS NOT NULL 
+	LEFT OUTER JOIN [dbo].[BusinessLogin] BL ON BL.[LoginID] = L.LoginID 
+	LEFT OUTER JOIN [dbo].[UserRole] R ON R.[RoleID] = BL.[RoleID] 
+	LEFT OUTER JOIN [dbo].[Business] B ON B.[BusinessID] = BL.[BusinessID]
 	WHERE S.[SessionID] = @sessionID AND S.[SessionBlockDate] IS NULL
 
 

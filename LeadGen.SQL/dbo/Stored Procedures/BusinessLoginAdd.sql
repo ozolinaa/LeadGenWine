@@ -3,7 +3,7 @@
 -- ALTER date: <ALTER Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [dbo].[BusinessAddLogin]
+CREATE PROCEDURE [dbo].[BusinessLoginAdd]
 	-- Add the parameters for the stored procedure here
 	@businessID bigint,
 	@loginID bigint,

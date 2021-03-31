@@ -157,14 +157,13 @@ namespace LeadGen.Code.Lead
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@LeadID", leadID);
-                dt = DBHelper.ExecuteCommandToDataTable(cmd);
-            }
-            foreach (DataRow row in dt.Rows)
-            {
-                Business.Business business = new Business.Business(row);
-                businessOptions.Add(business);
-                if (setDefaultBusinessID == true && businessID == null && row["CompletedDateTime"] != DBNull.Value)
-                    businessID = business.ID;
+                foreach (DataRow row in DBHelper.ExecuteCommandToDataTable(cmd).Rows)
+                {
+                    Business.Business business = new Business.Business(row);
+                    businessOptions.Add(business);
+                    if (setDefaultBusinessID == true && businessID == null && row["CompletedDateTime"] != DBNull.Value)
+                        businessID = business.ID;
+                }
             }
         }
 

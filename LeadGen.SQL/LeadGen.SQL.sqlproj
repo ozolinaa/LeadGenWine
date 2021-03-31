@@ -150,7 +150,7 @@
     <Build Include="dbo\Functions\LeadSelectByIDs.sql" />
     <Build Include="dbo\Functions\BusienssLocationGetBusinessesNearBy.sql" />
     <Build Include="dbo\Stored Procedures\AdminBusinessPermissionSelectPending.sql" />
-    <Build Include="dbo\Stored Procedures\BusinessAddLogin.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLoginAdd.sql" />
     <Build Include="dbo\Stored Procedures\BusinessCreate.sql" />
     <Build Include="dbo\Stored Procedures\BusinessInvoiceCreate.sql" />
     <Build Include="dbo\Stored Procedures\BusinessInvoiceDelete.sql" />
@@ -318,6 +318,8 @@
     <Build Include="dbo\Views\LeadTaxonomyTextView.sql" />
     <Build Include="dbo\Views\LeadLocationTextView.sql" />
     <Build Include="dbo\Views\LeadEmailTextView.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLoginRemove.sql" />
+    <Build Include="dbo\Stored Procedures\BusinessLoginSelect.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Post-Deployments\_PostDeployment.sql" />

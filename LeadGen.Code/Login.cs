@@ -19,7 +19,7 @@ namespace LeadGen.Code
 {
     public class Login
     {
-        public enum UserRoles { system_admin = 1, business_admin = 2 };
+        public enum UserRole { system_admin = 1, business_admin = 2, business_staff = 3 };
 
         //public class Role
         //{
@@ -54,7 +54,6 @@ namespace LeadGen.Code
         }
 
         public long ID { get; set; }
-        public UserRoles role { get; set; }
         public DateTime registrationDate { get; set; }
         public DateTime? emailConfirmationDate { get; set; }
 
@@ -80,7 +79,6 @@ namespace LeadGen.Code
         {
             ID = (long)row["LoginID"];
             email = row["Email"].ToString();
-            role = (UserRoles)(int)row["RoleID"];
             registrationDate = (DateTime) row["RegistrationDate"];
 
             if (!String.IsNullOrEmpty(row["EmailConfirmationDate"].ToString()))
@@ -145,7 +143,7 @@ namespace LeadGen.Code
             return password; // TODO Generate HASH
         }
 
-        public static Login Create(SqlConnection con, UserRoles role, string email, string password = null)
+        public static Login Create(SqlConnection con, string email, string password = null)
         {
             long loginID;
             string passwordHash = GeneratePasswordHash(password);
@@ -154,7 +152,6 @@ namespace LeadGen.Code
             SqlCommand cmd = new SqlCommand("[dbo].[UserLoginCreate]", con);
             cmd.CommandType = CommandType.StoredProcedure;
 
-            cmd.Parameters.AddWithValue("@roleID", (int)role);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@passwordHash", String.IsNullOrEmpty(passwordHash) ? (object)DBNull.Value : passwordHash);
 
@@ -170,7 +167,6 @@ namespace LeadGen.Code
             if (long.TryParse(outputParameter.Value.ToString(), out loginID))
                 return new Login {
                     ID = loginID,
-                    role = role,
                     email = email,
                     password = password
                 };

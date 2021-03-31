@@ -1,0 +1,33 @@
+﻿@model List<BusinessLogin>
+@using LeadGen.Code.Business
+@if (Model != null && Model.Any())
+{
+    <h3>Business Logins</h3>
+}
+@foreach (BusinessLogin login in Model)
+{
+<div class="row">
+    <div class="col-md-6">
+        @login.Email
+    </div>
+    <div class="col-md-2">
+        Admin: @(login.Role == LeadGen.Code.Login.UserRole.business_admin ? "YES" : "NO")
+    </div>
+    <div class="col-md-2">
+        @(login.EmailConfirmationDate == null ? "Pending E-Mail verification" : "Linked")
+    </div>
+    <div class="col-md-2">
+        @Html.ActionLink("Delete Login", "BusinessLoginDelete", new { deleteLoginID = login.LoginID },
+new
+     {
+    @class = "btn btn-danger",
+    data_ajax = "true",
+    data_ajax_method = "POST",
+    data_ajax_mode = "replace",
+    data_ajax_update = "#BusinessLoginListWrapper"
+})
+    </div>
+</div>
+    
+    <hr />
+}
